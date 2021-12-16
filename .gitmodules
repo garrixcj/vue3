@@ -1,0 +1,6 @@
+[submodule "node_modules"]
+	path = node_modules
+	url = ../node_modules.git
+[submodule "src/components"]
+	path = src/components
+	url = ../components.git
