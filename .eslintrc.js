@@ -42,5 +42,15 @@ module.exports = {
         format: null,
       },
     ],
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        extendDefaults: true,
+        types: {
+          '{}': false,
+        },
+      },
+    ],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
 };
