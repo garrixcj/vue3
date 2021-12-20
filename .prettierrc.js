@@ -4,6 +4,7 @@ module.exports = {
   arrowParens: 'always',
   trailingComma: 'all',
   pugAttributeSeparator: 'none',
+  pugSingleQuote: false,
   pugSortAttributesBeginning: [
     // DEFINITION
     '^:?is$',
