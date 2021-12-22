@@ -8,9 +8,18 @@ module.exports = {
   assetsDir: 'static',
   css: {
     loaderOptions: {
-      // scss: {
-      //   prependData: `@import "~@/assets/scss/prepend";`,
-      // },
+      scss: {
+        prependData: (content) => {
+          const { resourcePath, rootContext } = content;
+          const relativePath = path.relative(rootContext, resourcePath);
+          if (
+            relativePath === 'src/components/style/scss/_element-default.scss'
+          ) {
+            return '';
+          }
+          return `@import "~@/assets/scss/prepend";`;
+        },
+      },
     },
   },
   chainWebpack: (config) => {
