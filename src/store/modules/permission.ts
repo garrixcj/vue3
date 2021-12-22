@@ -13,7 +13,7 @@ const state = {
 type PermissionState = typeof state;
 
 const getters = {
-  permissions: (st: PermissionState): PermissionType => st.permissions,
+  permissions: (st: PermissionState) => st.permissions,
   // 檢查權限
   checkPerm: (st: PermissionState) => (name: string) => !!st.permissions[name],
   // 檢查修改權限
