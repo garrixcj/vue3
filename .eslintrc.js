@@ -48,6 +48,8 @@ module.exports = {
         extendDefaults: true,
         types: {
           '{}': false,
+          object: false,
+          Function: false,
         },
       },
     ],

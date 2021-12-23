@@ -23,7 +23,7 @@ const getters = {
   },
   // 取得權限ID陣列
   permissionIds: (st: PermissionState) =>
-    Object.keys(st.permissions).map((item) => st.permissions[item].id),
+    Object.keys(st.permissions).map(item => st.permissions[item].id),
 };
 
 const mutations = {

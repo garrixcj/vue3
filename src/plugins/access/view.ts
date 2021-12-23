@@ -21,7 +21,7 @@ export const useTabAccess = (tabs: { name: string; perm: string }[]) => {
   // tab過濾有權限的
   const currentTabs = computed(() =>
     tabs.filter(
-      (tab) => !tab.perm || store.getters['permission/checkPerm'](tab.perm),
+      tab => !tab.perm || store.getters['permission/checkPerm'](tab.perm),
     ),
   );
 
@@ -33,7 +33,7 @@ export const useTabAccess = (tabs: { name: string; perm: string }[]) => {
 
   // 設定api
   const setApiPerm = (activeTab: string) => {
-    const permName = tabs.find((tab) => tab.name == activeTab)?.perm || '';
+    const permName = tabs.find(tab => tab.name == activeTab)?.perm || '';
     if (permName !== '') {
       http.setHeadersPermName(permName);
     }
@@ -43,7 +43,7 @@ export const useTabAccess = (tabs: { name: string; perm: string }[]) => {
   const setTabWatcher = (activeTab: Ref<string>) => {
     watch(
       activeTab,
-      (tab) => {
+      tab => {
         setApiPerm(tab);
       },
       { immediate: true },

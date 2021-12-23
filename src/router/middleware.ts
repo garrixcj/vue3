@@ -1,17 +1,17 @@
-import { Router } from "vue-router";
-import store from "@/store";
-import http from "@/http";
-import messages from "@/pages/home/menu/lang.json";
-import systemApi from "@/api/system";
-import { codeMap } from "@/plugins/errorcode";
+import { Router } from 'vue-router';
+import store from '@/store';
+import http from '@/http';
+import messages from '@/pages/home/menu/lang.json';
+import systemApi from '@/api/system';
+import { codeMap } from '@/plugins/errorcode';
 
 // 路由中介邏輯
 export const routerMiddleware = (router: Router) => {
   router.beforeEach((to, from, next) => {
     // 主區塊顯示loading
-    store.commit("loading/setIndexLoading", true);
+    store.commit('loading/setIndexLoading', true);
 
-    const locale: keyof typeof messages = store.getters["cookie/lang"];
+    const locale: keyof typeof messages = store.getters['cookie/lang'];
 
     // 設定網頁標題
     if (to.meta.title) {
@@ -32,12 +32,12 @@ export const routerMiddleware = (router: Router) => {
       // 檢查登入狀態
       const checkSid = () =>
         new Promise((resolve, reject) => {
-          store.dispatch("operator/checkSession").then(resp => {
+          store.dispatch('operator/checkSession').then(resp => {
             if (resp.data.result) {
               // 瀏覽記錄
               if (to.meta.menuId) {
                 // 新增最後訪問的記錄
-                store.dispatch("menu/setVisited", to.meta.menuId);
+                store.dispatch('menu/setVisited', to.meta.menuId);
               }
               resolve(resp); // 已登入
             } else {
@@ -59,11 +59,11 @@ export const routerMiddleware = (router: Router) => {
 
       checkSid()
         .then(() => {
-          const ids = store.getters["permission/permissionIds"] || [];
+          const ids = store.getters['permission/permissionIds'] || [];
           // 要檢查權限並且沒有權限
           if (to.meta.checkPermissions && ids.indexOf(to.meta.menuId) === -1) {
-            next("/forbidden");
-          } else if (to.meta.perm !== undefined && to.meta.perm !== "") {
+            next('/forbidden');
+          } else if (to.meta.perm !== undefined && to.meta.perm !== '') {
             checkMaintenance(to.meta.perm)
               .then(() => {
                 // 非維護，正常導轉
@@ -71,9 +71,9 @@ export const routerMiddleware = (router: Router) => {
               })
               .catch(resp => {
                 // 維護中，導轉到維護頁面
-                store.commit("loading/setIndexLoading", false);
+                store.commit('loading/setIndexLoading', false);
                 next(
-                  `/error_page?date=${resp.data.data.end_at}&dict=${resp.data.data.dict}&code=${codeMap.featureMaintain}&name=${resp.data.data.perm_name}`
+                  `/error_page?date=${resp.data.data.end_at}&dict=${resp.data.data.dict}&code=${codeMap.featureMaintain}&name=${resp.data.data.perm_name}`,
                 );
               });
           } else {
@@ -81,14 +81,14 @@ export const routerMiddleware = (router: Router) => {
           }
         })
         .catch(() => {
-          next("/login");
+          next('/login');
         });
       // 訪客可以訪問的頁面，如：維護頁、no service
     } else if (to.meta.guest) {
       next();
       // 其餘一律導轉到登入頁
     } else {
-      next("/login");
+      next('/login');
     }
   });
 };

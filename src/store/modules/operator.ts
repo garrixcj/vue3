@@ -34,7 +34,7 @@ const actions: ActionTree<OperatorState, RootState> = {
     return new Promise((resolve, reject) => {
       sessionApi
         .login(formdata)
-        .then((response) => {
+        .then(response => {
           if (
             response.data.result &&
             response.data.data.login_result === '27' &&
@@ -51,7 +51,7 @@ const actions: ActionTree<OperatorState, RootState> = {
           }
           resolve(response);
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
     });
@@ -61,12 +61,12 @@ const actions: ActionTree<OperatorState, RootState> = {
     return new Promise((resolve, reject) => {
       sessionApi
         .logout()
-        .then((response) => {
+        .then(response => {
           commit('cookie/updateSid', null, { root: true });
           commit('setUser', null);
           resolve(response);
         })
-        .catch((error) => {
+        .catch(error => {
           commit('cookie/updateSid', null, { root: true });
           commit('setUser', null);
           reject(error);
@@ -78,7 +78,7 @@ const actions: ActionTree<OperatorState, RootState> = {
     return new Promise((resolve, reject) => {
       sessionApi
         .getSession()
-        .then((response) => {
+        .then(response => {
           if (response.data.result) {
             commit('setUser', response.data.data.user);
             commit(
@@ -92,7 +92,7 @@ const actions: ActionTree<OperatorState, RootState> = {
           }
           resolve(response);
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
     });

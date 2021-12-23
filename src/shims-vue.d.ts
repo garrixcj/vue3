@@ -14,13 +14,3 @@ declare module '*.json' {
 }
 declare module '*.png';
 declare module '*.svg';
-
-import { ComponentInternalInstance } from 'vue';
-/**
- * Websocket
- */
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    $socket: { sendObj: Function };
-  }
-}

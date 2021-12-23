@@ -1,7 +1,7 @@
 module.exports = {
   semi: true,
   singleQuote: true,
-  arrowParens: 'always',
+  arrowParens: 'avoid',
   trailingComma: 'all',
   pugAttributeSeparator: 'none',
   pugSingleQuote: false,

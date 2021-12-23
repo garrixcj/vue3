@@ -71,7 +71,7 @@ export default defineComponent({
     });
     watch(
       () => operatorId.value,
-      (value) => {
+      value => {
         const isConnected = store.getters['websocket/isConnected'];
         if (value && !isConnected) {
           ws.connect();

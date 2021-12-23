@@ -200,7 +200,7 @@ const router = createRouter({
 });
 
 // 設定路由
-export const setRoute = new Promise((resolve) => {
+export const setRoute = new Promise(resolve => {
   // getFeatureRoute().then(routerList => {
   const mainRouter = {
     path: '/',

@@ -9,7 +9,7 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        prependData: (content) => {
+        prependData: content => {
           const { resourcePath, rootContext } = content;
           const relativePath = path.relative(rootContext, resourcePath);
           if (
@@ -22,7 +22,7 @@ module.exports = {
       },
     },
   },
-  chainWebpack: (config) => {
+  chainWebpack: config => {
     config.module
       .rule('i18n-resource')
       .test(/\.(json5?|ya?ml)$/)
