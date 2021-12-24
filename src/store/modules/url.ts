@@ -27,13 +27,13 @@ const actions: ActionTree<UrlState, RootState> = {
     return new Promise((resolve, reject) => {
       operateApi
         .getHost()
-        .then((resp) => {
+        .then(resp => {
           if (resp.data.result) {
             commit('setHosts', resp.data.data);
           }
           resolve(resp);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });

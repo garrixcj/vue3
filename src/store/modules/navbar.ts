@@ -23,7 +23,7 @@ const mutations = {
 const actions: ActionTree<NavbarState, RootState> = {
   // 更新下載專區數量
   updateDownloadCounter({ commit }) {
-    exportApi.getDownloadable().then((response) => {
+    exportApi.getDownloadable().then(response => {
       if (response.data.result) {
         commit('setDownloadCounter', response.data.data);
       }

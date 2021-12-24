@@ -1,26 +1,24 @@
-<template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+<template lang="pug">
+router-view
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-}
+<script lang="ts">
+import { defineComponent, onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
+import { debounce } from 'lodash';
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+export default defineComponent({
+  setup() {
+    const store = useStore();
+    // 監聽畫面大小
+    const handleResize = debounce(() => {
+      store.dispatch('display/resizeWindow');
+    }, 20);
+    window.addEventListener('resize', handleResize);
+    store.dispatch('display/resizeWindow');
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', handleResize);
+    });
+  },
+});
+</script>

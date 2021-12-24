@@ -36,7 +36,7 @@ const mutations = {
 const actions: ActionTree<MenuState, RootState> = {
   // 設定功能巡覽列
   setMenu({ commit }) {
-    menuApi.getMenu().then((resp) => {
+    menuApi.getMenu().then(resp => {
       if (resp.data.data) {
         commit('setMenu', resp.data.data);
       }
@@ -45,7 +45,7 @@ const actions: ActionTree<MenuState, RootState> = {
   // 更新並取得我的最愛
   getFavorite({ commit }) {
     commit('setFavorite', []);
-    menuApi.getFavorite().then((resp) => {
+    menuApi.getFavorite().then(resp => {
       if (resp.data.result) {
         commit('setFavorite', resp.data.data);
       }
@@ -54,7 +54,7 @@ const actions: ActionTree<MenuState, RootState> = {
   // 設定我的最愛(或排序)
   setFavorite({ commit }, data) {
     return new Promise((resolve, reject) => {
-      menuApi.setFavorite(data).then((resp) => {
+      menuApi.setFavorite(data).then(resp => {
         if (resp.data.result) {
           commit('setFavorite', data);
           resolve(resp);
@@ -67,7 +67,7 @@ const actions: ActionTree<MenuState, RootState> = {
   // 更新並取得歷史訪問
   getVisited({ commit }) {
     return new Promise((resolve, reject) => {
-      menuApi.getLastVisit().then((resp) => {
+      menuApi.getLastVisit().then(resp => {
         if (resp.data.result) {
           commit('setVisited', resp.data.data);
           resolve(resp);
@@ -80,10 +80,10 @@ const actions: ActionTree<MenuState, RootState> = {
   // 紀錄歷史訪問(push)
   setVisited({ commit }, menuId: number) {
     return new Promise((resolve, reject) => {
-      menuApi.setLastVisit(menuId).then((resp) => {
+      menuApi.setLastVisit(menuId).then(resp => {
         if (resp.data.result) {
           const list = state.visited
-            .filter((item) => item !== menuId)
+            .filter(item => item !== menuId)
             .slice(0, 4);
           commit('setVisited', [menuId, ...list]);
           resolve(resp);
