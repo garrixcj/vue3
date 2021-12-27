@@ -55,7 +55,7 @@ yarn add normalize.css
 yarn add element-plus
 
 # mdi icon
-yarn add @mdi/font@^5.9.55
+yarn add @mdi/font
 
 # 基於 promise 的前端 http library
 yarn add axios
