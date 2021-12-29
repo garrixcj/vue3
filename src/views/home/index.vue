@@ -19,15 +19,16 @@
 //-     nav-bar(@collapse="pinMenu")
 //-     //- 內文
 //-     a-layout-content#main-panel(v-loading="mainLoading")
-router-view(v-if="mainView")
+//-       router-view(v-if="mainView")
+router-view
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, provide, computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+// import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 // import { onBeforeRouteUpdate } from "vue-router";
-import { useWs } from '@/plugins/websocket';
+// import { useWs } from '@/plugins/websocket';
 // import isEmpty from "lodash/isEmpty";
 // import NavBar from './nav/index.vue';
 // import MenuTabs from './menu/index.vue';
@@ -41,16 +42,16 @@ export default defineComponent({
   setup() {
     // const { t, locale } = useI18n();
     const store = useStore();
-    const ws = useWs();
+    // const ws = useWs();
     // // 按鈕縮合功能
     // const collapsed = ref(false);
     // const isOpen = ref(false);
     // const pin = ref(true);
     // Loading
-    const loading = ref(false);
-    const mainLoading = computed(() => {
-      return store.getters['loading/mainLoading'];
-    });
+    // const loading = ref(false);
+    // const mainLoading = computed(() => {
+    //   return store.getters['loading/mainLoading'];
+    // });
 
     // // 開關縮合側欄 Menu (固定)
     // const pinMenu = () => {
@@ -66,21 +67,21 @@ export default defineComponent({
     // };
 
     // 連上 websocket
-    const operatorId = computed(() => {
-      return store.getters['operator/operator']?.id;
-    });
-    watch(
-      () => operatorId.value,
-      value => {
-        const isConnected = store.getters['websocket/isConnected'];
-        if (value && !isConnected) {
-          ws.connect();
-        } else if (isConnected) {
-          ws.disconnect();
-        }
-      },
-      { immediate: true },
-    );
+    // const operatorId = computed(() => {
+    //   return store.getters['operator/operator']?.id;
+    // });
+    // watch(
+    //   () => operatorId.value,
+    //   value => {
+    //     const isConnected = store.getters['websocket/isConnected'];
+    //     if (value && !isConnected) {
+    //       ws.connect();
+    //     } else if (isConnected) {
+    //       ws.disconnect();
+    //     }
+    //   },
+    //   { immediate: true },
+    // );
 
     // // Main Layout 的 Global提供
     // provide("Locale", locale);
@@ -88,9 +89,9 @@ export default defineComponent({
     // provide("fullLoading", loading);
 
     // 主區塊重整機制
-    const mainView = computed(() => {
-      return store.getters['display/mainView'];
-    });
+    // const mainView = computed(() => {
+    //   return store.getters['display/mainView'];
+    // });
     // // 切換Router時元件行為(升降loading)
     // onBeforeRouteUpdate((to, from, next) => {
     //   // 先持續Loading
@@ -128,34 +129,10 @@ export default defineComponent({
       // loading,
       // mainLoading,
       // expandMenu,
-      mainView,
+      // mainView,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped>
-$sider-width: 210px;
-$sider-width-collapsed: 70px;
-
-#main-layout {
-  height: 100vh;
-  &:deep(.ant-layout-sider) {
-    transition: all 0.3s;
-  }
-}
-#main-panel {
-  // height: 100%;
-  // overflow: auto;
-  // @include scrollbar;
-}
-.logo {
-  width: inherit;
-  height: 56px;
-  @include flex-basic(center);
-}
-#menu {
-  position: relative;
-  z-index: 100;
-}
-</style>
+<style lang="scss" scoped></style>
