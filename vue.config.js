@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
   devServer: {
     disableHostCheck: true,
+    public: '0.0.0.0',
   },
   assetsDir: 'static',
   css: {
