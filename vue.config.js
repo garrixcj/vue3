@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
   devServer: {
@@ -39,5 +41,10 @@ module.exports = {
       .use('i18n')
       .loader('@intlify/vue-i18n-loader');
     config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js');
+    config.plugin('stylelint').use(StyleLintPlugin, [
+      {
+        files: ['src/**/*.{vue,scss}'],
+      },
+    ]);
   },
 };
