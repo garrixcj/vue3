@@ -64,6 +64,15 @@ const view = (page: string) => () => import(`@/views/${page}.vue`);
 // 訪客路由
 const guestRoutes: Array<RouteRecordRaw> = [
   {
+    path: '/home',
+    name: 'Home',
+    meta: {
+      title: 'Home',
+      guest: true,
+    },
+    component: view('home/home'),
+  },
+  {
     path: '/login',
     name: 'Login',
     meta: {
