@@ -105,6 +105,7 @@ yarn add -D stylelint
 yarn add -D postcss
 yarn add -D stylelint-config-recommended-scss
 yarn add -D stylelint-config-recess-order
+yarn add -D stylelint-config-prettier
 yarn add -D stylelint-prettier
 yarn add -D postcss-html
 yarn add -D stylelint-config-html

@@ -59,6 +59,7 @@
     "sass-loader": "^8.0.2",
     "stylelint": "^14.1.0",
     "stylelint-config-html": "^1.0.0",
+    "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recess-order": "^3.0.0",
     "stylelint-config-recommended-scss": "^5.0.2",
     "stylelint-prettier": "^2.0.0",
