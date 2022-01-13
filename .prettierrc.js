@@ -18,13 +18,13 @@ module.exports = {
     '^v-show$',
     '^v-cloak$',
     // RENDER_MODIFIERS
-    '^v-once$',
     '^v-pre$',
+    '^v-once$',
     // GLOBAL
     '^:?id$',
     // UNIQUE
-    '^:?key$',
     '^:?ref$',
+    '^:?key$',
     // SLOT
     '^#',
     '^v-slot',
@@ -74,7 +74,7 @@ module.exports = {
     '^@click',
     '^@',
     // CONTENT
-    '^v-text$',
     '^v-html$',
+    '^v-text$',
   ],
 };
