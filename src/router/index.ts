@@ -158,6 +158,15 @@ const defaultRoutes: Array<RouteRecordRaw> = [
     },
     component: view('home/home'),
   },
+  {
+    path: '/playground',
+    name: 'Playground',
+    meta: {
+      title: 'Welcome',
+      guest: true,
+    },
+    component: view('home/playground'),
+  },
 ];
 
 // 預設錯誤路由(需登入，置於route最後)

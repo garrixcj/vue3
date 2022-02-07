@@ -4,6 +4,6 @@
 
 ```
 admin/src/pages/home
-├── menu // SideBar Features
-└── nav // NavBar Features
+├── menu/ SideBar Features
+└── nav/ NavBar Features
 ```
