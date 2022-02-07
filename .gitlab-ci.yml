@@ -8,7 +8,8 @@ stages:
 console_exclude_test:
   stage: test
   tags:
-    - gce-gitlab-runner-ssd
+    - local-docker
+  #  - gce-gitlab-runner-ssd
   script:
     - pwd
     - ls -Al
@@ -23,7 +24,8 @@ test_build:
     - qa@vector/admin
     - dev@vector/admin
   tags:
-    - gce-gitlab-runner-ssd
+    - local-docker
+  #  - gce-gitlab-runner-ssd
   script:
     - npm rebuild node-sass
     - pwd; ls -al
@@ -43,7 +45,8 @@ test_build_warning:
     - qa@vector/admin
     - dev@vector/admin
   tags:
-    - gce-gitlab-runner-ssd
+    - local-docker
+    # - gce-gitlab-runner-ssd
   script:
     - cat build_result.tmp
     - if grep -w -E 'WARNING' build_result.tmp; then echo "build WARNING occur"; exit 1; fi;
