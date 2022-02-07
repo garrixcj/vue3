@@ -20,7 +20,17 @@
 //-     //- 內文
 //-     a-layout-content#main-panel(v-loading="mainLoading")
 //-       router-view(v-if="mainView")
-router-view
+el-container#main-layout
+  rd-information
+    rd-button(@click="layoutTest = !layoutTest") Layout
+  el-header#main-header(v-if="layoutTest")
+    .logo Logo
+    .nav-bar Header
+  el-container#main-body(:style="layoutTest ? '' : 'height: 100%'")
+    el-aside#main-menu(v-if="layoutTest") Menu
+    el-main#main-panel
+      //- rd-scrollbar
+      router-view
 </template>
 
 <script lang="ts">
@@ -32,15 +42,21 @@ import { useStore } from 'vuex';
 // import isEmpty from "lodash/isEmpty";
 // import NavBar from './nav/index.vue';
 // import MenuTabs from './menu/index.vue';
+import { ElContainer, ElHeader, ElAside, ElMain } from 'element-plus';
 
 export default defineComponent({
   name: 'Index',
   components: {
+    ElContainer,
+    ElHeader,
+    ElAside,
+    ElMain,
     // NavBar,
     // MenuTabs,
   },
   setup() {
     // const { t, locale } = useI18n();
+    const layoutTest = ref(false);
     const store = useStore();
     // const ws = useWs();
     // // 按鈕縮合功能
@@ -122,6 +138,7 @@ export default defineComponent({
     // });
 
     return {
+      layoutTest,
       // t,
       // isOpen,
       // collapsed,
@@ -134,3 +151,51 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+$menu-width: 210px;
+$collapsed-width: 70px;
+$header-height: 56px;
+
+#main {
+  // 全外框
+  &-layout {
+    min-width: 767px;
+    height: 100%;
+  }
+  &-header {
+    @include flex-basic;
+    height: $header-height;
+    .logo {
+      width: $menu-width;
+      @include flex-basic;
+      transition: width 0.3s;
+    }
+    .nav-bar {
+      @include flex-basic;
+      flex: 1;
+      height: 100%;
+      color: white;
+      background-image: linear-gradient(90deg, #465570, #758eb0);
+    }
+  }
+  &-body {
+    height: calc(100% - $header-height);
+  }
+  &-menu {
+    width: $menu-width;
+    border: 1px solid $success;
+  }
+  // 內文
+  &-panel {
+    width: 100%;
+    background: $background-5;
+  }
+  // 縮合
+  &-layout.collapsed {
+    #main-header .logo {
+      width: $collapsed-width;
+    }
+  }
+}
+</style>
