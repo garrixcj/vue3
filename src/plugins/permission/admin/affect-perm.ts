@@ -4,35 +4,32 @@
 
 // import { permission as permissionApi } from "@/api/admin";
 import { ref } from 'vue';
-
-export type AffectPerm = {
-  count: number;
-  data: { [key: string]: unknown[] };
-};
+import RdCustomPanel from '@/components/custom/custom-panel/typing';
 
 /**
- * 受到 最高管理者 權限影響的權限
+ * 檢查權限(含下層)是否受到最高管理者影響
  * @param {ListItem} perm 權限
  * @return {Boolean} 是否影響
  */
-export const affectedPerm = (perm: RdCustomPanel.ListItem): boolean => {
+export const checkTopManagementAffect = (
+  perm: RdCustomPanel.ListItem,
+): boolean => {
   // 判斷下層權限是否都受 最高管理者 權限影響
   const allTopSubDomainPerm =
     perm.children.length > 0
       ? perm.children.every(item => item.topSubDomain)
       : true;
   // todo test 寫法
-  // const allTopSubDomainPerm = perm.children.length < 0 || perm.children.every(item => item.topSubDomain);
 
   if (allTopSubDomainPerm && perm.topSubDomain) {
     return true;
   }
   return false;
-  // return !!(allTopSubDomainPerm && perm.topSubDomain) && true;
 };
 
-export default {
-  affectedPerm,
+export type AffectPerm = {
+  count: number;
+  data: { [key: string]: unknown[] };
 };
 
 // export const useAffectList = () => {
@@ -50,3 +47,7 @@ export default {
 //     updateAffectList
 //   };
 // };
+
+export default {
+  checkTopManagementAffect,
+};
