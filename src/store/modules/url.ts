@@ -2,7 +2,7 @@
  * Url 網域相關
  */
 import { operate as operateApi } from '@/api/admin';
-import { ActionTree } from 'vuex';
+import type { ActionTree } from 'vuex';
 
 const state = {
   // 網域

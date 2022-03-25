@@ -2,7 +2,7 @@
  * Display 主畫面顯示相關
  */
 import { nextTick } from 'vue';
-import { ActionTree } from 'vuex';
+import type { ActionTree } from 'vuex';
 
 const state = {
   // 主畫面顯示

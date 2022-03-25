@@ -5,7 +5,6 @@
 import store from '@/store';
 import router from '@/router';
 import { NavigationFailureType, isNavigationFailure } from 'vue-router';
-import { AxiosResponse, AxiosError } from 'axios';
 import {
   codeMap,
   sessionCodes,
@@ -17,6 +16,8 @@ import {
 } from '@/plugins/errorcode';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import type { AxiosResponse, AxiosError } from 'axios';
+
 dayjs.extend(utc);
 
 export const isAllFailure = (failure: unknown) =>

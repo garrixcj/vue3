@@ -1,11 +1,7 @@
-import {
-  createRouter,
-  createWebHistory,
-  RouteRecordRaw,
-  RouteComponent,
-} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 // import { routerMiddleware } from './middleware';
 // import { menu as menuApi } from "@/api/admin";
+import type { RouteRecordRaw, RouteComponent } from 'vue-router';
 
 const view = (page: string) => () => import(`@/views/${page}.vue`);
 

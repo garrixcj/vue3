@@ -1,8 +1,8 @@
 /**
  * 檢查修改權限
  */
-import { useStore } from 'vuex';
 import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export const useModifyAccess = (permission: string) => {
   const store = useStore();

@@ -1,4 +1,4 @@
-import { createStore, ActionTree } from 'vuex';
+import { createStore } from 'vuex';
 import cookie from './modules/cookie';
 // TODO Next-Feature 主畫面控制板
 // import display from "./modules/display";
@@ -15,6 +15,13 @@ import permission from './modules/permission';
 // TODO Next-Feature host
 // import url from "./modules/url";
 import websocket from './modules/websocket';
+import type { ActionTree } from 'vuex';
+
+declare global {
+  interface Window {
+    MSStream?: unknown;
+  }
+}
 
 const state = {
   ENV: null,
