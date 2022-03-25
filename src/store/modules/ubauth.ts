@@ -1,7 +1,7 @@
 /**
  * UBAuth 二次驗證相關
  */
-import { ActionTree } from 'vuex';
+import type { ActionTree } from 'vuex';
 
 const state = {
   // ubauth暫存登入表單資料

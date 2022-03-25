@@ -2,7 +2,8 @@
  * Navbar 巡覽列相關
  */
 import exportApi from '@/api/export';
-import { ActionTree } from 'vuex';
+import type { ActionTree } from 'vuex';
+
 const state = {
   // 下載專區數量
   downloadCounter: 0,

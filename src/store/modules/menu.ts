@@ -3,7 +3,7 @@
  */
 import { menu as menuApi } from '@/api/admin';
 // import menuExt from '~/pages/menu.json';
-import { ActionTree } from 'vuex';
+import type { ActionTree } from 'vuex';
 
 const state = {
   menu: [], // user menu

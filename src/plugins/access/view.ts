@@ -1,9 +1,10 @@
 /**
  * 檢查檢視權限
  */
+import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import { computed, Ref, watch } from 'vue';
 import http from '@/http';
+import type { Ref } from 'vue';
 
 /**
  * 單一權限

@@ -2,7 +2,7 @@
  * Operator 登入使用者相關
  */
 import sessionApi from '@/api/session';
-import { ActionTree } from 'vuex';
+import type { ActionTree } from 'vuex';
 
 const state = {
   // user origin object

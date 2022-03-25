@@ -1,4 +1,5 @@
 {
+  "root": false,
   "rules": {
     "camelcase": "off",
     "@typescript-eslint/camelcase": "off"
