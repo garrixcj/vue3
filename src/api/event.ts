@@ -1,5 +1,5 @@
-import pick from 'lodash/pick';
-import http from '@/http/http';
+// import { pick } from 'lodash';
+// import http from '@/http/http';
 import multiHttp from '@/http/multi';
 
 /**

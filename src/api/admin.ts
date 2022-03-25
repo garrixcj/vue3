@@ -1,4 +1,4 @@
-// import pick from 'lodash/pick';
+// import { pick } from 'lodash';
 import http from '@/http/http';
 import multiHttp from '@/http/multi';
 // 靜態等偽裝api回傳資料 等待api功能
