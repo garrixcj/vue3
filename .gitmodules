@@ -1,3 +1,3 @@
 [submodule "src/components"]
 	path = src/components
-	url = ../../web/rd6/ve_components.git
+	url = ../../../rd6/ve_components.git

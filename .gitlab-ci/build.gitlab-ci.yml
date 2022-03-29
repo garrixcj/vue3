@@ -1,0 +1,42 @@
+# Build front-end static sources
+build:dist:
+  image:
+    name: gcr.io/rd6-project/platform/front/node:v16
+  stage: build
+  tags:
+    - gce-gitlab-runner-ssd
+  only:
+    - master
+  except:
+    refs:
+      - triggers
+      - pipelines
+  before_script:
+    - echo 'yarn-offline-mirror ".yarn-cache/"' >> .yarnrc
+    - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
+    - yarn install --frozen-lockfile --no-progress
+  script:
+    - pwd
+    - ls -l node_modules/ | wc -l
+    - yarn build 2>&1 | tee build_result.tmp
+    - |
+      if [[ `grep -w -E "failed" build_result.tmp` ]]
+      then
+        echo "Build failed"
+        exit 1
+      fi
+    - ls -al
+    - du -sh dist/
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  artifacts:
+    name: '$CI_COMMIT_SHORT_SHA'
+    paths:
+      - dist/
+    expire_in: 5 mins
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - .yarn-cache/

@@ -1,0 +1,41 @@
+
+# Package front-end static sources to nginx image
+package:image:
+  services:
+    - docker:dind
+  image:
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:353.0.0
+    entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0']
+  stage: package
+  tags:
+    - gce-gitlab-runner-ssd
+  only:
+    - master
+  except:
+    refs:
+      - triggers
+      - pipelines
+  before_script:
+    - |
+      if [[ `test -d dist && echo "" || echo "error"` ]]
+      then
+          echo "dist not found"
+          exit 1
+      fi
+    # Login docker registry
+    - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
+    - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
+    - gcloud config set project rd6-project
+    - gcloud auth configure-docker --quiet
+  script:
+    - ls -al
+    - IMAGE=gcr.io/rd6-project/bgp-vector/${CI_PROJECT_NAME}-nginx:${CI_COMMIT_SHORT_SHA}
+    # build image
+    - docker build -q --pull --no-cache -t ${IMAGE} -f .gitlab-ci/.Dockerfile .
+    # Show Image Info
+    - docker run --rm ${IMAGE} nginx -v
+    - docker run --rm ${IMAGE} ls -al /var/www/service
+    # Push Image To Hub
+    - docker push ${IMAGE}
+  dependencies:
+    - build:dist

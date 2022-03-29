@@ -1,65 +1,23 @@
-image:
-  name: gcr.io/rd6-project/bgp-oasis-rc:dev
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
 stages:
+  # 測試
   - test
-  - test_warn
-console_exclude_test:
-  stage: test
-  tags:
-    - gce-gitlab-runner-ssd
-  script:
-    - pwd
-    - ls -Al
-    - if grep -rn --include \*.vue --include \*.js console.log src; then echo "src contains console.log"; exit 1; fi;
-  allow_failure: true
-test_build:
-  stage: test
-  only:
-    - branches@vector/admin
-  except:
-    - master@vector/admin
-    - qa@vector/admin
-    - dev@vector/admin
-  tags:
-    - gce-gitlab-runner-ssd
-  cache:
-    key:
-      files:
-        - yarn.lock
-      prefix: vector
-    paths:
-      - node_modules/
-  script:
-    - yarn install --frozen-lockfile --no-progress
-    - |
-      if [[ `test -d node_modules && echo "" || echo "error"` ]]
-      then
-          echo "node_modules not found"
-          exit 1
-      fi
-    - pwd; ls -al
-    - yarn build 2>&1 | tee build_result.tmp
-    - if grep -w -E 'ERROR|Errors' build_result.tmp; then echo "Build Error"; exit 1; fi;
-  artifacts:
-    when: on_success
-    paths:
-      - build_result.tmp
-  allow_failure: true
-test_build_warning:
-  stage: test_warn
-  only:
-    - branches@vector/admin
-  except:
-    - master@vector/admin
-    - qa@vector/admin
-    - dev@vector/admin
-  tags:
-    - gce-gitlab-runner-ssd
-  script:
-    - cat build_result.tmp
-    - if grep -w -E 'warning' build_result.tmp; then echo "build WARNING occur"; exit 1; fi;
-  dependencies:
-    - test_build
-  allow_failure: true
+  # 更新
+  # - sync
+  # 編譯
+  - build
+  # 打包
+  - package
+  # 部署
+  - deploy
+  # 合併
+  # - merge
+  # - rebase
+
+include:
+  - '/.gitlab-ci/build.gitlab-ci.yml'
+  - '/.gitlab-ci/package.gitlab-ci.yml'
+  - '/.gitlab-ci/deploy.gitlab-ci.yml'
+  # - '/.gitlab-ci/merge.gitlab-ci.yml'
+  # - '/.gitlab-ci/rebase.gitlab-ci.yml'
+  # - '/.gitlab-ci/sync.gitlab-ci.yml'
+  - '/.gitlab-ci/test.gitlab-ci.yml'

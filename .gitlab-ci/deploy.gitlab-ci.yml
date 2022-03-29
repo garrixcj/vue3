@@ -1,0 +1,30 @@
+.deploy_template: &deploy_template
+  image:
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:353.0.0
+    entrypoint:
+      ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0']
+  stage: deploy
+  tags:
+    - gce-gitlab-runner-ssd
+  only:
+    - master
+  except:
+    refs:
+      - triggers
+      - pipelines
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - CLUSTER=bb-qa-game-platform
+    - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
+    - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
+    - gcloud config set project rd6-project
+    - gcloud container clusters get-credentials ${CLUSTER} --region asia-east1-b
+    - kubectl config set-context --current --namespace=hex
+  script:
+    - POD=deployment/bgp-pod-nginx-admin-v3
+    - IMAGE=gcr.io/rd6-project/bgp-vector/${CI_PROJECT_NAME}-nginx:${CI_COMMIT_SHORT_SHA}
+    - kubectl set image ${POD} nginx=${IMAGE}
+
+deploy:
+  <<: *deploy_template
