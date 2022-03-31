@@ -2,7 +2,7 @@
  * 檢查檢視權限
  */
 import { computed, watch } from 'vue';
-import { useStore } from 'vuex';
+import { usePermissionStore } from '@/stores/permission';
 import http from '@/http';
 import type { Ref } from 'vue';
 
@@ -10,25 +10,22 @@ import type { Ref } from 'vue';
  * 單一權限
  */
 export const useAccess = (permission: string) => {
-  const store = useStore();
-  return computed(() => store.getters['permission/checkPerm'](permission));
+  const permissionStore = usePermissionStore();
+  return computed(() => permissionStore.checkPerm(permission));
 };
 
 /**
  * 分頁權限
  */
 export const useTabAccess = (tabs: { name: string; perm: string }[]) => {
-  const store = useStore();
+  const permissionStore = usePermissionStore();
   // tab過濾有權限的
   const currentTabs = computed(() =>
-    tabs.filter(
-      tab => !tab.perm || store.getters['permission/checkPerm'](tab.perm),
-    ),
+    tabs.filter(tab => !tab.perm || permissionStore.checkPerm(tab.perm)),
   );
 
   const tabPerms = tabs.reduce((acc, tab) => {
-    acc[tab.name] =
-      !tab.perm || store.getters['permission/checkPerm'](tab.perm);
+    acc[tab.name] = !tab.perm || permissionStore.checkPerm(tab.perm);
     return acc;
   }, {} as Record<string, boolean>);
 

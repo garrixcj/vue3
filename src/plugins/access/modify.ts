@@ -2,12 +2,10 @@
  * 檢查修改權限
  */
 import { computed } from 'vue';
-import { useStore } from 'vuex';
+import { usePermissionStore } from '@/stores/permission';
 
 export const useModifyAccess = (permission: string) => {
-  const store = useStore();
-  const hasModify = computed(() =>
-    store.getters['permission/checkModifyPerm'](permission),
-  );
+  const permissionStore = usePermissionStore();
+  const hasModify = computed(() => permissionStore.checkModifyPerm(permission));
   return { hasModify };
 };

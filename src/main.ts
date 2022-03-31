@@ -13,7 +13,7 @@ import VLoading from '@/components/utils/loading';
 // Router Settings
 import router, { setRoute } from './router';
 // Global Store
-import store from './store';
+import store from '@/stores/index';
 // I18n
 import VueI18n from '@/plugins/i18n';
 // Websocket
@@ -101,8 +101,3 @@ Promise.all([setRoute])
   .catch(err => {
     // app.config.globalProperties.$message(err);
   });
-
-// Vuex Hot Reload // todo 驗證
-if (module.hot) {
-  module.hot.accept('./App.vue');
-}

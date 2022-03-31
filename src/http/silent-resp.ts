@@ -2,7 +2,9 @@
  * 靜音回傳處理(response不會有alert)
  * TODO 先註解等待盤整功能
  */
-import store from '@/store';
+import { useCookieStore } from '@/stores/cookie';
+import { useDisplayStore } from '@/stores/display';
+import { useLoadingStore } from '@/stores/loading';
 import router from '@/router';
 import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 import {
@@ -27,6 +29,9 @@ export const isAllFailure = (failure: unknown) =>
 
 export default {
   async successCall(resp: AxiosResponse) {
+    // const cookieStore = useCookieStore();
+    // const displayStore = useDisplayStore();
+    // const loadingStore = useLoadingStore();
     // let response = resp.data;
     // if (resp.data.type === "application/json") {
     //   response = "";
@@ -34,7 +39,7 @@ export default {
     //   //   response = JSON.parse(result); // 錯誤代碼
     //   // });
     // }
-    // const lang: CodeLang = store.getters["cookie/lang"];
+    // const lang: CodeLang = cookieStore.lang;
     // // 錯誤處理
     // if (response.result === false) {
     //   // logErrorEvent(resp, "successCall", resp.data.code, lang); // 記錄至GA
@@ -64,10 +69,10 @@ export default {
     //       message: codeT(lang, "error"),
     //       description: getMsg(lang, response)
     //     });
-    //     store.dispatch("display/reloadMainViewWithPermission");
+    //     displayStore.reloadMainViewWithPermission();
     //   } else if (response.code === codeMap.featureMaintain) {
     //     // 功能維護中
-    //     store.commit("loading/setAxiosLoading", false);
+    //     loadingStore.axios = false;
     //     router.push(
     //       `/error_page?date=${response.data.end_at}&dict=${response.data.dict}&code=${response.code}&name=${resp.data.data.perm_name}`
     //     );
@@ -95,17 +100,19 @@ export default {
     //       message,
     //       description
     //     });
-    //     store.commit("loading/setAxiosLoading", false);
+    //     loadingStore.axios = false;
     //   }
     // }
 
     return resp;
   },
   failureCall(err: AxiosError) {
+    // const cookieStore = useCookieStore();
+    // const loadingStore = useLoadingStore();
     // /* 錯誤處理(顯示error code) */
     // if (!err.response?.data.result) {
     //   const response = err.response?.data;
-    //   const lang: CodeLang = store.getters["cookie/lang"];
+    //   const lang: CodeLang = cookieStore.lang;
     //   // logErrorEvent(err, "failureCall", err.response?.data.code, lang); // 記錄至GA
     //   // 預設錯誤的情況，後端有回傳error_code
     //   if (typeof response === "object") {
@@ -130,8 +137,8 @@ export default {
 
     //   notify.error({ message: getMsg(lang, response) });
     //   // 500等錯誤回傳時，將下所有Loading
-    //   store.commit("loading/setAxiosLoading", false);
-    //   store.commit("loading/setPageLoading", false);
+    //   loadingStore.axios = false;
+    //   loadingStore.page = false;
     // }
     return Promise.reject(err);
   },
