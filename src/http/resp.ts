@@ -20,6 +20,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import type { AxiosResponse, AxiosError } from 'axios';
+import type { HexResponse } from './typings';
 
 dayjs.extend(utc);
 
@@ -61,7 +62,7 @@ export const isAllFailure = (failure: unknown) =>
 //   });
 
 export default {
-  async successCall(resp: AxiosResponse) {
+  async successCall(resp: HexResponse) {
     // const cookieStore = useCookieStore();
     // const displayStore = useDisplayStore();
     // const loadingStore = useLoadingStore();
