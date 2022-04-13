@@ -7,7 +7,7 @@ import { useDisplayStore } from '@/stores/display';
 import { useLoadingStore } from '@/stores/loading';
 import router from '@/router';
 import { NavigationFailureType, isNavigationFailure } from 'vue-router';
-import notify, { NotifyType } from '@/components/utils/notification';
+import { notify } from '@/components/utils/notification';
 import {
   codeMap,
   sessionCodes,
@@ -81,10 +81,10 @@ export default {
     //     // 請重新登入
     //     router.push("/login").then(failure => {
     //       if (!isAllFailure(failure)) {
-    //         notify.error({
-    //           message: codeT(lang, "error"),
-    //           description: getMsg(lang, response)
-    //         });
+    // notify.error({
+    //   message: codeT(lang, 'error'),
+    //   description: getMsg(lang, response),
+    // });
     //       }
     //     });
     //   } else if (forbiddenCodes.indexOf(response.code) !== -1) {
