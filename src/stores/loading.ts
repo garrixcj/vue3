@@ -1,7 +1,7 @@
 /**
  * Loading 主畫面Loading模組
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 
 type LoadingState = {
   index: boolean;
@@ -24,3 +24,8 @@ export const useLoadingStore = defineStore('loading', {
       state.index || state.page || state.axios,
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useLoadingStore, module.hot));
+}

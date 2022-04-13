@@ -2,7 +2,7 @@
  * Display 主畫面顯示相關
  */
 import { nextTick } from 'vue';
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useOperatorStore } from './operator';
 
 type DisplayState = {
@@ -51,3 +51,8 @@ export const useDisplayStore = defineStore('display', {
     },
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useDisplayStore, module.hot));
+}

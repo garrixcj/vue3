@@ -3,7 +3,7 @@
 /**
  * WebSocket Websocket連線相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 
 type WebSocketState = {
   socket: Socket;
@@ -24,3 +24,8 @@ export const useWebSocketStore = defineStore('websocket', {
     },
   }),
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useWebSocketStore, module.hot));
+}

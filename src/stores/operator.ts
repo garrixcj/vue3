@@ -1,7 +1,7 @@
 /**
  * Operator 登入使用者相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import sessionApi from '@/api/session';
 import { useCookieStore } from './cookie';
 import { usePermissionStore } from './permission';
@@ -109,3 +109,8 @@ export const useOperatorStore = defineStore('operator', {
     },
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useOperatorStore, module.hot));
+}

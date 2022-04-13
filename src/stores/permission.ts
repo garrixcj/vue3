@@ -1,7 +1,7 @@
 /**
  * Permission 登入使用者相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 
 type PermissionState = {
   permissions: Permissions;
@@ -39,3 +39,8 @@ export const usePermissionStore = defineStore('permission', {
     },
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(usePermissionStore, module.hot));
+}

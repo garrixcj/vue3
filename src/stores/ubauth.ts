@@ -1,7 +1,7 @@
 /**
  * UBAuth 二次驗證相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 
 type UbAuthState = {
   ubauthForm: UbAuthForm;
@@ -18,3 +18,8 @@ export const useUbAuthStore = defineStore('ubauth', {
     ubauthForm: {} as UbAuthForm,
   }),
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useUbAuthStore, module.hot));
+}

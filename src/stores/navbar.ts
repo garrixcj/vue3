@@ -1,7 +1,7 @@
 /**
  * Navbar 巡覽列相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import exportApi from '@/api/export';
 
 type NavbarState = {
@@ -24,3 +24,8 @@ export const useNavbarStore = defineStore('navbar', {
     },
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useNavbarStore, module.hot));
+}

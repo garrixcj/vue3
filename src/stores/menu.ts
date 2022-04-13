@@ -1,7 +1,7 @@
 /**
  * Menu 側欄選單資料相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import { menu as menuApi } from '@/api/admin';
 
 type MenuState = {
@@ -87,3 +87,8 @@ export const useMenuStore = defineStore('menu', {
     },
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useMenuStore, module.hot));
+}

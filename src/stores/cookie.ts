@@ -1,7 +1,7 @@
 /**
  * Cookie cookie相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 import { useI18n } from 'vue-i18n';
 
@@ -106,3 +106,8 @@ export const useCookieStore = defineStore('cookie', {
     },
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useCookieStore, module.hot));
+}

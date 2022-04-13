@@ -1,7 +1,7 @@
 /**
  * Url 網域相關
  */
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import { operate as operateApi } from '@/api/admin';
 
 type UrlState = {
@@ -35,3 +35,8 @@ export const useUrlStore = defineStore('url', {
     },
   },
 });
+
+// Pinia HMR
+if (module.hot) {
+  module.hot.accept(acceptHMRUpdate(useUrlStore, module.hot));
+}
