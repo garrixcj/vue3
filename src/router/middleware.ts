@@ -1,4 +1,8 @@
-import store from '@/store';
+import { useLoadingStore } from '@/stores/loading';
+import { useCookieStore } from '@/stores/cookie';
+import { useOperatorStore } from '@/stores/operator';
+import { useMenuStore } from '@/stores/menu';
+import { usePermissionStore } from '@/stores/permission';
 import http from '@/http';
 import messages from '@/pages/home/menu/lang.json';
 import systemApi from '@/api/system';
@@ -8,10 +12,15 @@ import type { Router } from 'vue-router';
 // 路由中介邏輯
 export const routerMiddleware = (router: Router) => {
   router.beforeEach((to, from, next) => {
+    const loadingStore = useLoadingStore();
+    const cookieStore = useCookieStore();
+    const operatorStore = useOperatorStore();
+    const menuStore = useMenuStore();
+    const permissionStore = usePermissionStore();
     // 主區塊顯示loading
-    store.commit('loading/setIndexLoading', true);
+    loadingStore.index = true;
 
-    const locale: keyof typeof messages = store.getters['cookie/lang'];
+    const locale: keyof typeof messages = cookieStore.lang;
 
     // 設定網頁標題
     if (to.meta.title) {
@@ -32,12 +41,16 @@ export const routerMiddleware = (router: Router) => {
       // 檢查登入狀態
       const checkSid = () =>
         new Promise((resolve, reject) => {
-          store.dispatch('operator/checkSession').then(resp => {
+          operatorStore.checkSession().then(resp => {
             if (resp.data.result) {
               // 瀏覽記錄
               if (to.meta.menuId) {
                 // 新增最後訪問的記錄
-                store.dispatch('menu/setVisited', to.meta.menuId);
+                let menuId = to.meta.menuId;
+                if (typeof menuId === 'string') {
+                  menuId = parseInt(menuId, 10);
+                }
+                menuStore.setVisited(menuId);
               }
               resolve(resp); // 已登入
             } else {
@@ -59,9 +72,15 @@ export const routerMiddleware = (router: Router) => {
 
       checkSid()
         .then(() => {
-          const ids = store.getters['permission/permissionIds'] || [];
+          const ids = permissionStore.permissionIds || [];
           // 要檢查權限並且沒有權限
-          if (to.meta.checkPermissions && ids.indexOf(to.meta.menuId) === -1) {
+          let menuId = to.meta.menuId;
+          if (typeof menuId === 'undefined') {
+            menuId = 0;
+          } else if (typeof menuId === 'string') {
+            menuId = parseInt(menuId, 10);
+          }
+          if (to.meta.checkPermissions && ids.indexOf(menuId) === -1) {
             next('/forbidden');
           } else if (to.meta.perm !== undefined && to.meta.perm !== '') {
             checkMaintenance(to.meta.perm)
@@ -71,7 +90,7 @@ export const routerMiddleware = (router: Router) => {
               })
               .catch(resp => {
                 // 維護中，導轉到維護頁面
-                store.commit('loading/setIndexLoading', false);
+                loadingStore.index = false;
                 next(
                   `/error_page?date=${resp.data.data.end_at}&dict=${resp.data.data.dict}&code=${codeMap.featureMaintain}&name=${resp.data.data.perm_name}`,
                 );

@@ -8,7 +8,7 @@ stages:
 console_exclude_test:
   stage: test
   tags:
-   - gce-gitlab-runner-ssd
+    - gce-gitlab-runner-ssd
   script:
     - pwd
     - ls -Al
@@ -23,9 +23,16 @@ test_build:
     - qa@vector/admin
     - dev@vector/admin
   tags:
-   - gce-gitlab-runner-ssd
+    - gce-gitlab-runner-ssd
+  before_script:
+    - yarn install --frozen-lockfile --no-progress
+    - |
+      if [[ `test -d node_modules && echo "" || echo "error"` ]]
+      then
+          echo "node_modules not found"
+          exit 1
+      fi
   script:
-    - npm rebuild node-sass
     - pwd; ls -al
     - yarn build | tee build_result.tmp
     - if grep -w -E 'ERROR|Errors' build_result.tmp; then echo "Build Error"; exit 1; fi;
@@ -44,6 +51,14 @@ test_build_warning:
     - dev@vector/admin
   tags:
     - gce-gitlab-runner-ssd
+  before_script:
+    - yarn install --frozen-lockfile --no-progress
+    - |
+      if [[ `test -d node_modules && echo "" || echo "error"` ]]
+      then
+          echo "node_modules not found"
+          exit 1
+      fi
   script:
     - cat build_result.tmp
     - if grep -w -E 'WARNING' build_result.tmp; then echo "build WARNING occur"; exit 1; fi;

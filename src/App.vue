@@ -4,18 +4,18 @@ router-view
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount } from 'vue';
-import { useStore } from 'vuex';
+import { useDisplayStore } from '@/stores/display';
 import { debounce } from 'lodash';
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const displayStore = useDisplayStore();
     // 監聽畫面大小
     const handleResize = debounce(() => {
-      store.dispatch('display/resizeWindow');
+      displayStore.resizeWindow();
     }, 20);
     window.addEventListener('resize', handleResize);
-    store.dispatch('display/resizeWindow');
+    displayStore.resizeWindow();
     onBeforeUnmount(() => {
       window.removeEventListener('resize', handleResize);
     });

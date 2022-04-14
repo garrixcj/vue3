@@ -36,7 +36,10 @@ el-container#main-layout
 <script lang="ts">
 import { defineComponent, ref, provide, computed, watch } from 'vue';
 // import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
+import { useLoadingStore } from '@/stores/loading';
+import { useOperatorStore } from '@/stores/operator';
+import { useWebSocketStore } from '@/stores/websocket';
+import { useDisplayStore } from '@/stores/display';
 // import { onBeforeRouteUpdate } from "vue-router";
 // import { useWs } from '@/plugins/websocket';
 // import isEmpty from "lodash/isEmpty";
@@ -57,7 +60,10 @@ export default defineComponent({
   setup() {
     // const { t, locale } = useI18n();
     const layoutTest = ref(false);
-    const store = useStore();
+    // const loadingStore = useLoadingStore();
+    // const operatorStore = useOperatorStore();
+    // const webSocketStore = useWebSocketStore();
+    // const displayStore = useDisplayStore();
     // const ws = useWs();
     // // 按鈕縮合功能
     // const collapsed = ref(false);
@@ -66,7 +72,7 @@ export default defineComponent({
     // Loading
     // const loading = ref(false);
     // const mainLoading = computed(() => {
-    //   return store.getters['loading/mainLoading'];
+    //   return loadingStore.mainLoading;
     // });
 
     // // 開關縮合側欄 Menu (固定)
@@ -84,12 +90,12 @@ export default defineComponent({
 
     // 連上 websocket
     // const operatorId = computed(() => {
-    //   return store.getters['operator/operator']?.id;
+    //   return operatorStore.operator.id;
     // });
     // watch(
     //   () => operatorId.value,
     //   value => {
-    //     const isConnected = store.getters['websocket/isConnected'];
+    //     const isConnected = webSocketStore.socket.isConnected;
     //     if (value && !isConnected) {
     //       ws.connect();
     //     } else if (isConnected) {
@@ -106,20 +112,20 @@ export default defineComponent({
 
     // 主區塊重整機制
     // const mainView = computed(() => {
-    //   return store.getters['display/mainView'];
+    //   return displayStore.mainView;
     // });
     // // 切換Router時元件行為(升降loading)
     // onBeforeRouteUpdate((to, from, next) => {
     //   // 先持續Loading
-    //   store.commit("loading/setIndexLoading", true);
+    //   loadingStore.index = true;
     //   if (to.path === from.path) {
     //     if (isEmpty(to.query)) {
     //       // 再重新產生iframe製造重整效果
-    //       store.dispatch("display/reloadMainViewWithPermission");
+    //       displayStore.reloadMainViewWithPermission();
     //       next();
     //     } else {
     //       setTimeout(() => {
-    //         store.commit("loading/setIndexLoading", false);
+    //         loadingStore.index = false;
     //       }, 500);
     //       next();
     //     }
@@ -127,11 +133,11 @@ export default defineComponent({
     //     // Path裡ID更換，且導到同一個route時
     //     if (to.name === from.name) {
     //       setTimeout(() => {
-    //         store.commit("loading/setIndexLoading", false);
+    //         loadingStore.index = false;
     //       }, 500);
     //     }
     //     setTimeout(() => {
-    //       store.commit("loading/setIndexLoading", false);
+    //       loadingStore.index = false;
     //     }, 500);
     //     next();
     //   }

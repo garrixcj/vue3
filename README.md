@@ -41,8 +41,7 @@ yarn lint
     ├── pages 頁面元件
     ├── plugins 邏輯插件(無法共用的本地樣式與商業邏輯)
     ├── router 路由
-    └── store
-        └── modules Vuex狀態模組
+    └── store pinia狀態模組
 ```
 
 ### 使用套件
@@ -111,10 +110,12 @@ yarn add -D postcss-html
 yarn add -D stylelint-config-html
 yarn add -D stylelint-webpack-plugin
 
+# pinia 狀態管理器
+yarn add pinia
+
 # vue核心升級
 yarn add vue@next
 yarn add vue-router@next
-yarn add vuex@next
 
 # vue編譯核心升級
 yarn add -D @vue/compiler-sfc
