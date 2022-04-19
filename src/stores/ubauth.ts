@@ -20,6 +20,6 @@ export const useUbAuthStore = defineStore('ubauth', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useUbAuthStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUbAuthStore, import.meta.hot));
 }

@@ -26,6 +26,6 @@ export const useNavbarStore = defineStore('navbar', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useNavbarStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useNavbarStore, import.meta.hot));
 }

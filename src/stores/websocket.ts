@@ -26,6 +26,6 @@ export const useWebSocketStore = defineStore('websocket', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useWebSocketStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useWebSocketStore, import.meta.hot));
 }

@@ -89,6 +89,6 @@ export const useMenuStore = defineStore('menu', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useMenuStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useMenuStore, import.meta.hot));
 }

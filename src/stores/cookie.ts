@@ -108,6 +108,6 @@ export const useCookieStore = defineStore('cookie', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useCookieStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useCookieStore, import.meta.hot));
 }

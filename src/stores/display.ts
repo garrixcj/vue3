@@ -53,6 +53,6 @@ export const useDisplayStore = defineStore('display', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useDisplayStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDisplayStore, import.meta.hot));
 }

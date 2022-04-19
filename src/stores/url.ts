@@ -37,6 +37,6 @@ export const useUrlStore = defineStore('url', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useUrlStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUrlStore, import.meta.hot));
 }
