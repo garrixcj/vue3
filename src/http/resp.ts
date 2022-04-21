@@ -19,7 +19,7 @@ import {
 } from '@/plugins/errorcode';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import type { AxiosResponse, AxiosError } from 'axios';
+import { type AxiosError, type AxiosResponse } from 'axios';
 import type { HexResponse } from './typings';
 
 dayjs.extend(utc);

@@ -1,10 +1,9 @@
 /**
  * 檢查檢視權限
  */
-import { computed, watch } from 'vue';
+import { computed, watch, type Ref } from 'vue';
 import { usePermissionStore } from '@/stores/permission';
 import http from '@/http';
-import type { Ref } from 'vue';
 
 /**
  * 單一權限

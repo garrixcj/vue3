@@ -7,7 +7,7 @@ import http from '@/http';
 import messages from '@/pages/home/menu/lang.json';
 import systemApi from '@/api/system';
 import { codeMap } from '@/plugins/errorcode';
-import type { Router } from 'vue-router';
+import { type Router } from 'vue-router';
 
 // 路由中介邏輯
 export const routerMiddleware = (router: Router) => {
