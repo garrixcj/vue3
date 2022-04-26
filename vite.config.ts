@@ -8,12 +8,18 @@ import stylelintPlugin from 'vite-plugin-stylelint';
 import usePluginImport from 'vite-plugin-importer';
 import { visualizer } from 'rollup-plugin-visualizer';
 
-const i18nPath =
-  process.env.NODE_ENV === 'production'
-    ? 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
-    : 'vue-i18n/dist/vue-i18n.cjs.js';
+const productionMode = process.env.NODE_ENV === 'production';
+const i18nPath = productionMode
+  ? 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
+  : 'vue-i18n/dist/vue-i18n.cjs.js';
+const eslint = productionMode ? null : eslintPlugin();
+const stylelint = productionMode
+  ? null
+  : stylelintPlugin({
+      cache: false,
+    });
 
-const analyzeMode = !!+process.env.ANALYZE;
+const analyzeMode = process.env.ANALYZE === '1';
 const analyzer = analyzeMode ? visualizer() : null;
 
 // https://vitejs.dev/config/
@@ -24,10 +30,8 @@ export default defineConfig({
       include: path.resolve(__dirname, './src/languages'),
     }),
     dynamicImport(),
-    eslintPlugin(),
-    stylelintPlugin({
-      cache: false,
-    }),
+    eslint,
+    stylelint,
     usePluginImport({
       libraryName: 'lodash',
       libraryDirectory: '',
