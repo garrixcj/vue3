@@ -8,7 +8,7 @@ rd-layout(title="Playground")
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Playground',
+  name: 'PlayGround',
   setup() {
     return {};
   },

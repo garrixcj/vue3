@@ -1,7 +1,9 @@
 # admin
 
 Vector 控端專案
-vue 3
+
+- 建構工具：Vite
+- 預設模板：vue-ts
 
 ## Project setup
 
@@ -47,6 +49,15 @@ yarn lint
 ### 使用套件
 
 ```
+# vue核心升級
+yarn add vue@next
+
+# vue router
+yarn add vue-router@next
+
+# pinia 狀態管理器
+yarn add pinia
+
 # css normalize 初始化所有瀏覽器為相同樣式
 yarn add normalize.css
 
@@ -54,7 +65,7 @@ yarn add normalize.css
 yarn add element-plus
 
 # mdi icon
-yarn add @mdi/font
+yarn add @mdi/font@6.6.96
 
 # 基於 promise 的前端 http library
 yarn add axios
@@ -66,9 +77,12 @@ yarn add -D @types/js-cookie
 # websocket
 yarn add vue-native-websocket-vue3
 
-# lodash
+# lodash - JS 工具庫
 yarn add lodash
 yarn add -D @types/lodash
+
+# VueUse - Composition Api 工具庫
+yarn add @vueuse/core
 
 # 時間套件
 yarn add dayjs
@@ -79,7 +93,7 @@ yarn add -D @types/big.js
 
 # 多國語系
 yarn add vue-i18n@9.1.9
-yarn add -D @intlify/vue-i18n-loader # webpack 語系預編譯
+yarn add -D @intlify/vite-plugin-vue-i18n
 
 # echart
 yarn add echarts
@@ -91,13 +105,26 @@ yarn add vue-highlightjs
 # 拖曳元件
 yarn add vuedraggable@next
 
-# import 寫法轉換（參考：https://t.ly/jMYp）
-yarn add -D babel-plugin-import
-
 # pug 模板語言
 yarn add -D pug
-yarn add -D pug-plain-loader
-yarn add -D @prettier/plugin-pug
+yarn add -D @prettier-plugin-pug
+
+# scss css預處理器
+yarn add -D sass
+
+# eslint 程式法風格檢查工具
+yarn add -D eslint
+yarn add -D eslint-plugin-vue
+
+# prettier 程式碼風格統一
+yarn add -D prettier
+yarn add -D eslint-plugin-prettier
+yarn add -D @vue/eslint-config-prettier
+
+# eslint typescrip 檢查支援
+yarn add -D @vue/eslint-config-typescript
+yarn add -D @typescript-eslint/eslint-plugin
+yarn add -D @typescript-eslint/parser
 
 # stylelint CSS風格檢查工具
 yarn add -D stylelint
@@ -108,15 +135,18 @@ yarn add -D stylelint-config-prettier
 yarn add -D stylelint-prettier
 yarn add -D postcss-html
 yarn add -D stylelint-config-html
-yarn add -D stylelint-webpack-plugin
 
-# pinia 狀態管理器
-yarn add pinia
+# vite 編譯核心升級
+yarn add -D @vitejs/plugin-vue
 
-# vue核心升級
-yarn add vue@next
-yarn add vue-router@next
+# vite 編譯額外支援
+yarn add -D vite-plugin-dynamic-import
+yarn add -D vite-plugin-eslint
+yarn add -D vite-plugin-stylelint
 
-# vue編譯核心升級
-yarn add -D @vue/compiler-sfc
+# import 寫法轉換（參考：https://t.ly/jMYp）
+yarn add -D vite-plugin-importer
+
+# 型別輔助
+yarn add -D @types/node
 ```

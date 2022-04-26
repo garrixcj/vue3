@@ -26,6 +26,6 @@ export const useLoadingStore = defineStore('loading', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useLoadingStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useLoadingStore, import.meta.hot));
 }

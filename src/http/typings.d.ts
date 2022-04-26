@@ -11,6 +11,7 @@ export type TrueResponse = {
   result: true;
   data: any;
   response_code: string;
+  [key: string]: unknown;
 };
 
 export type FalseResponse = {
@@ -19,6 +20,7 @@ export type FalseResponse = {
   code: number;
   data?: any;
   response_code: string;
+  [key: string]: unknown;
 };
 
 declare module 'axios' {

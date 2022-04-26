@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { inject, getCurrentInstance, onMounted } from 'vue';
-import type { App, ComponentInternalInstance, InjectionKey } from 'vue';
+import {
+  getCurrentInstance,
+  inject,
+  onMounted,
+  type App,
+  type ComponentInternalInstance,
+  type InjectionKey,
+} from 'vue';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {

@@ -2,23 +2,23 @@
  * 靜音回傳處理(response不會有alert)
  * TODO 先註解等待盤整功能
  */
+import { NavigationFailureType, isNavigationFailure } from 'vue-router';
+import { type AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { useCookieStore } from '@/stores/cookie';
 import { useDisplayStore } from '@/stores/display';
 import { useLoadingStore } from '@/stores/loading';
 import router from '@/router';
-import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 import {
   codeMap,
-  sessionCodes,
+  codeT,
   forbiddenCodes,
   getMsg,
   getType,
-  codeT,
+  sessionCodes,
   CodeLang,
 } from '@/plugins/errorcode';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import type { AxiosError } from 'axios';
 import type { HexResponse } from './typings';
 
 dayjs.extend(utc);

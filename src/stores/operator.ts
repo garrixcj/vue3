@@ -111,6 +111,6 @@ export const useOperatorStore = defineStore('operator', {
 });
 
 // Pinia HMR
-if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useOperatorStore, module.hot));
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useOperatorStore, import.meta.hot));
 }

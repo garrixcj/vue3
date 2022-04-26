@@ -48,7 +48,7 @@ import { useDisplayStore } from '@/stores/display';
 import { ElContainer, ElHeader, ElAside, ElMain } from 'element-plus';
 
 export default defineComponent({
-  name: 'Index',
+  name: 'AppIndex',
   components: {
     ElContainer,
     ElHeader,
