@@ -40,7 +40,7 @@ test_build:
           exit 1
       fi
     - pwd; ls -al
-    - yarn build | tee build_result.tmp
+    - yarn build 2>&1 | tee build_result.tmp
     - if grep -w -E 'ERROR|Errors' build_result.tmp; then echo "Build Error"; exit 1; fi;
   artifacts:
     when: on_success

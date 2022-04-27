@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "stylelint \"src/**/*.(css|scss|vue)\" && eslint src --ext .ts,.vue && vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build",
     "build:analyze": "cross-env ANALYZE=1 vite build",
     "preview": "vite preview",
     "lint": "stylelint \"src/**/*.(css|scss|vue)\" --fix && eslint src --ext .ts,.vue --fix && vue-tsc --noEmit",
