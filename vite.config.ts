@@ -12,8 +12,6 @@ const productionMode = process.env.NODE_ENV === 'production';
 const i18nPath = productionMode
   ? 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
   : 'vue-i18n/dist/vue-i18n.cjs.js';
-const eslint = productionMode ? null : eslintPlugin();
-const stylelint = productionMode ? null : stylelintPlugin();
 
 const analyzeMode = process.env.ANALYZE === '1';
 const analyzer = analyzeMode ? visualizer() : null;
@@ -26,8 +24,10 @@ export default defineConfig({
       include: path.resolve(__dirname, './src/languages'),
     }),
     dynamicImport(),
-    stylelint,
-    eslint,
+    stylelintPlugin({
+      cache: false,
+    }),
+    eslintPlugin(),
     usePluginImport({
       libraryName: 'lodash',
       libraryDirectory: '',
