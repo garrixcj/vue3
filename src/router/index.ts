@@ -202,44 +202,6 @@ const fallbackRoutes: Array<RouteRecordRaw> = [
   },
 ];
 
-const BPRoutes = [
-  {
-    path: '/bp/checkbox',
-    name: 'BPCheckbox',
-    component: view('blueprint/checkbox'),
-  },
-  {
-    path: '/bp/datepicker',
-    name: 'BPDatepicker',
-    component: view('blueprint/datepicker'),
-  },
-  {
-    path: '/bp/pagination',
-    name: 'BPPagination',
-    component: view('blueprint/pagination'),
-  },
-  {
-    path: '/bp/radio',
-    name: 'BPRadio',
-    component: view('blueprint/radio'),
-  },
-  {
-    path: '/bp/select',
-    name: 'BPSelect',
-    component: view('blueprint/select'),
-  },
-  {
-    path: '/bp/table',
-    name: 'BPTable',
-    component: view('blueprint/table'),
-  },
-  {
-    path: '/bp/timepicker',
-    name: 'BPTimepicker',
-    component: view('blueprint/timepicker'),
-  },
-];
-
 // 產生 router
 const router = createRouter({
   history: createWebHistory(),
@@ -261,7 +223,6 @@ export const setRoute = new Promise(resolve => {
       // ...routerList,
       ...[],
       ...fallbackRoutes,
-      ...BPRoutes,
     ],
   };
   router.addRoute(mainRouter);
