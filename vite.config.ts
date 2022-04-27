@@ -13,11 +13,7 @@ const i18nPath = productionMode
   ? 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
   : 'vue-i18n/dist/vue-i18n.cjs.js';
 const eslint = productionMode ? null : eslintPlugin();
-const stylelint = productionMode
-  ? null
-  : stylelintPlugin({
-      cache: false,
-    });
+const stylelint = productionMode ? null : stylelintPlugin();
 
 const analyzeMode = process.env.ANALYZE === '1';
 const analyzer = analyzeMode ? visualizer() : null;
@@ -49,21 +45,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         charset: false,
-        additionalData: (source: string, filename: string) => {
-          // 載每個scss檔之前，先import prepend檔
-          let prepend = `@import "@/assets/scss/_prepend.scss";`;
-
-          // element-default.scss除外，會噴錯，因為@use、@forward之前不能有任何輸出
-          if (
-            /src\/components\/style\/scss\/_element-default\.scss$/.test(
-              filename,
-            )
-          ) {
-            prepend = '';
-          }
-
-          return prepend + source;
-        },
+        additionalData: '@use "@/assets/scss/_prepend.scss" as *;',
       },
     },
   },
