@@ -10,6 +10,7 @@ module.exports = {
     indentation: 2,
     'block-opening-brace-space-before': 'always',
     'declaration-colon-space-after': 'always',
+    'font-family-name-quotes': 'always-where-recommended',
     'font-family-no-missing-generic-family-keyword': null,
     'at-rule-no-unknown': null,
     'no-descending-specificity': null,
