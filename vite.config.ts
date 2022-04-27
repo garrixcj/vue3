@@ -30,8 +30,8 @@ export default defineConfig({
       include: path.resolve(__dirname, './src/languages'),
     }),
     dynamicImport(),
-    eslint,
     stylelint,
+    eslint,
     usePluginImport({
       libraryName: 'lodash',
       libraryDirectory: '',
