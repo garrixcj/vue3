@@ -7,10 +7,13 @@
     "build": "vue-tsc --noEmit && vite build",
     "build:analyze": "cross-env ANALYZE=1 vite build",
     "preview": "vite preview",
-    "lint": "stylelint \"src/**/*.(css|scss|vue)\" --fix && eslint src --ext .ts,.vue --fix && vue-tsc --noEmit",
-    "lint:check": "stylelint \"src/**/*.(css|scss|vue)\" && eslint src --ext .ts,.vue && vue-tsc --noEmit",
-    "lint:script": "eslint src --ext .ts,.vue --fix && vue-tsc --noEmit",
-    "lint:style": "stylelint \"src/**/*.(css|scss|vue)\" --fix"
+    "lint": "stylelint \"src/**/*.(css|scss|vue)\" && eslint src --ext .ts,.vue && vue-tsc --noEmit",
+    "lint:style": "stylelint \"src/**/*.(css|scss|vue)\"",
+    "lint:eslint": "eslint src --ext .ts,.vue",
+    "lint:tsc": "vue-tsc --noEmit",
+    "fix": "stylelint \"src/**/*.(css|scss|vue)\" --fix && eslint src --ext .ts,.vue --fix",
+    "fix:style": "stylelint \"src/**/*.(css|scss|vue)\" --fix",
+    "fix:eslint": "eslint src --ext .ts,.vue --fix"
   },
   "dependencies": {
     "@mdi/font": "6.6.96",
