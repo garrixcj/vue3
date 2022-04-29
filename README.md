@@ -5,33 +5,83 @@ Vector 控端專案
 - 建構工具：Vite
 - 預設模板：vue-ts
 
-## Project setup
+## 初始化專案
 
-```
+```yarn
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+## 指令列表
 
-```
-yarn serve
+### 運行開發環境：啟動預編譯與熱蟲載
+
+```yarn
+yarn dev
 ```
 
-### Compiles and minifies for production
+### 建構應用程式：編譯及最小化程式碼
 
-```
+```yarn
 yarn build
 ```
 
-### Lints and fixes files
+### 建構並分析應用程式：編譯及最小化程式碼；會額外產生一份打包後的分析圖
 
+```yarn
+yarn build:analyze
 ```
+
+### 檢查所有 Lint 規則與 TS 型別：stylelint、eslint、vue-tsc
+
+```yarn
 yarn lint
 ```
 
-### 專案結構
+### 檢查 Stylelint 規則
 
+```yarn
+yarn lint:style
 ```
+
+### 檢查 ESLint 規則
+
+```yarn
+yarn lint:eslint
+```
+
+### 檢查 TypeScript 型別
+
+```yarn
+yarn lint:tsc
+```
+
+### 檢查並修復所有 Lint 規則：stylelint、eslint
+
+```yarn
+yarn fix
+```
+
+### 檢查並修復 Stylelint 規則
+
+```yarn
+yarn fix:style
+```
+
+### 檢查並修復 ESLint 規則
+
+```yarn
+yarn fix:eslint
+```
+
+### 執行 TypeScript 型別檢查
+
+```yarn
+yarn lint:tsc
+```
+
+## 專案結構
+
+```text
 ├── public 靜態資源
 └── src
     ├── api API接口
@@ -46,9 +96,9 @@ yarn lint
     └── store pinia狀態模組
 ```
 
-### 使用套件
+## 使用套件
 
-```
+```text
 # vue核心升級
 yarn add vue@next
 
@@ -120,6 +170,7 @@ yarn add -D eslint-plugin-vue
 yarn add -D prettier
 yarn add -D eslint-plugin-prettier
 yarn add -D @vue/eslint-config-prettier
+yarn add -D @rushstack/eslint-patch
 
 # eslint typescrip 檢查支援
 yarn add -D @vue/eslint-config-typescript
@@ -149,4 +200,7 @@ yarn add -D vite-plugin-importer
 
 # 型別輔助
 yarn add -D @types/node
+
+# 依賴分析
+yarn add -D rollup-plugin-visualizer
 ```
