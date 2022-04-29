@@ -120,6 +120,7 @@ yarn add -D eslint-plugin-vue
 yarn add -D prettier
 yarn add -D eslint-plugin-prettier
 yarn add -D @vue/eslint-config-prettier
+yarn add -D @rushstack/eslint-patch
 
 # eslint typescrip 檢查支援
 yarn add -D @vue/eslint-config-typescript
