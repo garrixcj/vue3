@@ -3,9 +3,9 @@ import App from './App.vue';
 // UI Import
 import 'normalize.css/normalize.css';
 import '@/assets/scss/style.scss';
-import '@/components/style/scss/_element-default.scss';
-import '@/components/style/scss/_element-cust.scss';
-import '@mdi/font/scss/materialdesignicons.scss';
+import '@/components/style/scss/element-default.scss';
+import '@/components/style/scss/element-cust.scss';
+import '@/components/style/scss/mdi/materialdesignicons.scss';
 import 'highlight.js/styles/atom-one-dark-reasonable.css';
 // Component Import
 import RdComponets from '@/components/utils/rd';
