@@ -5,7 +5,6 @@ import vueI18n from '@intlify/vite-plugin-vue-i18n';
 import dynamicImport from 'vite-plugin-dynamic-import';
 import eslintPlugin from 'vite-plugin-eslint';
 import stylelintPlugin from 'vite-plugin-stylelint';
-import usePluginImport from 'vite-plugin-importer';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 const productionMode = process.env.NODE_ENV === 'production';
@@ -28,17 +27,13 @@ export default defineConfig({
       cache: false,
     }),
     eslintPlugin(),
-    usePluginImport({
-      libraryName: 'lodash',
-      libraryDirectory: '',
-      camel2DashComponentName: false,
-    }),
     analyzer,
   ].filter(Boolean),
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
       'vue-i18n': i18nPath,
+      lodash: 'lodash-es',
     },
   },
   css: {
