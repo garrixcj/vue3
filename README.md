@@ -128,8 +128,8 @@ yarn add -D @types/js-cookie
 yarn add vue-native-websocket-vue3
 
 # lodash - JS 工具庫
-yarn add lodash
-yarn add -D @types/lodash
+yarn add lodash-es
+yarn add -D @types/lodash-es
 
 # VueUse - Composition Api 工具庫
 yarn add @vueuse/core
@@ -194,9 +194,6 @@ yarn add -D @vitejs/plugin-vue
 yarn add -D vite-plugin-dynamic-import
 yarn add -D vite-plugin-eslint
 yarn add -D vite-plugin-stylelint
-
-# import 寫法轉換（參考：https://t.ly/jMYp）
-yarn add -D vite-plugin-importer
 
 # 型別輔助
 yarn add -D @types/node
