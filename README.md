@@ -157,7 +157,7 @@ yarn add vuedraggable@next
 
 # pug 模板語言
 yarn add -D pug
-yarn add -D @prettier-plugin-pug
+yarn add -D @prettier/plugin-pug
 
 # scss css預處理器
 yarn add -D sass
