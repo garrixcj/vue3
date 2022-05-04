@@ -204,7 +204,7 @@ const fallbackRoutes: Array<RouteRecordRaw> = [
 
 // 產生 router
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/v3/'),
   routes: guestRoutes,
 });
 
