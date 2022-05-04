@@ -17,6 +17,7 @@ const analyzer = analyzeMode ? visualizer() : null;
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/v3/',
   plugins: [
     vue(),
     vueI18n({
