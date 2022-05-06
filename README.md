@@ -142,7 +142,7 @@ yarn add big.js
 yarn add -D @types/big.js
 
 # 多國語系
-yarn add vue-i18n@9.1.9
+yarn add vue-i18n
 yarn add -D @intlify/vite-plugin-vue-i18n
 
 # echart
