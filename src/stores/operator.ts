@@ -7,12 +7,12 @@ import { useCookieStore } from './cookie';
 import { usePermissionStore } from './permission';
 import { useUbAuthStore } from './ubauth';
 
-type OperatorState = {
+export type OperatorState = {
   operator: Operator;
   sidBak: string | null;
 };
 
-type Operator = {
+export type Operator = {
   readonly id: number | string;
   readonly username: string;
   readonly alias: string;

@@ -5,11 +5,11 @@
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
-type WebSocketState = {
+export type WebSocketState = {
   socket: Socket;
 };
 
-type Socket = {
+export type Socket = {
   isConnected: boolean;
   message: string;
   reconnectError: boolean;

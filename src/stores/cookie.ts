@@ -49,7 +49,7 @@ const switchLang = (lang: string | null) => {
   }
 };
 
-type CookieState = {
+export type CookieState = {
   sid: string | null;
   connectSid: string | null;
   langx: string | null;

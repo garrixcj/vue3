@@ -3,15 +3,15 @@
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
-type PermissionState = {
+export type PermissionState = {
   permissions: Permissions;
 };
 
-type Permissions = {
+export type Permissions = {
   [key: string]: Permission;
 };
 
-type Permission = {
+export type Permission = {
   readonly id: number;
   modify: boolean;
   [key: string]: unknown;

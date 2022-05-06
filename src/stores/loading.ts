@@ -3,7 +3,7 @@
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
-type LoadingState = {
+export type LoadingState = {
   index: boolean;
   page: boolean;
   axios: boolean;

@@ -4,11 +4,11 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { operate as operateApi } from '@/api/admin';
 
-type UrlState = {
+export type UrlState = {
   hosts: Hosts;
 };
 
-type Hosts = {
+export type Hosts = {
   [key: string]: string;
 };
 

@@ -3,11 +3,11 @@
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
-type UbAuthState = {
+export type UbAuthState = {
   ubauthForm: UbAuthForm;
 };
 
-type UbAuthForm = {
+export type UbAuthForm = {
   gm_username: string;
   gm_password: string;
 };
