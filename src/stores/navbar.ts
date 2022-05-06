@@ -4,7 +4,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import exportApi from '@/api/export';
 
-type NavbarState = {
+export type NavbarState = {
   downloadCounter: number;
 };
 

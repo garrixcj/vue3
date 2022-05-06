@@ -5,7 +5,7 @@ import { nextTick } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useOperatorStore } from './operator';
 
-type DisplayState = {
+export type DisplayState = {
   mainView: boolean;
   menuCollapse: boolean;
   menuMouseover: boolean;

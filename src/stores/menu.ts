@@ -4,13 +4,13 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { menu as menuApi } from '@/api/admin';
 
-type MenuState = {
+export type MenuState = {
   menu: Menu[];
   visited: number[];
   favorite: number[];
 };
 
-type Menu = {
+export type Menu = {
   readonly id: number;
   children?: Menu[];
   [key: string]: unknown;

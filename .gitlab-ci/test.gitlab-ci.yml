@@ -55,7 +55,7 @@ test:lint:
 test:build:
   extends: .test
   script:
-    - yarn docs:build 2>&1 | tee build_result.tmp
+    - yarn build 2>&1 | tee build_result.tmp
     - |
       if [[ `grep -w -E "failed" build_result.tmp` ]]
       then
