@@ -18,7 +18,7 @@ const analyzer = analyzeMode ? visualizer() : null;
 // https://vitejs.dev/config/
 export default defineConfig({
   // 現在嵌入在 vue2 架構下，同 host 下需要有位置切轉
-  base: '/v3/',
+  base: productionMode ? '/v3/' : '/',
   plugins: [
     vue(),
     vueI18n({
