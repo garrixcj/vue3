@@ -7,7 +7,7 @@ Vector 控端專案
 
 ## 初始化專案
 
-```yarn
+```bash
 yarn install
 ```
 
@@ -15,67 +15,67 @@ yarn install
 
 ### 運行開發環境：啟動預編譯與熱蟲載
 
-```yarn
+```bash
 yarn dev
 ```
 
 ### 建構應用程式：編譯及最小化程式碼
 
-```yarn
+```bash
 yarn build
 ```
 
 ### 建構並分析應用程式：編譯及最小化程式碼；會額外產生一份打包後的分析圖
 
-```yarn
+```bash
 yarn build:analyze
 ```
 
 ### 檢查所有 Lint 規則與 TS 型別：stylelint、eslint、vue-tsc
 
-```yarn
+```bash
 yarn lint
 ```
 
 ### 檢查 Stylelint 規則
 
-```yarn
+```bash
 yarn lint:style
 ```
 
 ### 檢查 ESLint 規則
 
-```yarn
+```bash
 yarn lint:eslint
 ```
 
 ### 檢查 TypeScript 型別
 
-```yarn
+```bash
 yarn lint:tsc
 ```
 
 ### 檢查並修復所有 Lint 規則：stylelint、eslint
 
-```yarn
+```bash
 yarn fix
 ```
 
 ### 檢查並修復 Stylelint 規則
 
-```yarn
+```bash
 yarn fix:style
 ```
 
 ### 檢查並修復 ESLint 規則
 
-```yarn
+```bash
 yarn fix:eslint
 ```
 
 ### 執行 TypeScript 型別檢查
 
-```yarn
+```bash
 yarn lint:tsc
 ```
 
@@ -98,7 +98,7 @@ yarn lint:tsc
 
 ## 使用套件
 
-```text
+```bash
 # vue核心升級
 yarn add vue@next
 
