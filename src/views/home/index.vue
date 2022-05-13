@@ -1,94 +1,119 @@
 <template lang="pug">
-//- <i18n src="./lang.json"></i18n>
-//- a-layout#main-layout(v-loading="loading")
-//-   //- Menu 側欄
-//-   a-layout-sider#menu(
-//-     theme="light"
-//-     collapsed-width="70"
-//-     collapsible
-//-     :collapsed="collapsed"
-//-     :trigger="null"
-//-     :width="210"
+//- 有外框版
+//- el-container#main-layout(v-loading="loading")
+//-   rd-information
+//-     rd-button(@click="layoutTest = !layoutTest") Layout
+//-   aside-menu(
+//-     v-if="layoutTest"
 //-     @mouseover="expandMenu(true)"
 //-     @mouseleave="expandMenu(false)"
 //-   )
-//-     .logo {{ collapsed ? t('control_system').substr(0, 1) : t('control_system') }}
-//-     menu-tabs
-//-   //- 右側主畫面
-//-   a-layout
-//-     nav-bar(@collapse="pinMenu")
-//-     //- 內文
-//-     a-layout-content#main-panel(v-loading="mainLoading")
-//-       router-view(v-if="mainView")
-el-container#main-layout
-  rd-information
-    rd-button(@click="layoutTest = !layoutTest") Layout
-  el-header#main-header(v-if="layoutTest")
-    .logo Logo
-    .nav-bar Header
-  el-container#main-body(:style="layoutTest ? '' : 'height: 100%'")
-    el-aside#main-menu(v-if="layoutTest") Menu
-    el-main#main-panel
-      //- rd-scrollbar
+//-   el-container#main-body(:style="layoutTest ? '' : 'height: 100%'")
+//-     header-navbar(v-if="layoutTest" @collapse="pinMenu")
+//-     el-main#main-panel(v-loading="mainLoading")
+//-       //- rd-scrollbar
+//-       router-view
+//- 無外框版
+el-container#main-layout(v-loading="loading")
+  el-container#main-body(:style="'height: 100%'")
+    el-main#main-panel(v-loading="mainLoading")
       router-view
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide, computed, watch } from 'vue';
-// import { useI18n } from 'vue-i18n';
+import { defineComponent, ref, provide, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useLoadingStore } from '@/stores/loading';
-import { useOperatorStore } from '@/stores/operator';
-import { useWebSocketStore } from '@/stores/websocket';
+// import { useOperatorStore } from '@/stores/operator';
+// import { useWebSocketStore } from '@/stores/websocket';
 import { useDisplayStore } from '@/stores/display';
-// import { onBeforeRouteUpdate } from "vue-router";
+import { onBeforeRouteUpdate } from 'vue-router';
 // import { useWs } from '@/plugins/websocket';
-// import isEmpty from "lodash/isEmpty";
-// import NavBar from './nav/index.vue';
-// import MenuTabs from './menu/index.vue';
-import { ElContainer, ElHeader, ElAside, ElMain } from 'element-plus';
+import isEmpty from 'lodash/isEmpty';
+import { ElContainer, ElMain } from 'element-plus';
+import HeaderNavbar from './header/index.vue';
+import AsideMenu from './aside/index.vue';
 
 export default defineComponent({
   name: 'AppIndex',
   components: {
     ElContainer,
-    ElHeader,
-    ElAside,
     ElMain,
-    // NavBar,
-    // MenuTabs,
+    HeaderNavbar,
+    AsideMenu,
   },
   setup() {
-    // const { t, locale } = useI18n();
-    const layoutTest = ref(false);
-    // const loadingStore = useLoadingStore();
+    const layoutTest = ref(true);
+
+    const { t, locale } = useI18n();
+    // Main Layout Locale
+    provide('Main:Locale', locale);
+
+    // Main Layout Loading
+    const loading = ref(false);
+    provide('Main:Loading', loading);
+    // Main View Loading
+    const loadingStore = useLoadingStore();
+    const mainLoading = computed(() => {
+      return loadingStore.mainLoading;
+    });
+    // 按鈕縮合功能
+    const collapsed = ref(false);
+    const pin = ref(true);
+    // 開關縮合側欄 Menu (固定)
+    const pinMenu = () => {
+      pin.value = !pin.value;
+      collapsed.value = !collapsed.value;
+    };
+    // 暫時開關縮合側欄 Menu (Hover)
+    const expandMenu = (enter: boolean) => {
+      if (!pin.value) {
+        collapsed.value = !enter;
+      }
+    };
+    // Main Layout Collapsed
+    provide('Main:Collapsed', collapsed);
+
+    const displayStore = useDisplayStore();
+
+    // 主區塊重整機制
+    const mainView = computed(() => {
+      return displayStore.mainView;
+    });
+    // 切換Router時元件行為(升降loading)
+    onBeforeRouteUpdate((to, from, next) => {
+      // 先持續Loading
+      loadingStore.index = true;
+      if (to.path === from.path) {
+        if (isEmpty(to.query)) {
+          // 再重新產生iframe製造重整效果
+          displayStore.reloadMainViewWithPermission();
+          next();
+        } else {
+          setTimeout(() => {
+            loadingStore.index = false;
+          }, 500);
+          next();
+        }
+      } else {
+        // Path裡ID更換，且導到同一個route時
+        if (to.name === from.name) {
+          setTimeout(() => {
+            loadingStore.index = false;
+          }, 500);
+        }
+        setTimeout(() => {
+          loadingStore.index = false;
+        }, 500);
+        next();
+      }
+    });
+
     // const operatorStore = useOperatorStore();
     // const webSocketStore = useWebSocketStore();
-    // const displayStore = useDisplayStore();
     // const ws = useWs();
-    // // 按鈕縮合功能
-    // const collapsed = ref(false);
-    // const isOpen = ref(false);
-    // const pin = ref(true);
-    // Loading
-    // const loading = ref(false);
-    // const mainLoading = computed(() => {
-    //   return loadingStore.mainLoading;
-    // });
 
-    // // 開關縮合側欄 Menu (固定)
-    // const pinMenu = () => {
-    //   pin.value = !pin.value;
-    //   collapsed.value = !collapsed.value;
-    // };
-
-    // // 暫時開關縮合側欄 Menu (Hover)
-    // const expandMenu = (enter: boolean) => {
-    //   if (!pin.value) {
-    //     collapsed.value = !enter;
-    //   }
-    // };
-
-    // 連上 websocket
+    // // 連上 websocket
     // const operatorId = computed(() => {
     //   return operatorStore.operator.id;
     // });
@@ -105,54 +130,15 @@ export default defineComponent({
     //   { immediate: true },
     // );
 
-    // // Main Layout 的 Global提供
-    // provide("Locale", locale);
-    // provide("menuCollapsed", collapsed);
-    // provide("fullLoading", loading);
-
-    // 主區塊重整機制
-    // const mainView = computed(() => {
-    //   return displayStore.mainView;
-    // });
-    // // 切換Router時元件行為(升降loading)
-    // onBeforeRouteUpdate((to, from, next) => {
-    //   // 先持續Loading
-    //   loadingStore.index = true;
-    //   if (to.path === from.path) {
-    //     if (isEmpty(to.query)) {
-    //       // 再重新產生iframe製造重整效果
-    //       displayStore.reloadMainViewWithPermission();
-    //       next();
-    //     } else {
-    //       setTimeout(() => {
-    //         loadingStore.index = false;
-    //       }, 500);
-    //       next();
-    //     }
-    //   } else {
-    //     // Path裡ID更換，且導到同一個route時
-    //     if (to.name === from.name) {
-    //       setTimeout(() => {
-    //         loadingStore.index = false;
-    //       }, 500);
-    //     }
-    //     setTimeout(() => {
-    //       loadingStore.index = false;
-    //     }, 500);
-    //     next();
-    //   }
-    // });
-
     return {
       layoutTest,
-      // t,
-      // isOpen,
-      // collapsed,
-      // pinMenu,
-      // loading,
-      // mainLoading,
-      // expandMenu,
-      // mainView,
+      t,
+      collapsed,
+      pinMenu,
+      loading,
+      mainLoading,
+      expandMenu,
+      mainView,
     };
   },
 });
@@ -186,9 +172,9 @@ $header-height: 56px;
     }
   }
   &-body {
-    height: calc(100% - $header-height);
+    flex-direction: column;
   }
-  &-menu {
+  &-aside {
     width: $menu-width;
     border: 1px solid $success;
   }
