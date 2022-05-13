@@ -5,7 +5,9 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import sessionApi from '@/api/session';
 import { useCookieStore } from './cookie';
 import { usePermissionStore } from './permission';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useUbAuthStore } from './ubauth';
+import type { HexResponse } from '@/http/typings';
 
 export type OperatorState = {
   operator: Operator;
@@ -74,27 +76,27 @@ export const useOperatorStore = defineStore('operator', {
     //       });
     //   });
     // },
-    // // 確認登入狀態
-    // checkSession() {
-    //   return new Promise((resolve, reject) => {
-    //     const permissionStore = usePermissionStore();
-    //     sessionApi
-    //       .getSession()
-    //       .then(response => {
-    //         if (response.data.result) {
-    //           this.operator = response.data.data.user;
-    //           permissionStore.permissions = response.data.data.permissions;
-    //         } else {
-    //           this.operator = {} as Operator;
-    //           permissionStore.permissions = {};
-    //         }
-    //         resolve(response);
-    //       })
-    //       .catch(error => {
-    //         reject(error);
-    //       });
-    //   });
-    // },
+    // 確認登入狀態
+    checkSession() {
+      return new Promise<HexResponse>((resolve, reject) => {
+        const permissionStore = usePermissionStore();
+        sessionApi
+          .getSession()
+          .then(response => {
+            if (response.data.result) {
+              this.operator = response.data.data.user;
+              permissionStore.permissions = response.data.data.permissions;
+            } else {
+              this.operator = {} as Operator;
+              permissionStore.permissions = {};
+            }
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
     // 備份 sid
     backupSid() {
       const cookieStore = useCookieStore();

@@ -14,9 +14,12 @@ export const session = {
   // logout() {
   //   return this.http.post('/logout');
   // },
-  // getSession() {
-  //   return this.http.get('/session');
-  // },
+  /**
+   * 取得 session
+   */
+  getSession() {
+    return this.http.get('/session');
+  },
 };
 
 export default session;

@@ -1,7 +1,7 @@
 import {
   createRouter,
   createWebHistory,
-  type RouteComponent,
+  // type RouteComponent,
   type RouteRecordRaw,
 } from 'vue-router';
 // import { routerMiddleware } from './middleware';

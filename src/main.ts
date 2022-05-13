@@ -1,4 +1,4 @@
-import { createApp, getCurrentInstance } from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 // UI Import
 import 'normalize.css/normalize.css';
@@ -98,6 +98,7 @@ Promise.all([setRoute])
   .then(() => {
     init();
   })
-  .catch(err => {
+  // .catch(err => {
+  .catch(() => {
     // app.config.globalProperties.$message(err);
   });

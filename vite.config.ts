@@ -52,5 +52,14 @@ export default defineConfig({
       path: '/sockjs-node/',
       clientPort: 80,
     },
+    // 開發暫時介接開發站api
+    proxy: {
+      '/hex': {
+        target: 'http://admin.vir888.com/hex',
+        changeOrigin: true,
+        secure: false,
+        rewrite: path => path.replace(/^\/hex/, ''),
+      },
+    },
   },
 });

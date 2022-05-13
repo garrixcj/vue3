@@ -2,6 +2,7 @@
  * Menu 側欄選單資料相關
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { menu as menuApi } from '@/api/admin';
 
 export type MenuState = {

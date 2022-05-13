@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * 靜音回傳處理(response不會有alert)
  * TODO 先註解等待盤整功能

@@ -136,19 +136,19 @@ export const maintain = {
   //     note
   //   });
   // },
-  // /**
-  //  * 取得單一功能維護狀態
-  //  * todo remove comment
-  //  * [rename] getFeatureEntranceMaintenanceStatus
-  //  * @param  {string} permission
-  //  */
-  // getFeatureMaintenanceStatus(permission: string) {
-  //   return this.http.get('/feature/entrance/maintenance/status', {
-  //     params: {
-  //       permission,
-  //     },
-  //   });
-  // },
+  /**
+   * 取得單一功能維護狀態
+   * todo remove comment
+   * [rename] getFeatureEntranceMaintenanceStatus
+   * @param  {string} permission
+   */
+  getFeatureMaintenanceStatus(permission: string) {
+    return this.http.get('/feature/entrance/maintenance/status', {
+      params: {
+        permission,
+      },
+    });
+  },
   // /**
   //  * 取功能維護狀態清單
   //  * @param  {object} options.lang

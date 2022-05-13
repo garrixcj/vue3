@@ -1,4 +1,4 @@
-// import { pick } from 'lodash';
+import { pick } from 'lodash';
 import http from '@/http/http';
 import multiHttp from '@/http/multi';
 // 靜態等偽裝api回傳資料 等待api功能
@@ -73,12 +73,12 @@ export const menu = {
  */
 export const operate = {
   http,
-  // /**
-  //  * 取得線上會員人數
-  //  */
-  // getOnlineMember() {
-  //   return this.http.get('/admin/onlineMember');
-  // },
+  /**
+   * 取得線上會員人數
+   */
+  getOnlineMember() {
+    return this.http.get('/admin/onlineMember');
+  },
   // /**
   //  * 取得Host env
   //  */
@@ -182,25 +182,27 @@ export const operate = {
   //     operation,
   //   });
   // },
-  // /**
-  //  * 取得狀態列資訊
-  //  */
-  // getAdminProfile() {
-  //   return this.http.get('/admin/profile');
-  // },
-  // /**
-  //  * 修改狀態列資訊
-  //  * @param  {object} options 可設定的參數
-  //  */
-  // putAdminProfile(options = {}) {
-  //   // 可設定的參數
-  //   const paramOptions = [
-  //     'profile_icon_collapse',
-  //     'profile_infos',
-  //     'profile_icons',
-  //   ];
-  //   return this.http.put('/admin/profile', pick(options, paramOptions));
-  // },
+  /**
+   * 取得狀態列資訊
+   */
+  getAdminProfile() {
+    return this.http.get('/admin/profile');
+  },
+  /**
+   * 修改狀態列資訊
+   * @param  {object} options.profile_icon_collapse 圖示開關
+   * @param  {object} options.profile_infos 預設 nav bar功能
+   * @param  {object} options.profile_icons 功能(icon)
+   */
+  putAdminProfile(options = {}) {
+    // 可設定的參數
+    const paramOptions = [
+      'profile_icon_collapse',
+      'profile_infos',
+      'profile_icons',
+    ];
+    return this.http.put('/admin/profile', pick(options, paramOptions));
+  },
 };
 
 /**
