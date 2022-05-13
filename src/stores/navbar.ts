@@ -2,6 +2,7 @@
  * Navbar 巡覽列相關
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import exportApi from '@/api/export';
 
 export type NavbarState = {

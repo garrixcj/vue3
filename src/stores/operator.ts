@@ -5,6 +5,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import sessionApi from '@/api/session';
 import { useCookieStore } from './cookie';
 import { usePermissionStore } from './permission';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useUbAuthStore } from './ubauth';
 import type { HexResponse } from '@/http/typings';
 

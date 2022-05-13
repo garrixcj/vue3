@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useLoadingStore } from '@/stores/loading';
 import { useCookieStore } from '@/stores/cookie';
 import { useOperatorStore } from '@/stores/operator';

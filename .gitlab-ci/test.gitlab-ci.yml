@@ -50,6 +50,7 @@ test:lint:
   artifacts:
     paths:
       - lint_result.tmp
+  allow_failure: true
 
 # 測試編譯
 test:build:
@@ -67,6 +68,7 @@ test:build:
   artifacts:
     paths:
       - build_result.tmp
+  allow_failure: true
 
 # 測試 console.log 語法是否無刪除
 test:console:
