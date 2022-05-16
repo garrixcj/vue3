@@ -9,6 +9,9 @@ Vector 控端專案
 
 ```bash
 yarn install
+
+# 環境 env_state 請帶入環境
+ln -fs {env_state}/env.ts src/env/index.ts
 ```
 
 ## 指令列表
@@ -85,15 +88,19 @@ yarn lint:tsc
 ├── public 靜態資源
 └── src
     ├── api API接口
-    ├── assets 資源
+    ├── assets 一般靜態資源
     ├── components 共用元件
+    │   ├── common 共用元件客製(全域提供)
+    │   ├── custom 客製化元件(按需引入)
+    │   ├── style 共用樣式庫
     │   └── utils 共用library與樣式插件
-    ├── http Response Handler
+    ├── http Axios Response Handler
+    ├── env 環境
     ├── languages 語系
-    ├── pages 頁面元件
-    ├── plugins 邏輯插件(無法共用的本地樣式與商業邏輯)
+    ├── views 頁面元件
+    ├── plugins 邏輯插件(無法與其他前端專案共用的本地樣式與商業邏輯)
     ├── router 路由
-    └── store pinia狀態模組
+    └── store pinia 狀態模組
 ```
 
 ## 使用套件
