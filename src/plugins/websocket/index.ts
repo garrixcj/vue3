@@ -4,28 +4,20 @@ import {
   inject,
   onMounted,
   type App,
-  type ComponentInternalInstance,
   type InjectionKey,
 } from 'vue';
+import type { State, Proxy } from './typings';
+import { useWebSocketStoreWithOut } from '@/stores/websocket';
+import VueNativeSock from 'vue-native-websocket-vue3';
+import hosts from '@/plugins/url';
 
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    $socket: { sendObj: Function };
-  }
-}
-
-declare class Websocket {
-  connect?: any;
-  disconnect?: any;
-  sender?: Function;
-}
-
-export const WebSocketKey: InjectionKey<Websocket> = Symbol();
+// WS Provider Key
+export const WebSocketKey: InjectionKey<State> = Symbol();
 
 // Get Sending Function ( onMounted )
 export const getSender = () => {
-  const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-  return proxy?.$socket.sendObj;
+  const proxy = getCurrentInstance()?.proxy as Proxy;
+  return proxy?.$socket?.sendObj;
 };
 // 使用 WebSocket
 export const useWs = () => {
@@ -37,8 +29,30 @@ export const useWs = () => {
   return ws;
 };
 
+// Create WS
+export const WSCreator = {
+  install: (app: App) => {
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    app.use(VueNativeSock, `${protocol}://${hosts.ws}`, {
+      format: 'json',
+      reconnection: true,
+      reconnectionDelay: 3000,
+      connectManually: true,
+      useWebSocketStoreWithOut,
+      mutations: {
+        SOCKET_ONOPEN: 'onOpen',
+        SOCKET_ONCLOSE: 'onClose',
+        SOCKET_ONERROR: 'onError',
+        SOCKET_ONMESSAGE: 'onMessage',
+        SOCKET_RECONNECT: 'onReconnect',
+        SOCKET_RECONNECT_ERROR: 'onReconnectError',
+      },
+    });
+  },
+};
+
 // create websocket
-export default {
+export const WSProvider = {
   install: (app: App) => {
     app.provide(WebSocketKey, {
       connect: app.config.globalProperties.$connect,

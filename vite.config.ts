@@ -18,7 +18,7 @@ const analyzer = analyzeMode ? visualizer() : null;
 // https://vitejs.dev/config/
 export default defineConfig({
   // 現在嵌入在 vue2 架構下，同 host 下需要有位置切轉
-  base: productionMode ? '/v3/' : '/',
+  base: '/v3/',
   plugins: [
     vue(),
     vueI18n({
@@ -49,7 +49,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     hmr: {
-      path: '/sockjs-node/',
+      path: '/ws/',
       clientPort: 80,
     },
     // 開發暫時介接開發站api

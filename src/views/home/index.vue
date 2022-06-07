@@ -21,14 +21,14 @@ el-container#main-layout(v-loading="loading")
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide, computed } from 'vue';
+import { defineComponent, ref, provide, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLoadingStore } from '@/stores/loading';
-// import { useOperatorStore } from '@/stores/operator';
-// import { useWebSocketStore } from '@/stores/websocket';
+import { useOperatorStore } from '@/stores/operator';
+import { useWebSocketStore } from '@/stores/websocket';
 import { useDisplayStore } from '@/stores/display';
 import { onBeforeRouteUpdate } from 'vue-router';
-// import { useWs } from '@/plugins/websocket';
+import { useWs } from '@/plugins/websocket';
 import isEmpty from 'lodash/isEmpty';
 import { ElContainer, ElMain } from 'element-plus';
 import HeaderNavbar from './header/index.vue';
@@ -109,26 +109,26 @@ export default defineComponent({
       }
     });
 
-    // const operatorStore = useOperatorStore();
-    // const webSocketStore = useWebSocketStore();
-    // const ws = useWs();
+    const operatorStore = useOperatorStore();
+    const webSocketStore = useWebSocketStore();
+    const ws = useWs();
 
-    // // 連上 websocket
-    // const operatorId = computed(() => {
-    //   return operatorStore.operator.id;
-    // });
-    // watch(
-    //   () => operatorId.value,
-    //   value => {
-    //     const isConnected = webSocketStore.socket.isConnected;
-    //     if (value && !isConnected) {
-    //       ws.connect();
-    //     } else if (isConnected) {
-    //       ws.disconnect();
-    //     }
-    //   },
-    //   { immediate: true },
-    // );
+    // 連上 websocket
+    const operatorId = computed(() => {
+      return operatorStore.operator.id;
+    });
+    watch(
+      () => operatorId.value,
+      value => {
+        const isConnected = webSocketStore.isConnected;
+        if (!value && !isConnected) {
+          ws.connect();
+        } else if (isConnected) {
+          ws.disconnect();
+        }
+      },
+      { immediate: true },
+    );
 
     return {
       layoutTest,
