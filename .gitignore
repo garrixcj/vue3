@@ -4,6 +4,7 @@ node_modules
 /stats.html
 
 # local env files
+src/env/index.ts
 .env.local
 .env.*.local
 

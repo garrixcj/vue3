@@ -1,65 +1,59 @@
+import { type App } from 'vue';
 import {
   createRouter,
   createWebHistory,
-  // type RouteComponent,
+  type RouteComponent,
   type RouteRecordRaw,
 } from 'vue-router';
-// import { routerMiddleware } from './middleware';
-// import { menu as menuApi } from "@/api/admin";
+import { routerMiddleware } from './middleware';
+// todo use new v3 route setting
+import routeJson from './route.json';
 
 const view = (page: string) => () => import(`@/views/${page}.vue`);
 
-// // 取得功能路由
-// const getFeatureRoute = () =>
-//   new Promise<RouteRecordRaw[]>(resolve => {
-//     menuApi.getRoute().then(resp => {
-//       let routeList: RouteRecordRaw[] = [];
-//       if (resp.data.result) {
-//         routeList = resp.data.data
-//           .filter(item => item.route !== "")
-//           .map(item => {
-//             // 路由
-//             const path = item.route.replace(/^\/+|\/+$/g, "");
-//             // 路由參數
-//             let props = {};
-//             // 元件
-//             let component: RouteComponent;
-//             if (item.component) {
-//               // 特殊路由走指定component
-//               component = view(item.component.replace(/^\/+|\/+$/g, ""));
-//             } else if (item.host === "VI_HOST") {
-//               // Vue compoonent
-//               component = view(path);
-//             } else {
-//               // 除此之外都走iframe
-//               component = view("home/iframe");
-//               props = {
-//                 host: item.host, // Iframe Host
-//                 path: item.file + item.qstr // Iframe Host
-//               };
-//             }
+// 取得功能路由
+const getFeatureRoute = () =>
+  routeJson
+    .filter(item => item.route !== '')
+    .map(item => {
+      // 路由
+      const path = item.route.replace(/^\/+|\/+$/g, '');
+      // 路由參數
+      let props = {};
+      // 元件
+      let component: RouteComponent;
+      if (item.component) {
+        // 特殊路由走指定component
+        component = view(item.component.replace(/^\/+|\/+$/g, ''));
+      } else if (item.host === 'VI_HOST') {
+        // Vue component
+        component = view(path);
+      } else {
+        // 除此之外都走iframe
+        component = view('home/iframe');
+        props = {
+          host: item.host, // Iframe Host
+          path: item.file + item.qstr, // Iframe Host
+        };
+      }
 
-//             // 自定義資料
-//             const meta = {
-//               auth: true,
-//               checkPermissions: true,
-//               menuId: item.id,
-//               title: item.dict,
-//               perm: item.perm
-//             };
+      // 自定義資料
+      const meta = {
+        auth: true,
+        checkPermissions: true,
+        menuId: item.id,
+        title: item.dict,
+        perm: item.perm,
+      };
 
-//             return {
-//               name: item.name || "",
-//               path,
-//               component,
-//               props,
-//               meta
-//             } as RouteRecordRaw;
-//           });
-//       }
-//       resolve(routeList);
-//     });
-//   });
+      return {
+        name: item.name || '',
+        path,
+        component,
+        props,
+        meta,
+      } as RouteRecordRaw;
+    });
 
 // 訪客路由
 const guestRoutes: Array<RouteRecordRaw> = [
@@ -71,14 +65,10 @@ const guestRoutes: Array<RouteRecordRaw> = [
       guest: true,
     },
     component: view('login/index'),
-  },
-  {
-    path: '/ubauth',
-    meta: {
-      title: 'ubauth',
-      guest: true,
+    beforeEnter() {
+      // 回退 login 路由
+      window.location.href = '/login';
     },
-    component: view('ubauth'),
   },
   {
     path: '/device',
@@ -87,54 +77,15 @@ const guestRoutes: Array<RouteRecordRaw> = [
       guest: true,
     },
     component: view('device'),
+    beforeEnter() {
+      // 回退 device 路由
+      window.location.href = '/device';
+    },
   },
 ];
 
 // 特殊路由(變數)
-const specialRoutes: Array<RouteRecordRaw> = [
-  {
-    path: '/user/operate_record/:id',
-    meta: {
-      title: 'operate_record',
-      auth: true,
-      checkPermissions: false,
-    },
-    component: view('home/iframe'),
-    props: {
-      host: 'RD3_HOST',
-      path: '/user/operate_record',
-      params: { id: 'User' },
-    },
-  },
-  {
-    path: '/game/bet_record/member/:id',
-    meta: {
-      title: 'bet_record',
-      auth: true,
-      checkPermissions: false,
-    },
-    component: view('home/iframe'),
-    props: {
-      host: 'RD3_HOST',
-      path: '/game/betrecord_search/kind3?SearchData=MemberBets',
-      params: { id: 'UserID' },
-    },
-  },
-  {
-    path: '/ball/cash_system/:id',
-    meta: {
-      title: 'transaction_record',
-      auth: true,
-      checkPermissions: false,
-    },
-    component: view('home/iframe'),
-    props: {
-      host: 'BIGBALL_V3_HOST',
-      path: '/cl/index.php?module=CashSystem',
-      params: { id: 'mid' },
-    },
-  },
-];
+const specialRoutes: Array<RouteRecordRaw> = [];
 
 // 預設路由(需登入)
 const defaultRoutes: Array<RouteRecordRaw> = [
@@ -146,7 +97,6 @@ const defaultRoutes: Array<RouteRecordRaw> = [
       checkPermissions: false,
     },
     redirect: '/home',
-    component: view('home/home'),
   },
   {
     path: '/home',
@@ -157,8 +107,13 @@ const defaultRoutes: Array<RouteRecordRaw> = [
       checkPermissions: false,
     },
     component: view('home/home'),
+    beforeEnter() {
+      // 退回vue2架構下的 /home
+      window.location.href = '/home';
+    },
   },
   {
+    // todo delete test route
     path: '/playground',
     name: 'Playground',
     meta: {
@@ -199,37 +154,36 @@ const fallbackRoutes: Array<RouteRecordRaw> = [
     },
     props: { message: 'unable_show_page' },
     component: view('error/index'),
+    beforeEnter() {
+      // 亂打路由進入 v3 皆會回退 v2 的 forbidden
+      window.location.href = '/forbidden';
+    },
   },
 ];
 
-// 產生 router
-const router = createRouter({
-  history: createWebHistory('/v3/'),
-  routes: guestRoutes,
-});
-
-// 設定路由
-export const setRoute = new Promise(resolve => {
-  // getFeatureRoute().then(routerList => {
+export const install = (app: App) => {
+  const routerList = getFeatureRoute();
   const mainRouter = {
     path: '/',
     name: 'layout',
     meta: { auth: true },
-    redirect: '/home',
     component: view('home/index'),
     children: [
       ...defaultRoutes,
       ...specialRoutes,
-      // ...routerList,
-      ...[],
+      ...routerList,
       ...fallbackRoutes,
     ],
   };
-  router.addRoute(mainRouter);
-  // beforeEach 邏輯
-  // routerMiddleware(router);
-  resolve(true);
-  // });
-});
+  // 產生 router
+  const router = createRouter({
+    // 路由從 v3 開始
+    history: createWebHistory('/v3/'),
+    // 預設加入訪客路由
+    routes: [...guestRoutes, mainRouter],
+  });
+  routerMiddleware(router);
+  app.use(router);
+};
 
-export default router;
+export default { install };

@@ -18,6 +18,7 @@ build:dist:
   script:
     - pwd
     - ls -l node_modules/ | wc -l
+    - ln -fs prod/env.ts src/env/index.ts
     - yarn build 2>&1 | tee build_result.tmp
     - |
       if [[ `grep -w -E "failed" build_result.tmp` ]]

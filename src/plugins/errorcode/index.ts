@@ -19,12 +19,18 @@ export const codeMap: Record<string, number[] | number> = {
   featureMaintain: 667077006,
   // API維護
   apiMaintain: 667158001,
+  // 遊戲維護
+  gameMaintain: 667160001,
 };
 // 無權限 Forbidden
 export const forbiddenCodes = [
   codeMap.routeForbidden,
   codeMap.permNameForbidden,
 ];
+
+// 頁面維護中(不包含API)
+export const maintainCodes = [codeMap.featureMaintain, codeMap.gameMaintain];
+
 // 登入狀態失敗
 export const sessionCodes = [codeMap.loginError, codeMap.logout];
 
@@ -92,8 +98,13 @@ export const getMsg = (
 export const getType = (code: number | string) =>
   +code % 1000 > 500 ? 'warning' : 'error';
 
+// 判斷是否維護中
+export const isMaintain = (code: number | string) =>
+  maintainCodes.includes(+code);
+
 export default {
   codeMap,
   sessionCodes,
   forbiddenCodes,
+  maintainCodes,
 };
