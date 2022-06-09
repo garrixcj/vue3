@@ -4,14 +4,14 @@ const env: Env = {
   appEnv: 'production',
   hosts: {
     // 先暫時寫測試站資料
-    ws: 'bgp-ws.vir777.net',
-    bigBallOld: 'https://bgp-ctl-v2.vir222.com',
-    bigBallV3: 'https://bgp-ctl-v3.vir222.com',
-    pidAdmin: 'https://bgp-admin.vir222.com',
-    rd3Casino: 'https://casino-admin-bbgp.vir222.com',
-    rd3: 'https://bgp-admin-v0.vir222.com',
-    rd3Live: 'https://live-admin-bbgp.vir222.com',
-    rde: 'https://bgp-ltadmin.vir222.com',
+    ws: 'ws.vir000.com',
+    bigBallOld: 'https://ctl-v2.vir000.com',
+    bigBallV3: 'https://ctl-v3.vir000.com',
+    pidAdmin: 'https://admin.vir000.com',
+    rd3Casino: 'https://casino-admin.vir000.com',
+    rd3: 'https://admin-v0.vir000.com',
+    rd3Live: 'https://live-admin.vir000.com',
+    rde: 'https://ltadmin.vir000.com',
   },
 };
 export default env;
