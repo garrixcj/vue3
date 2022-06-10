@@ -8,7 +8,7 @@ stages:
   # 打包
   - package
   # 部署
-  - deploy
+  # - deploy
   # 合併
   # - merge
   # - rebase
@@ -16,7 +16,7 @@ stages:
 include:
   - '/.gitlab-ci/build.gitlab-ci.yml'
   - '/.gitlab-ci/package.gitlab-ci.yml'
-  - '/.gitlab-ci/deploy.gitlab-ci.yml'
+  # - '/.gitlab-ci/deploy.gitlab-ci.yml'
   # - '/.gitlab-ci/merge.gitlab-ci.yml'
   # - '/.gitlab-ci/rebase.gitlab-ci.yml'
   # - '/.gitlab-ci/sync.gitlab-ci.yml'

@@ -1,20 +1,16 @@
 # Package front-end static sources to nginx image
-package:image:
+.package_image:
   services:
     - docker:dind
-  image:
-    name: gcr.io/google.com/cloudsdktool/cloud-sdk:353.0.0
-    entrypoint:
-      ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0']
   stage: package
   tags:
-    - gce-gitlab-runner-ssd
-  only:
-    - master
+    - local-docker
   except:
     refs:
       - triggers
       - pipelines
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
   before_script:
     - |
       if [[ `test -d dist && echo "" || echo "error"` ]]
@@ -23,19 +19,93 @@ package:image:
           exit 1
       fi
     # Login docker registry
-    - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
-    - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
-    - gcloud config set project rd6-project
-    - gcloud auth configure-docker --quiet
+    - docker login -u ${QUAY_HUB_USER} -p ${QUAY_HUB_PASSWORD} ${QUAY_HUB}
   script:
     - ls -al
-    - IMAGE=gcr.io/rd6-project/bgp-vector/${CI_PROJECT_NAME}-nginx:${CI_COMMIT_SHORT_SHA}
+    # Prepare fe_admin image
+    - IMAGE=${ADMIN_REPO}:${PLATFORM_NAME}-${APP_ENV}-${CI_COMMIT_SHORT_SHA}
     # build image
-    - docker build -q --pull --no-cache -t ${IMAGE} -f .gitlab-ci/.Dockerfile .
+    - |
+      docker build -q --pull --no-cache -t ${IMAGE} \
+      --build-arg BASE_IMAGE=${NGINX_IMAGE} \
+      --build-arg EXPIRES_TIME=${EXPIRES_TIME} \
+      -f .gitlab-ci/Dockerfile .
     # Show Image Info
     - docker run --rm ${IMAGE} nginx -v
     - docker run --rm ${IMAGE} ls -al /var/www/service
     # Push Image To Hub
     - docker push ${IMAGE}
-  dependencies:
-    - build:dist
+
+package:image:dev:
+  extends: .package_image
+  needs: ["build:dist:dev"]
+  only:
+    refs:
+      - dev
+  variables:
+    APP_ENV: dev
+    EXPIRES_TIME: 1d
+
+package:image:qa:
+  extends: .package_image
+  needs: ["build:dist:qa"]
+  only:
+    refs:
+      - qa
+  variables:
+    APP_ENV: qa
+    EXPIRES_TIME: 3d
+
+package:image:prod:
+  extends: .package_image
+  needs: ["build:dist:prod"]
+  only:
+    refs:
+      - hotfix
+  variables:
+    APP_ENV: prod
+    EXPIRES_TIME: 1w
+
+# Package tgz for NAS
+.package_tgz:
+  stage: package
+  tags:
+    - local-docker
+  except:
+    refs:
+      - triggers
+      - pipelines
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
+  script:
+    - TGZ_NAME=${CI_PROJECT_NAME}.${APP_ENV}-${CI_COMMIT_SHORT_SHA}.tgz
+    - tar zcf ${NAS_PATH}/${TGZ_NAME}_compressing dist/
+    - mv ${NAS_PATH}/${TGZ_NAME}_compressing ${NAS_PATH}/${TGZ_NAME}
+
+package:tgz:dev:
+  extends: .package_tgz
+  needs: ["build:dist:dev"]
+  only:
+    refs:
+      - dev
+  variables:
+    APP_ENV: dev
+
+package:tgz:qa:
+  extends: .package_tgz
+  needs: ["build:dist:qa"]
+  only:
+    refs:
+      - qa
+  variables:
+    APP_ENV: qa
+
+package:tgz:prod:
+  extends: .package_tgz
+  needs: ["build:dist:prod"]
+  only:
+    refs:
+      - hotfix
+  variables:
+    APP_ENV: prod
+
