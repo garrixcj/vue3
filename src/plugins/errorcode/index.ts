@@ -39,25 +39,16 @@ export const maintainCodes = [codeMap.featureMaintain, codeMap.gameMaintain];
 // 登入狀態失敗
 export const sessionCodes = [codeMap.loginError, codeMap.logout];
 
-export type CodeLang = keyof typeof dict;
-export type CodeKey = keyof typeof dict.en;
-export type HexResponse = {
-  code?: CodeKey;
-  response_code?: string;
-  time?: string;
-  body?: string;
-};
-
 // 取得 errorcode 轉譯功能
-export const useCodeTrans = (lang: CodeLang) => {
+export const useCodeTrans = (lang: string) => {
   const { t } = useTrans(dict, lang);
   // error code文本格式
   const getMsg = (response: ResponseData, type = 'error') => {
     let msg = '';
 
     // 通用錯誤訊息
-    if (response.code && t(`${response.code}` as CodeKey)) {
-      msg = `${t(`${response.code}` as CodeKey)}`;
+    if (response.code && t(`${response.code}`)) {
+      msg = `${t(`${response.code}`)}`;
     } else if (type === 'warning') {
       // warning預設'無效的操作'
       msg = `${t('invalid_operation')}`;
@@ -97,15 +88,15 @@ export const { t: codeT } = useTrans(dict);
 
 // error code文本格式
 export const getMsg = (
-  lang: CodeLang,
+  lang: string,
   response: ResponseData,
   type = 'error',
 ) => {
   let msg = '';
 
   // 通用錯誤訊息
-  if (response.code && codeT(`${response.code}` as CodeKey, {}, lang)) {
-    msg = `${codeT(`${response.code}` as CodeKey, {}, lang)}`;
+  if (response.code && codeT(`${response.code}`, {}, lang)) {
+    msg = `${codeT(`${response.code}`, {}, lang)}`;
   } else if (type === 'warning') {
     // warning預設'無效的操作'
     msg = `${codeT('invalid_operation', {}, lang)}`;
@@ -128,7 +119,7 @@ export const getMsg = (
 };
 
 // 線路異常時，無法取得錯誤的物件時，包裝錯誤頁面的 body 內容
-export const getBodyMsg = (lang: CodeLang, body: string) => {
+export const getBodyMsg = (lang: string, body: string) => {
   let msg = '';
   const time = dayjs().utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');
   // 線路問題導致4xx或5xx等錯誤的情況
