@@ -12,10 +12,7 @@ import {
   codeMap,
   sessionCodes,
   forbiddenCodes,
-  getMsg,
-  codeT,
-  getBodyMsg,
-  type CodeLang,
+  useCodeTrans,
 } from '@/plugins/errorcode';
 import type { AxiosError } from 'axios';
 import type { FalseResponse, HexResponse, ResponseData } from './typings';
@@ -57,7 +54,7 @@ export default {
         response = JSON.parse(result); // 錯誤代碼
       });
     }
-    const lang: CodeLang = cookieStore.lang;
+    const { t: codeT, getMsg } = useCodeTrans(cookieStore.lang);
     // 錯誤處理
     if (response.result === false) {
       // 記錄至GA
@@ -71,8 +68,8 @@ export default {
         router.push('/login').then(failure => {
           if (!isAllFailure(failure)) {
             notify.error({
-              title: codeT(lang, 'error'),
-              message: getMsg(lang, response),
+              title: codeT('error'),
+              message: getMsg(response),
             });
           }
         });
@@ -81,16 +78,16 @@ export default {
         router.push('/forbidden').then(failure => {
           if (!isAllFailure(failure)) {
             notify.error({
-              title: codeT(lang, 'error'),
-              message: getMsg(lang, response),
+              title: codeT('error'),
+              message: getMsg(response),
             });
           }
         });
         // 沒有修改權限
       } else if (response.code === codeMap.modify) {
         notify.error({
-          title: codeT(lang, 'error'),
-          message: getMsg(lang, response),
+          title: codeT('error'),
+          message: getMsg(response),
         });
         displayStore.reloadMainViewWithPermission();
       } else if (response.code === codeMap.featureMaintain) {
@@ -101,21 +98,21 @@ export default {
         );
       } else if (response.code === codeMap.apiMaintain) {
         // API維護中
-        let errorMessage = codeT(lang, 'api_maintenance_message_1');
+        let errorMessage = codeT('api_maintenance_message_1');
         if (response.data.end_time !== '' && response.data.end_time !== null) {
-          errorMessage = codeT(lang, 'api_maintenance_message', {
+          errorMessage = codeT('api_maintenance_message', {
             time: response.data.end_time,
           });
         }
         notify.error({
-          title: codeT(lang, 'error'),
+          title: codeT('error'),
           message: errorMessage,
         });
       } else if (response.code && !response.data) {
         // 有錯誤代碼且沒有data
         const type = response.type === 'warning' ? 'warning' : 'error';
-        const title = codeT(lang, type);
-        const message = getMsg(lang, response, type);
+        const title = codeT(type);
+        const message = getMsg(response, type);
         // 顯示錯誤訊息
         notify[type]({
           title,
@@ -139,7 +136,7 @@ export default {
           response = JSON.parse(result);
         });
       }
-      const lang: CodeLang = cookieStore.lang;
+      const { getMsg, getBodyMsg } = useCodeTrans(cookieStore.lang);
       // 記錄至GA
       logErrorEvent(
         err.response as HexResponse<FalseResponse>,
@@ -148,15 +145,15 @@ export default {
       );
       // 預設錯誤的情況，後端有回傳error_code
       if (typeof response === 'object') {
-        message.error(getMsg(lang, response));
+        message.error(getMsg(response));
       }
 
       // 因線路問題無法 call 到 server 的情況
       if (typeof response === 'string') {
-        message.error(getBodyMsg(lang, response));
+        message.error(getBodyMsg(response));
       }
 
-      message.error(getMsg(lang, response));
+      message.error(getMsg(response));
       // 500等錯誤回傳時，降下所有Loading
       loadingStore.axios = false;
       // 進axios error時，不會進promise.then，會無法控制page，所以統一降下loading
