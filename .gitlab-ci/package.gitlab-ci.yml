@@ -33,7 +33,7 @@
       -f .gitlab-ci/Dockerfile .
     # Show Image Info
     - docker run --rm ${IMAGE} nginx -v
-    - docker run --rm ${IMAGE} ls -al /var/www/service
+    - docker run --rm ${IMAGE} ls -al /var/www/service/v3
     # Push Image To Hub
     - docker push ${IMAGE}
 
@@ -64,8 +64,8 @@ package:image:prod:
   extends: .package_image
   needs: ["build:dist:prod"]
   only:
-    refs:
-      - hotfix
+    - master
+    - hotfix
   variables:
     APP_ENV: prod
     EXPIRES_TIME: 1w

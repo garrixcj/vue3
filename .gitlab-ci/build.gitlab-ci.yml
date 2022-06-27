@@ -43,25 +43,32 @@
 build:dist:dev:
   extends: .build_dist
   only:
-    - dev
+    refs:
+      - dev
   variables:
     APP_ENV: dev
+    GAMEDICT_STATION: qa
     GIT_SUBMODULE_STRATEGY: recursive
 
 # 編譯測試 dist
 build:dist:qa:
   extends: .build_dist
   only:
-    - qa
+    refs:
+      - qa
   variables:
     APP_ENV: qa
+    GAMEDICT_STATION: qa
     GIT_SUBMODULE_STRATEGY: recursive
 
 # 編譯正式 dist
 build:dist:prod:
   extends: .build_dist
   only:
-    - master
+    refs:
+      - master
+      - hotfix
   variables:
     APP_ENV: prod
+    GAMEDICT_STATION: prod
     GIT_SUBMODULE_STRATEGY: recursive
