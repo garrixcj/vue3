@@ -10,14 +10,14 @@ stages:
   # 部署
   # - deploy
   # 合併
-  # - merge
+  - merge
   # - rebase
 
 include:
   - '/.gitlab-ci/build.gitlab-ci.yml'
   - '/.gitlab-ci/package.gitlab-ci.yml'
   # - '/.gitlab-ci/deploy.gitlab-ci.yml'
-  # - '/.gitlab-ci/merge.gitlab-ci.yml'
-  # - '/.gitlab-ci/rebase.gitlab-ci.yml'
-  # - '/.gitlab-ci/sync.gitlab-ci.yml'
+  - '/.gitlab-ci/merge.gitlab-ci.yml'
+  - '/.gitlab-ci/rebase.gitlab-ci.yml'
+  - '/.gitlab-ci/sync.gitlab-ci.yml'
   - '/.gitlab-ci/test.gitlab-ci.yml'

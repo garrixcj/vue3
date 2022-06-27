@@ -1,4 +1,5 @@
 # Test front-end before merge to main branch
+# 測試前置動作
 .test:
   image:
     name: quay-hub.pid.prod/platform/nodev16:latest

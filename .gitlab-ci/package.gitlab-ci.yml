@@ -1,4 +1,5 @@
 # Package front-end static sources to nginx image
+# 打包 image
 .package_image:
   services:
     - docker:dind
@@ -36,6 +37,7 @@
     # Push Image To Hub
     - docker push ${IMAGE}
 
+# 打包開發 image
 package:image:dev:
   extends: .package_image
   needs: ["build:dist:dev"]
@@ -46,6 +48,7 @@ package:image:dev:
     APP_ENV: dev
     EXPIRES_TIME: 1d
 
+# 打包測試 image
 package:image:qa:
   extends: .package_image
   needs: ["build:dist:qa"]
@@ -56,6 +59,7 @@ package:image:qa:
     APP_ENV: qa
     EXPIRES_TIME: 3d
 
+# 打包正式 image
 package:image:prod:
   extends: .package_image
   needs: ["build:dist:prod"]
@@ -67,6 +71,7 @@ package:image:prod:
     EXPIRES_TIME: 1w
 
 # Package tgz for NAS
+# 打包 tgz 檔
 .package_tgz:
   stage: package
   tags:
@@ -82,6 +87,7 @@ package:image:prod:
     - tar zcf ${NAS_PATH}/${TGZ_NAME}_compressing dist/
     - mv ${NAS_PATH}/${TGZ_NAME}_compressing ${NAS_PATH}/${TGZ_NAME}
 
+# 打包開發 tgz
 package:tgz:dev:
   extends: .package_tgz
   needs: ["build:dist:dev"]
@@ -91,6 +97,7 @@ package:tgz:dev:
   variables:
     APP_ENV: dev
 
+# 打包測試 tgz
 package:tgz:qa:
   extends: .package_tgz
   needs: ["build:dist:qa"]
@@ -100,6 +107,7 @@ package:tgz:qa:
   variables:
     APP_ENV: qa
 
+# 打包正式 tgz
 package:tgz:prod:
   extends: .package_tgz
   needs: ["build:dist:prod"]

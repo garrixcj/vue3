@@ -1,4 +1,5 @@
 # Build front-end static sources
+# 編譯前端 dist
 .build_dist:
   image:
     name: quay-hub.pid.prod/platform/nodev16:latest
@@ -38,6 +39,7 @@
       - dist/
     expire_in: 5 mins
 
+# 編譯開發 dist
 build:dist:dev:
   extends: .build_dist
   only:
@@ -46,6 +48,7 @@ build:dist:dev:
     APP_ENV: dev
     GIT_SUBMODULE_STRATEGY: recursive
 
+# 編譯測試 dist
 build:dist:qa:
   extends: .build_dist
   only:
@@ -54,6 +57,7 @@ build:dist:qa:
     APP_ENV: qa
     GIT_SUBMODULE_STRATEGY: recursive
 
+# 編譯正式 dist
 build:dist:prod:
   extends: .build_dist
   only:
