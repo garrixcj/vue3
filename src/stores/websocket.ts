@@ -3,7 +3,6 @@
  * WebSocket Websocket連線相關
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import { warn } from 'vue';
 import store from './index';
 
 export type WebSocketState = {
@@ -19,22 +18,18 @@ export const useWebSocketStore = defineStore('websocket', {
     reconnectError: false,
   }),
   actions: {
-    SOCKET_ONOPEN() {
+    onOpen() {
       this.isConnected = true;
     },
-    SOCKET_ONCLOSE() {
+    onClose() {
       this.isConnected = false;
     },
-    SOCKET_ONERROR() {
-      // warn('ws error');
-    },
-    SOCKET_ONMESSAGE(message: string) {
+    onError() {},
+    onMessage(message: string) {
       this.message = message;
     },
-    SOCKET_RECONNECT() {
-      warn('ws rc error');
-    },
-    SOCKET_RECONNECT_ERROR() {
+    onReconnect() {},
+    onReconnectError() {
       this.reconnectError = true;
     },
   },

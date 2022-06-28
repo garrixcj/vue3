@@ -1,12 +1,13 @@
 # Test front-end before merge to main branch
+# 測試前置動作
 .test:
   image:
-    name: gcr.io/rd6-project/platform/front/node:v16
+    name: quay-hub.pid.prod/platform/nodev16:latest
   stage: test
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   tags:
-    - gce-gitlab-runner-ssd
+    - local-docker
   only:
     - merge_requests
   cache:
@@ -21,7 +22,7 @@
     - echo 'yarn-offline-mirror ".yarn-cache/"' >> .yarnrc
     - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
     - yarn install --frozen-lockfile --no-progress
-    - ln -fs qa/env.ts src/env/index.ts
+    - ln -fs dev/env.ts src/env/index.ts
     - |
       if [[ `test -d node_modules && echo "" || echo "error"` ]]
       then
@@ -75,7 +76,7 @@ test:build:
 test:console:
   stage: test
   tags:
-    - gce-gitlab-runner-ssd
+    - local-docker
   script:
     - pwd
     - ls -Al

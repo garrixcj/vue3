@@ -1,0 +1,44 @@
+# Rebase gitlab workflow for some mainlines
+# hotfix 的 auto rebase
+rebase:hotfix:
+  stage: rebase
+  tags:
+    - gce-gitlab-runner-ssd
+  needs: []
+  only:
+    refs:
+      - master
+  except:
+    refs:
+      - triggers
+      - pipelines
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
+  before_script:
+    # Remove remote
+    - git remote remove upstream || true
+    - git remote -vv
+  script:
+    # Add remote
+    - git remote add upstream ${GITLAB_PROTOCOL}://${GITLAB_USER}:${GITLAB_TOKEN}@${GITLAB_URL}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git
+    # Get origin branch
+    - git fetch upstream -p
+    - >-
+      if [[ `git branch -a | egrep "remotes/upstream/hotfix$"` ]];
+      then
+        git checkout -B hotfix
+        git reset --hard upstream/hotfix
+        git clean -df
+        git submodule sync --recursive
+        git submodule update --init --recursive
+        git rebase ${CI_COMMIT_SHA} > /tmp/hotfix_rebase.log 2>&1 || true
+        cat /tmp/hotfix_rebase.log
+        if [[ `grep "\-\-abort" /tmp/hotfix_rebase.log` ]];
+        then
+          git rebase --abort
+          exit 1
+        else
+          git push -f upstream hotfix
+        fi
+      fi
+    - git remote remove upstream

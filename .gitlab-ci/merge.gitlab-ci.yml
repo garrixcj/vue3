@@ -1,0 +1,64 @@
+# Auto merge front-end multi-mainline branch
+# 自動合併主幹
+.auto_merge:
+  stage: merge
+  tags:
+    - gce-gitlab-runner-ssd
+  needs: []
+  except:
+    refs:
+      - triggers
+      - pipelines
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
+  before_script:
+    # Remove remote
+    - git remote remove upstream || true
+    - git remote -vv
+  script:
+    # Add remote
+    - git remote add upstream ${GITLAB_PROTOCOL}://${GITLAB_USER}:${GITLAB_TOKEN}@${GITLAB_URL}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git
+    # Get origin branch
+    - git fetch upstream -p
+    # Switch to origin target branch
+    - git checkout -B ${TARGET_BRANCH}
+    - git reset --hard upstream/${TARGET_BRANCH}
+    - git clean -df
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+    # Merge
+    - git merge --no-ff -m "Auto merge branch '${BRANCH}' into '${TARGET_BRANCH}'" upstream/${BRANCH}
+    # Push target branch
+    - git push -f upstream ${TARGET_BRANCH}
+    # Remove remote
+    - git remote remove upstream
+
+# 測試向下合併開發
+merge:dev:
+  extends: .auto_merge
+  only:
+    refs:
+      - qa
+  variables:
+    BRANCH: qa
+    TARGET_BRANCH: dev
+
+# 前哨向下合併測試
+merge:qa:
+  extends: .auto_merge
+  only:
+    refs:
+      - master_pending
+  variables:
+    BRANCH: master_pending
+    TARGET_BRANCH: qa
+
+# 正式向下合併前哨
+merge:mp:
+  extends: .auto_merge
+  only:
+    refs:
+      - master
+  variables:
+    BRANCH: master
+    TARGET_BRANCH: master_pending
