@@ -13,5 +13,15 @@ const env: Env = {
     rd3Live: 'http://live-admin.vir888.com',
     rde: 'http://ltadmin-dev.vir888.com',
   },
+  firebase: {
+    apiKey: 'AIzaSyBaGS6YvLyS0BW2BAWbJYa4HC5MKavJq6E',
+    authDomain: 'pid-admin-deaf3.firebaseapp.com',
+    databaseURL: 'https://pid-admin-deaf3.firebaseio.com',
+    projectId: 'pid-admin-deaf3',
+    storageBucket: 'pid-admin-deaf3.appspot.com',
+    messagingSenderId: '547647742912',
+    appId: '1:547647742912:web:cad8e72d61ad81c3231e25',
+    measurementId: 'G-JJBDBYRMSD',
+  },
 };
 export default env;

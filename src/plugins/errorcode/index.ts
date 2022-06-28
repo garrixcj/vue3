@@ -1,7 +1,7 @@
 /**
  * 統整底層用 Errorcode 對應表
  */
-import dict from '@/language/error/msg.json';
+import dict from '@/languages/error/msg.json';
 import type { ResponseData } from '@/http/typings';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';

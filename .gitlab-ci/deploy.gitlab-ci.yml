@@ -35,7 +35,7 @@
 # 發布到開發站
 deploy:image:dev:
   extends: .deploy_template
-  needs: ["build:image:dev"]
+  needs: ["package:image:dev"]
   only:
     refs:
       - dev
