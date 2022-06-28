@@ -1,30 +1,130 @@
-.deploy_template: &deploy_template
-  image:
-    name: gcr.io/google.com/cloudsdktool/cloud-sdk:353.0.0
-    entrypoint:
-      ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0']
+# Deploy front-end image to service
+# 發布 gcp 模板
+.deploy_template:
+  image: openshift/origin-cli:v4.0.0
   stage: deploy
   tags:
-    - gce-gitlab-runner-ssd
-  only:
-    - master
+    - local-docker
   except:
     refs:
       - triggers
       - pipelines
-  variables:
-    GIT_STRATEGY: none
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
   before_script:
-    - CLUSTER=bb-qa-game-platform
-    - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
-    - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
-    - gcloud config set project rd6-project
-    - gcloud container clusters get-credentials ${CLUSTER} --region asia-east1-b
-    - kubectl config set-context --current --namespace=hex
-  script:
-    - POD=deployment/bgp-pod-nginx-admin-v3
-    - IMAGE=gcr.io/rd6-project/bgp-vector/${CI_PROJECT_NAME}-nginx:${CI_COMMIT_SHORT_SHA}
-    - kubectl set image ${POD} nginx=${IMAGE}
+    - OCP_SERVER=$(eval echo "\$${OCP_APP_ENV}_OCP_SERVER")
+    - OCP_USERNAME=$(eval echo "\$${OCP_APP_ENV}_OCP_USERNAME")
+    - OCP_PASSWORD=$(eval echo "\$${OCP_APP_ENV}_OCP_PASSWORD")
+    - OCP_PROJECT=$(eval echo "\$${OCP_APP_ENV}_OCP_PROJECT")
+    - echo "OCP_SERVER： $OCP_SERVER"
+    - echo "OCP_USERNAME： $OCP_USERNAME"
+    - echo "OCP_PROJECT： $OCP_PROJECT"
 
-deploy:
-  <<: *deploy_template
+  script:
+    - echo $OCP_APP_ENV
+    - pwd
+    - oc version
+    - oc login ${OCP_SERVER} -u ${OCP_USERNAME} -p ${OCP_PASSWORD} --insecure-skip-tls-verify
+    - oc project ${OCP_PROJECT}
+    - oc get pods
+    - oc get is
+    # - DEPLOY_IMAGE=${ADMIN_REPO}:${PLATFORM_NAME}-${APP_ENV}-${CI_COMMIT_SHORT_SHA}
+    # - echo "${DEPLOY_IMAGE}" "${OCP_IS_NAME}"
+    # - oc tag --reference-policy=local --insecure "${DEPLOY_IMAGE}" "${OCP_IS_NAME}:latest"
+
+# 發布到開發站
+deploy:image:dev:
+  extends: .deploy_template
+  needs: ["package:image:dev"]
+  only:
+    refs:
+      - dev
+  variables:
+    OCP_APP_ENV: DEV
+    APP_ENV: dev
+
+# 發布到測試站
+# deploy:image:qa:
+#   extends: .deploy_template
+#   only:
+#     refs:
+#       - tags
+#     variables:
+#       - $CI_COMMIT_TAG =~ /^QA_/
+#   variables:
+#     OCP_APP_ENV: QA
+#     APP_ENV: qa
+
+# 發布到正式站
+# deploy:image:prod:
+#   extends: .deploy_template
+#   only:
+#     refs:
+#       - tags
+#     variables:
+#       - $CI_COMMIT_TAG =~ /^Prod_/
+#   variables:
+#     OCP_APP_ENV: PROD
+#     APP_ENV: prod
+
+# Deploy tgz
+.deploy_tgz_template:
+  stage: deploy
+  tags:
+    - local-docker
+  except:
+    refs:
+      - triggers
+      - pipelines
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
+  script:
+    - apk add --update curl
+    - TGZ_NAME=${CI_PROJECT_NAME}.${APP_ENV}-${CI_COMMIT_SHORT_SHA}.tgz
+    - >-
+      if [[ `test -f ${NAS_PATH}/${TGZ_NAME} && echo "" || echo "error"` ]];
+      then
+          echo "tar not found"
+          exit 1
+      fi
+    - JENKINS_JOB=new-${APP_ENV}-deploy-${CI_PROJECT_NAME}
+    - scp ${NAS_PATH}/${TGZ_NAME} ${PUSH_HOST}:/tmp
+    - curl http://hao:118b3370ec064622cfb143cd943db0d454@10.249.53.71:8080/job/${JENKINS_JOB}/buildWithParameters?token=CLOUD-GITLAB -d TGZ_NAME=${TGZ_NAME}
+
+# 發布 tgz 到開發站
+# deploy:tgz:dev:
+#   extends: .deploy_tgz_template
+#   image: quay-hub.pid.prod/platform/image:dev
+#   needs: ["build:tgz:dev"]
+#   only:
+#     refs:
+#       - dev
+#   variables:
+#     PUSH_HOST: dev
+#     APP_ENV: dev
+
+# 發布 tgz 到測試站
+# deploy:tgz:qa:
+#   extends: .deploy_tgz_template
+#   image: quay-hub.pid.prod/platform/image:qa
+#   only:
+#     refs:
+#       - tags
+#     variables:
+#       - $CI_COMMIT_TAG =~ /^QA_/
+#   variables:
+#     PUSH_HOST: qa
+#     APP_ENV: qa
+
+# 發布 tgz 到正式站
+# deploy:tgz:prod:
+#   extends: .deploy_tgz_template
+#   image: quay-hub.pid.prod/platform/image:master
+#   only:
+#     refs:
+#       - tags
+#     variables:
+#       - $CI_COMMIT_TAG =~ /^Prod_/
+#   variables:
+#     PUSH_HOST: api
+#     APP_ENV: prod

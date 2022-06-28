@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
 
-export interface HexResponse extends AxiosResponse {
-  data: ResponseData;
+export interface HexResponse<T = ResponseData> extends AxiosResponse {
+  data: T;
 }
 
 export type ResponseData = TrueResponse | FalseResponse;

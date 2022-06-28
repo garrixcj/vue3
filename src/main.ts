@@ -19,6 +19,8 @@ import { useLoadingStore } from '@/stores/loading';
 import VueI18n from '@/plugins/i18n';
 // Websocket
 import { WSCreator, WSProvider } from '@/plugins/websocket';
+// Firebase
+import { FirebaseCreator } from '@/plugins/firebase';
 
 const defaultMixin = {
   mounted() {
@@ -45,6 +47,7 @@ const app = createApp(App)
   .use(VLoading)
   .use(WSCreator)
   .use(WSProvider)
+  .use(FirebaseCreator)
   .mixin(defaultMixin)
   .use(router);
 

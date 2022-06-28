@@ -6,6 +6,7 @@ router-view
 import { defineComponent, onBeforeUnmount } from 'vue';
 import { useDisplayStore } from '@/stores/display';
 import { debounce } from 'lodash';
+import { logAppEvent } from '@/plugins/firebase';
 
 export default defineComponent({
   setup() {
@@ -19,6 +20,9 @@ export default defineComponent({
     onBeforeUnmount(() => {
       window.removeEventListener('resize', handleResize);
     });
+
+    // Firebase log event
+    logAppEvent();
   },
 });
 </script>

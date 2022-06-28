@@ -13,4 +13,5 @@ export type Env = {
     bigBallV3?: string; // 大球站轉址
     [key: string]: string;
   };
+  firebase: Record<string, string>;
 };

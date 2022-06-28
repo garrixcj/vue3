@@ -1,3 +1,6 @@
 [submodule "src/components"]
 	path = src/components
 	url = ../../rd6/ve_components.git
+[submodule "src/languages"]
+	path = src/languages
+	url = ../../rd6/dict-admin.git

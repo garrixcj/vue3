@@ -161,27 +161,28 @@ const fallbackRoutes: Array<RouteRecordRaw> = [
   },
 ];
 
+const routerList = getFeatureRoute();
+const mainRouter = {
+  path: '/',
+  name: 'layout',
+  meta: { auth: true },
+  component: view('home/index'),
+  children: [
+    ...defaultRoutes,
+    ...specialRoutes,
+    ...routerList,
+    ...fallbackRoutes,
+  ],
+};
+// 產生 router
+export const router = createRouter({
+  // 路由從 v3 開始
+  history: createWebHistory('/v3/'),
+  // 預設加入訪客路由
+  routes: [...guestRoutes, mainRouter],
+});
+
 export const install = (app: App) => {
-  const routerList = getFeatureRoute();
-  const mainRouter = {
-    path: '/',
-    name: 'layout',
-    meta: { auth: true },
-    component: view('home/index'),
-    children: [
-      ...defaultRoutes,
-      ...specialRoutes,
-      ...routerList,
-      ...fallbackRoutes,
-    ],
-  };
-  // 產生 router
-  const router = createRouter({
-    // 路由從 v3 開始
-    history: createWebHistory('/v3/'),
-    // 預設加入訪客路由
-    routes: [...guestRoutes, mainRouter],
-  });
   routerMiddleware(router);
   app.use(router);
 };

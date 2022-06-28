@@ -1,12 +1,11 @@
 # Build front-end static sources
-build:dist:
+# 編譯前端 dist
+.build_dist:
   image:
-    name: gcr.io/rd6-project/platform/front/node:v16
+    name: quay-hub.pid.prod/platform/nodev16:latest
   stage: build
   tags:
-    - gce-gitlab-runner-ssd
-  only:
-    - master
+    - local-docker
   except:
     refs:
       - triggers
@@ -18,7 +17,7 @@ build:dist:
   script:
     - pwd
     - ls -l node_modules/ | wc -l
-    - ln -fs prod/env.ts src/env/index.ts
+    - ln -fs ${APP_ENV}/env.ts src/env/index.ts
     - yarn build 2>&1 | tee build_result.tmp
     - |
       if [[ `grep -w -E "failed" build_result.tmp` ]]
@@ -28,16 +27,48 @@ build:dist:
       fi
     - ls -al
     - du -sh dist/
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-  artifacts:
-    name: '$CI_COMMIT_SHORT_SHA'
-    paths:
-      - dist/
-    expire_in: 5 mins
   cache:
     key:
       files:
         - yarn.lock
     paths:
       - .yarn-cache/
+  artifacts:
+    name: '$CI_COMMIT_SHORT_SHA'
+    paths:
+      - dist/
+    expire_in: 5 mins
+
+# 編譯開發 dist
+build:dist:dev:
+  extends: .build_dist
+  only:
+    refs:
+      - dev
+  variables:
+    APP_ENV: dev
+    GAMEDICT_STATION: qa
+    GIT_SUBMODULE_STRATEGY: recursive
+
+# 編譯測試 dist
+build:dist:qa:
+  extends: .build_dist
+  only:
+    refs:
+      - qa
+  variables:
+    APP_ENV: qa
+    GAMEDICT_STATION: qa
+    GIT_SUBMODULE_STRATEGY: recursive
+
+# 編譯正式 dist
+build:dist:prod:
+  extends: .build_dist
+  only:
+    refs:
+      - master
+      - hotfix
+  variables:
+    APP_ENV: prod
+    GAMEDICT_STATION: prod
+    GIT_SUBMODULE_STRATEGY: recursive

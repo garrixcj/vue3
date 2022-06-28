@@ -1,23 +1,24 @@
 stages:
   # 測試
   - test
-  # 更新
-  # - sync
+  # 合併
+  - merge
+  # hotfix rebase
+  - rebase
   # 編譯
   - build
   # 打包
   - package
+  # 更新
+  - sync
   # 部署
   - deploy
-  # 合併
-  # - merge
-  # - rebase
 
 include:
   - '/.gitlab-ci/build.gitlab-ci.yml'
   - '/.gitlab-ci/package.gitlab-ci.yml'
   - '/.gitlab-ci/deploy.gitlab-ci.yml'
-  # - '/.gitlab-ci/merge.gitlab-ci.yml'
-  # - '/.gitlab-ci/rebase.gitlab-ci.yml'
-  # - '/.gitlab-ci/sync.gitlab-ci.yml'
+  - '/.gitlab-ci/merge.gitlab-ci.yml'
+  - '/.gitlab-ci/rebase.gitlab-ci.yml'
+  - '/.gitlab-ci/sync.gitlab-ci.yml'
   - '/.gitlab-ci/test.gitlab-ci.yml'

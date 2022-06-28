@@ -1,0 +1,85 @@
+# Sync front-end submodule or fork project
+# 更新 master 至 fork 專案
+sync:fork:master:
+  stage: sync
+  tags:
+    - gce-gitlab-runner-ssd
+  needs: []
+  only:
+    refs:
+      - master
+  except:
+    refs:
+      - triggers
+      - pipelines
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
+  before_script:
+    # Remove remote
+    - git remote remove upstream || true
+    - git remote remove fork || true
+    - git remote -vv
+  script:
+    # Add remote
+    - git remote add fork ${GITLAB_PROTOCOL}://${GITLAB_USER}:${GITLAB_TOKEN}@${GITLAB_URL}/${CI_PROJECT_NAMESPACE}_fork/${CI_PROJECT_NAME}.git
+    - git remote add upstream ${GITLAB_PROTOCOL}://${GITLAB_USER}:${GITLAB_TOKEN}@${GITLAB_URL}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git
+    # Get origin branch
+    - git fetch upstream -p
+    - git push -f fork upstream/master:master
+    # Remove remote
+    - git remote remove fork
+    - git remote remove upstream
+
+# 更新推點
+.git_push:
+  before_script:
+    # Add remote
+    - git remote remove upstream || pwd
+    - git remote add upstream ${GITLAB_PROTOCOL}://${GITLAB_USER}:${GITLAB_TOKEN}@${GITLAB_URL}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git
+    - git fetch upstream
+    # Select working branch
+    - |
+      if [ $(git branch | grep -c ${UPDATE_BRANCH}) -gt '0' ];
+      then
+        git checkout $UPDATE_BRANCH
+      else
+        git checkout -b $UPDATE_BRANCH
+      fi
+    - git reset --hard upstream/$UPDATE_BRANCH
+  after_script:
+    # Add all generated files to Git
+    - git add -A
+    - |
+      # Check if we have modifications to commit
+      CHANGES=$(git status --porcelain | wc -l)
+
+      if [ "$CHANGES" -gt "0" ]; then
+        # Show the status of files that are about to be created, updated or deleted
+        git status
+
+        # Commit all changes
+        git commit -m "Auto update submodule '$UPDATE_PROJECT' into '$UPDATE_BRANCH'"
+
+        # Update the repository and make sure to skip the pipeline create for this commit
+        git push upstream $UPDATE_BRANCH
+      fi
+
+# 被動觸發 submodule 更新時，推點更新master_pending
+sync:submodule:
+  extends: .git_push
+  stage: sync
+  tags:
+    - gce-gitlab-runner-ssd
+  needs: []
+  only:
+    - triggers
+    - pipelines
+  except:
+    variables:
+      - $CI_PROJECT_NAMESPACE =~ /fork/
+  script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+    - git submodule update --remote
+  variables:
+    UPDATE_BRANCH: master_pending
