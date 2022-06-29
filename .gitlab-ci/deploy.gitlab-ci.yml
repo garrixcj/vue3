@@ -28,9 +28,9 @@
     - oc project ${OCP_PROJECT}
     - oc get pods
     - oc get is
-    # - DEPLOY_IMAGE=${ADMIN_REPO}:${PLATFORM_NAME}-${APP_ENV}-${CI_COMMIT_SHORT_SHA}
-    # - echo "${DEPLOY_IMAGE}" "${OCP_IS_NAME}"
-    # - oc tag --reference-policy=local --insecure "${DEPLOY_IMAGE}" "${OCP_IS_NAME}:latest"
+    - DEPLOY_IMAGE=${ADMIN_REPO}:${PLATFORM_NAME}-${APP_ENV}-${CI_COMMIT_SHORT_SHA}
+    - echo "${DEPLOY_IMAGE}" "${OCP_IS_NAME}"
+    - oc tag --reference-policy=local --insecure "${DEPLOY_IMAGE}" "${OCP_IS_NAME}:latest"
 
 # 發布到開發站
 deploy:image:dev:
