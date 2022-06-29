@@ -46,7 +46,7 @@ package:image:dev:
       - dev
   variables:
     APP_ENV: dev
-    EXPIRES_TIME: 1d
+    EXPIRES_TIME: 1w
 
 # 打包測試 image
 package:image:qa:
@@ -57,7 +57,7 @@ package:image:qa:
       - qa
   variables:
     APP_ENV: qa
-    EXPIRES_TIME: 3d
+    EXPIRES_TIME: 1w
 
 # 打包正式 image
 package:image:prod:
