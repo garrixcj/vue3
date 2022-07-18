@@ -13,6 +13,7 @@ export type DisplayState = {
   windowWidth: number;
   windowHeight: number;
   noScroll: boolean;
+  browser: Record<string, boolean>;
 };
 
 export const useDisplayStore = defineStore('display', {
@@ -29,7 +30,13 @@ export const useDisplayStore = defineStore('display', {
     windowHeight: 0,
     // main page 不使用scrollbar
     noScroll: false,
+    // 後端回傳瀏覽器設定
+    browser: {},
   }),
+  getters: {
+    // 判斷是否為寰宇瀏覽器
+    isUBBrowser: (state: DisplayState) => state.browser.ub,
+  },
   actions: {
     // 計算畫面寬高
     resizeWindow() {
@@ -45,10 +52,10 @@ export const useDisplayStore = defineStore('display', {
     // 主畫面顯示重整(更新權限)
     reloadMainViewWithPermission() {
       this.mainView = false;
-      // const operatorStore = useOperatorStore();
-      // operatorStore.checkSession().then(() => {
-      //   this.mainView = true;
-      // });
+      const operatorStore = useOperatorStore();
+      operatorStore.checkSession().then(() => {
+        this.mainView = true;
+      });
     },
   },
 });

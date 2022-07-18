@@ -21,6 +21,8 @@ import VueI18n from '@/plugins/i18n';
 import { WSCreator, WSProvider } from '@/plugins/websocket';
 // Firebase
 import { FirebaseCreator } from '@/plugins/firebase';
+// Cookie
+// import CookiePlugin from '@/plugins/cookie';
 
 const defaultMixin = {
   mounted() {
@@ -48,6 +50,7 @@ const app = createApp(App)
   .use(WSCreator)
   .use(WSProvider)
   .use(FirebaseCreator)
+  // .use(CookiePlugin)
   .mixin(defaultMixin)
   .use(router);
 

@@ -5,6 +5,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import sessionApi from '@/api/session';
 import { useCookieStore } from './cookie';
 import { usePermissionStore } from './permission';
+import { useDisplayStore } from './display';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useUbAuthStore } from './ubauth';
 import type { HexResponse } from '@/http/typings';
@@ -80,15 +81,18 @@ export const useOperatorStore = defineStore('operator', {
     checkSession() {
       return new Promise<HexResponse>((resolve, reject) => {
         const permissionStore = usePermissionStore();
+        const displayStore = useDisplayStore();
         sessionApi
           .getSession()
           .then(response => {
             if (response.data.result) {
               this.operator = response.data.data.user;
               permissionStore.permissions = response.data.data.permissions;
+              displayStore.browser = response.data.data.browser;
             } else {
               this.operator = {} as Operator;
               permissionStore.permissions = {};
+              displayStore.browser = {};
             }
             resolve(response);
           })
