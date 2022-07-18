@@ -8,12 +8,15 @@ import {
 import { routerMiddleware } from './middleware';
 // todo use new v3 route setting
 import routeJson from './route.json';
+import type { RouteSet } from './route-set';
+
+const routeSets = routeJson as RouteSet[];
 
 const view = (page: string) => () => import(`@/views/${page}.vue`);
 
 // 取得功能路由
 const getFeatureRoute = () =>
-  routeJson
+  routeSets
     .filter(item => item.route !== '')
     .map(item => {
       // 路由
@@ -25,7 +28,7 @@ const getFeatureRoute = () =>
       if (item.component) {
         // 特殊路由走指定component
         component = view(item.component.replace(/^\/+|\/+$/g, ''));
-      } else if (item.host === 'VI_HOST') {
+      } else if (item.host === 'VUE3_HOST') {
         // Vue component
         component = view(path);
       } else {
