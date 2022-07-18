@@ -5,6 +5,9 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 import { useI18n } from 'vue-i18n';
 
+// 平台分類
+export const platformDefault = 'in';
+
 // cookie domain
 const domain = window.location.hostname.split('.').splice(-2).join('.');
 
@@ -54,6 +57,7 @@ export type CookieState = {
   connectSid: string | null;
   langx: string | null;
   langcode: string | null;
+  platform: string | null;
 };
 
 export const useCookieStore = defineStore('cookie', {
@@ -66,6 +70,7 @@ export const useCookieStore = defineStore('cookie', {
     // locale
     langx: Cookies.get('langx') || null,
     langcode: Cookies.get('langcode') || null,
+    platform: Cookies.get('p_service') || null,
   }),
   getters: {
     lang: (state: CookieState) =>
@@ -102,6 +107,16 @@ export const useCookieStore = defineStore('cookie', {
         this.langcode = null;
         Cookies.remove('langx', { domain });
         Cookies.remove('langcode', { domain });
+      }
+    },
+    // 初始化 platform 設置
+    initPlatform(value: string = platformDefault) {
+      if (value === null) {
+        this.platform = null;
+        Cookies.remove('p_service', { domain });
+      } else {
+        this.platform = value;
+        Cookies.set('p_service', value, { domain });
       }
     },
   },
