@@ -9,6 +9,7 @@ import http from '@/http';
 import systemApi from '@/api/system';
 import { codeMap } from '@/plugins/errorcode';
 import { type Router } from 'vue-router';
+import { router as currentRouter } from '@/router';
 
 // 路由中介邏輯
 export const routerMiddleware = (router: Router) => {
@@ -18,21 +19,21 @@ export const routerMiddleware = (router: Router) => {
     const operatorStore = useOperatorStore();
     const menuStore = useMenuStore();
     const permissionStore = usePermissionStore();
-    // 主區塊顯示loading
+    // 主區塊顯示 loading
     loadingStore.index = true;
 
     const locale = cookieStore.lang;
     // 設定網頁標題
     if (to.meta.title) {
       const title: string = to.meta.title;
-      // title如果有字典檔就顯示字典檔的字
+      // title 如果有字典檔就顯示字典檔的字
       // if (messages[locale][title]) {
       //   to.meta.title = messages[locale][title];
       // }
       document.title = to.meta.title || '';
     }
 
-    // 設定Headers PermName
+    // 設定 Headers PermName
     if (to.meta.checkPermissions && to.meta.perm && to.path !== from.path) {
       http.setHeadersPermName(to.meta.perm as string);
     }
@@ -113,4 +114,8 @@ export const routerMiddleware = (router: Router) => {
   });
 };
 
-export default routerMiddleware;
+export const install = () => {
+  routerMiddleware(currentRouter);
+};
+
+export default { install };

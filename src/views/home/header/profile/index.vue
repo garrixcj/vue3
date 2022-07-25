@@ -10,17 +10,17 @@
       i.mdi.mdi-dots-vertical
     template(#dropdown)
       rd-dropdown-menu.profile-menu
-        //- 一般功能(修改密碼、登出)
+        //- 一般功能 (修改密碼、登出)
         rd-dropdown-item.profile-option__title(disabled) {{ t('normal') }}
         //- rd-dropdown-item.profile-option(@click="openPasswdReset") {{ t('change_password') }}
         rd-dropdown-item.profile-option(@click="logout") {{ t('logout') }}
         //- 分隔線
         rd-dropdown-item(divided)
-        //- 進階功能(自訂狀態列)
+        //- 進階功能 (自訂狀態列)
         rd-dropdown-item.profile-option__title(disabled) {{ t('advanced') }}
         rd-dropdown-item.profile-option(@click="openCustomStatus") {{ t('custom_status') }}
-  //- //- 修改密碼(Dialog)
-  //- //- Note: transition-name，mask-transition-name非官網設定
+  //- //- 修改密碼 (Dialog)
+  //- //- Note: transition-name，mask-transition-name 非官網設定
   //- passwd-reset(
   //-   v-model:visible="resetPasswd"
   //-   transition-name="none"
@@ -75,7 +75,7 @@ export default defineComponent({
     // };
 
     // 登出
-    const fullLoading = inject('fullLoading') as Ref<boolean>;
+    const fullLoading = inject('Main:Loading') as Ref<boolean>;
     const logout = () => {
       fullLoading.value = true; // 覆蓋全版 Loading
       // operatorStore.logout().then(() => {

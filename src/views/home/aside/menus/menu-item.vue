@@ -28,7 +28,7 @@
     //- 子項目
     .sub-menu(v-if="!!menu.children?.length" v-show="!menuCollapsed")
       //- 縮合功能
-      sd-collapse-transition
+      rd-collapse-transition
         .sub-menu-items(v-show="!collapse")
           //- 備註：元件預設載入自身
           menu-item(

@@ -1,9 +1,9 @@
 <template lang="pug">
 //- Menu 功能導覽
 .menu(:class="{ 'is-collapsed': collapsed }")
-  //- 關鍵字(custom)
+  //- 關鍵字 (custom)
   .keywords(v-show="!collapsed")
-    a-input.keywords-input(v-model:value="search" placeholder="Search")
+    rd-input.keywords-input(v-model:value="search" placeholder="Search")
       template(#prefix)
         i.mdi.mdi-magnify.keywords-prefix-icon
   //- 功能列表
@@ -32,13 +32,13 @@ export default defineComponent({
   setup() {
     const { t } = useI18n({ useScope: 'parent' });
     const router = useRouter();
-    const collapsed = inject('menuCollapsed');
+    const collapsed = inject('Main:Collapsed');
     // 搜尋字串
     const search = ref('');
     const menuStore = useMenuStore();
     const permissionStore = usePermissionStore();
 
-    // 取得menu
+    // 取得 menu
     // menuStore.setMenu();
     // 首頁
     const home: MenuItemType = {
@@ -54,12 +54,12 @@ export default defineComponent({
     };
 
     const menuList = computed(() => {
-      // 原生menu
+      // 原生 menu
       const originMenu = (menuStore.menu as MenuItemType[]) || [];
-      // 有權限的功能id
+      // 有權限的功能 id
       const permIds = permissionStore.permissionIds;
 
-      // 過濾menu
+      // 過濾 menu
       let filteredMenu: MenuItemType[] = [
         home,
         ...originMenu.filter(menu => permIds.indexOf(+menu.id) !== -1),
@@ -97,11 +97,11 @@ export default defineComponent({
         });
       }
 
-      // 大類Menu(首頁將被分類在此)
+      // 大類 Menu(首頁將被分類在此)
       let category: MenuItemType[] = filteredMenu.filter(
         menu => menu.parent === 0,
       );
-      // 一般Menu
+      // 一般 Menu
       const feature: MenuItemType[] = filteredMenu.filter(
         menu => menu.parent !== 0,
       );
