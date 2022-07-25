@@ -26,13 +26,13 @@ const getFeatureRoute = () =>
       // 元件
       let component: RouteComponent;
       if (item.component) {
-        // 特殊路由走指定component
+        // 特殊路由走指定 component
         component = view(item.component.replace(/^\/+|\/+$/g, ''));
       } else if (item.host === 'VUE3_HOST') {
         // Vue component
         component = view(path);
       } else {
-        // 除此之外都走iframe
+        // 除此之外都走 iframe
         component = view('home/iframe');
         props = {
           host: item.host, // Iframe Host
@@ -87,10 +87,10 @@ const guestRoutes: Array<RouteRecordRaw> = [
   },
 ];
 
-// 特殊路由(變數)
+// 特殊路由 (變數)
 const specialRoutes: Array<RouteRecordRaw> = [];
 
-// 預設路由(需登入)
+// 預設路由 (需登入)
 const defaultRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -111,7 +111,7 @@ const defaultRoutes: Array<RouteRecordRaw> = [
     },
     component: view('home/home'),
     beforeEnter() {
-      // 退回vue2架構下的 /home
+      // 退回 vue2 架構下的 /home
       window.location.href = '/home';
     },
   },
@@ -127,7 +127,7 @@ const defaultRoutes: Array<RouteRecordRaw> = [
   },
 ];
 
-// 預設錯誤路由(需登入，置於route最後)
+// 預設錯誤路由 (需登入，置於 route 最後)
 const fallbackRoutes: Array<RouteRecordRaw> = [
   {
     path: 'forbidden',
@@ -186,7 +186,6 @@ export const router = createRouter({
 });
 
 export const install = (app: App) => {
-  routerMiddleware(router);
   app.use(router);
 };
 

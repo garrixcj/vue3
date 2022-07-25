@@ -11,7 +11,7 @@ import 'highlight.js/styles/atom-one-dark-reasonable.css';
 import RdComponets from '@/components/utils/rd';
 import VLoading from '@/components/utils/loading';
 // Router Settings
-import router from './router';
+import router from '@/router';
 // Global Store
 import store from '@/stores/index';
 import { useLoadingStore } from '@/stores/loading';
@@ -23,13 +23,14 @@ import { WSCreator, WSProvider } from '@/plugins/websocket';
 import { FirebaseCreator } from '@/plugins/firebase';
 // Cookie
 // import CookiePlugin from '@/plugins/cookie';
+import routerMiddleware from '@/router/middleware';
 
 const defaultMixin = {
   mounted() {
     const instance = getCurrentInstance();
     const loadingStore = useLoadingStore();
     const parentNodeID = instance?.vnode.el?.parentNode.id;
-    // 主顯示區塊載入完成，loading消失, iframe的loading已寫到iframe.vue了
+    // 主顯示區塊載入完成，loading 消失，iframe 的 loading 已寫到 iframe.vue 了
     if (
       parentNodeID &&
       parentNodeID.indexOf('main-panel') !== -1 &&
@@ -52,6 +53,7 @@ const app = createApp(App)
   .use(FirebaseCreator)
   // .use(CookiePlugin)
   .mixin(defaultMixin)
-  .use(router);
+  .use(router)
+  .use(routerMiddleware);
 
 app.mount('#app');
