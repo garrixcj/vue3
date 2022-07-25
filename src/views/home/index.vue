@@ -1,5 +1,6 @@
 <template lang="pug">
-//- 有外框版
+el-config-provider(:locale="elLocale")
+//- //- 有外框版
 //- el-container#main-layout(v-loading="loading")
 //-   rd-information
 //-     rd-button(@click="layoutTest = !layoutTest") Layout
@@ -33,10 +34,23 @@ import isEmpty from 'lodash/isEmpty';
 import { ElContainer, ElMain } from 'element-plus';
 import HeaderNavbar from './header/index.vue';
 import AsideMenu from './aside/index.vue';
+// Element locale
+import { ElConfigProvider } from 'element-plus';
+import zhCn from 'element-plus/lib/locale/lang/zh-cn';
+import zhTw from 'element-plus/lib/locale/lang/zh-tw';
+import en from 'element-plus/lib/locale/lang/en';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const elLocaleMap: Record<string, any> = {
+  'zh-tw': zhTw,
+  'zh-cn': zhCn,
+  en: en,
+};
 
 export default defineComponent({
   name: 'AppIndex',
   components: {
+    ElConfigProvider,
     ElContainer,
     ElMain,
     HeaderNavbar,
@@ -46,6 +60,7 @@ export default defineComponent({
     const layoutTest = ref(true);
 
     const { t, locale } = useI18n();
+    const elLocale = computed(() => elLocaleMap[locale.value] || en);
     // Main Layout Locale
     provide('Main:Locale', locale);
 
@@ -80,13 +95,13 @@ export default defineComponent({
     const mainView = computed(() => {
       return displayStore.mainView;
     });
-    // 切換Router時元件行為(升降loading)
+    // 切換 Router 時元件行為 (升降 loading)
     onBeforeRouteUpdate((to, from, next) => {
-      // 先持續Loading
+      // 先持續 Loading
       loadingStore.index = true;
       if (to.path === from.path) {
         if (isEmpty(to.query)) {
-          // 再重新產生iframe製造重整效果
+          // 再重新產生 iframe 製造重整效果
           displayStore.reloadMainViewWithPermission();
           next();
         } else {
@@ -96,7 +111,7 @@ export default defineComponent({
           next();
         }
       } else {
-        // Path裡ID更換，且導到同一個route時
+        // Path 裡 ID 更換，且導到同一個 route 時
         if (to.name === from.name) {
           setTimeout(() => {
             loadingStore.index = false;
@@ -133,6 +148,7 @@ export default defineComponent({
     return {
       layoutTest,
       t,
+      elLocale,
       collapsed,
       pinMenu,
       loading,
