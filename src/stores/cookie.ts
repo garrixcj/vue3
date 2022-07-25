@@ -1,9 +1,8 @@
 /**
- * Cookie cookie相關
+ * Cookie cookie 相關
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import Cookies from 'js-cookie';
-import { useI18n } from 'vue-i18n';
 
 // 平台分類
 export const platformDefault = 'in';
@@ -91,7 +90,7 @@ export const useCookieStore = defineStore('cookie', {
         Cookies.remove('connect.sid', { domain });
       }
     },
-    // 存取語系，更新 cookie 及 i18n 當前語系
+    // 存取語系，更新 cookie
     updateLang(value: string) {
       if (value) {
         const lang = switchLang(value);
@@ -99,9 +98,6 @@ export const useCookieStore = defineStore('cookie', {
         this.langcode = lang;
         Cookies.set('langx', lang, { domain });
         Cookies.set('langcode', lang, { domain });
-
-        const { locale } = useI18n({ useScope: 'global' });
-        locale.value = lang;
       } else {
         this.langx = null;
         this.langcode = null;

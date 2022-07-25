@@ -5,7 +5,6 @@ import {
   type RouteComponent,
   type RouteRecordRaw,
 } from 'vue-router';
-import { routerMiddleware } from './middleware';
 // todo use new v3 route setting
 import routeJson from './route.json';
 import type { RouteSet } from './route-set';
