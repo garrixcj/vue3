@@ -26,12 +26,12 @@
     # Login docker registry
     - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
     - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
-    - gcloud config set project {PROJECT}
+    - gcloud config set project gcp-20210526-001
     - gcloud auth configure-docker --quiet
-    # - gcloud auth configure-docker asia-east1-docker.pkg.dev
+    - gcloud auth configure-docker asia-east1-docker.pkg.dev --quiet
   script:
     - ls -al
-    - IMAGE=asia-east1-docker.pkg.dev/{PROJECT_ID}/web/bgp-vector/${CI_PROJECT_NAME}-nginx:${APP_ENV}-${CI_COMMIT_SHORT_SHA}
+    - IMAGE=asia-east1-docker.pkg.dev/gcp-20210526-001/platform/bin-vector/${CI_PROJECT_NAME}-nginx:${APP_ENV}-${CI_COMMIT_SHORT_SHA}
     # build image
     - docker build -q --pull --no-cache -t ${IMAGE} -f .gitlab-ci/.Dockerfile .
     # Show Image Info
@@ -46,8 +46,6 @@ package:image:dev:
   only:
     - dev
   variables:
-    PROJECT: platform-dev
-    PROJECT_ID: gcp-20220425-010
     APP_ENV: DEV
   dependencies:
     - build:dist:dev
@@ -58,8 +56,6 @@ package:image:qa:
   only:
     - qa
   variables:
-    PROJECT: platform-test
-    PROJECT_ID: gcp-20220425-011
     APP_ENV: QA
   dependencies:
     - build:dist:qa
@@ -71,8 +67,6 @@ package:image:prod:
     - master
     - hotfix
   variables:
-    PROJECT: platform-prod
-    PROJECT_ID: gcp-20220425-012
     APP_ENV: Prod
   dependencies:
     - build:dist:prod

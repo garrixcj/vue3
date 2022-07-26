@@ -1,4 +1,4 @@
-FROM gcr.io/rd6-project/images-build-nginx:latest
+FROM asia-east1-docker.pkg.dev/gcp-20210526-001/platform/base-nginx:latest
 
 RUN mkdir -p /var/www/service
 RUN mkdir -p /var/log/base/ && \
