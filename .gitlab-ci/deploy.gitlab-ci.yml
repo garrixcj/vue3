@@ -1,130 +1,73 @@
 # Deploy front-end image to service
 # 發布 gcp 模板
 .deploy_template:
-  image: openshift/origin-cli:v4.0.0
+  image:
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:353.0.0
+    entrypoint:
+      ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0']
   stage: deploy
   tags:
-    - local-docker
-  except:
-    refs:
-      - triggers
-      - pipelines
-    variables:
-      - $CI_PROJECT_NAMESPACE =~ /fork/
+    - gce-gitlab-runner-ssd
+  variables:
+    GIT_STRATEGY: none
   before_script:
-    - OCP_SERVER=$(eval echo "\$${OCP_APP_ENV}_OCP_SERVER")
-    - OCP_USERNAME=$(eval echo "\$${OCP_APP_ENV}_OCP_USERNAME")
-    - OCP_PASSWORD=$(eval echo "\$${OCP_APP_ENV}_OCP_PASSWORD")
-    - OCP_PROJECT=$(eval echo "\$${OCP_APP_ENV}_OCP_PROJECT")
-    - echo "OCP_SERVER： $OCP_SERVER"
-    - echo "OCP_USERNAME： $OCP_USERNAME"
-    - echo "OCP_PROJECT： $OCP_PROJECT"
-
+    - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
+    - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
+    - gcloud config set project {PROJECT}
+    - echo ${CLUSTER}
+    - gcloud container clusters get-credentials ${CLUSTER} --region asia-east1-b
+    # - gcloud auth configure-docker asia-east1-docker.pkg.dev
+    - kubectl config set-context --current --namespace=hex
   script:
-    - echo $OCP_APP_ENV
-    - pwd
-    - oc version
-    - oc login ${OCP_SERVER} -u ${OCP_USERNAME} -p ${OCP_PASSWORD} --insecure-skip-tls-verify
-    - oc project ${OCP_PROJECT}
-    - oc get pods
-    - oc get is
-    - DEPLOY_IMAGE=${ADMIN_REPO}:${PLATFORM_NAME}-${APP_ENV}-${CI_COMMIT_SHORT_SHA}
-    - echo "${DEPLOY_IMAGE}" "${OCP_IS_NAME}"
-    - oc tag --reference-policy=local --insecure "${DEPLOY_IMAGE}" "${OCP_IS_NAME}:latest"
+    - POD=deployment/bin-pod-nginx-admin-v3
+    - >-
+      CONTAINER_NAME=($(kubectl describe ${POD} | grep -B1 Image | awk '{print $1}' | grep -v "Image\|--" | tr  ':\n'  ' '))
+      CONTAINER_IMAGE=($(kubectl describe ${POD} | grep Image | awk '{print $2}'))
+      UPDATE_IMAGE="kubectl set image ${POD}"
 
-# 發布到開發站
-deploy:image:dev:
+      for ((i=0; i < ${#CONTAINER_NAME[@]}; i++))
+      do
+          UPDATE_IMAGE="${UPDATE_IMAGE} ${CONTAINER_NAME[$i]}=${CONTAINER_IMAGE[$i]}"
+      done
+
+      echo "export ROLLBACK_COMMAND=\"${UPDATE_IMAGE}\"" >> ./rollback_command
+    - cat ./rollback_command
+    - IMAGE=asia-east1-docker.pkg.dev/{PROJECT_ID}/web/bin-vector/${CI_PROJECT_NAME}-nginx:${APP_ENV}-${CI_COMMIT_SHORT_SHA}
+    - kubectl set image ${POD} nginx=${IMAGE}
+  artifacts:
+    paths:
+      - ./rollback_command
+
+# 自動發布到開發站
+deploy:dev:
   extends: .deploy_template
-  needs: ["package:image:dev"]
   only:
     refs:
       - dev
   variables:
-    OCP_APP_ENV: DEV
-    APP_ENV: dev
+    PROJECT: platform-dev
+    PROJECT_ID: gcp-20220425-010
+    CLUSTER: platform-dev
+    APP_ENV: DEV
 
 # 發布到測試站
-# deploy:image:qa:
-#   extends: .deploy_template
-#   only:
-#     refs:
-#       - tags
-#     variables:
-#       - $CI_COMMIT_TAG =~ /^QA_/
-#   variables:
-#     OCP_APP_ENV: QA
-#     APP_ENV: qa
+deploy:qa:
+  extends: .deploy_template
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^QA_/'
+  variables:
+    PROJECT: platform-test
+    PROJECT_ID: gcp-20220425-011
+    CLUSTER: platform-test
+    APP_ENV: QA
 
 # 發布到正式站
-# deploy:image:prod:
-#   extends: .deploy_template
-#   only:
-#     refs:
-#       - tags
-#     variables:
-#       - $CI_COMMIT_TAG =~ /^Prod_/
-#   variables:
-#     OCP_APP_ENV: PROD
-#     APP_ENV: prod
-
-# Deploy tgz
-.deploy_tgz_template:
-  stage: deploy
-  tags:
-    - local-docker
-  except:
-    refs:
-      - triggers
-      - pipelines
-    variables:
-      - $CI_PROJECT_NAMESPACE =~ /fork/
-  script:
-    - apk add --update curl
-    - TGZ_NAME=${CI_PROJECT_NAME}.${APP_ENV}-${CI_COMMIT_SHORT_SHA}.tgz
-    - >-
-      if [[ `test -f ${NAS_PATH}/${TGZ_NAME} && echo "" || echo "error"` ]];
-      then
-          echo "tar not found"
-          exit 1
-      fi
-    - JENKINS_JOB=new-${APP_ENV}-deploy-${CI_PROJECT_NAME}
-    - scp ${NAS_PATH}/${TGZ_NAME} ${PUSH_HOST}:/tmp
-    - curl http://hao:118b3370ec064622cfb143cd943db0d454@10.249.53.71:8080/job/${JENKINS_JOB}/buildWithParameters?token=CLOUD-GITLAB -d TGZ_NAME=${TGZ_NAME}
-
-# 發布 tgz 到開發站
-# deploy:tgz:dev:
-#   extends: .deploy_tgz_template
-#   image: quay-hub.pid.prod/platform/image:dev
-#   needs: ["build:tgz:dev"]
-#   only:
-#     refs:
-#       - dev
-#   variables:
-#     PUSH_HOST: dev
-#     APP_ENV: dev
-
-# 發布 tgz 到測試站
-# deploy:tgz:qa:
-#   extends: .deploy_tgz_template
-#   image: quay-hub.pid.prod/platform/image:qa
-#   only:
-#     refs:
-#       - tags
-#     variables:
-#       - $CI_COMMIT_TAG =~ /^QA_/
-#   variables:
-#     PUSH_HOST: qa
-#     APP_ENV: qa
-
-# 發布 tgz 到正式站
-# deploy:tgz:prod:
-#   extends: .deploy_tgz_template
-#   image: quay-hub.pid.prod/platform/image:master
-#   only:
-#     refs:
-#       - tags
-#     variables:
-#       - $CI_COMMIT_TAG =~ /^Prod_/
-#   variables:
-#     PUSH_HOST: api
-#     APP_ENV: prod
+deploy:prod:
+  extends: .deploy_template
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^Prod_/'
+  variables:
+    PROJECT: platform-prod
+    PROJECT_ID: gcp-20220425-012
+    CLUSTER: platform-prod
+    APP_ENV: Prod

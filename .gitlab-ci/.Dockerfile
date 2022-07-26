@@ -1,11 +1,8 @@
-ARG BASE_IMAGE
-FROM ${BASE_IMAGE}
+FROM gcr.io/rd6-project/images-build-nginx:latest
 
-ARG EXPIRES_TIME
-LABEL quay.expires-after=${EXPIRES_TIME}
-
-# here is layer 2 "deploy"
-# from nginx layer 1, use this image deploy POD
+RUN mkdir -p /var/www/service
+RUN mkdir -p /var/log/base/ && \
+    touch /var/log/base/error.log
 
 COPY dist/ /var/www/service/v3
 COPY dist/index.html /var/www/service/index.html

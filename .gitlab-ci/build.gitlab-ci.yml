@@ -2,10 +2,10 @@
 # 編譯前端 dist
 .build_dist:
   image:
-    name: quay-hub.pid.prod/platform/nodev16:latest
+    name: gcr.io/rd6-project/platform/front/node:v16
   stage: build
   tags:
-    - local-docker
+    - gce-gitlab-runner-ssd
   except:
     refs:
       - triggers

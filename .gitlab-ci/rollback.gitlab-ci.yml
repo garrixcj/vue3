@@ -1,0 +1,45 @@
+# Rollback current version to the previous version
+# 退版
+.rollback:
+  image:
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:353.0.0
+  stage: rollback
+  tags:
+    - gce-gitlab-runner-ssd
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
+    - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
+    - gcloud config set project {PROJECT}
+    - gcloud container clusters get-credentials ${CLUSTER} --region asia-east1-b
+    - kubectl config set-context --current --namespace=hex
+  script:
+    - source ./rollback_command
+    - ${ROLLBACK_COMMAND}
+
+# 發布測試站後預留回溯機制
+rollback:qa:
+  extends: .rollback
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^QA_/'
+      when: manual
+  variables:
+    PROJECT: platform-test
+    CLUSTER: platform-test
+  needs:
+    - job: deploy:qa
+      artifacts: true
+
+# 發布正式站後預留回溯機制
+rollback:prod:
+  extends: .rollback
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^Prod_/'
+      when: manual
+  variables:
+    PROJECT: platform-prod
+    CLUSTER: platform-prod
+  needs:
+    - job: deploy:prod
+      artifacts: true

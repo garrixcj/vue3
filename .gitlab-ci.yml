@@ -13,6 +13,8 @@ stages:
   - sync
   # 部署
   - deploy
+  # 回溯
+  - rollback
 
 include:
   - '/.gitlab-ci/build.gitlab-ci.yml'
@@ -20,5 +22,6 @@ include:
   - '/.gitlab-ci/deploy.gitlab-ci.yml'
   - '/.gitlab-ci/merge.gitlab-ci.yml'
   - '/.gitlab-ci/rebase.gitlab-ci.yml'
+  - '/.gitlab-ci/rollback.gitlab-ci.yml'
   - '/.gitlab-ci/sync.gitlab-ci.yml'
   - '/.gitlab-ci/test.gitlab-ci.yml'
