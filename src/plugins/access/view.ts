@@ -16,9 +16,11 @@ export const useAccess = (permission: string) => {
 /**
  * 分頁權限
  */
-export const useTabAccess = (tabs: { name: string; perm: string }[]) => {
+export const useTabAccess = (
+  tabs: { name: string; perm: string; label: string }[],
+) => {
   const permissionStore = usePermissionStore();
-  // tab過濾有權限的
+  // tab 過濾有權限的
   const currentTabs = computed(() =>
     tabs.filter(tab => !tab.perm || permissionStore.checkPerm(tab.perm)),
   );
@@ -28,7 +30,7 @@ export const useTabAccess = (tabs: { name: string; perm: string }[]) => {
     return acc;
   }, {} as Record<string, boolean>);
 
-  // 設定api
+  // 設定 api
   const setApiPerm = (activeTab: string) => {
     const permName = tabs.find(tab => tab.name == activeTab)?.perm || '';
     if (permName !== '') {
@@ -36,7 +38,7 @@ export const useTabAccess = (tabs: { name: string; perm: string }[]) => {
     }
   };
 
-  // 設定watch
+  // 設定 watch
   const setTabWatcher = (activeTab: Ref<string>) => {
     watch(
       activeTab,
