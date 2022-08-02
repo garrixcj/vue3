@@ -2,7 +2,7 @@
 # 測試前置動作
 .test:
   image:
-    name: quay-hub.pid.prod/platform/nodev16:latest
+    name: gcr.io/rd6-project/platform/front/node:v16
   stage: test
   variables:
     GIT_SUBMODULE_STRATEGY: recursive

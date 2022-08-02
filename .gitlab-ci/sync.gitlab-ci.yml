@@ -64,7 +64,7 @@ sync:fork:master:
         git push upstream $UPDATE_BRANCH
       fi
 
-# 被動觸發 submodule 更新時，推點更新master_pending
+# 被動觸發 submodule 更新時，推點更新 master_pending
 sync:submodule:
   extends: .git_push
   stage: sync
