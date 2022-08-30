@@ -917,7 +917,7 @@ export default defineComponent({
     const checkStatus = () => {
       if (route.query) {
         maintainApi
-          .getFeatureMaintenanceStatus(route.query.name as string)
+          .getFeatureEntranceMaintenanceStatus(route.query.name as string)
           .then(resp => {
             if (
               !resp.data.data.status &&

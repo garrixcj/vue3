@@ -35,19 +35,19 @@ export const exportApi = {
   //     }
   //   });
   // },
-  // /**
-  //  * 檢查是否能生成匯出檔案
-  //  * @param  {string} function_name
-  //  * @param  {string} tab_name
-  //  */
-  // checkAvailable(function_name: string, tab_name: string) {
-  //   return this.http.get("/export/check", {
-  //     params: {
-  //       function_name,
-  //       tab_name
-  //     }
-  //   });
-  // },
+  /**
+   * 檢查是否能生成匯出檔案
+   * @param  {string} function_name
+   * @param  {string} tab_name
+   */
+  checkAvailable(function_name: string, tab_name: string) {
+    return this.http.get('/export/check', {
+      params: {
+        function_name,
+        tab_name,
+      },
+    });
+  },
   // /**
   //  * @param  {array} roles
   //  * @param  {array} export_statuses

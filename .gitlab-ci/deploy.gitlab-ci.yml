@@ -32,7 +32,7 @@
 
       echo "export ROLLBACK_COMMAND=\"${UPDATE_IMAGE}\"" >> ./rollback_command
     - cat ./rollback_command
-    - IMAGE=asia-east1-docker.pkg.dev/gcp-20210526-001/platform/bin-vector/${CI_PROJECT_NAME}-nginx:${APP_ENV}-${CI_COMMIT_SHORT_SHA}
+    - IMAGE=asia-east1-docker.pkg.dev/gcp-20210526-001/platform/bbin-vector-${CI_PROJECT_NAME}-nginx:${APP_ENV}-${CI_COMMIT_SHORT_SHA}
     - kubectl set image ${POD} nginx=${IMAGE}
   artifacts:
     paths:

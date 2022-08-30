@@ -16,14 +16,14 @@ export const defaultParameter = {
   // }
   // /**
   //  * 刪除單一預設參數資料
-  //  * @param  {string|number} default_id 預設參數id
+  //  * @param  {string|number} default_id 預設參數 id
   //  */
   // deleteDefaultParameter(default_id: string | number) {
   //   return this.http.delete(`/domain/default/${default_id}/parameter`);
   // },
   // /**
   //  * 取得預設參數相關資料
-  //  * @param  {string|number} default_id 預設參數id
+  //  * @param  {string|number} default_id 預設參數 id
   //  */
   // getUserDefaultParameter(default_id: string | number) {
   //   return this.http.get(`/domain/default/${default_id}/parameter/`);
@@ -62,7 +62,7 @@ export const defaultParameter = {
   // },
   // /**
   //  * 修改預設參數 - 參數名稱和備註
-  //  * @param  {string} default_id 預設參數id
+  //  * @param  {string} default_id 預設參數 id
   //  * @param  {string} name 預設參數名稱
   //  * @param  {string} note 備註
   //  */
@@ -74,7 +74,7 @@ export const defaultParameter = {
   // },
   // /**
   //  * 修改預設參數 - 選單權限資料
-  //  * @param  {string} default_id 預設參數id
+  //  * @param  {string} default_id 預設參數 id
   //  * @param  {array} permissions 權限
   //  * @param  {array} roles 體系權限
   //  */
@@ -86,7 +86,7 @@ export const defaultParameter = {
   // },
   // /**
   //  * 修改預設參數 - 幣別設定資料
-  //  * @param  {string} default_id 預設參數id
+  //  * @param  {string} default_id 預設參數 id
   //  * @param  {string} default_currency 預設幣別
   //  * @param  {array} currencies 可用幣別
   //  */
@@ -102,7 +102,7 @@ export const defaultParameter = {
   // },
   // /**
   //  * 修改預設參數 - 出款銀行設定資料
-  //  * @param  {string} default_id 預設參數id
+  //  * @param  {string} default_id 預設參數 id
   //  * @param  {array} banks 銀行
   //  */
   // setDefaultBanks(default_id: string, banks: []) {
@@ -111,8 +111,8 @@ export const defaultParameter = {
   //   });
   // },
   // /**
-  //  * 修改預設參數 - 基本設定-帳號
-  //  * @param  {string} default_id 預設參數id
+  //  * 修改預設參數 - 基本設定 - 帳號
+  //  * @param  {string} default_id 預設參數 id
   //  * @param  {array} account_setting 帳號設定
   //  */
   // setDefaultAccountSettings(default_id: string, account_setting: []) {
@@ -121,8 +121,8 @@ export const defaultParameter = {
   //   });
   // },
   // /**
-  //  * 修改預設參數 - 基本設定-遊戲
-  //  * @param  {string} default_id 預設參數id
+  //  * 修改預設參數 - 基本設定 - 遊戲
+  //  * @param  {string} default_id 預設參數 id
   //  * @param  {array} lobbys 遊戲設定
   //  */
   // setDefaultLobbies(default_id: string, lobbys: []) {
@@ -138,7 +138,7 @@ export const defaultParameter = {
 export const signature = {
   // http,
   // /**
-  //  * 取App簽名管理ios列表
+  //  * 取 App 簽名管理 ios 列表
   //  * @param  {object} options.domain
   //  * @param  {object} options.signature_method
   //  * @param  {object} options.domain_help
@@ -166,7 +166,7 @@ export const signature = {
   //   return this.http.get("/domain/signature/list", { params });
   // },
   // /**
-  //  * 取App簽名管理操作記錄
+  //  * 取 App 簽名管理操作記錄
   //  * @param  {object} options.start_date
   //  * @param  {object} options.end_date
   //  * @param  {object} options.domain
@@ -244,16 +244,16 @@ export const signature = {
  */
 export const list = {
   http,
+  /**
+   * @param  {0|1} enable 停啟用
+   */
+  getDomainList(enable: 0 | 1) {
+    return this.http.get('/domain', {
+      params: { enable },
+    });
+  },
   // /**
-  //  * @param  {0|1} enable 停啟用
-  //  */
-  // getDomainList(enable: 0 | 1) {
-  //   return this.http.get("/domain", {
-  //     params: { enable }
-  //   });
-  // },
-  // /**
-  //  * 依照廳主類型(真現金、假現金)取得廳主清單
+  //  * 依照廳主類型 (真現金、假現金) 取得廳主清單
   //  * @param  {string} caseTypes
   //  */
   // getDomainListByCashType(caseTypes: string) {
@@ -264,7 +264,7 @@ export const list = {
   //   });
   // },
   // /**
-  //  * 取有開API廳主列表
+  //  * 取有開 API 廳主列表
   //  */
   // getOpenApiDomainList() {
   //   return this.http.get("/domain/api_domain/list");
@@ -399,7 +399,7 @@ export const profile = {
   //   return this.http.post("/domain/online_member/export", params);
   // },
   // /**
-  //  * 取有開API廳主資訊
+  //  * 取有開 API 廳主資訊
   //  * @param  {number} domain
   //  */
   // getApiDomainInfo(domain: number) {
@@ -412,7 +412,7 @@ export const profile = {
   //   return this.http.get("/domain/menu");
   // },
   // /**
-  //  * 修改廳主OTP狀態
+  //  * 修改廳主 OTP 狀態
   //  * @param  {string} domain
   //  * @param  {0|1} otp_switch
   //  */
@@ -550,12 +550,12 @@ export const profile = {
 };
 
 /**
- * 取得廳主API文件相關
+ * 取得廳主 API 文件相關
  */
 export const apiDoc = {
   http,
   // /**
-  //  * 取廳主API列表
+  //  * 取廳主 API 列表
   //  * @param  {string} domain 廳主
   //  * @param  {number} pageInfo.page 頁碼
   //  * @param  {number} pageInfo.limit 筆數
@@ -567,7 +567,7 @@ export const apiDoc = {
   //   });
   // },
   // /**
-  //  * 修改API文件密碼
+  //  * 修改 API 文件密碼
   //  * @param  {number} domain
   //  * @param  {string} apiDocumentPassword
   //  */
@@ -620,7 +620,7 @@ export const currency = {
   //   });
   // },
   // /**
-  //  * 檢查多幣別預設總代or代理帳號 checkCurrencyDefualt
+  //  * 檢查多幣別預設總代 or 代理帳號 checkCurrencyDefualt
   //  * @param  {string} domain
   //  * @param  {string} username
   //  * @param  {string} type
@@ -643,7 +643,7 @@ export const currency = {
 };
 
 /**
- * 取得廳主出入款相關(銀行、錢包)
+ * 取得廳主出入款相關 (銀行、錢包)
  */
 export const payment = {
   http,
@@ -718,14 +718,14 @@ export const auth = {
   //   });
   // },
   // /**
-  //  * 取得 登入驗證管理-驗證開關
+  //  * 取得 登入驗證管理 - 驗證開關
   //  * @param  {string} domain
   //  */
   // getDomainVerifyEnable(domain: string) {
   //   return this.http.get(`/login_verify/domain/${domain}/enable`);
   // },
   // /**
-  //  * 修改 登入驗證管理-驗證開關
+  //  * 修改 登入驗證管理 - 驗證開關
   //  * @param  {string} domain
   //  * @param  {0|1} enable
   //  */
@@ -733,7 +733,7 @@ export const auth = {
   //   return this.http.put(`/login_verify/domain/${domain}/enable/${enable}`);
   // },
   // /**
-  //  * 取得 登入驗證管理-全廳裝置綁定結果
+  //  * 取得 登入驗證管理 - 全廳裝置綁定結果
   //  * @param  {string} domain
   //  * @returns string
   //  */
@@ -751,7 +751,7 @@ export const auth = {
   //   });
   // },
   // /**
-  //  * 修改 登入驗證管理-驗證開關(可調整otp)
+  //  * 修改 登入驗證管理 - 驗證開關 (可調整 otp)
   //  * @param  {string} domain
   //  * @param  {boolean} otp_switch
   //  * @param  {boolean} ubauth_switch
@@ -774,7 +774,7 @@ export const auth = {
 export const userBalance = {
   http,
   // /**
-  //  * 取得會員餘額統計資料(bbin、利息錢包)
+  //  * 取得會員餘額統計資料 (bbin、利息錢包)
   //  * @param  {string} domain
   //  * @param  {string} game_code
   //  * @param  {number} page
@@ -796,7 +796,7 @@ export const userBalance = {
   //   });
   // },
   // /**
-  //  * 取得會員餘額統計資料(外接遊戲)
+  //  * 取得會員餘額統計資料 (外接遊戲)
   //  * @param  {string} domain
   //  * @param  {string} game_code
   //  * @param  {number} page
@@ -817,7 +817,7 @@ export const userBalance = {
   //   });
   // },
   // /**
-  //  * 取得會員餘額統計資料(外接遊戲)
+  //  * 取得會員餘額統計資料 (外接遊戲)
   //  * @param  {string} domain
   //  * @param  {string} type
   //  * @param  {string} currency
@@ -845,7 +845,7 @@ export const userBalance = {
 };
 
 /**
- * 廳主遊戲相關(大廳、遊戲)
+ * 廳主遊戲相關 (大廳、遊戲)
  */
 export const game = {
   http,
@@ -859,7 +859,7 @@ export const game = {
   //   return this.http.put("/domain/lobby", { domain, lobbys, open_all_lobbys });
   // },
   // /**
-  //  * 取得該廳主有退水的lobby
+  //  * 取得該廳主有退水的 lobby
   //  * @param  {string} domain
   //  */
   // getCommissionLobby(domain: string) {
@@ -954,7 +954,7 @@ export const permission = {
 };
 
 /**
- * 廳主 ip清單 相關
+ * 廳主 ip 清單 相關
  */
 export const ipList = {
   http,
@@ -1118,7 +1118,7 @@ const domain = {
   ...list,
   // 廳主資料
   ...profile,
-  // API文件
+  // API 文件
   ...apiDoc,
   // 幣別
   ...currency,
@@ -1132,7 +1132,7 @@ const domain = {
   ...game,
   // 權限
   ...permission,
-  // ip清單
+  // ip 清單
   ...ipList,
   // Infinite Api
   ...infinite,
