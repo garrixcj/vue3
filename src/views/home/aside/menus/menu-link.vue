@@ -53,12 +53,12 @@ export default defineComponent({
     // const menuStore = useMenuStore();
     const router = useRouter();
 
-    // 另開新分頁(qstr參數window.open)
+    // 另開新分頁 (qstr 參數 window.open)
     const windowOpen = computed(() => {
       return props.menu.qstr && props.menu.qstr.indexOf('window.open') !== -1;
     });
 
-    // 主區塊reload
+    // 主區塊 reload
     const mainReload = () => {
       // 點選同一個選項製造重整效果
       if (
@@ -67,7 +67,7 @@ export default defineComponent({
       ) {
         loadingStore.index = true;
         displayStore.reloadMainView();
-        // 重整後取消index loading
+        // 重整後取消 index loading
         setTimeout(() => {
           loadingStore.index = false;
         }, 500);
@@ -81,12 +81,12 @@ export default defineComponent({
           const permissions = Object.values(
             resp.data.data.permissions as () => MenuItem[],
           );
-          // 取得所有權限資料(ID)
+          // 取得所有權限資料 (ID)
           const ids = permissions.map(item => item.id);
 
           // 沒有權限
           if (ids.indexOf(props.menu.id) === -1) {
-            // 原本就在沒權限的頁面，將loading取消
+            // 原本就在沒權限的頁面，將 loading 取消
             if (router.currentRoute.value.path === '/forbidden') {
               loadingStore.index = false;
             }
@@ -95,7 +95,7 @@ export default defineComponent({
           } else {
             // 有權限時檢查是否在維護狀態
             return systemApi
-              .getFeatureMaintenanceStatus(props.menu.name)
+              .getFeatureEntranceMaintenanceStatus(props.menu.name)
               .then(resp => {
                 if (resp.data.result && resp.data.data.status) {
                   router.replace(
@@ -115,9 +115,9 @@ export default defineComponent({
         // 加入瀏覽記錄
         // menuStore.setVisited(props.menu.id);
       } else {
-        // 顯示loading
+        // 顯示 loading
         mainReload();
-        // 檢查選單權限(首頁不檢查)
+        // 檢查選單權限 (首頁不檢查)
         if (props.menu.id !== 0) {
           checkPermission();
         }

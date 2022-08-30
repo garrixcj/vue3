@@ -85,13 +85,13 @@ export default defineComponent({
     const updateOnlineMember = () => {
       renderKey.value = renderKey.value ? 0 : 1;
     };
-    // 取得狀態列資料(origin)
+    // 取得狀態列資料 (origin)
     const customStatus = reactive<CustomStatus>({
       // 圖示開關
       collapse: { enable: true, default: true },
-      // 預設 nav bar功能
+      // 預設 nav bar 功能
       info: [] as CustomSwitch[],
-      // 功能(icon)
+      // 功能 (icon)
       feature: [] as CustomSwitch[],
     });
     // // 更新維護遊戲快捷
@@ -105,7 +105,7 @@ export default defineComponent({
     //     });
     //   }
     // };
-    // 更新資訊(會同時更新遊戲維護數量)
+    // 更新資訊 (會同時更新遊戲維護數量)
     const getProfile = () => {
       return adminApi.getAdminProfile().then(resp => {
         const data: CustomSwitch[] = resp.data.data;
@@ -126,7 +126,7 @@ export default defineComponent({
             default_enable: item.defult_enable,
             sort: item.defult_sort as number,
             count: 0,
-            // 補入slot set
+            // 補入 slot set
             ...(slotFeatures[item.name] || {}),
           }))
           .sort((a, b) => a.sort - b.sort);
@@ -205,7 +205,7 @@ export default defineComponent({
     //         // 刷新權限
     //         store.dispatch('checkSession').then(resp => {
     //           if (resp.data.result) {
-    //             // 當前頁面如果沒有權限就reload
+    //             // 當前頁面如果沒有權限就 reload
     //             if (
     //               router.currentRoute.value.meta.perm &&
     //               !store.getters['permission/checkPerm'](
@@ -237,7 +237,7 @@ export default defineComponent({
     //       ) {
     //         // 刷新維護狀態
     //         systemApi
-    //           .getFeatureMaintenanceStatus(
+    //           .getFeatureEntranceMaintenanceStatus(
     //             router.currentRoute.value.meta.perm as string,
     //           )
     //           .then(resp => {

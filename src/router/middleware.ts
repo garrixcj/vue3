@@ -62,7 +62,7 @@ export const routerMiddleware = (router: Router) => {
       // 檢查分項維護
       const checkMaintenance = (permName: string) =>
         new Promise((resolve, reject) => {
-          systemApi.getFeatureMaintenanceStatus(permName).then(resp => {
+          systemApi.getFeatureEntranceMaintenanceStatus(permName).then(resp => {
             if (!resp.data.data.status) {
               resolve(resp); // 非維護
             } else {

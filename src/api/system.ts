@@ -138,11 +138,9 @@ export const maintain = {
   // },
   /**
    * 取得單一功能維護狀態
-   * todo remove comment
-   * [rename] getFeatureEntranceMaintenanceStatus
    * @param  {string} permission
    */
-  getFeatureMaintenanceStatus(permission: string) {
+  getFeatureEntranceMaintenanceStatus(permission: string) {
     return this.http.get('/feature/entrance/maintenance/status', {
       params: {
         permission,
@@ -520,13 +518,13 @@ export const payoffMonitor = {
 export const apiDoc = {
   http,
   // /**
-  //  * 取得Api文件
+  //  * 取得 Api 文件
   //  */
   // getApiDocument() {
   //   return this.http.get("/system/api_document");
   // },
   // /**
-  //  * 匯出external的API文件
+  //  * 匯出 external 的 API 文件
   //  * @param  {object} options.lang
   //  * @param  {object} options.routes_id
   //  * @param  {object} options.export_remark

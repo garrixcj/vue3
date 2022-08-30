@@ -31,7 +31,7 @@
     - gcloud auth configure-docker asia-east1-docker.pkg.dev --quiet
   script:
     - ls -al
-    - IMAGE=asia-east1-docker.pkg.dev/gcp-20210526-001/platform/bin-vector/${CI_PROJECT_NAME}-nginx:${APP_ENV}-${CI_COMMIT_SHORT_SHA}
+    - IMAGE=asia-east1-docker.pkg.dev/gcp-20210526-001/platform/bbin-vector-${CI_PROJECT_NAME}-nginx:${APP_ENV}-${CI_COMMIT_SHORT_SHA}
     # build image
     - docker build -q --pull --no-cache -t ${IMAGE} -f .gitlab-ci/.Dockerfile .
     # Show Image Info

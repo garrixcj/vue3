@@ -6,7 +6,7 @@ import { useDisplayStore } from '@/stores/display';
 import { useLoadingStore } from '@/stores/loading';
 import { router } from '@/router';
 import { NavigationFailureType, isNavigationFailure } from 'vue-router';
-import { notify } from '@/components/utils/notification';
+import { useTimingNotify } from '@/components/utils/notification';
 import message from '@/components/utils/message';
 import {
   codeMap,
@@ -18,6 +18,9 @@ import type { AxiosError } from 'axios';
 import type { FalseResponse, HexResponse, ResponseData } from './typings';
 import { logEventBase } from '@/plugins/firebase';
 
+// error/warning response 預設使用 10 秒關閉的定時通知物件
+const notify = useTimingNotify();
+
 export const isAllFailure = (failure: unknown) =>
   isNavigationFailure(failure, NavigationFailureType.aborted) ||
   isNavigationFailure(failure, NavigationFailureType.duplicated) ||
@@ -26,10 +29,10 @@ export const isAllFailure = (failure: unknown) =>
 // 記錄至 Google Analytics
 const logErrorEvent = (resp: HexResponse, type: string, code: number) => {
   logEventBase('Error', {
-    // request資訊
+    // request 資訊
     request_method: resp.config.method,
-    request_url: resp.config.url, // 不包含domain
-    request_full_url: resp.request.responseURL, // 包含domain
+    request_url: resp.config.url, // 不包含 domain
+    request_full_url: resp.request.responseURL, // 包含 domain
     request_result: type, // successCall or failureCall
     error_code: code,
   });
@@ -57,7 +60,7 @@ export default {
     const { t: codeT, getMsg } = useCodeTrans(cookieStore.lang);
     // 錯誤處理
     if (response.result === false) {
-      // 記錄至GA
+      // 記錄至 GA
       logErrorEvent(
         resp as HexResponse<FalseResponse>,
         'successCall',
@@ -97,7 +100,7 @@ export default {
           `/error_page?date=${response.data.end_at}&dict=${response.data.dict}&code=${response.code}&name=${response.data.perm_name}`,
         );
       } else if (response.code === codeMap.apiMaintain) {
-        // API維護中
+        // API 維護中
         let errorMessage = codeT('api_maintenance_message_1');
         if (response.data.end_time !== '' && response.data.end_time !== null) {
           errorMessage = codeT('api_maintenance_message', {
@@ -109,7 +112,7 @@ export default {
           message: errorMessage,
         });
       } else if (response.code && !response.data) {
-        // 有錯誤代碼且沒有data
+        // 有錯誤代碼且沒有 data
         const type = response.type === 'warning' ? 'warning' : 'error';
         const title = codeT(type);
         const message = getMsg(response, type);
@@ -127,7 +130,7 @@ export default {
   async failureCall(err: AxiosError<ResponseData | Blob>) {
     const cookieStore = useCookieStore();
     const loadingStore = useLoadingStore();
-    /* 錯誤處理(顯示error code) */
+    /* 錯誤處理 (顯示 error code) */
     let response = err.response?.data as ResponseData;
     if (!response.result) {
       // 因下載專區會以 Blob 格式請求，須進行額外轉換
@@ -137,13 +140,13 @@ export default {
         });
       }
       const { getMsg, getBodyMsg } = useCodeTrans(cookieStore.lang);
-      // 記錄至GA
+      // 記錄至 GA
       logErrorEvent(
         err.response as HexResponse<FalseResponse>,
         'failureCall',
         (err.response as HexResponse<FalseResponse>)?.data.code,
       );
-      // 預設錯誤的情況，後端有回傳error_code
+      // 預設錯誤的情況，後端有回傳 error_code
       if (typeof response === 'object') {
         message.error(getMsg(response));
       }
@@ -154,9 +157,9 @@ export default {
       }
 
       message.error(getMsg(response));
-      // 500等錯誤回傳時，降下所有Loading
+      // 500 等錯誤回傳時，降下所有 Loading
       loadingStore.axios = false;
-      // 進axios error時，不會進promise.then，會無法控制page，所以統一降下loading
+      // 進 axios error 時，不會進 promise.then，會無法控制 page，所以統一降下 loading
       loadingStore.page = false;
     }
     return Promise.reject(err);
