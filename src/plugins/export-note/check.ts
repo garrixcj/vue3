@@ -2,8 +2,8 @@ import exportApi from '@/api/export';
 import systemApi from '@/api/system';
 
 // 檢查 API 是否能匯出檔案
-export const useCheckExport = (functionName: string, tabName: string) => {
-  const checkExport = () =>
+export const useCheckExport = () => {
+  const checkExport = (functionName: string, tabName: string) =>
     new Promise((resolve, reject) => {
       // 檢查是否能生成匯出檔案
       exportApi.checkAvailable(functionName, tabName).then(resp => {

@@ -1,11 +1,19 @@
 <i18n src="./lang.json"></i18n>
 <template lang="pug">
 //- 匯出備註
-rd-dialog(v-model="privateVisible" :show-close="false" width="532px")
+rd-dialog(
+  v-model="privateVisible"
+  :close-on-click-modal="false"
+  :close-on-press-escape="false"
+  :show-close="false"
+  :append-to-body="true"
+  width="532px"
+)
   //- 標題
   template(#title)
-    span.el-dialog__title {{ t('export') }}-{{ t('remark') }}
-    span.title-memo {{ t('export_memo') }}
+    .header
+      .title {{ t('export') }}-{{ t('remark') }}
+      .subtitle {{ t('export_memo') }}
   //- 輸入匡
   rd-input(
     v-model="note"
@@ -60,14 +68,11 @@ export default defineComponent({
 
     const currentVisible = computed(() => props.visible);
 
-    const { checkExport } = useCheckExport(
-      props.params.functionName,
-      props.params.tabName,
-    );
+    const { checkExport } = useCheckExport();
 
     watch(currentVisible, val => {
       if (val) {
-        checkExport()
+        checkExport(props.params.functionName, props.params.tabName)
           .then(() => {
             privateVisible.value = true;
           })
@@ -117,7 +122,11 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-.title-memo {
-  padding-left: 20px;
+.header {
+  @include flex-basic(flex-start, flex-end);
+  @include space(15px);
+  @include divider-margin-vertical(15px, 0);
+  @include header-title-1;
+  @include header-title-2;
 }
 </style>
