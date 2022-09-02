@@ -1,4 +1,4 @@
-// import { pick } from 'lodash';
+import { pick } from 'lodash';
 import http from '@/http/http';
 import multiHttp from '@/http/multi';
 
@@ -91,6 +91,49 @@ export const loginInfo = {
   //   };
   //   return this.http.get("/user/login_record/last", { params });
   // }
+  getMembersLastLoginGroup(domain: string | number, options = {}) {
+    const paramOptions = ['day_group', 'start_date_time'];
+    const params = pick(options, paramOptions);
+    return this.http.get(
+      `/domain/${domain}/members/login_structure/total_number`,
+      { params },
+    );
+  },
+  getMembersLastLoginGroupDetail(domain: string | number, options = {}) {
+    const paramOptions = [
+      'day_group',
+      'start_date_time',
+      'type',
+      'page',
+      'limit',
+      'sort',
+      'order',
+    ];
+    const params = pick(options, paramOptions);
+    return this.http.get(`/domain/${domain}/members/login_structure`, {
+      params,
+    });
+  },
+  /**
+   * 匯出未登入會員名單分群
+   * @param domain
+   * @param options
+   * @returns
+   */
+  exportMembersLastLoginGroup(domain: string | number, options: {}) {
+    const paramOptions = [
+      'day_group',
+      'export_remark',
+      'start_date_time',
+      'lang',
+    ];
+    const params = pick(options, paramOptions);
+
+    return this.http.post(
+      `/domain/${domain}/members/login_structure/export`,
+      params,
+    );
+  },
 };
 
 /**
@@ -232,9 +275,9 @@ export const profile = {
   //     info
   //   });
   // },
-  // getUserByID(id) {
-  //   return this.http.get(`/user/${id}`);
-  // },
+  getUserByID(id: number | string) {
+    return this.http.get(`/user/${id}`);
+  },
   // getNickname(id) {
   //   return this.http.get(`/user/${id}/nickname`);
   // },

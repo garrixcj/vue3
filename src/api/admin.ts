@@ -108,53 +108,48 @@ export const operate = {
   // getCustomFields() {
   //   return this.http.get("/admin/customfield");
   // },
-  // /**
-  //  * 取得顯示欄位
-  //  * @param  {string} operation 功能key
-  //  */
-  // getCustomColumns(operation: string) {
-  //   return this.http.get(`/admin/custom_columns`, {
-  //     params: {
-  //       operation,
-  //     },
-  //   });
-  // },
-  // /**
-  //  * 新增自訂欄位資料
-  //  * @param  {string} operation 功能key
-  //  * @param  {string|number} group_id 自訂欄位群組id(自訂欄位群組第幾個)
-  //  * @param  {string} group_name 群組名稱
-  //  * @param  {array} columns 欄位
-  //  */
-  // postCustomColumns(
-  //   operation: string,
-  //   group_id: string | number,
-  //   group_name: string,
-  //   columns: string[],
-  // ) {
-  //   return this.http.post(`/admin/custom_columns`, {
-  //     group_id,
-  //     group_name,
-  //     columns,
-  //     operation,
-  //   });
-  // },
-  // /**
-  //  * 修改自訂欄位資料
-  //  * @param  {string|number} column_id 欄位id
-  //  * @param  {string} group_name 群組名稱
-  //  * @param  {array} columns 欄位
-  //  */
-  // putCustomColumns(
-  //   column_id: string | number,
-  //   group_name: string,
-  //   columns: string[],
-  // ) {
-  //   return this.http.put(`/admin/${column_id}/custom_columns`, {
-  //     group_name,
-  //     columns,
-  //   });
-  // },
+  /**
+   * 取得控端使用者自訂之顯示欄位
+   * @param  {string} operation 功能key
+   */
+  getCustomColumns(operation: string) {
+    return this.http.get(`/admin/${operation}/custom_columns`);
+  },
+  /**
+   * 新增自訂欄位資料
+   * @param  {string} operation 功能key
+   * @param  {string|number} group_id 自訂欄位群組id(自訂欄位群組第幾個)
+   * @param  {string} group_name 群組名稱
+   * @param  {array} columns 欄位
+   */
+  postCustomColumns(
+    operation: string,
+    group_id: string | number,
+    group_name: string,
+    columns: string[],
+  ) {
+    return this.http.post(`/admin/${operation}/custom_columns`, {
+      group_id,
+      group_name,
+      columns,
+    });
+  },
+  /**
+   * 修改自訂欄位資料
+   * @param  {string|number} column_id 欄位id
+   * @param  {string} group_name 群組名稱
+   * @param  {array} columns 欄位
+   */
+  putCustomColumns(
+    column_id: string | number,
+    group_name: string,
+    columns: string[],
+  ) {
+    return this.http.put(`/admin/${column_id}/custom_columns`, {
+      group_name,
+      columns,
+    });
+  },
   // /**
   //  * 套用已存在的自訂欄位
   //  */

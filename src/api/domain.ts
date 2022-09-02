@@ -1,4 +1,4 @@
-// import { pick } from 'lodash';
+import pick from 'lodash/pick';
 import http from '@/http/http';
 import multiHttp from '@/http/multi';
 import inf from '@/http/inf';
@@ -279,19 +279,19 @@ export const list = {
   //  */
   // getDomainListData(options = {}) {
   //   const paramOptions = [
-  //     "domain",
-  //     "enable",
-  //     "block",
-  //     "page",
-  //     "limit",
-  //     "api_switch"
+  //     'domain',
+  //     'enable',
+  //     'block',
+  //     'page',
+  //     'limit',
+  //     'api_switch',
   //   ];
-  //   return this.http.get("/domain/list", {
+  //   return this.http.get('/domain/list', {
   //     params: {
-  //       ...pick(options, paramOptions)
-  //     }
+  //       ...pick(options, paramOptions),
+  //     },
   //   });
-  // }
+  // },
 };
 
 /**
@@ -466,17 +466,17 @@ export const profile = {
   //  * @param  {object} options.cash_type
   //  * @param  {object} options.switch
   //  */
-  // getDomainsProfile(options: object) {
-  //   const paramOptions = [
-  //     "domain",
-  //     "api_switch",
-  //     "domain_type",
-  //     "cash_type",
-  //     "switch"
-  //   ];
-  //   const params = pick(options, paramOptions);
-  //   return this.http.get("/domains/profile", { params });
-  // },
+  getDomainsProfile(options: object) {
+    const paramOptions = [
+      'domain',
+      'api_switch',
+      'domain_type',
+      'cash_type',
+      'switch',
+    ];
+    const params = pick(options, paramOptions);
+    return this.http.get('/domains/profile', { params });
+  },
   // /**
   //  * 更改廳主基本設定
   //  * @param  {string} domain
