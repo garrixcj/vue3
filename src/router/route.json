@@ -4,7 +4,7 @@
         "name": "AccountsStructureGrouping",
         "note": "帳號結構分群",
         "dict": "accounts_structure_grouping",
-        "route": "/users/accounts-structure-grouping/index",
+        "route": "/users/accounts_structure_grouping/index",
         "perm": "AccountsStructureGrouping",
         "host": "VUE3_HOST",
         "file": "",
@@ -13,7 +13,7 @@
     },
     {
         "id": 855,
-        "route": "/not_logged_in_list_detail",
+        "route": "/members/not_logged_in/structure_grouping/detail",
         "note": "帳號結構分群-未登入會員名單列表",
         "dict": "not_logged_in_list_detail",
         "component": "/users/accounts-structure-grouping/not-logged-in-list/detail-list",
