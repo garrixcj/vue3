@@ -4,7 +4,7 @@
         "name": "AccountsStructureGrouping",
         "note": "帳號結構分群",
         "dict": "accounts_structure_grouping",
-        "route": "/users/accounts_structure_grouping/index",
+        "route": "/users/accounts-structure-grouping/index",
         "perm": "AccountsStructureGrouping",
         "host": "VUE3_HOST",
         "file": "",
