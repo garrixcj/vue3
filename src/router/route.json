@@ -7,7 +7,7 @@
         "route": "/users/accounts-structure-grouping/index",
         "perm": "AccountsStructureGrouping",
         "host": "VUE3_HOST",
-        "file": "",
+        "file": "/users/accounts-structure-grouping/index",
         "qstr": "",
         "component": ""
     },
@@ -20,7 +20,7 @@
         "host": "VUE3_HOST",
         "name": "NotLoggedInList_67",
         "perm": "NotLoggedInList",
-        "file": "",
+        "file": "/members/not_logged_in/structure_grouping/detail",
         "qstr": ""
     }
 ]
