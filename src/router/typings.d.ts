@@ -9,3 +9,11 @@ declare module 'vue-router' {
     perm?: string;
   }
 }
+
+export type languages = {
+  [key: string]: dicts;
+};
+
+export type dicts = {
+  [key: string]: string;
+};
