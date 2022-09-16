@@ -15,7 +15,7 @@
         "id": 855,
         "route": "/members/not_logged_in/structure_grouping/detail",
         "note": "帳號結構分群-未登入會員名單列表",
-        "dict": "not_logged_in_list_detail",
+        "dict": "not_logged_in_list",
         "component": "/users/accounts-structure-grouping/not-logged-in-list/detail-list",
         "host": "VUE3_HOST",
         "name": "NotLoggedInList_67",
