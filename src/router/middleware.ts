@@ -5,10 +5,11 @@ import { useOperatorStore } from '@/stores/operator';
 import { useMenuStore } from '@/stores/menu';
 import { usePermissionStore } from '@/stores/permission';
 import http from '@/http';
-// import messages from '@/pages/home/menu/lang.json';
+import dict from '@/languages/layout/layout.json';
 import systemApi from '@/api/system';
 import { codeMap } from '@/plugins/errorcode';
 import { type Router } from 'vue-router';
+import { languages } from './typings';
 import { router as currentRouter } from '@/router';
 
 // 路由中介邏輯
@@ -22,14 +23,15 @@ export const routerMiddleware = (router: Router) => {
     // 主區塊顯示 loading
     loadingStore.index = true;
 
-    const locale = cookieStore.lang;
+    const locale: string = cookieStore.lang;
+    const messages: languages = dict;
     // 設定網頁標題
     if (to.meta.title) {
       const title: string = to.meta.title;
       // title 如果有字典檔就顯示字典檔的字
-      // if (messages[locale][title]) {
-      //   to.meta.title = messages[locale][title];
-      // }
+      if (messages[locale][title]) {
+        to.meta.title = messages[locale][title];
+      }
       document.title = to.meta.title || '';
     }
 
