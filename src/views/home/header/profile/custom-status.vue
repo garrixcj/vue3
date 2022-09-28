@@ -1,7 +1,6 @@
 <template lang="pug">
 //- 自訂狀態
-rd-dialog(
-  custom-class="custom-status"
+rd-dialog.custom-status(
   show-close
   :model-value="modelValue"
   :title="t('custom_status')"

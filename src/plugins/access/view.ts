@@ -14,6 +14,16 @@ export const useAccess = (permission: string) => {
 };
 
 /**
+ * 複數權限
+ */
+export const useAccesses = (permissions: string[]) => {
+  const permissionStore = usePermissionStore();
+  return computed(() =>
+    permissions.every(permission => permissionStore.checkPerm(permission)),
+  );
+};
+
+/**
  * 分頁權限
  */
 export const useTabAccess = (
