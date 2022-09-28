@@ -10,10 +10,9 @@ rd-dropdown(v-if="type === 'dropdown'" trigger="click")
         @click="changeLocale(locale.value)"
       ) {{ locale.label }}
 //- 對話框
-rd-dialog(
+rd-dialog.trans-locale(
   v-else-if="type === 'dialog'"
   v-bind="$attrs"
-  custom-class="trans-locale"
   show-close
   :model-value="modelValue"
   @update:model-value="$emit('update:model-value', $event)"

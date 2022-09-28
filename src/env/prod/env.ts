@@ -1,7 +1,7 @@
 import type { Env } from '@/env/typings';
 
 const env: Env = {
-  appEnv: 'production',
+  appEnv: 'prod',
   hosts: {
     ws: 'ws.vir000.com',
     bigBallOld: 'https://ctl-v2.vir000.com',

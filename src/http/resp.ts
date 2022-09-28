@@ -51,6 +51,7 @@ export default {
     const cookieStore = useCookieStore();
     const displayStore = useDisplayStore();
     const loadingStore = useLoadingStore();
+    loadingStore.axios = false;
     let response = resp.data as ResponseData;
     if (resp.data.type === 'application/json') {
       await checkBlob(resp as HexResponse<Blob>).then((result: string) => {
@@ -95,7 +96,6 @@ export default {
         displayStore.reloadMainViewWithPermission();
       } else if (response.code === codeMap.featureMaintain) {
         // 功能維護中
-        loadingStore.axios = false;
         router.push(
           `/error_page?date=${response.data.end_at}&dict=${response.data.dict}&code=${response.code}&name=${response.data.perm_name}`,
         );
@@ -121,7 +121,6 @@ export default {
           title,
           message,
         });
-        loadingStore.axios = false;
       }
     }
 
