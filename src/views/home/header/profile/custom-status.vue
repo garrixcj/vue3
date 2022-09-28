@@ -19,7 +19,7 @@ rd-dialog(
       rd-radio-button.primary(:label="false")
         i.mdi.mdi-arrow-collapse-all
         span {{ t('collapse_icon') }}
-  //- 資訊物件清單(前半：線上人數、美東時間)
+  //- 資訊物件清單 (前半：線上人數、美東時間)
   .info-list
     rd-row.info-header
       rd-col.info-header__tr(:span="18") {{ t('item') }}
@@ -28,7 +28,7 @@ rd-dialog(
       rd-col.info-item__td(:span="18") {{ t(item.dict) }}
       rd-col.info-item__td(:span="6")
         rd-switch(v-model="item.enable" :active="switchActiveTheme")
-  //- 功能物件清單(後半：擴充Feature Bar)
+  //- 功能物件清單 (後半：擴充 Feature Bar)
   .info-list
     rd-row.info-header
       rd-col.info-header__tr(:span="18") {{ t('item') }}
@@ -46,7 +46,7 @@ rd-dialog(
   template(#footer)
     //- 按鈕區塊
     .footer-btns
-      rd-button.footer-btn.prefix(type="text" @click="setDefault") {{ t('reset_to_defult_status') }}
+      rd-button.footer-btn.prefix(text @click="setDefault") {{ t('reset_to_defult_status') }}
       rd-button.footer-btn(type="secondary" size="large" @click="close") {{ t('cancel') }}
       rd-button.footer-btn(type="primary" size="large" @click="submit") {{ t('confirm') }}
 </template>
@@ -129,7 +129,7 @@ export default defineComponent({
     // Loading
     const onSetting = ref(false);
     const updateProfile = inject('Nav:updateProfile') as Function;
-    // 全畫面loading
+    // 全畫面 loading
     const fullLoading = inject('Main:Loading') as Ref<boolean>;
     // 表單送出
     const submit = () => {
@@ -173,7 +173,7 @@ export default defineComponent({
             });
             onSetting.value = false;
             fullLoading.value = false;
-            // 更新profile
+            // 更新 profile
             updateProfile();
           }
         })

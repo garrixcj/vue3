@@ -10,7 +10,7 @@ rd-dialog(
   width="532px"
 )
   //- 標題
-  template(#title)
+  template(#header)
     .header
       .title {{ t('export') }}-{{ t('remark') }}
       .subtitle {{ t('export_memo') }}
