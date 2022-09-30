@@ -1,4 +1,4 @@
-<i18n src="./lang.json"></i18n>
+<i18n src="@/languages/plugin/export_note.json"></i18n>
 <template lang="pug">
 //- 匯出備註
 rd-dialog(
