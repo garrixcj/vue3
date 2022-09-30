@@ -1,5 +1,17 @@
 [
     {
+        "id": 851,
+        "name": "WagersCheck",
+        "note": "外接遊戲注單核對",
+        "dict": "external_wagers_check",
+        "route": "/wagers/check/index",
+        "perm": "WagersCheck",
+        "host": "VUE3_HOST",
+        "file": "/wagers/check/index",
+        "qstr": "",
+        "component": ""
+    },
+    {
         "id": 854,
         "name": "AccountsStructureGrouping",
         "note": "帳號結構分群",
@@ -8,6 +20,18 @@
         "perm": "AccountsStructureGrouping",
         "host": "VUE3_HOST",
         "file": "/users/accounts-structure-grouping/index",
+        "qstr": "",
+        "component": ""
+    },
+    {
+        "id": 860,
+        "name": "MemberTwoFactorVerification",
+        "note": "會員雙重驗證",
+        "dict": "member_two_factor_auth",
+        "route": "/users/two-factor-verification/index",
+        "perm": "MemberTwoFactorVerification",
+        "host": "VUE3_HOST",
+        "file": "/users/two-factor-verification/index",
         "qstr": "",
         "component": ""
     },
