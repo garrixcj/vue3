@@ -27,6 +27,7 @@
           :label="t('since_then_offline_days')"
           header-align="center"
           prop="day_group"
+          :resizable="false"
         )
           template(#default="scope")
             span(v-if="scope.row.day_group === 'never'") {{ t('never_logged_in') }}
@@ -42,10 +43,11 @@
           header-align="center"
           align="right"
           prop="total"
+          :resizable="false"
         )
           template(#default="scope")
             rd-button.custom-text(
-              type="text"
+              text
               @click="guideDetail(scope.row.day_group, 'total')"
             ) {{ scope.row.total }}
         rd-table-column(
@@ -54,10 +56,11 @@
           header-align="center"
           align="right"
           prop="enable_total"
+          :resizable="false"
         )
           template(#default="scope")
             rd-button.custom-text(
-              type="text"
+              text
               @click="guideDetail(scope.row.day_group, 'enable')"
             ) {{ scope.row.enable_total }}
         rd-table-column(
@@ -66,10 +69,11 @@
           header-align="center"
           align="right"
           prop="disable_total"
+          :resizable="false"
         )
           template(#default="scope")
             rd-button.custom-text(
-              type="text"
+              text
               @click="guideDetail(scope.row.day_group, 'disable')"
             ) {{ scope.row.disable_total }}
         rd-table-column(
@@ -78,10 +82,11 @@
           header-align="center"
           align="right"
           prop="block_total"
+          :resizable="false"
         )
           template(#default="scope")
             rd-button.custom-text(
-              type="text"
+              text
               @click="guideDetail(scope.row.day_group, 'block')"
             ) {{ scope.row.block_total }}
         rd-table-column(
@@ -90,10 +95,11 @@
           header-align="center"
           align="right"
           prop="bankrupt_total"
+          :resizable="false"
         )
           template(#default="scope")
             rd-button.custom-text(
-              type="text"
+              text
               @click="guideDetail(scope.row.day_group, 'bankrupt')"
             ) {{ scope.row.bankrupt_total }}
         rd-table-column(
@@ -102,16 +108,18 @@
           header-align="center"
           align="right"
           prop="locked_total"
+          :resizable="false"
         )
         rd-table-column(
           v-if="hasExportPerm"
           :label="t('operating')"
           header-align="center"
           align="center"
+          :resizable="false"
         )
           template(#default="scope")
             rd-button.custom-text(
-              type="text"
+              text
               @click="checkExport(scope.row.day_group)"
             ) {{ t('export') }}
   export-note(
@@ -128,15 +136,14 @@ import FormatTimer from '@/components/custom/format-timer/date-time.vue';
 import { notify } from '@/components/utils/notification';
 import FieldFilter from '@/components/custom/field-filter/index.vue';
 import ExportNote from '@/plugins/export-note/index.vue';
-import { initCustomField } from '@/plugins/custom-field/custom-field';
+import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import type {
   TableDataType,
   SearchDateRangeType,
   DetailListFormType,
   DateRangeKey,
-  DateRangeType,
 } from './type';
-import { countsTableColumnsInit } from './custom-fields';
+import { notLoginCountFieldsInitial } from './custom-fields';
 import { useExport } from './export';
 
 export default defineComponent({
@@ -173,8 +180,8 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'parent' });
 
     // 組另開分頁連結
-    const guideDetail = (dayGroup: string, filter: string) => {
-      let url = `/v3/members/not_logged_in/structure_grouping/detail?domain=${form.domain}&day_group=${dayGroup}&type=${filter}`;
+    const guideDetail = (dayGroup: string, type: string) => {
+      let url = `/v3/members/not_logged_in/structure_grouping/detail?domain=${form.domain}&day_group=${dayGroup}&type=${type}`;
       if (
         typeof form.startDateTime !== 'undefined' &&
         form.startDateTime !== ''
@@ -187,13 +194,13 @@ export default defineComponent({
     // 取天數說明
     const getRangeContent = (dayGroup: DateRangeKey) => {
       let content = '';
-      const range: DateRangeType = {
+      const range = {
         '7': [0, 7],
         '14': [8, 14],
         '30': [15, 30],
         '90': [31, 90],
         '180': [91, 180],
-      };
+      } as const;
       switch (dayGroup) {
         case 'never':
           content = t('not_logged_in_tooltip_3');
@@ -213,28 +220,28 @@ export default defineComponent({
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      initCustomField(countsTableColumnsInit());
+      useInitCustomField(notLoginCountFieldsInitial());
 
     // 匯出相關
     const {
-      exportVisible,
-      exportParams,
-      toggleExportDialog,
+      visible: exportVisible,
+      params: exportParams,
+      toggleDialog,
       initExport,
       hasExportPerm,
       exportMembersLastLoginGroup,
     } = useExport();
 
     // 點擊觸發匯出初始設定
-    const dayGroupParam = ref('');
-    const checkExport = (dayGroup: string) => {
+    const dayGroupParam = ref<DateRangeKey>('7');
+    const checkExport = (dayGroup: DateRangeKey) => {
       initExport();
       dayGroupParam.value = dayGroup;
     };
 
     // 執行匯出
     const exportFiled = (note: string) => {
-      toggleExportDialog(false);
+      toggleDialog(false);
       setLoading(true);
       const params = { ...form };
       params.dayGroup = dayGroupParam.value;

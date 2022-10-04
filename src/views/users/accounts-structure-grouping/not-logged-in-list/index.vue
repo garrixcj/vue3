@@ -5,12 +5,12 @@
 .not-logged-in-list
   rd-information(is-open)
     ul
-      li
-        div {{ t('not_logged_in_list_info_1') }}
-        div {{ t('not_logged_in_list_info_6') }}
-      li
-        div {{ t('not_logged_in_list_info_2') }}
-        div {{ t('not_logged_in_list_info_7') }}
+      li {{ t('not_logged_in_list_info_1') }}
+      ul.none-node
+        li {{ t('not_logged_in_list_info_6') }}
+      li {{ t('not_logged_in_list_info_2') }}
+      ul.none-node
+        li {{ t('not_logged_in_list_info_7') }}
       li {{ t('not_logged_in_list_info_3') }}
       li {{ t('not_logged_in_list_info_4') }}
       li {{ t('not_logged_in_list_info_5') }}
@@ -39,7 +39,7 @@
           i.mdi.mdi-magnify
           span {{ t('search') }}
         rd-button(
-          v-show="hasExportPerm"
+          v-if="hasExportPerm"
           type="primary"
           size="large"
           @click="initExport"
@@ -78,9 +78,9 @@ export default defineComponent({
 
     // 匯出相關
     const {
-      exportVisible,
-      exportParams,
-      toggleExportDialog,
+      visible: exportVisible,
+      params: exportParams,
+      toggleDialog,
       initExport,
       hasExportPerm,
       exportMembersLastLoginGroup,
@@ -91,7 +91,7 @@ export default defineComponent({
       if (!checkDomain()) {
         return;
       }
-      toggleExportDialog(false);
+      toggleDialog(false);
       setLoading(true);
       exportMembersLastLoginGroup(form, note).then(
         (resp: { data: { result: boolean } }) => {

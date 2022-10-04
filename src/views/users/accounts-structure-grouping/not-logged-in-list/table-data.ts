@@ -21,7 +21,7 @@ export const useGetListApi = () => {
     params.sort = form.sort;
     params.order = form.order;
 
-    if (form.type !== '' && typeof form.type !== 'undefined') {
+    if (typeof form.type !== 'undefined') {
       params.type = form.type;
     }
 
@@ -64,9 +64,7 @@ export const useGetDayCountApi = () => {
       option.start_date_time = form.startDateTime;
     }
 
-    if (form.dayGroup !== '') {
-      option.day_group = form.dayGroup;
-    }
+    option.day_group = form.dayGroup;
 
     const resp = await loginInfo.getMembersLastLoginGroup(form.domain, option);
     const data = resp.data.data.data[0];
@@ -95,7 +93,7 @@ export const useGetDomainApi = () => {
 // 取所有未登入區間總數列表資料相關
 export const useGetDayCountGroupApi = () => {
   const tableData = ref<TableDataType[]>([]);
-  const dateRange = reactive<SearchDateRangeType>({
+  const dateRange = ref<SearchDateRangeType>({
     startDateTime: '',
     endDateTime: '',
   });
@@ -106,8 +104,8 @@ export const useGetDayCountGroupApi = () => {
     }
     const resp = await loginInfo.getMembersLastLoginGroup(form.domain, option);
     tableData.value = resp.data.data.data;
-    dateRange.startDateTime = resp.data.data.date_range.start_date_time;
-    dateRange.endDateTime = resp.data.data.date_range.end_date_time;
+    dateRange.value.startDateTime = resp.data.data.date_range.start_date_time;
+    dateRange.value.endDateTime = resp.data.data.date_range.end_date_time;
   };
 
   return { tableData, dateRange, getMembersLastLoginGroup };

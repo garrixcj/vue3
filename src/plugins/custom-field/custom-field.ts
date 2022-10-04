@@ -1,10 +1,10 @@
 import { onMounted, ref } from 'vue';
 import { operate as operateApi } from '@/api/admin';
 import { useLoadingStore } from '@/stores/loading';
-import { useCookieStore } from '@/stores/cookie';
 import { notify } from '@/components/utils/notification';
 import dict from '@/languages/plugin/custom_field.json';
 import { useTrans } from '@/plugins/i18n/replace';
+import { useI18n } from 'vue-i18n';
 
 // 自訂欄位資料
 export type FieldsType = {
@@ -25,9 +25,10 @@ export type FieldsInfoType = {
   data: FieldsType[];
 };
 
-// 初始化自訂欄位
-export const initCustomField = (fieldsInfo: FieldsInfoType) => {
-  const { t } = useTrans(dict, useCookieStore().lang);
+// 初始化自訂欄位，需在setup內執行
+export const useInitCustomField = (fieldsInfo: FieldsInfoType) => {
+  const { locale } = useI18n({ useScope: 'global' });
+  const { t } = useTrans(dict, locale.value);
   const customOptions = ref([] as string[]);
   const columnID = ref(0);
   const fieldsData = fieldsInfo.data;
@@ -81,12 +82,13 @@ export const initCustomField = (fieldsInfo: FieldsInfoType) => {
 
   // 確認異動
   const confirm = (fields: string[]) => {
-    useLoadingStore().page = true;
+    const loading = useLoadingStore();
+    loading.page = true;
     putCustomColumns(fields).then(() => {
       notify.success({
         title: t('success'),
       });
-      useLoadingStore().page = false;
+      loading.page = false;
     });
   };
 

@@ -59,24 +59,25 @@ export type DetailTableDataType = {
 export type DetailListFormType = {
   domain: number | string;
   startDateTime: string;
-  dayGroup: string;
-  type: string;
+  dayGroup: DateRangeKey;
+  type: DayCountKey;
   page: number;
   limit: number;
   sort: string;
   order: string;
 };
 
+// 未登入區間狀態
+export type DayCountKey =
+  | 'total'
+  | 'enable'
+  | 'disable'
+  | 'block'
+  | 'bankrupt'
+  | 'locked';
+
 // 未登入區間各狀態數量總計
-export type DayCountType = {
-  total: number;
-  enable: number;
-  disable: number;
-  block: number;
-  bankrupt: number;
-  locked: number;
-  [key: string]: number;
-};
+export type DayCountType = Record<DayCountKey, number>;
 
 // 匯出參數
 export type ExportParamsType = {
@@ -84,13 +85,4 @@ export type ExportParamsType = {
   start_date_time: string;
   lang: string;
   day_group: string | number;
-};
-
-// 未登入區間的天數範圍
-export type DateRangeType = {
-  '7': [0, 7];
-  '14': [8, 14];
-  '30': [15, 30];
-  '90': [31, 90];
-  '180': [91, 180];
 };

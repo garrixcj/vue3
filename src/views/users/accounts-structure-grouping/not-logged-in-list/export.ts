@@ -6,22 +6,22 @@ import { useAccesses } from '@/plugins/access/view';
 
 export const useExport = () => {
   const cookieStore = useCookieStore();
-  const exportVisible = ref(false);
-  const exportParams = reactive({
+  const visible = ref(false);
+  const params = reactive({
     functionName: '',
     tabName: '',
   });
 
   // 初始匯出設定
   const initExport = () => {
-    toggleExportDialog(true);
-    exportParams.functionName = 'accounts_structure_group';
-    exportParams.tabName = 'not_logged_in_list';
+    toggleDialog(true);
+    params.functionName = 'accounts_structure_group';
+    params.tabName = 'not_logged_in_list';
   };
 
   // 切換匯出視窗
-  const toggleExportDialog = (status: boolean) => {
-    exportVisible.value = status;
+  const toggleDialog = (status: boolean) => {
+    visible.value = status;
   };
 
   // 判斷是否有匯出權限
@@ -45,9 +45,9 @@ export const useExport = () => {
   };
 
   return {
-    exportVisible,
-    exportParams,
-    toggleExportDialog,
+    visible,
+    params,
+    toggleDialog,
     initExport,
     hasExportPerm,
     exportMembersLastLoginGroup,

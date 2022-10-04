@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n';
 
 // 未登入列表自訂欄位初始設定
-export const detailTableColumnsInit = () => {
+export const notLoginFieldsInitial = () => {
   const { t } = useI18n({ useScope: 'local' });
   return {
     config: {
@@ -92,11 +92,11 @@ export const detailTableColumnsInit = () => {
 };
 
 // 未登入總計列表自訂欄位初始設定
-export const countsTableColumnsInit = () => {
+export const notLoginCountFieldsInitial = () => {
   const { t } = useI18n({ useScope: 'parent' });
   return {
     config: {
-      operation: 'notLoggedInCounts',
+      operation: 'notLoggedInCount',
       groupId: 0,
       groupName: '自訂欄位',
     },
