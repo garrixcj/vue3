@@ -36,9 +36,6 @@ export const useExport = () => {
     if (note !== '') {
       params.export_remark = note;
     }
-    if (form.startDateTime !== '') {
-      params.start_date_time = form.startDateTime;
-    }
     params.lang = cookieStore.lang;
     params.day_group = form.dayGroup;
     return loginInfo.exportMembersLastLoginGroup(form.domain, params);
