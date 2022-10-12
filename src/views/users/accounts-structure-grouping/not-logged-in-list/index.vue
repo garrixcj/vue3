@@ -6,34 +6,12 @@
   rd-information(is-open)
     ul
       li {{ t('not_logged_in_list_info_1') }}
-      ul.none-node
-        li {{ t('not_logged_in_list_info_6') }}
       li {{ t('not_logged_in_list_info_2') }}
-      ul.none-node
-        li {{ t('not_logged_in_list_info_7') }}
       li {{ t('not_logged_in_list_info_3') }}
-      li {{ t('not_logged_in_list_info_4') }}
-      li {{ t('not_logged_in_list_info_5') }}
   .search-bar
     rd-form(ref="formRef" inline :model="form" :rules="rules")
       rd-form-item(:label="t('hall')" prop="domain")
         domain-selector(v-model:value="form.domain" quick-search)
-      rd-form-item(prop="startDateTime")
-        template(#label)
-          span {{ t('not_logged_in_range') }}
-          .search-bar__tooltip
-            rd-tooltip(placement="top")
-              i.mdi.mdi-information
-              template(#content)
-                | {{ t('not_logged_in_range_info') }}
-        rd-date-picker(
-          v-model="form.startDateTime"
-          type="datetime"
-          :placeholder="t('select_datetime')"
-          format="YYYY-MM-DD HH:mm:ss"
-          value-format="YYYY-MM-DD HH:mm:ss"
-        )
-        span.form-item-date__info ~ {{ t('now_time') }}
       rd-form-item
         rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
@@ -44,7 +22,7 @@
           size="large"
           @click="initExport"
         ) {{ t('export') }}
-  table-list(v-show="showTable" :tableData="tableData" :dateRange="dateRange")
+  table-list(v-show="showTable" :tableData="tableData")
   export-note(
     v-model:visible="exportVisible"
     :params="exportParams"
@@ -107,12 +85,10 @@ export default defineComponent({
     };
 
     // 搜尋相關
-    const { tableData, dateRange, getMembersLastLoginGroup } =
-      useGetDayCountGroupApi();
+    const { tableData, getMembersLastLoginGroup } = useGetDayCountGroupApi();
     const showTable = ref(false);
     const form = reactive({
       domain: '',
-      startDateTime: '',
     } as DetailListFormType);
     provide('AccountsStructureGroup:formSearchValue', readonly(form));
 
@@ -166,16 +142,6 @@ export default defineComponent({
         default: '',
         number: true,
       },
-      // 未登入起始時間
-      {
-        key: 'start_date_time',
-        get: () => form.startDateTime,
-        set: (val: string) => {
-          form.startDateTime = val;
-        },
-        filter: () => form.startDateTime !== '',
-        optional: true,
-      },
     ]);
 
     // 監聽路由異動觸發搜尋
@@ -191,7 +157,6 @@ export default defineComponent({
       rules,
       formRef,
       tableData,
-      dateRange,
       showTable,
       exportVisible,
       exportParams,

@@ -92,7 +92,7 @@ export const loginInfo = {
   //   return this.http.get("/user/login_record/last", { params });
   // }
   getMembersLastLoginGroup(domain: string | number, options = {}) {
-    const paramOptions = ['day_group', 'start_date_time'];
+    const paramOptions = ['day_group'];
     const params = pick(options, paramOptions);
     return this.http.get(
       `/domain/${domain}/members/login_structure/total_number`,
@@ -102,7 +102,6 @@ export const loginInfo = {
   getMembersLastLoginGroupDetail(domain: string | number, options = {}) {
     const paramOptions = [
       'day_group',
-      'start_date_time',
       'type',
       'page',
       'limit',
@@ -121,12 +120,7 @@ export const loginInfo = {
    * @returns
    */
   exportMembersLastLoginGroup(domain: string | number, options: {}) {
-    const paramOptions = [
-      'day_group',
-      'export_remark',
-      'start_date_time',
-      'lang',
-    ];
+    const paramOptions = ['day_group', 'export_remark', 'lang'];
     const params = pick(options, paramOptions);
 
     return this.http.post(
