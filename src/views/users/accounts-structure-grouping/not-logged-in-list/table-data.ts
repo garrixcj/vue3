@@ -5,7 +5,6 @@ import type {
   DetailTableDataType,
   DetailListFormType,
   DayCountType,
-  SearchDateRangeType,
   TableDataType,
 } from './type';
 
@@ -23,13 +22,6 @@ export const useGetListApi = () => {
 
     if (typeof form.type !== 'undefined') {
       params.type = form.type;
-    }
-
-    if (
-      form.startDateTime !== '' &&
-      typeof form.startDateTime !== 'undefined'
-    ) {
-      params.start_date_time = form.startDateTime;
     }
 
     const resp = await loginInfo.getMembersLastLoginGroupDetail(
@@ -57,15 +49,12 @@ export const useGetDayCountApi = () => {
     enable: 0,
     total: 0,
   });
+  // 資料更新時間(目前只有180天以上是排程每天更新數值，其他天數區間都是即時資料)
+  const updateDate = ref('');
   const getMembersLastLoginGroup = async (form: DetailListFormType) => {
-    const option = {} as SearchFormType;
-
-    if (form.startDateTime !== '') {
-      option.start_date_time = form.startDateTime;
-    }
-
-    option.day_group = form.dayGroup;
-
+    const option = {
+      day_group: form.dayGroup,
+    };
     const resp = await loginInfo.getMembersLastLoginGroup(form.domain, option);
     const data = resp.data.data.data[0];
     dayCount.total = data.total;
@@ -74,9 +63,10 @@ export const useGetDayCountApi = () => {
     dayCount.block = data.block_total;
     dayCount.bankrupt = data.bankrupt_total;
     dayCount.locked = data.locked_total;
+    updateDate.value = data.update_at;
   };
 
-  return { dayCount, getMembersLastLoginGroup };
+  return { dayCount, updateDate, getMembersLastLoginGroup };
 };
 
 // 取廳主資料相關
@@ -93,20 +83,10 @@ export const useGetDomainApi = () => {
 // 取所有未登入區間總數列表資料相關
 export const useGetDayCountGroupApi = () => {
   const tableData = ref<TableDataType[]>([]);
-  const dateRange = ref<SearchDateRangeType>({
-    startDateTime: '',
-    endDateTime: '',
-  });
   const getMembersLastLoginGroup = async (form: DetailListFormType) => {
-    const option = {} as SearchFormType;
-    if (form.startDateTime !== '') {
-      option.start_date_time = form.startDateTime;
-    }
-    const resp = await loginInfo.getMembersLastLoginGroup(form.domain, option);
+    const resp = await loginInfo.getMembersLastLoginGroup(form.domain);
     tableData.value = resp.data.data.data;
-    dateRange.value.startDateTime = resp.data.data.date_range.start_date_time;
-    dateRange.value.endDateTime = resp.data.data.date_range.end_date_time;
   };
 
-  return { tableData, dateRange, getMembersLastLoginGroup };
+  return { tableData, getMembersLastLoginGroup };
 };

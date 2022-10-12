@@ -3,6 +3,11 @@
   src="@/languages/user/accounts_structure_grouping/not_logged_in_list.json"
 ></i18n>
 <template lang="pug">
+rd-information(is-open)
+  ul
+    li {{ t('not_logged_in_list_info_1') }}
+    li {{ t('not_logged_in_list_info_2') }}
+    li {{ t('not_logged_in_list_info_3') }}
 rd-navbar-layout(noPrePage)
   template(#header)
     .header
@@ -227,7 +232,6 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'local' });
     const form = reactive<DetailListFormType>({
       domain: 0,
-      startDateTime: '',
       dayGroup: '7',
       type: 'total',
       page: 1,
@@ -262,7 +266,7 @@ export default defineComponent({
       if (form.dayGroup === 'never') {
         return t('not_logged_in_tooltip_3');
       } else if (form.dayGroup === '180up') {
-        return t('not_logged_in_tooltip_2');
+        return t('not_logged_in_tooltip_2', { date_time: updateDate.value });
       } else {
         return t('not_logged_in_tooltip_1', {
           before: range[form.dayGroup][0],
@@ -310,7 +314,8 @@ export default defineComponent({
     // 搜尋相關
     const { detailTableData, dataTotalNum, getMembersLastLoginGroupDetail } =
       useGetListApi();
-    const { dayCount, getMembersLastLoginGroup } = useGetDayCountApi();
+    const { dayCount, updateDate, getMembersLastLoginGroup } =
+      useGetDayCountApi();
     const { domainName, getDomain } = useGetDomainApi();
     const sortCondition = reactive({
       prop: 'lock_at',
@@ -403,14 +408,6 @@ export default defineComponent({
           form.type = val;
         },
         default: 'total',
-      },
-      {
-        key: 'start_date_time',
-        get: () => form.startDateTime,
-        set: (val: string) => {
-          form.startDateTime = val;
-        },
-        optional: true,
       },
       {
         key: 'sort',

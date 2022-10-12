@@ -9,7 +9,6 @@ export type GroupTotals = Record<DateRangeKey, number>;
 
 // 總計列表Form可帶入條件
 export type SearchFormType = {
-  start_date_time: string;
   day_group: string;
   type: string;
   page: number;
@@ -27,12 +26,6 @@ export type TableDataType = {
   disable_total: number | string;
   enable_total: number | string;
   locked_total: number | string;
-};
-
-// 搜尋時間區間
-export type SearchDateRangeType = {
-  startDateTime: string;
-  endDateTime: string;
 };
 
 // 未登入詳細列表欄位資料
@@ -58,7 +51,6 @@ export type DetailTableDataType = {
 // 未登入詳細列表搜尋Form可帶入條件
 export type DetailListFormType = {
   domain: number | string;
-  startDateTime: string;
   dayGroup: DateRangeKey;
   type: DayCountKey;
   page: number;
@@ -82,7 +74,6 @@ export type DayCountType = Record<DayCountKey, number>;
 // 匯出參數
 export type ExportParamsType = {
   export_remark: string;
-  start_date_time: string;
   lang: string;
   day_group: string | number;
 };

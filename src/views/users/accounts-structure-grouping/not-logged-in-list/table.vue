@@ -8,15 +8,6 @@
           :defaultValue="customOptions"
           @confirm="confirm"
         )
-        .divider
-          rd-divider.line-height(direction="vertical")
-        .date-range(v-if="dateRange.startDateTime !== ''")
-          .date-range__word {{ t('not_logged_in_range_list') }}
-          format-timer(:date-time="dateRange.startDateTime")
-          .date-range__word ~
-          format-timer(:date-time="dateRange.endDateTime")
-        .date-range(v-else)
-          .date-range__word {{ t('not_logged_in_range_list_now') }}
       rd-table(
         border
         show-summary
@@ -31,13 +22,13 @@
         )
           template(#default="scope")
             span(v-if="scope.row.day_group === 'never'") {{ t('never_logged_in') }}
-            span(v-else-if="scope.row.day_group === '180up'") {{ t('180_days_ago') }}
+            span(v-else-if="scope.row.day_group === '180up'") {{ t('180_days_ago') }}({{ t('estimated_value') }})
             span(v-else) {{ t('days_ago', { day: scope.row.day_group }) }}
             .table-column__tooltip
               rd-tooltip(placement="top")
                 i.mdi.mdi-information
                 template(#content)
-                  | {{ getRangeContent(scope.row.day_group) }}
+                  | {{ getRangeContent(scope.row.day_group, scope.row.update_at) }}
         rd-table-column(
           :label="t('number_of_members')"
           header-align="center"
@@ -137,12 +128,7 @@ import { notify } from '@/components/utils/notification';
 import FieldFilter from '@/components/custom/field-filter/index.vue';
 import ExportNote from '@/plugins/export-note/index.vue';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
-import type {
-  TableDataType,
-  SearchDateRangeType,
-  DetailListFormType,
-  DateRangeKey,
-} from './type';
+import type { TableDataType, DetailListFormType, DateRangeKey } from './type';
 import { notLoginCountFieldsInitial } from './custom-fields';
 import { useExport } from './export';
 
@@ -158,16 +144,6 @@ export default defineComponent({
       type: Array as PropType<TableDataType[]>,
       require: true,
     },
-    dateRange: {
-      type: Object as PropType<SearchDateRangeType>,
-      require: true,
-      default() {
-        return {
-          startDateTime: '',
-          endDateTime: '',
-        };
-      },
-    },
   },
   setup() {
     // 預設載入
@@ -181,18 +157,13 @@ export default defineComponent({
 
     // 組另開分頁連結
     const guideDetail = (dayGroup: string, type: string) => {
-      let url = `/v3/members/not_logged_in/structure_grouping/detail?domain=${form.domain}&day_group=${dayGroup}&type=${type}`;
-      if (
-        typeof form.startDateTime !== 'undefined' &&
-        form.startDateTime !== ''
-      ) {
-        url = `${url}&start_date_time=${form.startDateTime}`;
-      }
-      window.open(url);
+      window.open(
+        `/v3/members/not_logged_in/structure_grouping/detail?domain=${form.domain}&day_group=${dayGroup}&type=${type}`,
+      );
     };
 
     // 取天數說明
-    const getRangeContent = (dayGroup: DateRangeKey) => {
+    const getRangeContent = (dayGroup: DateRangeKey, updateDate = '') => {
       let content = '';
       const range = {
         '7': [0, 7],
@@ -206,7 +177,7 @@ export default defineComponent({
           content = t('not_logged_in_tooltip_3');
           break;
         case '180up':
-          content = t('not_logged_in_tooltip_2');
+          content = t('not_logged_in_tooltip_2', { date_time: updateDate });
           break;
         default:
           content = t('not_logged_in_tooltip_1', {
@@ -279,25 +250,6 @@ export default defineComponent({
   .top-bar {
     @include inline-flex-basic;
     margin: 15px;
-
-    .divider {
-      @include divider-margin-vertical(15px, 15px);
-
-      .line-height {
-        height: 20px;
-      }
-    }
-
-    .date-range {
-      @include flex-basic;
-
-      > * {
-        @include space-multiline;
-      }
-      .datetime-formater {
-        align-items: center;
-      }
-    }
   }
 
   .table-column__tooltip {
