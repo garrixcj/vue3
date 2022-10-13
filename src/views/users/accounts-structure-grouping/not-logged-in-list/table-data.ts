@@ -56,7 +56,7 @@ export const useGetDayCountApi = () => {
       day_group: form.dayGroup,
     };
     const resp = await loginInfo.getMembersLastLoginGroup(form.domain, option);
-    const data = resp.data.data.data[0];
+    const data = resp.data.data[0];
     dayCount.total = data.total;
     dayCount.enable = data.enable_total;
     dayCount.disable = data.disable_total;
@@ -85,7 +85,7 @@ export const useGetDayCountGroupApi = () => {
   const tableData = ref<TableDataType[]>([]);
   const getMembersLastLoginGroup = async (form: DetailListFormType) => {
     const resp = await loginInfo.getMembersLastLoginGroup(form.domain);
-    tableData.value = resp.data.data.data;
+    tableData.value = resp.data.data;
   };
 
   return { tableData, getMembersLastLoginGroup };
