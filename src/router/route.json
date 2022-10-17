@@ -12,6 +12,18 @@
         "component": ""
     },
     {
+        "id": 860,
+        "name": "MemberTwoFactorVerification",
+        "note": "會員雙重驗證",
+        "dict": "member_two_factor_auth",
+        "route": "/users/two-factor-verification/index",
+        "perm": "MemberTwoFactorVerification",
+        "host": "VUE3_HOST",
+        "file": "/users/two-factor-verification/index",
+        "qstr": "",
+        "component": ""
+    },
+    {
         "id": 855,
         "route": "/members/not_logged_in/structure_grouping/detail",
         "note": "帳號結構分群-未登入會員名單列表",
