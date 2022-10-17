@@ -256,14 +256,15 @@ export default defineComponent({
 
     // 取天數說明
     const range = {
-      '7': [0, 7],
-      '14': [8, 14],
-      '30': [15, 30],
-      '90': [31, 90],
-      '180': [91, 180],
+      '14': [7, 14],
+      '30': [14, 30],
+      '90': [30, 90],
+      '180': [90, 180],
     } as const;
     const titleTooltip = computed(() => {
-      if (form.dayGroup === 'never') {
+      if (form.dayGroup === '7') {
+        return t('not_logged_in_tooltip_4');
+      } else if (form.dayGroup === 'never') {
         return t('not_logged_in_tooltip_3');
       } else if (form.dayGroup === '180up') {
         return t('not_logged_in_tooltip_2', { date_time: updateDate.value });

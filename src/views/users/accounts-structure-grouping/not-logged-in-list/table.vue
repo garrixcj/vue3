@@ -166,13 +166,15 @@ export default defineComponent({
     const getRangeContent = (dayGroup: DateRangeKey, updateDate = '') => {
       let content = '';
       const range = {
-        '7': [0, 7],
-        '14': [8, 14],
-        '30': [15, 30],
-        '90': [31, 90],
-        '180': [91, 180],
+        '14': [7, 14],
+        '30': [14, 30],
+        '90': [30, 90],
+        '180': [90, 180],
       } as const;
       switch (dayGroup) {
+        case '7':
+          content = t('not_logged_in_tooltip_4');
+          break;
         case 'never':
           content = t('not_logged_in_tooltip_3');
           break;
