@@ -694,6 +694,24 @@ export const payment = {
  */
 export const auth = {
   http,
+  /**
+   * 取得廳主會員綁定總數
+   * @param  {number} domain
+   */
+  getTotalBinding(domain: number) {
+    return this.http.get(
+      `/domain/${domain}/two_factor_authentication/binding_count`,
+    );
+  },
+  /**
+   * 取得客端會員雙重驗證開關
+   * @param  {number} domain
+   */
+  getMemberSwitch(domain: number) {
+    return this.http.get(
+      `/domain/${domain}/two_factor_authentication/member_switch`,
+    );
+  },
   // /**
   //  * 取得廳主雙重驗證開關及圖形驗證開關狀態、以及最後操作者資訊
   //  * @param  {string} domain
