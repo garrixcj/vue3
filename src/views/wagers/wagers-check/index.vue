@@ -21,9 +21,8 @@ rd-layout(
 <script lang="ts">
 import { defineAsyncComponent, defineComponent, ref, provide } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { RouteWatch } from '@/components/utils/route-watch';
+import { useWatcher } from '@/components/utils/route-watch';
 import { useTabAccess } from '@/plugins/access/view';
-import { useLoadingStore } from '@/stores/loading';
 
 export default defineComponent({
   name: 'ExternalGameWagersCheck', //外接遊戲注單核對
@@ -46,7 +45,7 @@ export default defineComponent({
       },
     ];
 
-    const watcher = new RouteWatch();
+    const watcher = useWatcher();
     const { currentTabs, tabPerms, setTabWatcher } = useTabAccess(tabs);
     setTabWatcher(activeTab);
     watcher.setWatcher((query: { tab: string }) => {
@@ -54,13 +53,6 @@ export default defineComponent({
         activeTab.value = 'wagersCheckList';
       }
     });
-
-    // 處理loading遮罩
-    const loadingStore = useLoadingStore();
-    const setLoading = (status: boolean) => {
-      loadingStore.page = status;
-    };
-    provide('ExternalGameWagersCheck:setLoading', setLoading);
 
     return {
       t,
