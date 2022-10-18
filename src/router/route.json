@@ -1,5 +1,17 @@
 [
     {
+        "id": 741,
+        "name": "URLManagement",
+        "note": "網址管理(PID)",
+        "dict": "url_management",
+        "route": "/system-setting/url-management/index",
+        "perm": "URLManagement",
+        "host": "VUE3_HOST",
+        "file": "/system-setting/url-management/index",
+        "qstr": "",
+        "component": ""
+    },
+    {
         "id": 854,
         "name": "AccountsStructureGrouping",
         "note": "帳號結構分群",
