@@ -11,10 +11,10 @@
       ul.sub-list
         i18n-t(keypath="binding_list_hint2" tag="li")
           template(#function)
-            rd-router-link(
+            rd-link(
               v-if="checkPlatformPerm"
               underline
-              :to="{ path: '/web/main/loginVerification' }"
+              href="/web/main/loginVerification"
               target="_blank"
             ) {{ t('station_security_settings') }}
             span(v-else) {{ t('station_security_settings') }}
@@ -78,16 +78,17 @@
       //- 綁定時間
       rd-form-item(:label="t('binding_time')" prop="date")
         rd-date-picker(
-          v-model="form.date"
           type="datetimerange"
           format="YYYY-MM-DD HH:mm:ss"
           value-format="YYYY-MM-DD HH:mm:ss"
           size="default"
           :disabled-date="disabledDates"
+          :model-value="form.date"
           :range-separator="t('to')"
           :start-placeholder="t('start_time')"
           :end-placeholder="t('end_time')"
           :prevent-disable-date-selection="true"
+          @update:model-value="setDateTime"
         )
       //- 搜尋
       rd-form-item
@@ -98,10 +99,11 @@
 
     .domain-binding-status(v-if="searched")
       .domain-binding-status__label
-        rd-router-link(
+        rd-link(
           v-if="checkPlatformPerm"
           underline
-          :to="{ path: '/web/main/loginVerification' }"
+          href="/web/main/loginVerification"
+          target="_blank"
         ) {{ t('station_security_settings') }}
         span(v-else) {{ t('station_security_settings') }}
         span {{ t('two_verification') }}
@@ -167,7 +169,7 @@ export default defineComponent({
       // 會員帳號
       users: [] as string[],
       // 綁定時間
-      date: [] as string[],
+      date: ['', ''] as [string, string],
       // 綁定類型 ('binding'：已綁定、'1'：UBAuth、'2'：短信驗證)
       type: 'binding',
     });
@@ -219,6 +221,11 @@ export default defineComponent({
     // 不能設未來時間
     const disabledDates = (time: Date) => {
       return dayjs(time.getTime()) > dayjs(Date.now()).utcOffset(-4);
+    };
+
+    // 避免日期為 null 的情形
+    const setDateTime = (event: [string, string] | null) => {
+      form.date = event === null ? ['', ''] : event;
     };
 
     // 回上一頁 query
@@ -276,7 +283,7 @@ export default defineComponent({
       fileReader.onload = e => {
         // e.target：檔案資訊
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        const data: string[] = (e.target as any).result.split('\n').splice(1);
+        const data: string[] = (e.target as any).result.split(/\s+/).splice(1);
 
         if (data.length > dataNum) {
           notify.error(t('exceed_max_and_can_not_import'));
@@ -363,6 +370,7 @@ export default defineComponent({
       authSwitch,
       rules,
       disabledDates,
+      setDateTime,
       importFile,
       downloadExample,
       search,

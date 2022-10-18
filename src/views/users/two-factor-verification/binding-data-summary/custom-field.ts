@@ -1,7 +1,11 @@
 import { useI18n } from 'vue-i18n';
+import { useAccess } from '@/plugins/access/view';
 
 export const bindingFieldsInitial = () => {
   const { t } = useI18n({ useScope: 'parent' });
+  // 是否有 會員資料 權限
+  const userDataPerm = useAccess('UserData');
+
   return {
     config: {
       operation: 'bindingList',
@@ -47,7 +51,7 @@ export const bindingFieldsInitial = () => {
       {
         key: 'telephone',
         name: t('telephone'),
-        visible: true,
+        visible: userDataPerm.value,
         default: true,
         disabled: false,
       },
