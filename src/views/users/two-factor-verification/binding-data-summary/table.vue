@@ -96,7 +96,7 @@ rd-card.binding-table(no-padding)
         template(#default="{ row: { id, username } }")
           rd-link(
             v-if="checkUserDetailPerm"
-            :href="`user/${id}/detail_info`"
+            :href="`/user/${id}/detail_info`"
             target="_blank"
           ) {{ username }}
           span(v-else) {{ username }}
