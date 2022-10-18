@@ -51,37 +51,31 @@ rd-layout.url-management(
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, ref, provide } from 'vue';
+import { defineComponent, ref, provide } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
 import host from '@/plugins/url';
 import { useLoadingStore } from '@/stores/loading';
+import CustomerDomain from './customer-domain/index.vue';
+import AgentDomain from './agent-domain/index.vue';
+import IpService from './ip-service/index.vue';
+import SingleNumberProgress from './single-number-progress/index.vue';
+import ActiveDomain from './active-domain.vue';
+import Record from './record.vue';
+import SiteInformation from './site-information.vue';
+import SettingExample from './setting-example.vue';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
   components: {
-    // 客端域名
-    CustomerDomain: defineAsyncComponent(
-      () => import('./customer-domain/index.vue'),
-    ),
-    // 管端域名
-    AgentDomain: defineAsyncComponent(() => import('./agent-domain/index.vue')),
-    // IP服務
-    IpService: defineAsyncComponent(() => import('./ip-service/index.vue')),
-    // 單號進度
-    SingleNumberProgress: defineAsyncComponent(
-      () => import('./single-number-progress/index.vue'),
-    ),
-    // 活躍域名
-    ActiveDomain: defineAsyncComponent(() => import('./active-domain.vue')),
-    // 操作紀錄
-    Record: defineAsyncComponent(() => import('./record.vue')),
-    // 站別資訊
-    SiteInformation: defineAsyncComponent(
-      () => import('./site-information.vue'),
-    ),
-    // 設定範例
-    SettingExample: defineAsyncComponent(() => import('./setting-example.vue')),
+    CustomerDomain, // 客端域名
+    AgentDomain, // 管端域名
+    IpService, // IP服務
+    SingleNumberProgress, //單號進度
+    ActiveDomain, // 活躍域名
+    Record, // 操作紀錄
+    SiteInformation, // 站別資訊
+    SettingExample, // 設定範例
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
