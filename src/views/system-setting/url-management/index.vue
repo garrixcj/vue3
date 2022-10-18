@@ -15,7 +15,7 @@ rd-layout.url-management(
       size="small"
       @click="siteInfoVisible = !siteInfoVisible"
     ) {{ t('site_info') }}
-    site-information(v-if="siteInfoVisible")
+    site-information
 
     //- 設定範例
     rd-button(
@@ -146,9 +146,11 @@ export default defineComponent({
 
     // 站別資訊
     const siteInfoVisible = ref(false);
+    provide('Visible:siteInfo', siteInfoVisible);
 
     // 設定範例
     const settingExampleVisible = ref(false);
+    provide('Visible:settingExample', settingExampleVisible);
 
     return {
       t,
@@ -165,7 +167,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .url-management {
   :deep(.after-title) {
+    @include flex-basic(center);
     margin-left: 10px;
+
+    .el-button {
+      margin-right: 10px;
+    }
   }
 
   .custom-color {
