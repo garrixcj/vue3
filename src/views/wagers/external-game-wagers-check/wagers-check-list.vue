@@ -1,3 +1,4 @@
+/* stylelint-disable order/properties-order */
 <i18n>
   {
     "zh-tw": {
@@ -9,13 +10,14 @@
       "wagers_check_list_information_3": "警語3",
       "wagers_check_list_information_4": "警語4",
       "wagers_check_list_information_5": "無法即時",
+      "must_not_null": "不能空"
     }
   }
   </i18n>
 
 <template lang="pug">
 .wagers-check-list
-  rd-information
+  rd-information(:is-open="false")
     ul
       li {{ t('wagers_check_list_information_1') }}
       li {{ t('wagers_check_list_information_2') }}
@@ -25,7 +27,7 @@
     .search-form
       rd-form(inline label-color="black-blue-2" :model="form" :rules="rules")
         rd-form-item(:label="t('lobby')" prop="lobby")
-          rd-select(v-model:value="form.lobby" :options="form.selectOption")
+          rd-select(v-model:value="form.lobby" :options="selectOption")
         rd-form-item(prop="dateInfo")
           template(#label)
             span {{ t('check_interval') }}
@@ -41,7 +43,7 @@
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD"
           )
-          rd-time-select(
+          rd-time-select.time-item(
             v-model="form.startHour"
             placeholder="開始時間"
             start="00:00:00"
@@ -51,76 +53,46 @@
             format="HH:mm:ss"
             :editable="false"
           )
-          span
-          rd-time-select(
+          span.time-item ~
+          rd-time-select.time-item(
             v-model="form.endHour"
             placeholder="結束時間"
             start="00:00:00"
             step="01:00:00"
             end="23:00:00"
-            min-time="17:13:56"
             format="HH:mm:ss"
+            :min-time="form.startHour"
             :editable="false"
           )
-        //- rd-form-item(prop="startHour")
-        //-   rd-time-select(
-        //-     v-model="form.startHour"
-        //-     placeholder="開始時間"
-        //-     start="00:00:00"
-        //-     step="01:00:00"
-        //-     end="23:00:00"
-        //-     max-time="17:13:56"
-        //-     format="HH:mm:ss"
-        //-     :editable="false"
-        //-   )
-        //- rd-form-item(prop="endHour")
-        //-   rd-time-select(
-        //-     v-model="form.endHour"
-        //-     placeholder="結束時間"
-        //-     start="00:00:00"
-        //-     step="01:00:00"
-        //-     end="23:00:00"
-        //-     min-time="17:13:56"
-        //-     format="HH:mm:ss"
-        //-     :editable="false"
-        //-   )
-          //- rd-time-picker(
-          //-   v-model="form.timeInfo"
-          //-   placeholder="開始時間"
-          //-   format="HH:mm"
-          //-   start="00:00"
-          //-   step="01:00"
-          //-   end="24:00"
-          //- )
         rd-form-item
-          rd-button(type="search") 搜尋
-  //- .article
-  //-   rd-card.card-table(type="basic" no-seprate-line no-padding)
-  //-     template(#content)
-  //-       rd-table(
-  //-         border
-  //-         :data="[]"
-  //-         :default-sort="{ prop: 'checkInterval', order: 'descending' }"
-  //-       )
-  //-         //- 核對區間
-  //-         rd-table-column(
-  //-           :label="t('check_interval')"
-  //-           sortable
-  //-           prop="checkInterval"
-  //-           header-align="center"
-  //-           align="left"
-  //-           :resizable="false"
-  //-         )
-  //-         //- 核對結果
-  //-         rd-table-column(
-  //-           :label="t('check_result')"
-  //-           prop="checkResult"
-  //-           header-align="center"
-  //-           align="right"
-  //-           :resizable="false"
-  //-         )
-  //-         template(v-if="!searched" #empty)
-  //-           before-search-empty(label="開始搜尋吧")
+          rd-button(type="search" @click="startSearch()") 搜尋
+  .article
+    rd-card.card-table(type="basic" no-seprate-line no-padding)
+      template(#content)
+        rd-table(
+          border
+          :data="[]"
+          :default-sort="{ prop: 'checkInterval', order: 'descending' }"
+        )
+          //- 核對區間
+          rd-table-column(
+            :label="t('check_interval')"
+            sortable
+            prop="checkInterval"
+            header-align="center"
+            align="left"
+            :resizable="false"
+          )
+          //- 核對結果
+          rd-table-column(
+            :label="t('check_result')"
+            prop="checkResult"
+            header-align="center"
+            align="right"
+            :resizable="false"
+          )
+          template(v-if="!searched" #empty)
+            before-search-empty(label="開始搜尋吧")
 </template>
 
 <script lang="ts">
@@ -134,43 +106,65 @@ export default defineComponent({
     BeforeSearchEmpty,
   },
   setup() {
+    // i18n
     const { t } = useI18n({ useScope: 'local' });
+
+    // 表格 使用  reactive監聽渲染array中各值變化
     const form = reactive({
       lobby: '',
-      selectOption: [
-        { value: 1, label: '我們是誰' },
-        { value: 2, label: '選擇器' },
-        { value: 3, label: '我們的目標是' },
-        { value: 4, label: '世界和平' },
-        { value: 5, label: '怎麼做' },
-        { value: 6, label: '找碴挑事' },
-      ],
       dateInfo: '2022-01-01',
       endHour: '',
       startHour: '',
-      // timeInfo: '',
     });
+
+    // lobby
+    const selectOption = [
+      { value: '1', label: '我們是誰' },
+      { value: '2', label: '選擇器' },
+      { value: 3, label: '我們的目標是' },
+      { value: 4, label: '世界和平' },
+      { value: 5, label: '怎麼做' },
+      { value: 6, label: '找碴挑事' },
+    ];
+
     const rules = reactive({
       lobby: [
-        { required: true, massage: t('must_not_null'), trigger: 'change'}
+        { required: true, massage: t('must_not_null'), trigger: 'change' },
       ],
       dateInfo: [
-        { required: true, massage: t('must_not_null'), trigger: 'change'}
+        { required: true, massage: t('must_not_null'), trigger: 'change' },
       ],
     });
-    // const tableDataList = [
-    // { stringColumn: '文', intColumn: 1000 },
-    // { stringColumn: '字', intColumn: 2000 },
-    // { stringColumn: '燒', intColumn: 3000 },
-    // ];
+
+    const startSearch = () => {
+      console.log(form);
+    };
+    const tableDataList = [
+      { stringColumn: '文', intColumn: 1000 },
+      { stringColumn: '字', intColumn: 2000 },
+      { stringColumn: '燒', intColumn: 3000 },
+    ];
     const searched = false;
     return {
       t,
+      selectOption,
       form,
       rules,
       searched,
-      // tableDataList,
+      tableDataList,
+      startSearch,
     };
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.wagers-check-list {
+  .header {
+    .time-item,
+    .el-select {
+      padding-left: 10px;
+    }
+  }
+}
+</style>
