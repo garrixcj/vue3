@@ -614,6 +614,76 @@ export const negativeCash = {
   // }
 };
 
+/**
+ * 取得綁定驗證相關
+ */
+export const authList = {
+  http,
+  /**
+   * 取得會員綁定現況列表
+   * @param  {number} domain
+   * @param  {object} options
+   */
+  getBindingList(domain: number, options = {}) {
+    const paramOptions = [
+      'users',
+      'start_date_time',
+      'end_date_time',
+      'mem_2fa_way',
+      'sort',
+      'order',
+      'page',
+      'limit',
+    ];
+    const params = pick(options, paramOptions);
+
+    return this.http.get(
+      `/domain/${domain}/two_factor_authentication/binding_list`,
+      { params },
+    );
+  },
+  /**
+   * 判斷會員是否綁定
+   * @param  {number} domain
+   * @param  {object} options
+   */
+  checkBinding(domain: number, options = {}) {
+    const paramOptions = [
+      'users',
+      'start_date_time',
+      'end_date_time',
+      'mem_2fa_way',
+    ];
+    const params = pick(options, paramOptions);
+
+    return this.http.get(`/domain/${domain}/two_factor_authentication/check`, {
+      params,
+    });
+  },
+  /**
+   * 匯出會員綁定現況列表
+   * @param  {number} domain
+   * @param  {object} options
+   */
+  exportBindingList(domain: number, options = {}) {
+    const paramOptions = [
+      'users',
+      'start_date_time',
+      'end_date_time',
+      'mem_2fa_way',
+      'sort',
+      'order',
+      'export_remark',
+    ];
+    const params = pick(options, paramOptions);
+
+    return this.http.post(
+      `/domain/${domain}/two_factor_authentication/binding_list/export`,
+      params,
+    );
+  },
+};
+
 export const user = {
   ...users,
   ...testHierarchy,
@@ -626,6 +696,7 @@ export const user = {
   ...permission,
   ...lockMonitor,
   ...negativeCash,
+  ...authList,
 };
 
 export default user;
