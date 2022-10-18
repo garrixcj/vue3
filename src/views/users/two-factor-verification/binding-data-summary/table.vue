@@ -419,21 +419,22 @@ export default defineComponent({
     // 匯出
     const confirmExport = (note: string) => {
       loadingStore.page = true;
-      userAPI
-        .exportBindingList(form.domain, {
-          ...querySet.getParam(),
-          export_remark: note,
-        })
-        .then(resp => {
-          if (resp.data.result) {
-            notify.success({
-              title: t('success'),
-              message: t('generation_success'),
-            });
-            visible.value = false;
-            loadingStore.page = false;
+      const params = note
+        ? {
+            ...querySet.getParam(),
+            export_remark: note,
           }
-        });
+        : querySet.getParam();
+      userAPI.exportBindingList(form.domain, params).then(resp => {
+        if (resp.data.result) {
+          notify.success({
+            title: t('success'),
+            message: t('generation_success'),
+          });
+          visible.value = false;
+          loadingStore.page = false;
+        }
+      });
     };
 
     // 判斷是否有 匯出 權限
