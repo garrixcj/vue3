@@ -1,7 +1,6 @@
 <i18n>
 {
   "zh-tw": {
-    "hello_world": "嗨",
     "external_wagers_check": "外接遊戲注單核對"
   }
 }
@@ -19,7 +18,7 @@ rd-layout(
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent, ref, provide } from 'vue';
+import { defineAsyncComponent, defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useWatcher } from '@/components/utils/route-watch';
 import { useTabAccess } from '@/plugins/access/view';
