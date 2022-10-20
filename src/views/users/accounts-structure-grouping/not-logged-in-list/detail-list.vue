@@ -8,7 +8,7 @@ rd-information(:is-open="false")
     li {{ t('not_logged_in_list_info_1') }}
     li {{ t('not_logged_in_list_info_2') }}
     li {{ t('not_logged_in_list_info_3') }}
-rd-navbar-layout(noPrePage)
+rd-navbar-layout(ref="navbarRef" noPrePage)
   template(#header)
     .header
       .title {{ title }}
@@ -223,7 +223,7 @@ export-note(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from 'vue';
+import { defineComponent, reactive, computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLoadingStore } from '@/stores/loading';
 import { RouteWatch, QuerySetting } from '@/components/utils/route-watch';
@@ -365,8 +365,10 @@ export default defineComponent({
       return true;
     };
 
+    const navbarRef = ref();
     // 觸發搜尋
     const searchData = () => {
+      navbarRef.value.scrollTo();
       watcher.queryRoute(querySet.getQuery());
     };
 
@@ -499,6 +501,7 @@ export default defineComponent({
       customOptions,
       fieldsData,
       linkToUserInfo,
+      navbarRef,
     };
   },
 });
