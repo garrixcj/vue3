@@ -3,7 +3,7 @@
   src="@/languages/user/accounts_structure_grouping/not_logged_in_list.json"
 ></i18n>
 <template lang="pug">
-rd-information(is-open)
+rd-information(:is-open="false")
   ul
     li {{ t('not_logged_in_list_info_1') }}
     li {{ t('not_logged_in_list_info_2') }}
@@ -19,7 +19,7 @@ rd-navbar-layout(noPrePage)
             | {{ titleTooltip }}
     .divider
       rd-divider.line-height(direction="vertical")
-    span {{ domainName }}
+    .subtitle {{ domainName }}
   template(#titleSuffix)
     rd-button(
       v-if="hasExportPerm"
@@ -85,6 +85,7 @@ rd-navbar-layout(noPrePage)
               type="index"
               :label="t('increment_number')"
               header-align="center"
+              align="center"
               :index="getIndex"
               :resizable="false"
               width="100"
@@ -94,19 +95,27 @@ rd-navbar-layout(noPrePage)
               :label="t('parent_username')"
               header-align="center"
               prop="parent"
+              show-overflow-tooltip
               :resizable="false"
             )
             rd-table-column(
               :label="t('member_account')"
               header-align="center"
               prop="username"
+              show-overflow-tooltip
               sortable
               :resizable="false"
             )
+              template(#default="scope")
+                rd-button.custom-text(
+                  text
+                  @click="linkToUserInfo(scope.row.user_id)"
+                ) {{ scope.row.username }}
             rd-table-column(
               v-if="isDisplayedColumns('currency')"
               :label="t('currency')"
               header-align="center"
+              show-overflow-tooltip
               :resizable="false"
             )
               template(#default="scope")
@@ -119,6 +128,7 @@ rd-navbar-layout(noPrePage)
               header-align="center"
               align="right"
               prop="deposit_amount"
+              show-overflow-tooltip
               :resizable="false"
             )
             rd-table-column(
@@ -127,20 +137,29 @@ rd-navbar-layout(noPrePage)
               header-align="center"
               align="right"
               prop="withdrawal_amount"
+              show-overflow-tooltip
               :resizable="false"
             )
             rd-table-column(
               v-if="isDisplayedColumns('balance_difference')"
-              :label="t('balance_difference')"
               header-align="center"
               align="right"
               prop="balance_difference"
+              show-overflow-tooltip
               :resizable="false"
             )
+              template(#header)
+                span {{ t('balance_difference') }}
+                  span.header__tooltip
+                    rd-tooltip(placement="bottom")
+                      i.mdi.mdi-information
+                      template(#content)
+                        | {{ t('balance_difference') }} = {{ t('deposit_amount_total') }} - {{ t('withdrawal_amount_total') }}
             rd-table-column(
               v-if="isDisplayedColumns('status')"
               :label="t('status')"
               header-align="center"
+              show-overflow-tooltip
               :resizable="false"
             )
               template(#default="scope")
@@ -156,6 +175,7 @@ rd-navbar-layout(noPrePage)
               header-align="center"
               sortable
               prop="created_at"
+              show-overflow-tooltip
               :resizable="false"
             )
               template(#default="scope")
@@ -165,6 +185,7 @@ rd-navbar-layout(noPrePage)
               header-align="center"
               sortable
               prop="last_login"
+              show-overflow-tooltip
               :resizable="false"
             )
               template(#default="scope")
@@ -175,6 +196,7 @@ rd-navbar-layout(noPrePage)
               header-align="center"
               sortable
               prop="last_login"
+              show-overflow-tooltip
               :resizable="false"
             )
               template(#default="scope")
@@ -182,6 +204,7 @@ rd-navbar-layout(noPrePage)
                 span(v-else) {{ scope.row.offline_days }}
         template(#footer)
           rd-pagination(
+            v-show="dataTotalNum > 0"
             v-model:current-page="form.page"
             background
             :page-size="form.limit"
@@ -253,6 +276,10 @@ export default defineComponent({
         return t('days_ago', { day: form.dayGroup });
       }
     });
+
+    const linkToUserInfo = (id: number) => {
+      window.open(`/user/${id}/detail_info`);
+    };
 
     // 取天數說明
     const range = {
@@ -471,12 +498,14 @@ export default defineComponent({
       confirm,
       customOptions,
       fieldsData,
+      linkToUserInfo,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
+@include header-title-2;
 .header {
   @include flex-basic;
   .title {
@@ -484,11 +513,11 @@ export default defineComponent({
     font-weight: normal;
     white-space: nowrap;
   }
-  .header__tooltip {
-    margin-left: 5px;
-    font-size: 14px;
-    color: $text-3;
-  }
+}
+.header__tooltip {
+  margin-left: 5px;
+  font-size: 14px;
+  color: $text-3;
 }
 .divider {
   @include divider-margin-vertical(0px, 15px);

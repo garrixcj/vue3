@@ -8,12 +8,7 @@
           :defaultValue="customOptions"
           @confirm="confirm"
         )
-      rd-table(
-        border
-        show-summary
-        :data="tableData"
-        :sum-text="t('total_count')"
-      )
+      rd-table(border :data="tableData" :sum-text="t('total_count')")
         rd-table-column(
           :label="t('since_then_offline_days')"
           header-align="center"
@@ -22,9 +17,10 @@
         )
           template(#default="scope")
             span(v-if="scope.row.day_group === 'never'") {{ t('never_logged_in') }}
-            span(v-else-if="scope.row.day_group === '180up'") {{ t('180_days_ago') }}({{ t('estimated_value') }})
+            span(v-else-if="scope.row.day_group === '180up'") {{ t('180_days_ago') }} ({{ t('estimated_value') }})
+            span(v-else-if="scope.row.day_group === 'sum'") {{ t('total_count') }}
             span(v-else) {{ t('days_ago', { day: scope.row.day_group }) }}
-            .table-column__tooltip
+            .table-column__tooltip(v-if="!scope.row.day_group === 'sum'")
               rd-tooltip(placement="top")
                 i.mdi.mdi-information
                 template(#content)
@@ -258,6 +254,22 @@ export default defineComponent({
     @include inline-flex-basic;
     margin: 0 5px;
     color: $text-3;
+  }
+
+  :deep(.el-table__body) {
+    tbody {
+      > :nth-last-child(1) {
+        > :nth-child(1) {
+          font-weight: bold;
+          color: $primary-1;
+          text-align: center;
+        }
+        .el-table__cell {
+          background-color: $background-6;
+          border-right: 1px solid #d0d7e7;
+        }
+      }
+    }
   }
 }
 </style>
