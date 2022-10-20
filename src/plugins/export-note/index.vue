@@ -13,7 +13,7 @@ rd-dialog(
   template(#header)
     .header
       .title {{ t('export') }}-{{ t('remark') }}
-      .subtitle {{ t('export_memo') }}
+      .title-suffix {{ t('export_memo') }}
   //- 輸入匡
   rd-input(
     v-model="note"
@@ -126,7 +126,7 @@ export default defineComponent({
   @include flex-basic(flex-start, flex-end);
   @include space(15px);
   @include divider-margin-vertical(15px, 0);
-  @include header-title-1;
-  @include header-title-2;
+  @include header-normal-title-1;
+  @include header-normal-title-2;
 }
 </style>
