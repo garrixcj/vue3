@@ -14,7 +14,7 @@
             rd-link(
               v-if="checkPlatformPerm"
               underline
-              href="/web/main/loginVerification"
+              :href="platformPermUrl"
               target="_blank"
             ) {{ t('station_security_settings') }}
             span(v-else) {{ t('station_security_settings') }}
@@ -33,14 +33,13 @@
       //- 會員帳號
       rd-form-item(prop="users")
         template(#label)
-          .search-bar__label
-            label {{ t('member_account') }}
-            rd-tooltip(placement="top")
-              i.mdi.mdi-information
-              template(#content)
-                div {{ t('username_rule_api') }}
+          label {{ t('member_account') }}
+          rd-tooltip(placement="top")
+            i.mdi.mdi-information
+            template(#content)
+              div {{ t('username_rule_api') }}
         //- 批次搜尋
-        .search-bar__input
+        .search-bar__batch
           batch-input(
             ref="batchInputRef"
             v-model:value="form.users"
@@ -61,8 +60,6 @@
                 :on-change="importFile"
               )
                 rd-button(type="default" size="large") {{ t('import_file') }}
-            template(#error="scope")
-              .el-form-item__error(v-show="!batchVisible") {{ scope.error }}
 
           //- 範例下載
           rd-button(text @click="downloadExample") {{ t('sample_download') }}
@@ -74,6 +71,9 @@
               .download-msg - {{ t('upload_list_notice_2_1') }}
               .download-msg - {{ t('upload_list_notice_2_2') }}
               li {{ t('upload_list_notice_3') }}
+
+        template(#error="scope")
+          .el-form-item__error(v-show="!batchVisible") {{ scope.error }}
 
       //- 綁定時間
       rd-form-item(:label="t('binding_time')" prop="date")
@@ -92,17 +92,16 @@
         )
       //- 搜尋
       rd-form-item
-        .search-bar__input
-          rd-button(type="search" @click="search(formRef)")
-            i.mdi.mdi-magnify
-            span {{ t('search') }}
+        rd-button(type="search" @click="search(formRef)")
+          i.mdi.mdi-magnify
+          span {{ t('search') }}
 
     .domain-binding-status(v-if="searched")
       .domain-binding-status__label
         rd-link(
           v-if="checkPlatformPerm"
           underline
-          href="/web/main/loginVerification"
+          :href="platformPermUrl"
           target="_blank"
         ) {{ t('station_security_settings') }}
         span(v-else) {{ t('station_security_settings') }}
@@ -178,6 +177,9 @@ export default defineComponent({
 
     // 會員雙重驗證開關
     const authSwitch = ref(false);
+
+    // 站台安全防護設置 url
+    const platformPermUrl = '/web/main/loginVerification';
 
     // 會員帳號驗證規則
     const multiUserNameValid = (rule: never, value: string[]) => {
@@ -368,6 +370,7 @@ export default defineComponent({
       formRef,
       form,
       authSwitch,
+      platformPermUrl,
       rules,
       disabledDates,
       setDateTime,
@@ -384,8 +387,7 @@ export default defineComponent({
 .binding-data-summary {
   @include form-label-color;
 
-  .search-bar__label,
-  .search-bar__input {
+  .search-bar__batch {
     @include inline-flex-basic;
     @include space;
   }
