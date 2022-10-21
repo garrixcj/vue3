@@ -80,7 +80,7 @@ rd-card.binding-table(no-padding)
         prop="created_at"
         header-align="center"
         min-width="140"
-        sortable
+        :sortable="searched"
         :resizeable="false"
       )
         template(#default="{ row: { created_at } }")
@@ -90,7 +90,7 @@ rd-card.binding-table(no-padding)
         :label="t('member_account')"
         prop="username"
         header-align="center"
-        sortable
+        :sortable="searched"
         :min-width="105"
       )
         template(#default="{ row: { id, username } }")
@@ -106,7 +106,7 @@ rd-card.binding-table(no-padding)
         :label="t('alias')"
         prop="alias"
         header-align="center"
-        sortable
+        :sortable="searched"
       )
       //- 綁定時間
       rd-table-column(
@@ -114,7 +114,7 @@ rd-card.binding-table(no-padding)
         prop="binding_at"
         header-align="center"
         min-width="140"
-        sortable
+        :sortable="searched"
         :resizeable="false"
       )
         template(#default="{ row: { binding_at } }")
@@ -149,7 +149,7 @@ rd-card.binding-table(no-padding)
         prop="last_login"
         header-align="center"
         min-width="145"
-        sortable
+        :sortable="searched"
         :resizeable="false"
       )
         template(#default="{ row: { last_login } }")
