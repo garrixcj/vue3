@@ -107,8 +107,8 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
               :resizable="false"
             )
               template(#default="scope")
-                rd-button.custom-text(
-                  text
+                rd-link(
+                  :is-text="!hasUserInfoPerm"
                   @click="linkToUserInfo(scope.row.user_id)"
                 ) {{ scope.row.username }}
             rd-table-column(
@@ -233,6 +233,7 @@ import { notify } from '@/components/utils/notification';
 import FieldFilter from '@/components/custom/field-filter/index.vue';
 import ExportNote from '@/plugins/export-note/index.vue';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
+import { useAccess } from '@/plugins/access/view';
 import type { DetailListFormType, DateRangeKey, DayCountKey } from './type';
 import { notLoginFieldsInitial } from './custom-fields';
 import {
@@ -277,6 +278,10 @@ export default defineComponent({
       }
     });
 
+    // 判斷是否有會員詳細資料權限
+    const hasUserInfoPerm = useAccess('UserDetailInfo');
+
+    // 另開會員詳細資料頁面
     const linkToUserInfo = (id: number) => {
       window.open(`/user/${id}/detail_info`);
     };
@@ -502,6 +507,7 @@ export default defineComponent({
       fieldsData,
       linkToUserInfo,
       navbarRef,
+      hasUserInfoPerm,
     };
   },
 });
