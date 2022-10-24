@@ -3,7 +3,7 @@
 ></i18n>
 <template lang="pug">
 .not-logged-in-list
-  rd-information(:is-open="false")
+  rd-information(is-open)
     ul
       li {{ t('not_logged_in_list_info_1') }}
       li {{ t('not_logged_in_list_info_2') }}
@@ -22,8 +22,7 @@
           size="large"
           @click="initExport"
         ) {{ t('export') }}
-  before-search(v-show="!showTable" :label="t('start_search')")
-  table-list(v-show="showTable" :tableData="tableData")
+  table-list(:tableData="tableData")
   export-note(
     v-model:visible="exportVisible"
     :params="exportParams"
@@ -36,7 +35,6 @@ import { defineComponent, ref, reactive, inject, provide, readonly } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { notify } from '@/components/utils/notification';
-import BeforeSearch from '@/components/custom/before-search/index.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import ExportNote from '@/plugins/export-note/index.vue';
 import TableList from './table.vue';
@@ -50,7 +48,6 @@ export default defineComponent({
     DomainSelector,
     TableList,
     ExportNote,
-    BeforeSearch,
   },
   setup() {
     // 預設載入
@@ -90,6 +87,7 @@ export default defineComponent({
     // 搜尋相關
     const { tableData, getMembersLastLoginGroup } = useGetDayCountGroupApi();
     const showTable = ref(false);
+    provide('AccountsStructureGroup:showTable', showTable);
     const form = reactive({
       domain: '',
     } as DetailListFormType);
@@ -115,6 +113,7 @@ export default defineComponent({
     // 驗證必帶欄位
     const checkDomain = () => {
       if (!form.domain) {
+        tableData.value = [];
         notify.error(t('select_domain'));
         return false;
       }
