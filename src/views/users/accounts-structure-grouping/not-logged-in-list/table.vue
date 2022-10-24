@@ -33,8 +33,8 @@
           :resizable="false"
         )
           template(#default="scope")
-            rd-button.custom-text(
-              text
+            rd-link(
+              :is-text="scope.row.day_group === 'sum'"
               @click="guideDetail(scope.row.day_group, 'total')"
             ) {{ scope.row.total }}
         rd-table-column(
@@ -46,8 +46,8 @@
           :resizable="false"
         )
           template(#default="scope")
-            rd-button.custom-text(
-              text
+            rd-link(
+              :is-text="scope.row.day_group === 'sum'"
               @click="guideDetail(scope.row.day_group, 'enable')"
             ) {{ scope.row.enable_total }}
         rd-table-column(
@@ -59,8 +59,8 @@
           :resizable="false"
         )
           template(#default="scope")
-            rd-button.custom-text(
-              text
+            rd-link(
+              :is-text="scope.row.day_group === 'sum'"
               @click="guideDetail(scope.row.day_group, 'disable')"
             ) {{ scope.row.disable_total }}
         rd-table-column(
@@ -72,8 +72,8 @@
           :resizable="false"
         )
           template(#default="scope")
-            rd-button.custom-text(
-              text
+            rd-link(
+              :is-text="scope.row.day_group === 'sum'"
               @click="guideDetail(scope.row.day_group, 'block')"
             ) {{ scope.row.block_total }}
         rd-table-column(
@@ -85,8 +85,8 @@
           :resizable="false"
         )
           template(#default="scope")
-            rd-button.custom-text(
-              text
+            rd-link(
+              :is-text="scope.row.day_group === 'sum'"
               @click="guideDetail(scope.row.day_group, 'bankrupt')"
             ) {{ scope.row.bankrupt_total }}
         rd-table-column(
@@ -106,9 +106,12 @@
         )
           template(#default="scope")
             rd-button.custom-text(
+              v-if="scope.row.day_group !== 'sum'"
               text
               @click="checkExport(scope.row.day_group)"
             ) {{ t('export') }}
+        template(v-if="!showTable" #empty)
+          before-search-empty(:label="t('start_search')")
   export-note(
     v-model:visible="exportVisible"
     :params="exportParams"
@@ -122,6 +125,7 @@ import { useI18n } from 'vue-i18n';
 import FormatTimer from '@/components/custom/format-timer/date-time.vue';
 import { notify } from '@/components/utils/notification';
 import FieldFilter from '@/components/custom/field-filter/index.vue';
+import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import ExportNote from '@/plugins/export-note/index.vue';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import type { TableDataType, DetailListFormType, DateRangeKey } from './type';
@@ -134,6 +138,7 @@ export default defineComponent({
     FormatTimer,
     ExportNote,
     FieldFilter,
+    BeforeSearchEmpty,
   },
   props: {
     tableData: {
@@ -142,6 +147,8 @@ export default defineComponent({
     },
   },
   setup() {
+    // 顯示table狀態
+    const showTable = inject('AccountsStructureGroup:showTable');
     // 預設載入
     const setLoading = inject('AccountsStructureGroup:setLoading') as Function;
     const form = inject(
@@ -238,6 +245,7 @@ export default defineComponent({
       confirm,
       customOptions,
       fieldsData,
+      showTable,
     };
   },
 });
@@ -259,8 +267,8 @@ export default defineComponent({
   :deep(.el-table__body) {
     tbody {
       > :nth-last-child(1) {
+        font-weight: 500;
         > :nth-child(1) {
-          font-weight: bold;
           color: $primary-1;
           text-align: center;
         }

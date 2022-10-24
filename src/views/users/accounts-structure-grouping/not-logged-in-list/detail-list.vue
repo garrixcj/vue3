@@ -114,6 +114,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
             rd-table-column(
               v-if="isDisplayedColumns('currency')"
               :label="t('currency')"
+              min-width="150px"
               header-align="center"
               show-overflow-tooltip
               :resizable="false"
@@ -172,6 +173,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
             rd-table-column(
               v-if="isDisplayedColumns('member_establish_time')"
               :label="t('member_establish_time')"
+              min-width="150px"
               header-align="center"
               sortable
               prop="created_at"
@@ -182,6 +184,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
                 format-timer(:date-time="scope.row.created_at")
             rd-table-column(
               :label="t('last_login_time')"
+              min-width="150px"
               header-align="center"
               sortable
               prop="last_login"
@@ -202,9 +205,8 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
               template(#default="scope")
                 span(v-if="scope.row.offline_days === ''") --
                 span(v-else) {{ scope.row.offline_days }}
-        template(#footer)
+        template(v-if="dataTotalNum > 0" #footer)
           rd-pagination(
-            v-show="dataTotalNum > 0"
             v-model:current-page="form.page"
             background
             :page-size="form.limit"
@@ -529,7 +531,7 @@ export default defineComponent({
   color: $text-3;
 }
 .divider {
-  @include divider-margin-vertical(0px, 15px);
+  @include divider-margin-vertical(0px, 0px);
 }
 .rd-card__divider {
   @include divider-margin-vertical(15px, 15px);
