@@ -145,8 +145,12 @@ export default defineComponent({
       type: Array as PropType<TableDataType[]>,
       require: true,
     },
+    searchDomain: {
+      type: String,
+      require: true,
+    },
   },
-  setup() {
+  setup(props) {
     // 顯示table狀態
     const showTable = inject('AccountsStructureGroup:showTable');
     // 預設載入
@@ -161,7 +165,7 @@ export default defineComponent({
     // 組另開分頁連結
     const guideDetail = (dayGroup: string, type: string) => {
       window.open(
-        `/v3/members/not_logged_in/structure_grouping/detail?domain=${form.domain}&day_group=${dayGroup}&type=${type}`,
+        `/v3/members/not_logged_in/structure_grouping/detail?domain=${props.searchDomain}&day_group=${dayGroup}&type=${type}`,
       );
     };
 
