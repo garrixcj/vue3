@@ -172,6 +172,7 @@ rd-card.binding-table(no-padding)
 <script lang="ts">
 import { defineComponent, inject, reactive, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useLoadingStore } from '@/stores/loading';
 import { useTabWatcher, QuerySetting } from '@/components/utils/route-watch';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
@@ -200,7 +201,7 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'parent' });
-    const loadingStore = inject('BindingDataSummary:loadingStore');
+    const loadingStore = useLoadingStore();
     const watcher = useTabWatcher('bindingDataSummary');
     const searched = inject('BindingDataSummary:searched');
 
