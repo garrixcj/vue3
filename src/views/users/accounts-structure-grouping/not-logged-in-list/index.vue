@@ -16,12 +16,15 @@
         rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
           span {{ t('search') }}
-        rd-button(
-          v-if="hasExportPerm"
-          type="primary"
-          size="large"
-          @click="initExport"
-        ) {{ t('export') }}
+        rd-tooltip(placement="top" :content="t('must_select_hall')")
+          .form-item__export
+            rd-button(
+              v-if="hasExportPerm"
+              type="primary"
+              size="large"
+              :disabled="!showTable"
+              @click="initExport"
+            ) {{ t('export') }}
   table-list(:tableData="tableData")
   export-note(
     v-model:visible="exportVisible"
@@ -66,7 +69,8 @@ export default defineComponent({
 
     // 執行匯出
     const exportFiled = (note: string) => {
-      if (!checkDomain()) {
+      if (!form.domain) {
+        notify.error(t('select_domain'));
         return;
       }
       toggleDialog(false);
@@ -96,7 +100,7 @@ export default defineComponent({
     // 驗證規則
     const rules = reactive({
       domain: [
-        { required: true, message: t('must_not_null'), trigger: 'change' },
+        { required: true, message: t('must_select_hall'), trigger: 'change' },
       ],
     });
     const formRef = ref();
@@ -110,20 +114,10 @@ export default defineComponent({
       });
     };
 
-    // 驗證必帶欄位
-    const checkDomain = () => {
-      if (!form.domain) {
-        tableData.value = [];
-        notify.error(t('select_domain'));
-        return false;
-      }
-
-      return true;
-    };
-
     //觸發搜尋
     const searchData = () => {
-      if (!checkDomain()) {
+      if (!form.domain) {
+        tableData.value = [];
         return;
       }
       setLoading(true);
@@ -179,8 +173,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .not-logged-in-list {
-  .form-item-date__info {
-    margin-left: 5px;
+  .form-item__export {
+    margin-left: 12px;
   }
   .search-bar__tooltip {
     margin: 0 5px;

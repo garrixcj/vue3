@@ -2,7 +2,7 @@
 .not-logged-in-list__table
   rd-card(no-padding)
     template(#content)
-      .top-bar
+      .top-bar(v-show="showTable")
         field-filter(
           :fields="fieldsData"
           :defaultValue="customOptions"
@@ -20,7 +20,7 @@
             span(v-else-if="scope.row.day_group === '180up'") {{ t('180_days_ago') }} ({{ t('estimated_value') }})
             span(v-else-if="scope.row.day_group === 'sum'") {{ t('total_count') }}
             span(v-else) {{ t('days_ago', { day: scope.row.day_group }) }}
-            .table-column__tooltip(v-if="!scope.row.day_group === 'sum'")
+            .table-column__tooltip(v-if="scope.row.day_group !== 'sum'")
               rd-tooltip(placement="top")
                 i.mdi.mdi-information
                 template(#content)
