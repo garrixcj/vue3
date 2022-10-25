@@ -16,13 +16,17 @@
         rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
           span {{ t('search') }}
-        rd-tooltip(placement="top" :content="t('must_select_hall')")
+        rd-tooltip(
+          placement="top"
+          :content="t('must_select_hall')"
+          :disabled="form.domain !== ''"
+        )
           .form-item__export
             rd-button(
               v-if="hasExportPerm"
               type="primary"
               size="large"
-              :disabled="!showTable"
+              :disabled="!form.domain"
               @click="initExport"
             ) {{ t('export') }}
   table-list(:tableData="tableData")
