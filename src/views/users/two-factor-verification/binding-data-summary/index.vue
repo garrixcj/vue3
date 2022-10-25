@@ -120,6 +120,7 @@
 <script lang="ts">
 import { defineComponent, provide, reactive, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useLoadingStore } from '@/stores/loading';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { notify } from '@/components/utils/notification';
 import BatchInput from '@/components/custom/batch-input/index.vue';
@@ -143,6 +144,9 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
+    const loadingStore = useLoadingStore();
+    provide('BindingDataSummary:loadingStore', loadingStore);
+
     const watcher = new TabRouteWatch('bindingDataSummary');
     const searched = ref(false);
     provide('BindingDataSummary:searched', searched);
@@ -348,8 +352,10 @@ export default defineComponent({
     const checkPlatformPerm = useAccess('PlatformSecurityProtectionSet');
 
     onMounted(() => {
-      checkBinding();
-      getAuthSwitch();
+      loadingStore.page = true;
+      Promise.all([checkBinding(), getAuthSwitch()]).then(() => {
+        loadingStore.page = false;
+      });
     });
 
     watcher.setWatcher((query: { domain: number }) => {
