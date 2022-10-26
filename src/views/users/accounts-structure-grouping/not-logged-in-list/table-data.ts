@@ -71,13 +71,17 @@ export const useGetDayCountApi = () => {
 
 // 取廳主資料相關
 export const useGetDomainApi = () => {
-  const domainName = ref('');
+  const domainInfo = reactive({
+    name: '',
+    loginCode: '',
+  });
   const getDomain = async (domain: string | number) => {
     const resp = await profile.getUserByID(domain);
-    domainName.value = resp.data.data[0].name;
+    domainInfo.name = resp.data.data[0].name;
+    domainInfo.loginCode = resp.data.data[0].login_code;
   };
 
-  return { domainName, getDomain };
+  return { domainInfo, getDomain };
 };
 
 // 取所有未登入區間總數列表資料相關

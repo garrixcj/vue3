@@ -131,7 +131,7 @@ const fallbackRoutes: Array<RouteRecordRaw> = [
   {
     path: 'forbidden',
     meta: {
-      title: 'forbidden',
+      title: '667010029',
       auth: true,
       checkPermissions: false,
     },

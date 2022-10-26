@@ -11,7 +11,7 @@
   .search-bar
     rd-form(ref="formRef" inline :model="form" :rules="rules")
       rd-form-item(:label="t('hall')" prop="domain")
-        domain-selector(v-model:value="form.domain" quick-search)
+        domain-selector(v-model:value="form.domain" quick-search size="large")
       rd-form-item
         rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
@@ -29,7 +29,7 @@
               :disabled="!form.domain"
               @click="initExport"
             ) {{ t('export') }}
-  table-list(:tableData="tableData")
+  table-list(:table-data="tableData" :search-domain="searchDomain")
   export-note(
     v-model:visible="exportVisible"
     :params="exportParams"
@@ -100,6 +100,7 @@ export default defineComponent({
       domain: '',
     } as DetailListFormType);
     provide('AccountsStructureGroup:formSearchValue', readonly(form));
+    const searchDomain = ref('' as string | number);
 
     // 驗證規則
     const rules = reactive({
@@ -126,6 +127,7 @@ export default defineComponent({
       }
       setLoading(true);
       getMembersLastLoginGroup(form).then(() => {
+        searchDomain.value = form.domain;
         showTable.value = true;
         setLoading(false);
       });
@@ -170,6 +172,7 @@ export default defineComponent({
       initExport,
       exportFiled,
       hasExportPerm,
+      searchDomain,
     };
   },
 });

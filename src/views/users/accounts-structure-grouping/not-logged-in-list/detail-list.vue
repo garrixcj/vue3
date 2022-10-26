@@ -19,7 +19,8 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
             | {{ titleTooltip }}
     .divider
       rd-divider.line-height(direction="vertical")
-    .subtitle {{ domainName }}
+    .subtitle {{ domainInfo.name }}
+    .title-suffix @{{ domainInfo.loginCode }}
   template(#titleSuffix)
     rd-button(
       v-if="hasExportPerm"
@@ -114,15 +115,15 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
             rd-table-column(
               v-if="isDisplayedColumns('currency')"
               :label="t('currency')"
-              min-width="150px"
               header-align="center"
               show-overflow-tooltip
               :resizable="false"
+              width="150px"
             )
               template(#default="scope")
                 .table-column__currency
                   div {{ t(`currency_${scope.row.currency}`) }}
-                  div [{{ scope.row.currency }}]
+                  div [{{ convertCurrency(scope.row.currency) }}]
             rd-table-column(
               v-if="isDisplayedColumns('deposit_amount_total')"
               :label="t('deposit_amount_total')"
@@ -131,6 +132,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
               prop="deposit_amount"
               show-overflow-tooltip
               :resizable="false"
+              width="200px"
             )
             rd-table-column(
               v-if="isDisplayedColumns('withdrawal_amount_total')"
@@ -140,6 +142,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
               prop="withdrawal_amount"
               show-overflow-tooltip
               :resizable="false"
+              width="200px"
             )
             rd-table-column(
               v-if="isDisplayedColumns('balance_difference')"
@@ -148,6 +151,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
               prop="balance_difference"
               show-overflow-tooltip
               :resizable="false"
+              width="200px"
             )
               template(#header)
                 span {{ t('balance_difference') }}
@@ -156,11 +160,12 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
                       i.mdi.mdi-information
                       template(#content)
                         | {{ t('balance_difference') }} = {{ t('deposit_amount_total') }} - {{ t('withdrawal_amount_total') }}
+              template(#default="scope")
+                span(:class="getBalanceClass(scope.row.balance_difference)") {{ scope.row.balance_difference }}
             rd-table-column(
               v-if="isDisplayedColumns('status')"
               :label="t('status')"
               header-align="center"
-              show-overflow-tooltip
               :resizable="false"
             )
               template(#default="scope")
@@ -173,29 +178,30 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
             rd-table-column(
               v-if="isDisplayedColumns('member_establish_time')"
               :label="t('member_establish_time')"
-              min-width="150px"
               header-align="center"
               sortable
               prop="created_at"
               show-overflow-tooltip
               :resizable="false"
+              width="150px"
             )
               template(#default="scope")
                 format-timer(:date-time="scope.row.created_at")
             rd-table-column(
               :label="t('last_login_time')"
-              min-width="150px"
               header-align="center"
               sortable
               prop="last_login"
               show-overflow-tooltip
               :resizable="false"
+              width="150px"
             )
               template(#default="scope")
                 span(v-if="scope.row.last_login === ''") --
                 format-timer(v-else :date-time="scope.row.last_login")
             rd-table-column(
               :label="t('since_then_offline_days')"
+              align="right"
               header-align="center"
               sortable
               prop="last_login"
@@ -233,6 +239,7 @@ import RdStatusButton from '@/components/custom/status-button/index.vue';
 import FormatTimer from '@/components/custom/format-timer/date-time.vue';
 import { notify } from '@/components/utils/notification';
 import FieldFilter from '@/components/custom/field-filter/index.vue';
+import { convertCurrency } from '@/components/utils/format/currency';
 import ExportNote from '@/plugins/export-note/index.vue';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useAccess } from '@/plugins/access/view';
@@ -265,6 +272,10 @@ export default defineComponent({
       sort: '',
       order: '',
     });
+
+    const getBalanceClass = (balance: number) => {
+      return [balance < 0 ? 'column__balance' : ''];
+    };
 
     // 處理loading遮罩
     const loadingStore = useLoadingStore();
@@ -351,7 +362,7 @@ export default defineComponent({
       useGetListApi();
     const { dayCount, updateDate, getMembersLastLoginGroup } =
       useGetDayCountApi();
-    const { domainName, getDomain } = useGetDomainApi();
+    const { domainInfo, getDomain } = useGetDomainApi();
     const sortCondition = reactive({
       prop: 'lock_at',
       order: 'descending' as 'ascending' | 'descending',
@@ -493,7 +504,7 @@ export default defineComponent({
       sortCondition,
       exportVisible,
       exportParams,
-      domainName,
+      domainInfo,
       t,
       getIndex,
       searchData,
@@ -510,6 +521,8 @@ export default defineComponent({
       linkToUserInfo,
       navbarRef,
       hasUserInfoPerm,
+      convertCurrency,
+      getBalanceClass,
     };
   },
 });
@@ -553,5 +566,8 @@ export default defineComponent({
 }
 .table-column__currency {
   @include flex-basic(space-between);
+}
+.column__balance {
+  color: $danger;
 }
 </style>

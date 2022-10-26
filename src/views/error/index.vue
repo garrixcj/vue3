@@ -1,3 +1,4 @@
+<i18n src="@/languages/index/error_page.json"></i18n>
 <template lang="pug">
 .error-page
   component(:is="errorComponent" :svg-message="svgMessage")
