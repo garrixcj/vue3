@@ -146,7 +146,7 @@ export default defineComponent({
       require: true,
     },
     searchDomain: {
-      type: String,
+      type: [Number, String],
       require: true,
     },
   },
