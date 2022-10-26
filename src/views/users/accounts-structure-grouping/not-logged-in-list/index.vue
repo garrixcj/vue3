@@ -11,7 +11,7 @@
   .search-bar
     rd-form(ref="formRef" inline :model="form" :rules="rules")
       rd-form-item(:label="t('hall')" prop="domain")
-        domain-selector(v-model:value="form.domain" quick-search size="large")
+        domain-selector(v-model:value="form.domain" size="large")
       rd-form-item
         rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
@@ -138,7 +138,7 @@ export default defineComponent({
       {
         key: 'domain',
         get: () => form.domain,
-        set: (val: number) => {
+        set: (val: string | number) => {
           form.domain = val;
         },
         default: '',
@@ -155,6 +155,7 @@ export default defineComponent({
     // 監聽路由異動觸發搜尋
     const watcher = new TabRouteWatch('notLoggedInList');
     watcher.setWatcher(() => {
+      formRef.value?.resetFields();
       querySet.setField();
       searchData();
     });
