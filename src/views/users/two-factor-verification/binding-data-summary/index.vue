@@ -17,7 +17,11 @@
               :href="platformPermUrl"
               target="_blank"
             ) {{ t('station_security_settings') }}
-            span(v-else) {{ t('station_security_settings') }}
+            rd-tooltip(
+              v-else
+              :content="t('no_platform_security_settings_perm_hint')"
+            )
+              span.function-name {{ t('station_security_settings') }}
         li {{ t('binding_list_hint3') }}
       li {{ t('two_factor_verification_type') }}
       ul.sub-list
@@ -29,7 +33,7 @@
     rd-form(ref="formRef" size="large" inline :model="form" :rules="rules")
       //- 廳主
       rd-form-item(:label="t('domain')" prop="domain" required)
-        domain-selector(v-model:value="form.domain" quick-search)
+        domain-selector(v-model:value="form.domain")
       //- 會員帳號
       rd-form-item(prop="users")
         template(#label)
@@ -92,7 +96,7 @@
         )
       //- 搜尋
       rd-form-item
-        rd-button(type="search" @click="search(formRef)")
+        rd-button(type="search" @click="search")
           i.mdi.mdi-magnify
           span {{ t('search') }}
 
@@ -104,7 +108,11 @@
           :href="platformPermUrl"
           target="_blank"
         ) {{ t('station_security_settings') }}
-        span(v-else) {{ t('station_security_settings') }}
+        rd-tooltip(
+          v-else
+          :content="t('no_platform_security_settings_perm_hint')"
+        )
+          span.function-name {{ t('station_security_settings') }}
         span {{ t('two_verification') }}
       rd-tag.domain-binding-status__status(v-if="authSwitch" type="success") {{ t('enable') }}
       rd-tag.domain-binding-status__status(v-else type="danger") {{ t('disable') }}
@@ -120,6 +128,7 @@
 <script lang="ts">
 import { defineComponent, provide, reactive, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useLoadingStore } from '@/stores/loading';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { notify } from '@/components/utils/notification';
 import BatchInput from '@/components/custom/batch-input/index.vue';
@@ -143,9 +152,28 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
+    const loadingStore = useLoadingStore();
     const watcher = new TabRouteWatch('bindingDataSummary');
     const searched = ref(false);
     provide('BindingDataSummary:searched', searched);
+
+    const formRef = ref<FormInstance>();
+    const form = reactive({
+      // 廳主
+      domain: '' as '' | number,
+      // 會員帳號
+      users: [] as string[],
+      // 綁定時間
+      date: ['', ''] as [string, string],
+      // 綁定類型 ('binding'：已綁定、'1'：UBAuth、'2'：短信驗證)
+      type: 'binding',
+      // 排序
+      sort: 'binding_at',
+      // 排列
+      order: 'descending',
+    });
+    // 提供給下層搜尋用
+    provide('BindingDataSummary:searchForm', form);
 
     // 批次視窗
     const batchVisible = ref(false);
@@ -161,20 +189,6 @@ export default defineComponent({
     // 查無帳號的使用者
     const notFoundUsers = ref<string[]>([]);
 
-    const formRef = ref<FormInstance>();
-    const form = reactive({
-      // 廳主
-      domain: '' as '' | number,
-      // 會員帳號
-      users: [] as string[],
-      // 綁定時間
-      date: ['', ''] as [string, string],
-      // 綁定類型 ('binding'：已綁定、'1'：UBAuth、'2'：短信驗證)
-      type: 'binding',
-    });
-    // 提供給下層搜尋用
-    provide('BindingDataSummary:searchForm', form);
-
     // 會員雙重驗證開關
     const authSwitch = ref(false);
 
@@ -189,9 +203,7 @@ export default defineComponent({
         }
         value.forEach((item: string) => {
           if (item) {
-            if (!/^[a-z0-9]+$/.test(item)) {
-              reject(new Error(t('form_verify_msg_2')));
-            } else if (value.length > 200) {
+            if (item.length < 4 || item.length > 20) {
               reject(
                 new Error(
                   t('username_rule_error_msg', {
@@ -200,6 +212,8 @@ export default defineComponent({
                   }),
                 ),
               );
+            } else if (!/^[a-z0-9]+$/.test(item)) {
+              reject(new Error(t('form_verify_msg_2')));
             }
           } else {
             reject(new Error(t('user_name_not_null')));
@@ -222,12 +236,21 @@ export default defineComponent({
 
     // 不能設未來時間
     const disabledDates = (time: Date) => {
-      return dayjs(time.getTime()) > dayjs(Date.now()).utcOffset(-4);
+      return dayjs(time.getTime()) > dayjs().utcOffset(-4).startOf('date');
     };
 
     // 避免日期為 null 的情形
     const setDateTime = (event: [string, string] | null) => {
-      form.date = event === null ? ['', ''] : event;
+      // 當前時間
+      const nowTime = dayjs().utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');
+
+      if (event === null) {
+        form.date = ['', ''];
+      } else {
+        form.date = dayjs(event[1]).isAfter(nowTime)
+          ? [event[0], nowTime]
+          : event;
+      }
     };
 
     // 回上一頁 query
@@ -267,6 +290,18 @@ export default defineComponent({
         filter: () => form.type !== 'binding',
         default: 'binding',
       },
+      // 排序
+      {
+        key: 'sort',
+        get: () => form.sort,
+        default: 'binding_at',
+      },
+      // 排列
+      {
+        key: 'order',
+        get: () => (form.order === 'descending' ? 'desc' : 'asc'),
+        default: 'desc',
+      },
     ]);
 
     // 匯入檔案
@@ -275,7 +310,10 @@ export default defineComponent({
       if (!file) {
         return;
       } else if (file.raw.type !== 'text/csv') {
-        notify.error(t('upload_file_not_csv'));
+        notify.error({
+          title: t('error'),
+          message: t('upload_file_not_csv'),
+        });
         return;
       }
 
@@ -288,7 +326,10 @@ export default defineComponent({
         const data: string[] = (e.target as any).result.split(/\s+/).splice(1);
 
         if (data.length > dataNum) {
-          notify.error(t('exceed_max_and_can_not_import'));
+          notify.error({
+            title: t('error'),
+            message: t('exceed_max_and_can_not_import'),
+          });
           return;
         } else {
           form.users = data;
@@ -337,6 +378,8 @@ export default defineComponent({
       formRef.value.validate(valid => {
         if (valid) {
           form.type = 'binding';
+          form.sort = 'binding_at';
+          form.order = 'descending';
           watcher.queryRoute(querySet.getQuery());
           checkBinding();
           getAuthSwitch();
@@ -347,16 +390,31 @@ export default defineComponent({
     // 判斷是否有 站台安全防護設置 權限
     const checkPlatformPerm = useAccess('PlatformSecurityProtectionSet');
 
+    // 初始參數
+    const init = () => {
+      form.domain = '';
+      form.users = [];
+      form.date = ['', ''];
+      form.type = 'binding';
+      form.sort = 'binding_at';
+      form.order = 'descending';
+      searched.value = false;
+    };
+
     onMounted(() => {
-      checkBinding();
-      getAuthSwitch();
+      loadingStore.page = true;
+      Promise.all([checkBinding(), getAuthSwitch()]).then(() => {
+        loadingStore.page = false;
+      });
     });
 
     watcher.setWatcher((query: { domain: number }) => {
       // 若有廳主代表已有搜尋
-      if (query.domain !== 0) {
+      if (query.domain && query.domain !== 0) {
         searched.value = true;
         querySet.setField();
+      } else {
+        init();
       }
     });
 
@@ -392,6 +450,10 @@ export default defineComponent({
     @include space;
   }
 
+  .mdi-information {
+    color: $text-3;
+  }
+
   .domain-binding-status {
     @include inline-flex-basic;
     @include space;
@@ -401,6 +463,10 @@ export default defineComponent({
       margin-left: 2px;
       color: $text-3;
     }
+  }
+
+  .function-name {
+    text-decoration: underline;
   }
 }
 
