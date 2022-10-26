@@ -273,8 +273,8 @@ export default defineComponent({
       order: '',
     });
 
-    const getBalanceClass = (balance: number) => {
-      return [balance < 0 ? 'column__balance' : ''];
+    const getBalanceClass = (balance: string) => {
+      return [balance.includes('-') ? 'column__balance' : ''];
     };
 
     // 處理loading遮罩
