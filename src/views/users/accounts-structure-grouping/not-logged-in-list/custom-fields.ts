@@ -92,7 +92,7 @@ export const notLoginFieldsInitial = () => {
 };
 
 // 未登入總計列表自訂欄位初始設定
-export const notLoginCountFieldsInitial = () => {
+export const notLoginCountFieldsInitial = (hasExportPerm: boolean) => {
   const { t } = useI18n({ useScope: 'parent' });
   return {
     config: {
@@ -153,7 +153,7 @@ export const notLoginCountFieldsInitial = () => {
       {
         key: 'operating',
         name: t('operating'),
-        visible: true,
+        visible: hasExportPerm,
         default: true,
         disabled: true,
       },
