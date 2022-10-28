@@ -198,10 +198,6 @@ export default defineComponent({
       return content;
     };
 
-    // 自訂欄位
-    const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(notLoginCountFieldsInitial());
-
     // 匯出相關
     const {
       visible: exportVisible,
@@ -211,6 +207,10 @@ export default defineComponent({
       hasExportPerm,
       exportMembersLastLoginGroup,
     } = useExport();
+
+    // 自訂欄位
+    const { customOptions, fieldsData, isDisplayedColumns, confirm } =
+      useInitCustomField(notLoginCountFieldsInitial(hasExportPerm.value));
 
     // 點擊觸發匯出初始設定
     const dayGroupParam = ref<DateRangeKey>('7');
