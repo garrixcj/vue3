@@ -159,7 +159,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
                     rd-tooltip(placement="bottom")
                       i.mdi.mdi-information
                       template(#content)
-                        | {{ t('balance_difference') }} = {{ t('deposit_amount_total') }} - {{ t('withdrawal_amount_total') }}
+                        | {{ t('balance_difference') }} = {{ t('deposit') }} - {{ t('withdraw') }}
               template(#default="scope")
                 span(:class="getBalanceClass(scope.row.balance_difference)") {{ scope.row.balance_difference }}
             rd-table-column(
