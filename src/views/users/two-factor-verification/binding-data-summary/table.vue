@@ -28,7 +28,7 @@ rd-card.binding-table(no-padding)
         //- UBAuth
         rd-status-button(
           :value="dataTotal.ub_auth"
-          label="UBAuth"
+          label="UB Auth"
           :min-width="105"
           :active="form.type === '1'"
           :disabled="false"
@@ -80,7 +80,7 @@ rd-card.binding-table(no-padding)
         prop="created_at"
         header-align="center"
         min-width="140"
-        :sortable="searched"
+        sortable
         :resizeable="false"
       )
         template(#default="{ row: { created_at } }")
@@ -90,7 +90,7 @@ rd-card.binding-table(no-padding)
         :label="t('member_account')"
         prop="username"
         header-align="center"
-        :sortable="searched"
+        sortable
         :min-width="105"
       )
         template(#default="{ row: { id, username } }")
@@ -106,7 +106,7 @@ rd-card.binding-table(no-padding)
         :label="t('alias')"
         prop="alias"
         header-align="center"
-        :sortable="searched"
+        sortable
       )
       //- 綁定時間
       rd-table-column(
@@ -114,7 +114,7 @@ rd-card.binding-table(no-padding)
         prop="binding_at"
         header-align="center"
         min-width="140"
-        :sortable="searched"
+        sortable
         :resizeable="false"
       )
         template(#default="{ row: { binding_at } }")
@@ -149,7 +149,7 @@ rd-card.binding-table(no-padding)
         prop="last_login"
         header-align="center"
         min-width="145"
-        :sortable="searched"
+        sortable
         :resizeable="false"
       )
         template(#default="{ row: { last_login } }")
@@ -170,7 +170,7 @@ rd-card.binding-table(no-padding)
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, reactive, ref, computed } from 'vue';
+import { defineComponent, inject, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLoadingStore } from '@/stores/loading';
 import { useTabWatcher, QuerySetting } from '@/components/utils/route-watch';
@@ -203,13 +203,15 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'parent' });
     const loadingStore = useLoadingStore();
     const watcher = useTabWatcher('bindingDataSummary');
-    const searched = inject('BindingDataSummary:searched');
+    const searched = inject('BindingDataSummary:searched', ref(false));
 
     const form = inject('BindingDataSummary:searchForm', {
       domain: 0,
       users: [] as string[],
       date: ['', ''] as [string, string],
       type: 'binding',
+      sort: 'binding_at',
+      order: 'descending',
     });
 
     // 匯出視窗
@@ -232,10 +234,6 @@ export default defineComponent({
         page: 1,
         size: 100,
         total: 0,
-      },
-      sort: {
-        type: 'binding_at',
-        order: 'descending',
       },
     });
 
@@ -304,23 +302,22 @@ export default defineComponent({
       // 排序
       {
         key: 'sort',
-        get: () => tableOption.sort.type,
+        get: () => form.sort,
         set: (val: string) => {
-          tableOption.sort.type = val || '';
+          form.sort = val || '';
         },
         default: 'binding_at',
       },
       // 排列
       {
         key: 'order',
-        get: () => (tableOption.sort.order === 'descending' ? 'desc' : 'asc'),
+        get: () => (form.order === 'descending' ? 'desc' : 'asc'),
         set: (val: string, query: { sort?: string }) => {
           if (query.sort !== '') {
-            tableOption.sort.order =
-              val === 'desc' ? 'descending' : 'ascending';
+            form.order = val === 'desc' ? 'descending' : 'ascending';
           }
         },
-        filter: () => tableOption.sort.type !== '',
+        filter: () => form.sort !== '',
         default: 'desc',
         optional: true,
       },
@@ -361,8 +358,9 @@ export default defineComponent({
         .getBindingList(form.domain, { ...querySet.getParam() })
         .then(resp => {
           if (resp.data.result) {
-            data.value = resp.data.data;
-            tableOption.pagination.total = data.value.length;
+            const result = resp.data.data;
+            data.value = result.data;
+            tableOption.pagination.total = result.total;
           }
         });
     };
@@ -379,8 +377,8 @@ export default defineComponent({
       });
     };
 
-    // 取資料
-    const getSearchData = () => {
+    // 更新 table 資料
+    const updateData = () => {
       loadingStore.page = true;
       Promise.all([getList(), getTotal()]).then(() => {
         loadingStore.page = false;
@@ -410,9 +408,12 @@ export default defineComponent({
         prop: string;
         order: 'ascending' | 'descending';
       }) {
-        tableOption.sort.type = prop;
-        tableOption.sort.order = order;
-        tableSearch.page(1);
+        form.sort = prop;
+        form.order = order;
+
+        if (searched.value) {
+          tableSearch.page(1);
+        }
       },
     };
 
@@ -438,11 +439,10 @@ export default defineComponent({
     };
 
     // 判斷是否有 匯出 權限
-    const checkExportPerm = computed(
-      () =>
-        data.value.length > 0 &&
-        useAccesses(['Downloads', 'BindingDataSummaryExport']),
-    );
+    const checkExportPerm = useAccesses([
+      'Downloads',
+      'BindingDataSummaryExport',
+    ]);
 
     // 判斷是否有 會員詳細資料 權限
     const checkUserDetailPerm = useAccess('UserDetailInfo');
@@ -452,7 +452,11 @@ export default defineComponent({
 
     watcher.setWatcher(() => {
       querySet.setField();
-      getSearchData();
+      if (form.domain) {
+        updateData();
+      } else {
+        data.value = [];
+      }
     });
 
     return {
