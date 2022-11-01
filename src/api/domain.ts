@@ -1127,6 +1127,22 @@ export const infinite = {
   // }
 };
 
+// 網址相關
+export const url = {
+  http,
+  // 取得所有廳主的站別列表
+  getSiteList() {
+    return http.get('/domain/site');
+  },
+  /**
+   * 取得廳主的單一站別資訊
+   * @param  {string} site_group
+   */
+  getSingleSiteInfo(site_group: string) {
+    return this.http.get('/domain/site/info', { params: { site_group } });
+  },
+};
+
 const domain = {
   // 預設參數
   ...defaultParameter,
@@ -1154,6 +1170,8 @@ const domain = {
   ...ipList,
   // Infinite Api
   ...infinite,
+  // 網址、站別
+  ...url,
 };
 export default domain;
 export const multi = { ...domain, http: multiHttp };
