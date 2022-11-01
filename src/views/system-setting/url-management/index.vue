@@ -10,20 +10,9 @@ rd-layout.url-management(
     h2 {{ t('url_management') }}
   template(#afterTitle)
     //- 站別資訊
-    rd-button(
-      type="default"
-      size="small"
-      @click="siteInfoVisible = !siteInfoVisible"
-    ) {{ t('site_info') }}
-    site-information(v-if="siteInfoVisible")
-
+    site-information
     //- 設定範例
-    rd-button(
-      type="default"
-      size="small"
-      @click="settingExampleVisible = !settingExampleVisible"
-    ) {{ t('setting_example') }}
-    setting-example(v-if="settingExampleVisible")
+    setting-example
 
     //- 操作教學(todo: 代刻元件)
     //- teach(url-key='domain_management')
@@ -56,6 +45,7 @@ import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
 import host from '@/plugins/url';
 import { useLoadingStore } from '@/stores/loading';
+import { match } from '@/components/utils/string-match/index';
 import CustomerDomain from './customer-domain/index.vue';
 import AgentDomain from './agent-domain/index.vue';
 import IpService from './ip-service/index.vue';
@@ -144,19 +134,31 @@ export default defineComponent({
     };
     provide('UrlManagement:setLoading', setLoading);
 
-    // 站別資訊
-    const siteInfoVisible = ref(false);
+    // 自定義快搜
+    const customSearch = {
+      filter: (
+        searchedValue: string,
+        options: { label: string; option: { code: string } },
+      ) => {
+        const escapeRegexpString = (value = '') =>
+          value.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
+        const re = new RegExp(escapeRegexpString(searchedValue), 'i');
 
-    // 設定範例
-    const settingExampleVisible = ref(false);
+        // 過濾功能 (可過濾 label 及 code)
+        return (
+          re.test(options.label) ||
+          match(options.label, searchedValue) ||
+          re.test(options.option.code)
+        );
+      },
+    };
+    provide('UrlManagement:customSearch', customSearch);
 
     return {
       t,
       activeTab,
       currentTabs,
       tabPerms,
-      siteInfoVisible,
-      settingExampleVisible,
     };
   },
 });
@@ -165,7 +167,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .url-management {
   :deep(.after-title) {
+    @include flex-basic(center);
     margin-left: 10px;
+
+    .site-information {
+      margin-right: 10px;
+    }
   }
 
   .custom-color {
