@@ -13,27 +13,36 @@
       "subtotal_count": "小計",
       "ways_to_purchase": "購買方式",
       "management_permission": "管理權限",
-      "domain": "廳主"
+      "domain": "廳主",
     }
   }
 </i18n>
 <template lang="pug">
 rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
   template(#content)
+    //- 資料列
     rd-grid-table(
       :columns="columns"
       :row="{ background: 'grey' }"
       :data-source="dataSource"
     )
-    .total
-      span.label {{ t('subtotal_count') }}
-      span.value {{ subtotalCount }}
+    //- 小計列
+    rd-grid-table.subtotal-table(
+      no-header
+      :columns="totalColumns"
+      :row="{ background: 'none' }"
+      :data-source="totalDataSource"
+    )
+      template(#total="{ row }")
+        span.label {{ t('subtotal_count') }}
+        span.value {{ row.subtotalCount }}
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { estimate } from '../estimate';
+import { useEstimate } from '../estimate';
+import type { BasicSetting } from './detail';
 import { exchangeRate } from '@/components/utils/format/amount';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
 
@@ -44,15 +53,21 @@ export default defineComponent({
   },
   props: {
     // 選擇的購買方式
-    buyOption: { type: String, required: true },
+    buy: {
+      type: String as PropType<BasicSetting['buy']>,
+      required: true,
+    },
     // 選擇的管理權限
-    managementOption: { type: String, required: true },
+    management: {
+      type: String as PropType<BasicSetting['management']>,
+      required: true,
+    },
     // 數量
     count: { type: Number, required: true },
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'local' });
-    const { getEstimateOfChoice, getDict } = estimate();
+    const { getEstimateOfChoice, getDict } = useEstimate();
 
     // 標題列
     const columns = [
@@ -79,50 +94,74 @@ export default defineComponent({
     ];
 
     // 取得購買方式的相關資訊
-    const buyInfo = getEstimateOfChoice('domainName', 'buy', props.buyOption);
+    const buyInfo = getEstimateOfChoice('domainName', 'buy', props.buy);
 
     // 取得管理權相方式的相關資訊
     const managementInfo = getEstimateOfChoice(
       'domainName',
       'management',
-      props.buyOption,
+      props.management,
     );
 
     // 資料列
-    const dataSource = computed(() => [
+    const dataSource = computed(() => {
+      const result = [];
+
+      // 購買方式
+      if (buyInfo) {
+        result.push({
+          item: t(getDict(buyInfo.item)),
+          option: t(getDict(buyInfo.option)),
+          cost: `${exchangeRate(buyInfo.pay, 1)}/${t(getDict(buyInfo.time))}`,
+          count: props.count,
+          amount: exchangeRate(buyInfo.pay, props.count),
+        });
+      }
+
+      // 管理權限
+      if (managementInfo) {
+        result.push({
+          item: t(getDict(managementInfo.item)),
+          option: t(getDict(managementInfo.option)),
+          cost: `${exchangeRate(managementInfo.pay, 1)}/${t(
+            getDict(managementInfo.time),
+          )}`,
+          count: props.count,
+          amount: exchangeRate(managementInfo.pay, props.count),
+        });
+      }
+
+      return result;
+    });
+
+    // 小計標題列
+    const totalColumns = [
       {
-        item: getDict('item', buyInfo.item),
-        option: getDict('option', buyInfo.option),
-        cost: `${exchangeRate(buyInfo.pay, 1)}/${getDict(
-          'time',
-          buyInfo.time,
-        )}`,
-        count: props.count,
-        amount: exchangeRate(buyInfo.pay, props.count),
+        dataIndex: 'subtotalCount',
+        align: 'right',
+        customRender: { slot: 'total' },
+        class: 'subtotal',
       },
-      {
-        item: getDict('item', managementInfo.item),
-        option: getDict('option', managementInfo.option),
-        cost: `${exchangeRate(managementInfo.pay, 1)}/${getDict(
-          'time',
-          managementInfo.time,
-        )}`,
-        count: props.count,
-        amount: exchangeRate(managementInfo.pay, props.count),
-      },
-    ]);
+    ];
 
     // 小計
-    const subtotalCount = exchangeRate(
-      buyInfo.pay + managementInfo.pay,
-      props.count,
-    );
+    const totalDataSource = computed(() => {
+      const buyPay = buyInfo ? buyInfo.pay : 0;
+      const managementPay = managementInfo ? managementInfo.pay : 0;
+
+      return [
+        {
+          subtotalCount: exchangeRate(buyPay + managementPay, props.count),
+        },
+      ];
+    });
 
     return {
       t,
       columns,
       dataSource,
-      subtotalCount,
+      totalColumns,
+      totalDataSource,
     };
   },
 });
@@ -131,15 +170,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 .estimate-card {
   .content {
-    .total {
-      display: flex;
-      justify-content: end;
-      padding: 9px 15px;
-      .label {
-        padding-right: 15px;
-      }
-      .value {
-        font-weight: 500;
+    .subtotal-table {
+      .subtotal {
+        .label {
+          padding-right: 15px;
+        }
+        .value {
+          font-weight: 500;
+        }
       }
     }
   }
