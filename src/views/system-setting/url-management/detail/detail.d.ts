@@ -1,10 +1,12 @@
-import { type PriceListType } from '../estimate';
+export as namespace UrlManagementDetail;
+
+import { type PriceListType } from '../common/estimate';
 
 export type BasicSetting = {
   buy: PriceListType['option'];
   management: PriceListType['option'];
   domainType: 'normal' | 'simple';
-  hightRisk: 'over' | 'binding';
+  highRisk: 'over' | 'binding';
   checkItem: 'txt' | 'nameserver' | '';
   websiteProviderPerm: boolean | null;
   websiteProvider: string;
@@ -12,4 +14,13 @@ export type BasicSetting = {
   password: string;
   applyTime: string;
   finishTime: string;
+};
+
+export type EstimateTableData = {
+  item: string;
+  option: string;
+  cost: string;
+  pay: number;
+  count: number;
+  amount: string;
 };

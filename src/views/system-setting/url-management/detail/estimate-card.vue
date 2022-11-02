@@ -26,11 +26,9 @@ rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
       :row="{ background: 'grey' }"
       :data-source="dataSource"
     )
-    //- 小計列
-    rd-grid-table.subtotal-table(
-      no-header
+    rd-grid-table-row(
       :columns="totalColumns"
-      :row="{ background: 'none' }"
+      :row="{ background: 'white' }"
       :data-source="totalDataSource"
     )
       template(#total="{ row }")
@@ -41,15 +39,19 @@ rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useEstimate } from '../estimate';
-import type { BasicSetting } from './detail';
+import { filter } from 'lodash';
+import Big from 'big.js';
+import { priceList, priceListDict } from '../common/estimate';
+import type { BasicSetting, EstimateTableData } from './detail';
 import { exchangeRate } from '@/components/utils/format/amount';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
+import RdGridTableRow from '@/components/custom/grid-table/row.vue';
 
 export default defineComponent({
   name: 'UrlManagementEstimateCard',
   components: {
     RdGridTable,
+    RdGridTableRow,
   },
   props: {
     // 選擇的購買方式
@@ -67,7 +69,6 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'local' });
-    const { getEstimateOfChoice, getDict } = useEstimate();
 
     // 標題列
     const columns = [
@@ -94,42 +95,44 @@ export default defineComponent({
     ];
 
     // 取得購買方式的相關資訊
-    const buyInfo = getEstimateOfChoice('domainName', 'buy', props.buy);
+    const buyInfo = filter(priceList['domainName'], {
+      item: 'buy',
+      option: props.buy,
+    });
 
     // 取得管理權相方式的相關資訊
-    const managementInfo = getEstimateOfChoice(
-      'domainName',
-      'management',
-      props.management,
-    );
+    const managementInfo = filter(priceList['domainName'], {
+      item: 'management',
+      option: props.management,
+    });
 
     // 資料列
     const dataSource = computed(() => {
-      const result = [];
+      const result: EstimateTableData[] = [];
 
       // 購買方式
-      if (buyInfo) {
+      buyInfo.forEach(obj => {
         result.push({
-          item: t(getDict(buyInfo.item)),
-          option: t(getDict(buyInfo.option)),
-          cost: `${exchangeRate(buyInfo.pay, 1)}/${t(getDict(buyInfo.time))}`,
+          item: obj.item ? t(priceListDict[obj.item]) : '',
+          option: obj.option ? t(priceListDict[obj.option]) : '',
+          pay: obj.pay,
+          cost: `${exchangeRate(obj.pay, 1)}/${t(priceListDict[obj.time])}`,
           count: props.count,
-          amount: exchangeRate(buyInfo.pay, props.count),
+          amount: exchangeRate(obj.pay, props.count),
         });
-      }
+      });
 
       // 管理權限
-      if (managementInfo) {
+      managementInfo.forEach(obj => {
         result.push({
-          item: t(getDict(managementInfo.item)),
-          option: t(getDict(managementInfo.option)),
-          cost: `${exchangeRate(managementInfo.pay, 1)}/${t(
-            getDict(managementInfo.time),
-          )}`,
+          item: obj.item ? t(priceListDict[obj.item]) : '',
+          option: obj.option ? t(priceListDict[obj.option]) : '',
+          pay: obj.pay,
+          cost: `${exchangeRate(obj.pay, 1)}/${t(priceListDict[obj.time])}`,
           count: props.count,
-          amount: exchangeRate(managementInfo.pay, props.count),
+          amount: exchangeRate(obj.pay, props.count),
         });
-      }
+      });
 
       return result;
     });
@@ -146,14 +149,14 @@ export default defineComponent({
 
     // 小計
     const totalDataSource = computed(() => {
-      const buyPay = buyInfo ? buyInfo.pay : 0;
-      const managementPay = managementInfo ? managementInfo.pay : 0;
-
-      return [
-        {
-          subtotalCount: exchangeRate(buyPay + managementPay, props.count),
-        },
-      ];
+      return {
+        subtotalCount: dataSource.value.reduce(
+          (sum: number, obj: EstimateTableData) => {
+            return new Big(sum).plus(obj.amount).toNumber();
+          },
+          0,
+        ),
+      };
     });
 
     return {
@@ -169,16 +172,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .estimate-card {
-  .content {
-    .subtotal-table {
-      .subtotal {
-        .label {
-          padding-right: 15px;
-        }
-        .value {
-          font-weight: 500;
-        }
-      }
+  .subtotal {
+    .label {
+      padding-right: 15px;
+    }
+    .value {
+      font-weight: 500;
     }
   }
 }
