@@ -6,7 +6,7 @@ rd-dropdown(v-if="type === 'dropdown'" trigger="click")
     rd-dropdown-menu.trans-locale-menu
       rd-dropdown-item.trans-locale-option(
         v-for="locale in locales"
-        :class="{ 'is-current-locale': locale.value === currentLocale }"
+        :class="{ 'is-current-locale': checkCurrentLocale(locale.value) }"
         @click="changeLocale(locale.value)"
       ) {{ locale.label }}
 //- 對話框
@@ -71,12 +71,15 @@ export default defineComponent({
       }
     };
 
+    const checkCurrentLocale = (localeValue: string) =>
+      locale.value === localeValue;
+
     return {
       locales,
       selectedLocale,
       close,
       changeLocale,
-      currentLocale: locale,
+      checkCurrentLocale,
       t,
     };
   },

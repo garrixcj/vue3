@@ -78,7 +78,7 @@ export default defineComponent({
     // 搜尋前
     const beforeSearch = ref(true);
     // 自定義快搜
-    const customSearch = inject('UrlManagement:customSearch') as Function;
+    const customSearch = inject<object>('UrlManagement:customSearch');
 
     // 站別相關
     const { getSiteList, siteOptions } = useSiteList();
