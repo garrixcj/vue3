@@ -488,7 +488,6 @@ export default defineComponent({
           getMembersLastLoginGroupDetail(form),
           getDomain(form.domain),
         ]).then(() => {
-          dayCount[form.type] = dataTotalNum.value;
           loadingStore.page = false;
         });
       } else {
