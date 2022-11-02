@@ -697,10 +697,15 @@ export const auth = {
   /**
    * 取得廳主會員綁定總數
    * @param  {number} domain
+   * @param  {object} options
    */
-  getTotalBinding(domain: number) {
+  getTotalBinding(domain: number, options = {}) {
+    const paramOptions = ['users', 'start_date_time', 'end_date_time'];
+    const params = pick(options, paramOptions);
+
     return this.http.get(
       `/domain/${domain}/two_factor_authentication/binding_count`,
+      { params },
     );
   },
   /**

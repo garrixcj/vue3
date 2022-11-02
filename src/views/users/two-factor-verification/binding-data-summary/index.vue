@@ -38,7 +38,7 @@
       rd-form-item(prop="users")
         template(#label)
           label {{ t('member_account') }}
-          rd-tooltip(placement="top")
+          rd-tooltip(placement="top" :offset="0")
             i.mdi.mdi-information
             template(#content)
               div {{ t('username_rule_api') }}
@@ -66,15 +66,20 @@
                 rd-button(type="default" size="large") {{ t('import_file') }}
 
           //- 範例下載
-          rd-button(text @click="downloadExample") {{ t('sample_download') }}
-          rd-tooltip(popper-class="binding-tooltip" placement="top")
-            i.mdi.mdi-information
-            template(#content)
-              li {{ t('upload_list_notice_1') }}
-              li {{ t('upload_list_notice_2') }}
-              .download-msg - {{ t('upload_list_notice_2_1') }}
-              .download-msg - {{ t('upload_list_notice_2_2') }}
-              li {{ t('upload_list_notice_3') }}
+          .sample-download
+            rd-button(text @click="downloadExample") {{ t('sample_download') }}
+            rd-tooltip(
+              popper-class="binding-tooltip"
+              placement="top"
+              :offset="0"
+            )
+              i.mdi.mdi-information
+              template(#content)
+                li {{ t('upload_list_notice_1') }}
+                li {{ t('upload_list_notice_2') }}
+                .download-msg - {{ t('upload_list_notice_2_1') }}
+                .download-msg - {{ t('upload_list_notice_2_2') }}
+                li {{ t('upload_list_notice_3') }}
 
         template(#error="scope")
           .el-form-item__error(v-show="!batchVisible") {{ scope.error }}
@@ -108,12 +113,8 @@
           :href="platformPermUrl"
           target="_blank"
         ) {{ t('station_security_settings') }}
-        rd-tooltip(
-          v-else
-          :content="t('no_platform_security_settings_perm_hint')"
-        )
-          span.function-name {{ t('station_security_settings') }}
-        span {{ t('two_verification') }}
+        span(v-if="checkPlatformPerm") {{ t('two_verification') }}
+        span(v-else) {{ t('two_factor_verification_of_domain') }}
       rd-tag.domain-binding-status__status(v-if="authSwitch" type="success") {{ t('enable') }}
       rd-tag.domain-binding-status__status(v-else type="danger") {{ t('disable') }}
 
@@ -126,7 +127,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, reactive, ref, onMounted } from 'vue';
+import { defineComponent, provide, reactive, ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLoadingStore } from '@/stores/loading';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
@@ -203,20 +204,18 @@ export default defineComponent({
         }
         value.forEach((item: string) => {
           if (item) {
-            if (item.length < 4 || item.length > 20) {
+            if (!/^[a-z0-9]+$/.test(item)) {
+              reject(new Error(t('form_verify_msg_2')));
+            } else if (item.length < 4 || item.length > 20) {
               reject(
                 new Error(
-                  t('username_rule_error_msg', {
+                  t('form_verify_msg_3', {
                     min: 4,
                     max: 20,
                   }),
                 ),
               );
-            } else if (!/^[a-z0-9]+$/.test(item)) {
-              reject(new Error(t('form_verify_msg_2')));
             }
-          } else {
-            reject(new Error(t('user_name_not_null')));
           }
         });
         resolve();
@@ -233,6 +232,12 @@ export default defineComponent({
       ],
       users: [{ validator: multiUserNameValid, trigger: 'change' }],
     };
+
+    watch(batchVisible, () => {
+      if (!batchVisible.value) {
+        form.users = form.users.filter(user => user.length > 0);
+      }
+    });
 
     // 不能設未來時間
     const disabledDates = (time: Date) => {
@@ -378,8 +383,6 @@ export default defineComponent({
       formRef.value.validate(valid => {
         if (valid) {
           form.type = 'binding';
-          form.sort = 'binding_at';
-          form.order = 'descending';
           watcher.queryRoute(querySet.getQuery());
           checkBinding();
           getAuthSwitch();
@@ -448,6 +451,11 @@ export default defineComponent({
   .search-bar__batch {
     @include inline-flex-basic;
     @include space;
+
+    .sample-download {
+      @include inline-flex-basic;
+      @include space(5px);
+    }
   }
 
   .mdi-information {

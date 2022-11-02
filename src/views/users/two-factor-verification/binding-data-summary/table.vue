@@ -68,6 +68,7 @@ rd-card.binding-table(no-padding)
 
   template(#content)
     rd-table(
+      ref="tableRef"
       border
       :data="data"
       :default-sort="{ prop: 'binding_at', order: 'descending' }"
@@ -204,7 +205,7 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const watcher = useTabWatcher('bindingDataSummary');
     const searched = inject('BindingDataSummary:searched', ref(false));
-
+    const tableRef = ref();
     const form = inject('BindingDataSummary:searchForm', {
       domain: 0,
       users: [] as string[],
@@ -367,20 +368,29 @@ export default defineComponent({
 
     // 取總數資料
     const getTotal = () => {
-      return domainAPI.getTotalBinding(form.domain).then(resp => {
-        if (resp.data.result) {
-          dataTotal.value = mapValues(
-            resp.data.data as Record<BindingType, number>,
-            value => exchangeRate(value, 1, 0),
-          );
-        }
-      });
+      return domainAPI
+        .getTotalBinding(form.domain, { ...querySet.getParam() })
+        .then(resp => {
+          if (resp.data.result) {
+            dataTotal.value = mapValues(
+              resp.data.data as Record<BindingType, number>,
+              value => exchangeRate(value, 1, 0),
+            );
+          }
+        });
+    };
+
+    // 重置 Scrollbar 位置
+    const resetScrollBar = () => {
+      tableRef.value.setScrollTop(0);
+      tableRef.value.setScrollLeft(0);
     };
 
     // 更新 table 資料
     const updateData = () => {
       loadingStore.page = true;
       Promise.all([getList(), getTotal()]).then(() => {
+        resetScrollBar();
         loadingStore.page = false;
       });
     };
@@ -461,6 +471,7 @@ export default defineComponent({
 
     return {
       t,
+      tableRef,
       form,
       searched,
       visible,
