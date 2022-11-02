@@ -47,6 +47,7 @@
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "@vitejs/plugin-vue": "^2.3.1",
+    "@volar/vue-language-plugin-pug": "^1.0.9",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^10.0.0",
     "cross-env": "^7.0.3",
@@ -70,6 +71,6 @@
     "vite-plugin-dynamic-import": "^0.9.3",
     "vite-plugin-eslint": "^1.6.0",
     "vite-plugin-stylelint": "^2.2.1",
-    "vue-tsc": "^0.34.7"
+    "vue-tsc": "^1.0.9"
   }
 }
