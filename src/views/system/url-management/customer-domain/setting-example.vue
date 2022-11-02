@@ -1,82 +1,81 @@
 <i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
-.setting-example
-  rd-button(type="default" size="small" @click="visible = !visible") {{ t('setting_example') }}
-  rd-drawer(
-    v-model:visible="visible"
-    :title="t('setting_example')"
-    :width="650"
-    :loading="loading"
-    @closed="resetSearch"
-  )
-    template(#header)
-      rd-form.site-search(
-        ref="drawerRef"
-        inline
-        :model="drawerForm"
-        :rules="drawerRules"
-      )
-        //- 站別
-        rd-form-item(:label="t('site')" prop="site" inline size="small")
-          rd-select(
-            v-model:value="drawerForm.site"
-            :quick-search="customSearch"
-            :selected-setting="{ maxWidth: 240 }"
-            :popper-setting="{ width: 'auto' }"
+rd-button(type="default" @click="visible = !visible") {{ t('setting_example') }}
+rd-drawer(
+  v-model:visible="visible"
+  :title="t('setting_example')"
+  :width="650"
+  :loading="loading"
+  @closed="resetSearch"
+)
+  template(#header)
+    rd-form.site-search(
+      ref="drawerRef"
+      inline
+      :model="drawerForm"
+      :rules="drawerRules"
+    )
+      //- 站別
+      rd-form-item(:label="t('site')" prop="site" inline size="small")
+        rd-select(
+          v-model:value="drawerForm.site"
+          :quick-search="customSearch"
+          :selected-setting="{ maxWidth: 240 }"
+          :popper-setting="{ width: 'auto' }"
+        )
+          rd-option(
+            v-for="(option, index) in siteOptions"
+            :key="index"
+            :value="option.value"
+            :label="option.label"
+            :option="option"
           )
-            rd-option(
-              v-for="(option, index) in siteOptions"
-              :key="index"
-              :value="option.value"
-              :label="option.label"
-              :option="option"
-            )
-              template(#suffix)
-                | {{ `[ ${option.code} ]` }}
-            template(#selected="{ current }")
-              | {{ `${current.label} [${current.option.code}]` }}
-        //- 查詢
-        rd-form-item
-          rd-button(size="small" @click="search") {{ t('search') }}
+            template(#suffix)
+              | {{ `[ ${option.code} ]` }}
+          template(#selected="{ current }")
+            | {{ `${current.label} [${current.option.code}]` }}
+      //- 查詢
+      rd-form-item
+        rd-button(size="small" @click="search") {{ t('search') }}
 
-    rd-card
-      template(#content)
-        rd-collapse-card(
-          v-for="(row, index) in collapseDataSource"
-          :key="index"
-          v-model:collapse="row.collapse"
-          type="card"
-          :disabled="!row.teaching && beforeSearch"
-        )
-          template(#title)
-            span {{ row.title }}
-          template(#content)
-            //- 教學連結
-            rd-button.custom-text(
-              v-if="row.teaching"
-              size="icon"
-              text
-              @click="openTeachingWindow(row.type)"
+  rd-card
+    template(#content)
+      rd-collapse-card(
+        v-for="(row, index) in collapseDataSource"
+        :key="index"
+        v-model:collapse="row.collapse"
+        type="card"
+        :disabled="!row.teaching && beforeSearch"
+      )
+        template(#title)
+          span {{ row.title }}
+        template(#content)
+          //- 教學連結
+          rd-button.custom-text(
+            v-if="row.teaching"
+            size="icon"
+            text
+            @click="openTeachingWindow(row.type)"
+          )
+            i.mdi.mdi-open-in-new
+            span {{ row.content }}
+          div(v-else)
+            //- 複製
+            rd-button(
+              type="default"
+              size="default"
+              @click="notifyCopy(row.content)"
             )
-              i.mdi.mdi-open-in-new
-              span {{ row.content }}
-            div(v-else)
-              //- 複製
-              rd-button(
-                type="default"
-                size="default"
-                @click="notifyCopy(row.content)"
-              )
-                i.mdi.mdi-content-copy
-                span {{ t('copy') }}
-              //- 範例內容
-              pre(v-html="row.content")
+              i.mdi.mdi-content-copy
+              span {{ t('copy') }}
+            //- 範例內容
+            pre(v-html="row.content")
 
-        //- 複製 Textarea
-        textarea(
-          ref="inputRef"
-          style="opacity: 0; position: fixed; left: -999999px; top: -999999px"
-        )
+      //- 複製 Textarea
+      textarea(
+        ref="inputRef"
+        style="opacity: 0; position: fixed; left: -999999px; top: -999999px"
+      )
 </template>
 
 <script lang="ts">
@@ -106,7 +105,7 @@ export default defineComponent({
     // 搜尋前
     const beforeSearch = ref(true);
     // 自定義快搜
-    const customSearch = inject('UrlManagement:customSearch') as Function | undefined;
+    const customSearch = inject<object>('UrlManagement:customSearch');
 
     // 站別相關
     const { getSiteList, siteOptions } = useSiteList();
@@ -217,21 +216,7 @@ export default defineComponent({
                     result.content = response.data.data[item.id];
 
                     // 設定範例模板樣式
-                    result.content = replace(
-                      result.content,
-                      new RegExp('example.com', 'g'),
-                      '<font color=#22c2dc>example.com</font>',
-                    );
-                    result.content = replace(
-                      result.content,
-                      new RegExp('(<pre>)', 'g'),
-                      '',
-                    );
-                    result.content = replace(
-                      result.content,
-                      new RegExp('(</pre>)', 'g'),
-                      '',
-                    );
+                    result.content = setExampleTemplateStyle(result.content);
                   }
                 });
               }
@@ -253,10 +238,31 @@ export default defineComponent({
         result.collapse = false;
       });
     };
+    // 設定範例模板樣式
+    const setExampleTemplateStyle = (content: string) => {
+      const replaceData: { value: string; replaceValue: string }[] = [
+        {
+          value: 'example.com',
+          replaceValue: '<font color=#22c2dc>example.com</font>',
+        },
+        { value: '(<pre>)', replaceValue: '' },
+        { value: '(</pre>)', replaceValue: '' },
+      ];
+
+      let result = content;
+      Object.keys(replaceData).forEach((item: string, key: number) => {
+        result = replace(
+          result,
+          new RegExp(replaceData[key].value, 'g'),
+          replaceData[key].replaceValue,
+        );
+      });
+      return result;
+    };
 
     // 另開教學視窗
     const openTeachingWindow = (type: string) => {
-      window.open(`/v3/system-setting/url-management/teaching/${type}`);
+      window.open(`/v3/system/url-management/teaching/${type}`);
     };
 
     // 複製模板內容
@@ -290,22 +296,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.setting-example {
-  .site-search {
-    @include space-vertical(15px);
-  }
+.site-search {
+  @include space-vertical(15px);
+}
 
-  .rd-card {
-    background-color: $background-5;
+.rd-card {
+  background-color: $background-5;
 
-    pre {
-      word-wrap: break-word;
-      white-space: pre-wrap;
-    }
+  pre {
+    word-wrap: break-word;
+    white-space: pre-wrap;
   }
+}
 
-  .custom-text {
-    @include btn-underline;
-  }
+.custom-text {
+  @include btn-underline;
 }
 </style>

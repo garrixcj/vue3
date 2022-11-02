@@ -10,16 +10,13 @@ rd-layout-content.name-server-teaching
       :title="item.title"
     )
       template(#description)
-        .image(
-          :style="{ 'background-image': 'url(' + item.url + ')', height: item.height }"
-        )
+        .image(:class="[`image-${key}`]")
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { defineComponent } from 'vue';
 import { ElSteps, ElStep } from 'element-plus';
-import { useCookieStore } from '@/stores/cookie';
 
 export default defineComponent({
   name: 'NameServerTeaching', // 網址管理 - 設定範例 - Name Server教學
@@ -28,42 +25,62 @@ export default defineComponent({
     ElStep,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t, locale } = useI18n({ useScope: 'local' });
 
-    const cookieStore = useCookieStore();
-    const isTraditionalChinese = cookieStore.lang === 'zh-tw';
-    const getLang = isTraditionalChinese ? 'zh-tw' : 'zh-cn';
+    // 取得語系
+    const getLang = locale.value === 'zh-tw' ? 'zh-tw' : 'zh-cn';
+
     const images = {
-      step1: { title: t('teaching_step_1'), height: '', url: '' },
+      step1: {
+        title: t('teaching_step_1'),
+      },
       step2: {
         title: t('teaching_step_2'),
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
+          getLang +
+          '-01.png)',
         height: '280px',
-        url: `/v3/src/assets/images/url-management/nameserver-${getLang}-01.png`,
       },
       step3: {
         title: t('teaching_step_3'),
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
+          getLang +
+          '-02.png)',
         height: '310px',
-        url: `/v3/src/assets/images/url-management/nameserver-${getLang}-02.png`,
       },
       step4: {
         title: t('name_server_teaching_step_4'),
-        height: isTraditionalChinese ? '270px' : '220px',
-        url: `/v3/src/assets/images/url-management/nameserver-${getLang}-03.png`,
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
+          getLang +
+          '-03.png)',
+        height: getLang == 'zh-tw' ? '270px' : '220px',
       },
       step5: {
         title: t('name_server_teaching_step_5'),
-        height: isTraditionalChinese ? '270px' : '220px',
-        url: `/v3/src/assets/images/url-management/nameserver-${getLang}-04.png`,
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
+          getLang +
+          '-04.png)',
+        height: getLang == 'zh-tw' ? '270px' : '220px',
       },
       step6: {
         title: t('name_server_teaching_step_6'),
-        height: isTraditionalChinese ? '570px' : '450px',
-        url: `/v3/src/assets/images/url-management/nameserver-${getLang}-05.png`,
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
+          getLang +
+          '-05.png)',
+        height: getLang == 'zh-tw' ? '570px' : '450px',
       },
       step7: {
         title: t('name_server_teaching_step_7'),
-        height: isTraditionalChinese ? '470px' : '400px',
-        url: `/v3/src/assets/images/url-management/nameserver-${getLang}-06.png`,
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
+          getLang +
+          '-06.png)',
+        height: getLang == 'zh-tw' ? '470px' : '400px',
       },
     };
 
@@ -77,8 +94,34 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .name-server-teaching {
+  min-width: 1180px;
   .image {
     background-repeat: no-repeat;
+  }
+
+  .image-step2 {
+    height: v-bind('images.step2.height');
+    background-image: v-bind('images.step2.url');
+  }
+  .image-step3 {
+    height: v-bind('images.step3.height');
+    background-image: v-bind('images.step3.url');
+  }
+  .image-step4 {
+    height: v-bind('images.step4.height');
+    background-image: v-bind('images.step4.url');
+  }
+  .image-step5 {
+    height: v-bind('images.step5.height');
+    background-image: v-bind('images.step5.url');
+  }
+  .image-step6 {
+    height: v-bind('images.step6.height');
+    background-image: v-bind('images.step6.url');
+  }
+  .image-step7 {
+    height: v-bind('images.step7.height');
+    background-image: v-bind('images.step7.url');
   }
 }
 </style>

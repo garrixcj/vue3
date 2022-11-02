@@ -13,18 +13,17 @@ rd-layout-content.txt-teaching
         .description-group(v-if="key === 'step5'")
           span {{ t('txt_teaching_description_1') }}
           span {{ t('txt_teaching_description_2') }}
-          span(v-html="t('txt_teaching_description_3')")
+          i18n-t(keypath="txt_teaching_description_3" tag="span")
+            template(#content)
+              span.description-notice {{ t('domain_suffix') }}
           span {{ t('txt_teaching_description_4') }}
-        .image(
-          :style="{ 'background-image': 'url(' + item.url + ')', height: item.height }"
-        )
+        .image(:class="[`image-${key}`]")
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { defineComponent } from 'vue';
 import { ElSteps, ElStep } from 'element-plus';
-import { useCookieStore } from '@/stores/cookie';
 
 export default defineComponent({
   name: 'TXTTeaching', // 網址管理 - 設定範例 - txt教學
@@ -33,31 +32,46 @@ export default defineComponent({
     ElStep,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t, locale } = useI18n({ useScope: 'local' });
 
-    const cookieStore = useCookieStore();
-    const getLang = cookieStore.lang === 'zh-tw' ? 'zh-tw' : 'zh-cn';
+    // 取得語系
+    const getLang = locale.value === 'zh-tw' ? 'zh-tw' : 'zh-cn';
+
     const images = {
-      step1: { title: t('teaching_step_1'), height: '', url: '' },
+      step1: {
+        title: t('teaching_step_1'),
+      },
       step2: {
         title: t('teaching_step_2'),
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/txt-' +
+          getLang +
+          '-01.png)',
         height: '280px',
-        url: `/v3/src/assets/images/url-management/txt-${getLang}-01.png`,
       },
       step3: {
         title: t('teaching_step_3'),
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/txt-' +
+          getLang +
+          '-02.png)',
         height: '310px',
-        url: `/v3/src/assets/images/url-management/txt-${getLang}-02.png`,
       },
       step4: {
         title: t('txt_teaching_step_4'),
-        height: '460px',
-        url: `/v3/src/assets/images/url-management/txt-${getLang}-03.png`,
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/txt-' +
+          getLang +
+          '-03.png)',
+        height: getLang == 'zh-tw' ? '460px' : '425px',
       },
       step5: {
         title: t('txt_teaching_step_5'),
-        height: '720px',
-        url: `/v3/src/assets/images/url-management/txt-${getLang}-04.png`,
+        url:
+          'url(/v3/src/assets/images/teaching/url-management/txt-' +
+          getLang +
+          '-04.png)',
+        height: getLang == 'zh-tw' ? '720px' : '580px',
       },
     };
 
@@ -71,16 +85,34 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .txt-teaching {
+  min-width: 1180px;
   .description-group {
     @include flex-basic(flex-start, flex-start);
 
     flex-direction: column;
-    :deep(.description-notice) {
+    .description-notice {
       color: $danger;
     }
   }
   .image {
     background-repeat: no-repeat;
+  }
+
+  .image-step2 {
+    height: v-bind('images.step2.height');
+    background-image: v-bind('images.step2.url');
+  }
+  .image-step3 {
+    height: v-bind('images.step3.height');
+    background-image: v-bind('images.step3.url');
+  }
+  .image-step4 {
+    height: v-bind('images.step4.height');
+    background-image: v-bind('images.step4.url');
+  }
+  .image-step5 {
+    height: v-bind('images.step5.height');
+    background-image: v-bind('images.step5.url');
   }
 }
 </style>

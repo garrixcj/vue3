@@ -165,10 +165,6 @@ export default defineComponent({
   :deep(.after-title) {
     @include flex-basic(center);
     margin-left: 10px;
-
-    .site-information {
-      margin-right: 10px;
-    }
   }
 
   .custom-color {
