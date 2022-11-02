@@ -8,7 +8,7 @@ export type BasicSetting = {
   domainType: 'normal' | 'simple';
   highRisk: 'over' | 'binding';
   checkItem: 'txt' | 'nameserver' | '';
-  websiteProviderPerm: boolean | null;
+  websiteProviderPerm: boolean;
   websiteProvider: string;
   username: string;
   password: string;

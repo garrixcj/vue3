@@ -37,15 +37,16 @@ rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from 'vue';
+import { defineComponent, computed, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { filter } from 'lodash';
+import { mapKeys } from 'lodash';
 import Big from 'big.js';
 import { priceList, priceListDict } from '../common/estimate';
 import type { BasicSetting, EstimateTableData } from './detail';
 import { exchangeRate } from '@/components/utils/format/amount';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
 import RdGridTableRow from '@/components/custom/grid-table/row.vue';
+import type { ColumnSet } from '@/components/custom/grid-table/grid-table';
 
 export default defineComponent({
   name: 'UrlManagementEstimateCard',
@@ -71,7 +72,7 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'local' });
 
     // 標題列
-    const columns = [
+    const columns: ColumnSet[] = [
       { dataIndex: 'item', title: t('item') },
       { dataIndex: 'option', title: t('option') },
       {
@@ -94,51 +95,51 @@ export default defineComponent({
       },
     ];
 
-    // 取得購買方式的相關資訊
-    const buyInfo = filter(priceList['domainName'], {
-      item: 'buy',
-      option: props.buy,
-    });
-
-    // 取得管理權相方式的相關資訊
-    const managementInfo = filter(priceList['domainName'], {
-      item: 'management',
-      option: props.management,
-    });
+    const priceListByMethod = mapKeys(
+      priceList,
+      obj => `${obj.category}-${obj.item}-${obj.option}`,
+    );
 
     // 資料列
     const dataSource = computed(() => {
       const result: EstimateTableData[] = [];
 
+      // 取得購買方式的相關資訊
+      const buyInfo = priceListByMethod[`domainName-buy-${props.buy}`];
       // 購買方式
-      buyInfo.forEach(obj => {
-        result.push({
-          item: obj.item ? t(priceListDict[obj.item]) : '',
-          option: obj.option ? t(priceListDict[obj.option]) : '',
-          pay: obj.pay,
-          cost: `${exchangeRate(obj.pay, 1)}/${t(priceListDict[obj.time])}`,
-          count: props.count,
-          amount: exchangeRate(obj.pay, props.count),
-        });
+      result.push({
+        item: t(priceListDict.buy),
+        option: buyInfo.option ? t(priceListDict[buyInfo.option]) : '',
+        pay: buyInfo.pay,
+        cost: `${exchangeRate(buyInfo.pay, 1)}/${t(
+          priceListDict[buyInfo.time],
+        )}`,
+        count: props.count,
+        amount: exchangeRate(buyInfo.pay, props.count),
       });
 
+      // 取得管理權相方式的相關資訊
+      const managementInfo =
+        priceListByMethod[`domainName-management-${props.management}`];
       // 管理權限
-      managementInfo.forEach(obj => {
-        result.push({
-          item: obj.item ? t(priceListDict[obj.item]) : '',
-          option: obj.option ? t(priceListDict[obj.option]) : '',
-          pay: obj.pay,
-          cost: `${exchangeRate(obj.pay, 1)}/${t(priceListDict[obj.time])}`,
-          count: props.count,
-          amount: exchangeRate(obj.pay, props.count),
-        });
+      result.push({
+        item: t(priceListDict.management),
+        option: managementInfo.option
+          ? t(priceListDict[managementInfo.option])
+          : '',
+        pay: managementInfo.pay,
+        cost: `${exchangeRate(managementInfo.pay, 1)}/${t(
+          priceListDict[managementInfo.time],
+        )}`,
+        count: props.count,
+        amount: exchangeRate(managementInfo.pay, props.count),
       });
 
       return result;
     });
 
     // 小計標題列
-    const totalColumns = [
+    const totalColumns: ColumnSet[] = [
       {
         dataIndex: 'subtotalCount',
         align: 'right',
@@ -150,11 +151,13 @@ export default defineComponent({
     // 小計
     const totalDataSource = computed(() => {
       return {
-        subtotalCount: dataSource.value.reduce(
-          (sum: number, obj: EstimateTableData) => {
-            return new Big(sum).plus(obj.amount).toNumber();
-          },
-          0,
+        subtotalCount: exchangeRate(
+          dataSource.value.reduce((sum: number, obj: EstimateTableData) => {
+            return new Big(sum)
+              .plus(new Big(obj.pay).times(obj.count))
+              .toNumber();
+          }, 0),
+          1,
         ),
       };
     });
