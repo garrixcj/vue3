@@ -11,8 +11,6 @@ rd-layout.url-management(
   template(#afterTitle)
     //- 站別資訊
     site-information
-    //- 設定範例
-    setting-example
 
     //- 操作教學(todo: 代刻元件)
     //- teach(url-key='domain_management')
@@ -50,10 +48,9 @@ import CustomerDomain from './customer-domain/index.vue';
 import AgentDomain from './agent-domain/index.vue';
 import IpService from './ip-service/index.vue';
 import SingleNumberProgress from './single-number-progress/index.vue';
-import ActiveDomain from './active-domain.vue';
-import Record from './record.vue';
-import SiteInformation from './site-information.vue';
-import SettingExample from './setting-example.vue';
+import ActiveDomain from './active-domain/index.vue';
+import Record from './record/index.vue';
+import SiteInformation from './common/site-information.vue';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
@@ -65,7 +62,6 @@ export default defineComponent({
     ActiveDomain, // 活躍域名
     Record, // 操作紀錄
     SiteInformation, // 站別資訊
-    SettingExample, // 設定範例
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });

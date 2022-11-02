@@ -88,7 +88,7 @@ import RdGridTable from '@/components/custom/grid-table/index.vue';
 import RdCollapseCard from '@/components/custom/collapse-card/index.vue';
 import { useCopy } from '@/components/utils/copy';
 import { notify } from '@/components/utils/notification';
-import { useSiteList } from './list';
+import { useSiteList } from '../common/list';
 import { url as urlAPI } from '@/api/domain';
 
 export default defineComponent({
@@ -106,7 +106,7 @@ export default defineComponent({
     // 搜尋前
     const beforeSearch = ref(true);
     // 自定義快搜
-    const customSearch = inject('UrlManagement:customSearch') as Function;
+    const customSearch = inject('UrlManagement:customSearch') as Function | undefined;
 
     // 站別相關
     const { getSiteList, siteOptions } = useSiteList();
