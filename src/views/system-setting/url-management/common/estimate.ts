@@ -1,3 +1,5 @@
+import { mapKeys } from 'lodash';
+
 export type PriceListType = {
   category: 'domainName' | 'ssl' | 'ip';
   item: 'buy' | 'management' | 'oneToOne' | 'oneToMany' | null;
@@ -67,6 +69,20 @@ export const priceList: PriceListType[] = [
     time: 'month',
   },
 ];
+
+// 將資料轉換為由category、item、option組成為key的價錢列表
+export const priceListByMethod = mapKeys(priceList, obj => {
+  let resultKey: string = obj.category;
+  const needCheckKeys = ['item', 'option'] as const;
+
+  needCheckKeys.forEach(key => {
+    if (obj[key]) {
+      resultKey += `-${obj[key]}`;
+    }
+  });
+
+  return resultKey;
+});
 
 // 價格類型字典對照
 export const priceListDict = {

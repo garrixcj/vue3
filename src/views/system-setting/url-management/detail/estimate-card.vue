@@ -39,9 +39,8 @@ rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
 <script lang="ts">
 import { defineComponent, computed, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { mapKeys } from 'lodash';
 import Big from 'big.js';
-import { priceList, priceListDict } from '../common/estimate';
+import { priceListByMethod, priceListDict } from '../common/estimate';
 import type { BasicSetting, EstimateTableData } from './detail';
 import { exchangeRate } from '@/components/utils/format/amount';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
@@ -94,11 +93,6 @@ export default defineComponent({
         titleAlign: 'right',
       },
     ];
-
-    const priceListByMethod = mapKeys(
-      priceList,
-      obj => `${obj.category}-${obj.item}-${obj.option}`,
-    );
 
     // 資料列
     const dataSource = computed(() => {
@@ -181,10 +175,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .estimate-card {
-  .subtotal {
-    .label {
-      padding-right: 15px;
-    }
+  :deep(.subtotal) {
+    @include space(15px);
+
     .value {
       font-weight: 500;
     }
