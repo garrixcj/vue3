@@ -105,35 +105,41 @@ export default defineComponent({
       const result: EstimateTableData[] = [];
 
       // 取得購買方式的相關資訊
-      const buyInfo = priceListByMethod[`domainName-buy-${props.buy}`];
-      // 購買方式
-      result.push({
-        item: t(priceListDict.buy),
-        option: buyInfo.option ? t(priceListDict[buyInfo.option]) : '',
-        pay: buyInfo.pay,
-        cost: `${exchangeRate(buyInfo.pay, 1)}/${t(
-          priceListDict[buyInfo.time],
-        )}`,
-        count: props.count,
-        amount: exchangeRate(buyInfo.pay, props.count),
-      });
+      if (priceListByMethod[`domainName-buy-${props.buy}`]) {
+        const buyInfo = priceListByMethod[`domainName-buy-${props.buy}`];
+
+        // 購買方式
+        result.push({
+          item: t(priceListDict.buy),
+          option: buyInfo.option ? t(priceListDict[buyInfo.option]) : '',
+          pay: buyInfo.pay,
+          cost: `${exchangeRate(buyInfo.pay, 1)}/${t(
+            priceListDict[buyInfo.time],
+          )}`,
+          count: props.count,
+          amount: exchangeRate(buyInfo.pay, props.count),
+        });
+      }
 
       // 取得管理權相方式的相關資訊
-      const managementInfo =
-        priceListByMethod[`domainName-management-${props.management}`];
-      // 管理權限
-      result.push({
-        item: t(priceListDict.management),
-        option: managementInfo.option
-          ? t(priceListDict[managementInfo.option])
-          : '',
-        pay: managementInfo.pay,
-        cost: `${exchangeRate(managementInfo.pay, 1)}/${t(
-          priceListDict[managementInfo.time],
-        )}`,
-        count: props.count,
-        amount: exchangeRate(managementInfo.pay, props.count),
-      });
+      if (priceListByMethod[`domainName-management-${props.management}`]) {
+        const managementInfo =
+          priceListByMethod[`domainName-management-${props.management}`];
+
+        // 管理權限
+        result.push({
+          item: t(priceListDict.management),
+          option: managementInfo.option
+            ? t(priceListDict[managementInfo.option])
+            : '',
+          pay: managementInfo.pay,
+          cost: `${exchangeRate(managementInfo.pay, 1)}/${t(
+            priceListDict[managementInfo.time],
+          )}`,
+          count: props.count,
+          amount: exchangeRate(managementInfo.pay, props.count),
+        });
+      }
 
       return result;
     });

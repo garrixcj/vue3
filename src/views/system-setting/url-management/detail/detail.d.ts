@@ -1,6 +1,6 @@
-export as namespace UrlManagementDetail;
+import type { PriceListType } from '../common/estimate';
 
-import { type PriceListType } from '../common/estimate';
+export as namespace UrlManagementDetail;
 
 export type BasicSetting = {
   buy: PriceListType['option'];
