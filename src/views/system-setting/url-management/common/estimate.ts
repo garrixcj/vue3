@@ -70,19 +70,13 @@ export const priceList: PriceListType[] = [
   },
 ];
 
-// 將資料轉換為由category、item、option組成為key的價錢列表
-export const priceListByMethod = mapKeys(priceList, obj => {
-  let resultKey: string = obj.category;
-  const needCheckKeys = ['item', 'option'] as const;
-
-  needCheckKeys.forEach(key => {
-    if (obj[key]) {
-      resultKey += `-${obj[key]}`;
-    }
-  });
-
-  return resultKey;
-});
+// 將資料轉換為由category、item、option組成為key的價錢列表(當為空時不組該值)
+export const priceListByMethod = mapKeys(
+  priceList,
+  ({ category, item, option }) => {
+    return [category, item, option].filter(value => value).join('-');
+  },
+);
 
 // 價格類型字典對照
 export const priceListDict = {

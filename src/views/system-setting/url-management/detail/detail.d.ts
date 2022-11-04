@@ -3,8 +3,8 @@ import type { PriceListType } from '../common/estimate';
 export as namespace UrlManagementDetail;
 
 export type BasicSetting = {
-  buy: PriceListType['option'];
-  management: PriceListType['option'];
+  buy: NonNullable<PriceListType['option']>;
+  management: NonNullable<PriceListType['option']>;
   domainType: 'normal' | 'simple';
   highRisk: 'over' | 'binding';
   checkItem: 'txt' | 'nameserver' | '';
