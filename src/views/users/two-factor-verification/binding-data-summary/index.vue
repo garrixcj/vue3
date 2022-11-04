@@ -123,6 +123,7 @@
     v-model="hintVisible"
     :users="notFoundUsers"
     @confirm="hintVisible = false"
+    @close="hintVisible = false"
   )
 </template>
 
