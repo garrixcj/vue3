@@ -114,6 +114,7 @@ export default defineComponent({
     ): EstimateTableData | null => {
       let result = null;
 
+      // 不用錢的組合不在列表裡，所以要過濾(ex: 購買方式為domain)
       if (priceListByMethod[`domainName-${item}-${option}`]) {
         const { pay, time } = priceListByMethod[`domainName-${item}-${option}`];
 

@@ -8,7 +8,7 @@ export type PriceListType = {
   time: 'year' | 'month';
 };
 
-// 價格列表
+// 價格列表(不用錢的不會列出。ex: item => buy的 option => domain)
 export const priceList: PriceListType[] = [
   // 域名
   {
