@@ -97,6 +97,7 @@ rd-navbar-layout(ref="navbarRef" noPrePage)
               header-align="center"
               prop="parent"
               show-overflow-tooltip
+              sortable
               :resizable="false"
             )
             rd-table-column(
