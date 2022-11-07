@@ -1155,6 +1155,23 @@ export const url = {
       `/domain/domain_name/request_templete/site_group/${site_group}`,
     );
   },
+  /**
+   * 修改 客/管端域名 備註
+   * @param  {array} site_domains 站別
+   * @param  {number} entrance    端口(1: 客端, 2: 管端)
+   * @param  {string} remark      備註
+   */
+  updateDomainNameRemark(
+    site_domains: { site_group: string; domain_name: string }[],
+    entrance: number,
+    remark: string,
+  ) {
+    return this.http.put('/domain_name/remark', {
+      site_domains,
+      entrance,
+      remark,
+    });
+  },
 };
 
 const domain = {
