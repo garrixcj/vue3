@@ -16,24 +16,30 @@ rd-layout.url-management(
     //- teach(url-key='domain_management')
   //- 客端域名
   template(#customerDomain)
+    beta-message
     customer-domain
   //- 管端域名
   template(#agentDomain)
+    beta-message
     agent-domain
   //- IP服務
   template(#ipService)
+    beta-message
     ip-service
   //- 單號進度
   template(#singleNumberProgress)
+    beta-message
     single-number-progress
   //- SSL憑證
   template(#applySSL)
     rd-alert.custom-color(:title="t('new_window_prompt')" :closable="false")
   //- 活躍域名
   template(#activeDomain)
+    beta-message
     active-domain
   //- 操作紀錄
   template(#record)
+    beta-message
     record
 </template>
 
@@ -51,6 +57,7 @@ import SingleNumberProgress from './single-number-progress/index.vue';
 import ActiveDomain from './active-domain/index.vue';
 import Record from './record/index.vue';
 import SiteInformation from './common/site-information.vue';
+import BetaMessage from './common/beta-message.vue';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
@@ -62,6 +69,7 @@ export default defineComponent({
     ActiveDomain, // 活躍域名
     Record, // 操作紀錄
     SiteInformation, // 站別資訊
+    BetaMessage, // Beta警示訊息
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
