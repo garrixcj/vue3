@@ -1,22 +1,3 @@
-<i18n>
-  {
-    "zh-tw": {
-      "estimate": '預估費用',
-      "estimate_info": '以下為試算費用，請以實際收費金額為準 (幣別：RMB)',
-      "item": "項目",
-      "option": "選項",
-      "cost": "費用",
-      "count": "數量",
-      "amount": "金額",
-      "month": "月",
-      "year": "年",
-      "subtotal_count": "小計",
-      "ways_to_purchase": "購買方式",
-      "management_permission": "管理權限",
-      "domain": "廳主",
-    }
-  }
-</i18n>
 <template lang="pug">
 rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
   template(#content)
