@@ -12,13 +12,13 @@ rd-card.binding-table(no-padding)
         .prefix-item.search-time
           .search-time__title {{ t('search_time') }}
           .search-time__content
-            rd-format-timer.text-format(:date-time="nowTime")
+            rd-format-timer(:date-time="searchTime")
 
       .header-container__suffix
         //- 已綁定
         rd-status-button(
           :value="dataTotal.all_binding"
-          :label="t('bind')"
+          :label="`${t('enable')}-${t('bind')}`"
           :min-width="0"
           :active="form.type === 'binding'"
           :disabled="false"
@@ -47,10 +47,15 @@ rd-card.binding-table(no-padding)
 
         .suffix-item.sms-verification
 
-        //- 未綁定
-        .suffix-item.unbind
-          .unbind-item.unbind__title {{ t('unbind') }}
-          .unbind-item.unbind__total {{ dataTotal.unbind }}
+        //- 其他
+        .suffix-item.other
+          .other-item.other__title
+            span {{ t('else') }}
+            rd-tooltip(placement="top")
+              i.mdi.mdi-information
+              template(#content)
+                div {{ t('binding_status_hint') }}
+          .other-item.other__total {{ dataTotal.other }}
 
         //- 匯出
         .suffix-item
@@ -145,9 +150,7 @@ rd-card.binding-table(no-padding)
         :resizable="false"
       )
         template(#default="{ row: { country_code, telephone } }")
-          .text-format(v-if="telephone")
-            span(v-if="country_code") {{ `+${country_code}` }}
-            span {{ telephone }}
+          .text-format(v-if="telephone") {{ `${country_code || ''}${telephone}` }}
           span(v-else) --
       //- 最後登入時間
       rd-table-column(
@@ -190,7 +193,7 @@ import { notify } from '@/components/utils/notification';
 import ExportNote from '@/plugins/export-note/index.vue';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useAccess, useAccesses } from '@/plugins/access/view';
-import { mapValues } from 'lodash';
+import { map, mapValues } from 'lodash';
 import dayjs from 'dayjs';
 import { bindingFieldsInitial } from './custom-field';
 import type { BindingType, BindingTotal, BindingData } from './type';
@@ -223,8 +226,11 @@ export default defineComponent({
 
     // 匯出視窗
     const visible = ref(false);
-    // 當前時間 (搜尋時間)
-    const nowTime = dayjs().utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');
+    // 搜尋時間
+    const searchTime = inject(
+      'BindingDataSummary:searchTime',
+      ref(dayjs().utcOffset(-4).format('YYYY-MM-DD HH:mm:ss')),
+    );
     // 資料
     const data = ref<BindingData[]>([]);
     // 資料總數
@@ -232,7 +238,7 @@ export default defineComponent({
       all_binding: '',
       ub_auth: '',
       sms: '',
-      unbind: '',
+      other: '',
     });
 
     // 表格選項
@@ -366,7 +372,12 @@ export default defineComponent({
         .then(resp => {
           if (resp.data.result) {
             const result = resp.data.data;
-            data.value = result.data;
+            data.value = map(result.data, data => {
+              return mapValues(data, (value, key) => {
+                // 國碼前面加 +
+                return key === 'country_code' && value ? `+${value}` : value;
+              });
+            }) as BindingData[];
             tableOption.pagination.total = result.total;
           }
         });
@@ -443,13 +454,13 @@ export default defineComponent({
           }
         : querySet.getParam();
       userAPI.exportBindingList(form.domain, params).then(resp => {
+        loadingStore.page = false;
         if (resp.data.result) {
           notify.success({
             title: t('success'),
             message: t('generation_success'),
           });
           visible.value = false;
-          loadingStore.page = false;
         }
       });
     };
@@ -481,7 +492,7 @@ export default defineComponent({
       form,
       searched,
       visible,
-      nowTime,
+      searchTime,
       data,
       dataTotal,
       tableOption,
@@ -508,7 +519,7 @@ export default defineComponent({
     &__prefix {
       @include flex-basic;
       .search-time {
-        @include inline-flex-basic;
+        @include flex-basic;
 
         &__title {
           @include space-multiline;
@@ -524,12 +535,16 @@ export default defineComponent({
         border-right: 1px solid $background-3;
       }
 
-      .unbind {
-        @include inline-flex-basic;
+      .other {
+        @include flex-basic;
         @include space;
         font-size: 13px;
         line-height: normal;
         color: $text-3;
+
+        &__title {
+          @include space(5px);
+        }
 
         &__total {
           font-size: 18px;

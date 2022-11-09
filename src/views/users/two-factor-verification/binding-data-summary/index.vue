@@ -6,22 +6,25 @@
   //- 提示訊息
   rd-information.binding-data-hint
     ul.spacing
-      li {{ t('binding_list_hint') }}
+      li {{ t('data_display') }}
+      ul.sub-list
+        li {{ t('binding_list_hint') }}
+        li {{ t('binding_list_hint6') }}
       li {{ t('two_verification_switch') }}
       ul.sub-list
         i18n-t(keypath="binding_list_hint2" tag="li")
           template(#function)
             rd-link(
-              v-if="checkPlatformPerm"
+              v-if="twoVerificationSwitchPerm"
               underline
               :href="platformPermUrl"
               target="_blank"
-            ) {{ t('station_security_settings') }}
+            ) {{ `${t('station_security_settings')}-${t('two_verification')}` }}
             rd-tooltip(
               v-else
               :content="t('no_platform_security_settings_perm_hint')"
             )
-              span.function-name {{ t('station_security_settings') }}
+              span.function-name {{ `${t('station_security_settings')}-${t('two_verification')}` }}
         li {{ t('binding_list_hint3') }}
       li {{ t('two_factor_verification_type') }}
       ul.sub-list
@@ -92,6 +95,7 @@
           value-format="YYYY-MM-DD HH:mm:ss"
           size="default"
           :disabled-date="disabledDates"
+          :default-time="defaultTime"
           :model-value="form.date"
           :range-separator="t('to')"
           :start-placeholder="t('start_time')"
@@ -108,12 +112,11 @@
     .domain-binding-status(v-if="searched")
       .domain-binding-status__label
         rd-link(
-          v-if="checkPlatformPerm"
+          v-if="twoVerificationSwitchPerm"
           underline
           :href="platformPermUrl"
           target="_blank"
-        ) {{ t('station_security_settings') }}
-        span(v-if="checkPlatformPerm") {{ t('two_verification') }}
+        ) {{ `${t('station_security_settings')}-${t('two_verification')}` }}
         span(v-else) {{ t('two_factor_verification_of_domain') }}
       rd-tag.domain-binding-status__status(v-if="authSwitch" type="success") {{ t('enable') }}
       rd-tag.domain-binding-status__status(v-else type="danger") {{ t('disable') }}
@@ -158,6 +161,9 @@ export default defineComponent({
     const watcher = new TabRouteWatch('bindingDataSummary');
     const searched = ref(false);
     provide('BindingDataSummary:searched', searched);
+    // 搜尋時間
+    const searchTime = ref(dayjs().utcOffset(-4).format('YYYY-MM-DD HH:mm:ss'));
+    provide('BindingDataSummary:searchTime', searchTime);
 
     const formRef = ref<FormInstance>();
     const form = reactive({
@@ -180,9 +186,7 @@ export default defineComponent({
     // 批次視窗
     const batchVisible = ref(false);
     // 批次內容
-    const batchTextarea = `${t('input_rule')}：\n - ${t(
-      'user_name_not_null',
-    )}\n - ${t('form_verify_msg_3', {
+    const batchTextarea = `${t('input_rule')}：\n - ${t('form_verify_msg_3', {
       min: 4,
       max: 20,
     })}\n - ${t('form_verify_msg_2')}`;
@@ -239,6 +243,12 @@ export default defineComponent({
         form.users = form.users.filter(user => user.length > 0);
       }
     });
+
+    // 預設時間
+    const defaultTime = [
+      dayjs().utcOffset(-4).format('YYYY-MM-DD 00:00:00'),
+      dayjs().utcOffset(-4).format('YYYY-MM-DD 23:59:59'),
+    ];
 
     // 不能設未來時間
     const disabledDates = (time: Date) => {
@@ -338,7 +348,7 @@ export default defineComponent({
           });
           return;
         } else {
-          form.users = data;
+          form.users = data.filter(user => user.length > 0);
         }
       };
       fileReader.readAsText(file.raw);
@@ -384,6 +394,9 @@ export default defineComponent({
       formRef.value.validate(valid => {
         if (valid) {
           form.type = 'binding';
+          searchTime.value = dayjs()
+            .utcOffset(-4)
+            .format('YYYY-MM-DD HH:mm:ss');
           watcher.queryRoute(querySet.getQuery());
           checkBinding();
           getAuthSwitch();
@@ -391,8 +404,8 @@ export default defineComponent({
       });
     };
 
-    // 判斷是否有 站台安全防護設置 權限
-    const checkPlatformPerm = useAccess('PlatformSecurityProtectionSet');
+    // 站台安全防護設置-雙重驗證開關(會員端) 權限
+    const twoVerificationSwitchPerm = useAccess('TwoVerificationSwitch');
 
     // 初始參數
     const init = () => {
@@ -435,12 +448,13 @@ export default defineComponent({
       authSwitch,
       platformPermUrl,
       rules,
+      defaultTime,
       disabledDates,
       setDateTime,
       importFile,
       downloadExample,
       search,
-      checkPlatformPerm,
+      twoVerificationSwitchPerm,
     };
   },
 });
@@ -451,11 +465,11 @@ export default defineComponent({
   @include form-label-color;
 
   .search-bar__batch {
-    @include inline-flex-basic;
+    @include flex-basic;
     @include space;
 
     .sample-download {
-      @include inline-flex-basic;
+      @include flex-basic;
       @include space(5px);
     }
   }
@@ -465,7 +479,7 @@ export default defineComponent({
   }
 
   .domain-binding-status {
-    @include inline-flex-basic;
+    @include flex-basic;
     @include space;
     margin-bottom: 10px;
 
