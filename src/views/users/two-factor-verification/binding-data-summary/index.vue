@@ -101,7 +101,7 @@
         )
       //- 搜尋
       rd-form-item
-        rd-button(type="search" @click="search")
+        rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
           span {{ t('search') }}
 
@@ -413,6 +413,7 @@ export default defineComponent({
     });
 
     watcher.setWatcher((query: { domain: number }) => {
+      formRef.value?.resetFields();
       // 若有廳主代表已有搜尋
       if (query.domain && query.domain !== 0) {
         searched.value = true;

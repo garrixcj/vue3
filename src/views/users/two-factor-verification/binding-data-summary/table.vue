@@ -12,14 +12,14 @@ rd-card.binding-table(no-padding)
         .prefix-item.search-time
           .search-time__title {{ t('search_time') }}
           .search-time__content
-            rd-format-timer.time(:date-time="nowTime")
+            rd-format-timer.text-format(:date-time="nowTime")
 
       .header-container__suffix
         //- 已綁定
         rd-status-button(
           :value="dataTotal.all_binding"
           :label="t('bind')"
-          min-width="0"
+          :min-width="0"
           :active="form.type === 'binding'"
           :disabled="false"
           @click="tableSearch.status()"
@@ -39,7 +39,7 @@ rd-card.binding-table(no-padding)
         rd-status-button.suffix-item(
           :value="dataTotal.sms"
           :label="t('sms_verification')"
-          min-width="0"
+          :min-width="0"
           :active="form.type === '2'"
           :disabled="false"
           @click="tableSearch.status('2')"
@@ -80,27 +80,29 @@ rd-card.binding-table(no-padding)
         :label="t('registration_time')"
         prop="created_at"
         header-align="center"
-        min-width="140"
         sortable
-        :resizeable="false"
+        :min-width="155"
+        :resizable="false"
       )
         template(#default="{ row: { created_at } }")
-          rd-format-timer.time(date-default="--" :date-time="created_at")
+          rd-format-timer(date-default="--" :date-time="created_at")
       //- 會員帳號
       rd-table-column(
         :label="t('member_account')"
         prop="username"
         header-align="center"
         sortable
-        :min-width="105"
+        :min-width="155"
+        :resizable="false"
       )
         template(#default="{ row: { id, username } }")
           rd-link(
             v-if="checkUserDetailPerm"
             :href="`/user/${id}/detail_info`"
             target="_blank"
-          ) {{ username }}
-          span(v-else) {{ username }}
+          )
+            .text-format {{ username }}
+          .text-format(v-else) {{ username }}
       //- 名稱
       rd-table-column(
         v-if="isDisplayedColumns('alias')"
@@ -108,28 +110,30 @@ rd-card.binding-table(no-padding)
         prop="alias"
         header-align="center"
         sortable
+        :resizable="false"
       )
       //- 綁定時間
       rd-table-column(
         :label="t('binding_time')"
         prop="binding_at"
         header-align="center"
-        min-width="140"
         sortable
-        :resizeable="false"
+        :min-width="155"
+        :resizable="false"
       )
         template(#default="{ row: { binding_at } }")
-          rd-format-timer.time(date-default="--" :date-time="binding_at")
+          rd-format-timer(date-default="--" :date-time="binding_at")
       //- 驗證方式
       rd-table-column(
         :label="t('verification_method')"
         prop="type"
         header-align="center"
-        min-width="85"
+        :min-width="85"
+        :resizable="false"
       )
         template(#default="{ row: { type } }")
-          span(v-if="type === '1'") UB Auth
-          span(v-else-if="type === '2'") {{ t('sms_verification') }}
+          .text-format(v-if="type === '1'") UB Auth
+          .text-format(v-else-if="type === '2'") {{ t('sms_verification') }}
           span(v-else) --
       //- 手機號碼
       rd-table-column(
@@ -137,11 +141,13 @@ rd-card.binding-table(no-padding)
         :label="t('telephone')"
         prop="telephone"
         header-align="center"
-        min-width="85"
-        :resizeable="false"
+        :min-width="130"
+        :resizable="false"
       )
-        template(#default="{ row: { telephone } }")
-          span(v-if="telephone") {{ telephone }}
+        template(#default="{ row: { country_code, telephone } }")
+          .text-format(v-if="telephone")
+            span(v-if="country_code") {{ `+${country_code}` }}
+            span {{ telephone }}
           span(v-else) --
       //- 最後登入時間
       rd-table-column(
@@ -149,12 +155,12 @@ rd-card.binding-table(no-padding)
         :label="t('last_login_time')"
         prop="last_login"
         header-align="center"
-        min-width="145"
         sortable
-        :resizeable="false"
+        :min-width="155"
+        :resizable="false"
       )
         template(#default="{ row: { last_login } }")
-          rd-format-timer.time(date-default="--" :date-time="last_login")
+          rd-format-timer(date-default="--" :date-time="last_login")
       template(v-if="!searched" #empty)
         before-search-empty(:label="t('start_search')")
 
@@ -538,7 +544,7 @@ export default defineComponent({
       @include space-multiline;
     }
   }
-  .time {
+  .text-format {
     white-space: nowrap;
   }
 }
