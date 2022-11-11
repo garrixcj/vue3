@@ -18,7 +18,7 @@ rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, type PropType } from 'vue';
+import { defineComponent, computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Big from 'big.js';
 import {
@@ -39,16 +39,6 @@ export default defineComponent({
     RdGridTableRow,
   },
   props: {
-    // 選擇的購買方式
-    buy: {
-      type: String as PropType<BasicSetting['buy']>,
-      required: true,
-    },
-    // 選擇的管理權限
-    management: {
-      type: String as PropType<BasicSetting['management']>,
-      required: true,
-    },
     // 數量
     count: {
       type: Number,
@@ -57,6 +47,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'local' });
+    const basicData = inject('UrlManagement:basicData') as Ref<BasicSetting>;
 
     // 標題列
     const columns: ColumnSet[] = [
@@ -115,15 +106,17 @@ export default defineComponent({
     // 資料列
     const dataSource = computed(() => {
       const result: EstimateTableData[] = [];
+      const buy = basicData.value.buy;
+      const management = basicData.value.management;
 
       // 取得購買方式的相關資訊
-      const buyInfo = singleDataSource('buy', props.buy);
+      const buyInfo = singleDataSource('buy', buy);
       if (buyInfo) {
         result.push(buyInfo);
       }
 
       // 取得管理權相方式的相關資訊
-      const managementInfo = singleDataSource('management', props.management);
+      const managementInfo = singleDataSource('management', management);
       if (managementInfo) {
         result.push(managementInfo);
       }
