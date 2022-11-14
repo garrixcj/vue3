@@ -1146,6 +1146,15 @@ export const url = {
   getSingleSiteInfo(site_group: string) {
     return this.http.get('/domain/site/info', { params: { site_group } });
   },
+  /**
+   * 取得單一站別的設定範例模板資訊
+   * @param  {string} site_group
+   */
+  getSingleSettingExampleTemplate(site_group: string) {
+    return this.http.get(
+      `/domain/domain_name/request_templete/site_group/${site_group}`,
+    );
+  },
 };
 
 const domain = {

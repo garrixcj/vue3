@@ -1,56 +1,55 @@
 <i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
-.site-information
-  rd-button(type="default" size="small" @click="visible = !visible") {{ t('site_info') }}
-  rd-drawer(
-    v-model:visible="visible"
-    :title="t('site_info')"
-    :loading="loading"
-    @closed="resetSearch"
-  )
-    template(#header)
-      rd-form.site-search(
-        ref="drawerRef"
-        inline
-        :model="drawerForm"
-        :rules="drawerRules"
-      )
-        //- 站別
-        rd-form-item(:label="t('site')" prop="site" inline size="small")
-          rd-select(
-            v-model:value="drawerForm.site"
-            :quick-search="customSearch"
-            :selected-setting="{ maxWidth: 240 }"
-            :popper-setting="{ width: 'auto' }"
+rd-button(type="default" size="small" @click="visible = !visible") {{ t('site_info') }}
+rd-drawer(
+  v-model:visible="visible"
+  :title="t('site_info')"
+  :loading="loading"
+  @closed="resetSearch"
+)
+  template(#header)
+    rd-form.site-search(
+      ref="drawerRef"
+      inline
+      :model="drawerForm"
+      :rules="drawerRules"
+    )
+      //- 站別
+      rd-form-item(:label="t('site')" prop="site" inline size="small")
+        rd-select(
+          v-model:value="drawerForm.site"
+          :quick-search="customSearch"
+          :selected-setting="{ maxWidth: 240 }"
+          :popper-setting="{ width: 'auto' }"
+        )
+          rd-option(
+            v-for="(option, index) in siteOptions"
+            :key="index"
+            :value="option.value"
+            :label="option.label"
+            :option="option"
           )
-            rd-option(
-              v-for="(option, index) in siteOptions"
-              :key="index"
-              :value="option.value"
-              :label="option.label"
-              :option="option"
-            )
-              template(#suffix)
-                | {{ `[ ${option.code} ]` }}
-            template(#selected="{ current }")
-              | {{ `${current.label} [${current.option.code}]` }}
-        //- 查詢
-        rd-form-item
-          rd-button(size="small" @click="search") {{ t('search') }}
+            template(#suffix)
+              | {{ `[ ${option.code} ]` }}
+          template(#selected="{ current }")
+            | {{ `${current.label} [${current.option.code}]` }}
+      //- 查詢
+      rd-form-item
+        rd-button(size="small" @click="search") {{ t('search') }}
 
-    //- 主內容
-    before-search-empty(v-if="beforeSearch" :label="t('start_search')")
-    .drawer-body(v-else)
-      //- 基本資料
-      .drawer-body__category
-        span {{ t('basic_information') }}
-      rd-divider
-      rd-grid-table(
-        no-header
-        :columns="basicInformationColumns"
-        :row="{ size: 'small' }"
-        :data-source="basicInformationData"
-      )
+  //- 主內容
+  before-search-empty(v-if="beforeSearch" :label="t('start_search')")
+  .drawer-body(v-else)
+    //- 基本資料
+    .drawer-body__category
+      span {{ t('basic_information') }}
+    rd-divider
+    rd-grid-table(
+      no-header
+      :columns="basicInformationColumns"
+      :row="{ size: 'small' }"
+      :data-source="basicInformationData"
+    )
 </template>
 
 <script lang="ts">
