@@ -103,9 +103,9 @@ rd-card(:title="t('basic_setting')")
           )
           template(#view)
             password-text(
-              :visitable="passwordOn"
+              :visible="passwordVisible"
               :password="form.password"
-              @click="passwordOn = !passwordOn"
+              @click="passwordVisible = !passwordVisible"
             )
       //- 檢查項目
       rd-form-item(
@@ -122,14 +122,10 @@ rd-card(:title="t('basic_setting')")
             ) {{ t(dictKey[value]) }}
       //- 申請日期
       rd-form-item(v-if="!hasModify" :label="t('application_date')")
-        template(v-if="form.applyTime")
-          rd-format-timer(:date-time="form.applyTime")
-        template(v-else) --
+        rd-format-timer(date-default="--" :date-time="form.applyTime")
       //- 完成日期
       rd-form-item(v-if="!hasModify" :label="t('finish_date')")
-        template(v-if="form.finishTime")
-          rd-format-timer(:date-time="form.finishTime")
-        template(v-else) --
+        rd-format-timer(date-default="--" :date-time="form.finishTime")
 </template>
 <script lang="ts">
 import {
@@ -143,7 +139,7 @@ import {
 import { useI18n } from 'vue-i18n';
 import type { BasicSetting } from './detail';
 import { priceListDict } from '../common/estimate';
-import PasswordText from '@/components/custom/format-password/visitable-text.vue';
+import PasswordText from '@/components/custom/format-password/visible-text.vue';
 import ViewMode from '@/components/custom/view-mode/index.vue';
 import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
 
@@ -283,7 +279,7 @@ export default defineComponent({
     expose({ validatorbasicForm });
 
     // 密碼的影藏顯示
-    const passwordOn = ref(false);
+    const passwordVisible = ref(false);
 
     return {
       t,
@@ -302,7 +298,7 @@ export default defineComponent({
       changeBuy,
       changeManagement,
       changeWebsiteProviderPerm,
-      passwordOn,
+      passwordVisible,
     };
   },
 });

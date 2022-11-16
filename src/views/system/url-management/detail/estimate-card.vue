@@ -26,7 +26,7 @@ import {
   priceListDict,
   type PriceListType,
 } from '../common/estimate';
-import type { BasicSetting, EstimateTableData } from './detail';
+import type { BasicSetting, EstimateTableData, ApplyDomain } from './detail';
 import { exchangeRate } from '@/components/utils/format/amount';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
 import RdGridTableRow from '@/components/custom/grid-table/row.vue';
@@ -38,16 +38,16 @@ export default defineComponent({
     RdGridTable,
     RdGridTableRow,
   },
-  props: {
-    // 數量
-    count: {
-      type: Number,
-      required: true,
-    },
-  },
-  setup(props) {
+  setup() {
     const { t } = useI18n({ useScope: 'local' });
+    // 基本資料
     const basicData = inject('UrlManagement:basicData') as Ref<BasicSetting>;
+    // 網址
+    const urlList = inject('UrlManagement:urlList') as Ref<ApplyDomain[]>;
+    // 筆數
+    const urlCount = computed(
+      () => urlList.value.filter(obj => obj.legal).length,
+    );
 
     // 標題列
     const columns: ColumnSet[] = [
@@ -95,30 +95,36 @@ export default defineComponent({
           option: t(priceListDict[option]),
           pay: pay,
           cost: `${exchangeRate(pay, 1)}/${t(priceListDict[time])}`,
-          count: props.count,
-          amount: exchangeRate(pay, props.count),
+          count: urlCount.value.toString(),
+          amount: exchangeRate(pay, urlCount.value),
         };
       }
 
       return result;
     };
 
+    // 取得購買方式的相關資訊
+    const buyInfo = computed(() => {
+      return singleDataSource('buy', basicData.value.buy);
+    });
+
+    // 取得管理權相方式的相關資訊
+    const managementInfo = computed(() => {
+      return singleDataSource('management', basicData.value.management);
+    });
+
     // 資料列
     const dataSource = computed(() => {
       const result: EstimateTableData[] = [];
-      const buy = basicData.value.buy;
-      const management = basicData.value.management;
 
-      // 取得購買方式的相關資訊
-      const buyInfo = singleDataSource('buy', buy);
-      if (buyInfo) {
-        result.push(buyInfo);
+      // 有購買方式的相關資訊則塞入資料
+      if (buyInfo.value) {
+        result.push(buyInfo.value);
       }
 
-      // 取得管理權相方式的相關資訊
-      const managementInfo = singleDataSource('management', management);
-      if (managementInfo) {
-        result.push(managementInfo);
+      // 有管理權相方式的相關資訊則塞入資料
+      if (managementInfo.value) {
+        result.push(managementInfo.value);
       }
       return result;
     });
@@ -153,6 +159,7 @@ export default defineComponent({
       dataSource,
       totalColumns,
       totalDataSource,
+      urlCount,
     };
   },
 });
