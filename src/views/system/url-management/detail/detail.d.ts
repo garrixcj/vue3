@@ -22,6 +22,7 @@ export type ApplyDomain = {
   key: number;
   domain: string;
   format: string;
+  legal: boolean;
 };
 
 // 預估費用
@@ -30,6 +31,6 @@ export type EstimateTableData = {
   option: string;
   cost: string;
   pay: number;
-  count: number;
+  count: string;
   amount: string;
 };
