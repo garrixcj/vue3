@@ -102,8 +102,8 @@ rd-card(:title="t('basic_setting')")
             clearable
           )
           template(#view)
-            password-eye(
-              :on="passwordOn"
+            password-text(
+              :visitable="passwordOn"
               :password="form.password"
               @click="passwordOn = !passwordOn"
             )
@@ -143,17 +143,18 @@ import {
 import { useI18n } from 'vue-i18n';
 import type { BasicSetting } from './detail';
 import { priceListDict } from '../common/estimate';
-import PasswordEye from './password-eye.vue';
+import PasswordText from '@/components/custom/format-password/visitable-text.vue';
 import ViewMode from '@/components/custom/view-mode/index.vue';
 import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
 
 export default defineComponent({
   name: 'UrlManagementBasicCard',
-  components: { ViewMode, RdFormatTimer, PasswordEye },
+  components: { ViewMode, RdFormatTimer, PasswordText },
   props: {
     hasModify: { type: Boolean, default: false },
   },
-  setup(props, { expose }) {
+  emits: ['validUrl'],
+  setup(props, { expose, emit }) {
     const { t } = useI18n({ useScope: 'local' });
     // 字典對照
     const dictKey = {
@@ -220,6 +221,8 @@ export default defineComponent({
       form.value.management = management.value[0];
       // 連帶觸發異動管理權限
       changeManagement();
+      // 觸發上層驗證網址
+      emit('validUrl');
     };
 
     // 異動管理權限時
@@ -245,28 +248,29 @@ export default defineComponent({
       websiteProvider: [
         {
           // 當網址商權限為有時，為必填
-          required: form.value.websiteProviderPerm,
+          required: true,
           message: t('format_error'),
+          trigger: 'blur',
         },
       ],
       username: [
         {
           // 當網址商權限為有時，為必填
-          required: form.value.websiteProviderPerm,
+          required: true,
           // 有漢字時錯誤
           pattern: new RegExp(/^[^\u4E00-\u9FFF]+$/),
           message: t('format_error'),
-          trigger: 'change',
+          trigger: 'blur',
         },
       ],
       password: [
         {
           // 當網址商權限為有時，為必填
-          required: form.value.websiteProviderPerm,
+          required: true,
           // 有漢字時錯誤
           pattern: new RegExp(/^[^\u4E00-\u9FFF]+$/),
           message: t('format_error'),
-          trigger: 'change',
+          trigger: 'blur',
         },
       ],
     });
