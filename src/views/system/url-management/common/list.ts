@@ -1,5 +1,7 @@
-import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { ref, reactive } from 'vue';
 import { url as urlAPI } from '@/api/domain';
+import type { AdvancedConditionsType } from './type';
 
 // 站別資訊
 export type SiteInfo = {
@@ -42,5 +44,102 @@ export const useSiteList = () => {
   return {
     siteOptions,
     getSiteList,
+  };
+};
+
+type AdvancedConditionsAPIType =
+  | 'domain'
+  | 'error'
+  | 'openable'
+  | 'service'
+  | 'ssl'
+  | 'warning';
+export type AdvancedConditionsOptions = Record<
+  AdvancedConditionsType,
+  { label: number; type: string; dict?: string }[]
+>;
+
+// 取得「進階條件」域名狀態群組的各個過濾選項
+export const useAdvancedConditionList = () => {
+  const { t } = useI18n({ useScope: 'local' });
+
+  // 進階搜尋條件
+  const advancedConditions: AdvancedConditionsOptions = reactive({
+    service: [],
+    domainNameStatus: [],
+    sslStatus: [],
+    notOpen: [],
+    partiallyOpen: [],
+    open: [],
+    ipType: [],
+    purchaseMethod: [],
+    attackStatus: [],
+    growingPercent: [],
+  });
+
+  // 取得進階條件的域名狀態選項
+  const getAdvancedConditionsList = () => {
+    return urlAPI.getDomainNameFilterOption().then(resp => {
+      if (resp.data.result) {
+        buildGroupOptions(resp.data.data);
+      }
+    });
+  };
+
+  // 建構進階條件群組資料
+  const buildGroupOptions = (
+    groups: Record<AdvancedConditionsAPIType, number[]>,
+  ) => {
+    // IP類型
+    advancedConditions.ipType = [
+      { label: 4, type: '', dict: t('client') },
+      { label: 5, type: '', dict: t('agent_site') },
+      { label: 1, type: '', dict: t('one_to_one_ip') },
+      { label: 2, type: '', dict: t('one_to_many_ip') },
+      { label: 3, type: '', dict: t('shopping_network_ip') },
+    ];
+    // 購買方式
+    advancedConditions.purchaseMethod = [
+      { label: 1, type: '', dict: t('default') },
+      { label: 2, type: '', dict: t('purchase') },
+    ];
+    // 攻擊狀態
+    advancedConditions.attackStatus = [
+      { label: 1, type: '', dict: t('normal') },
+      { label: 2, type: '', dict: t('attacking') },
+    ];
+    // 成長%數
+    advancedConditions.growingPercent = [
+      { label: 1, type: '', dict: t('negative_number') },
+      { label: 2, type: '', dict: t('non_negative_number') },
+    ];
+    // 群組名稱對應
+    const groupKeys = <
+      {
+        key: AdvancedConditionsAPIType;
+        value: AdvancedConditionsType;
+        type: string;
+      }[]
+    >[
+      { key: 'service', value: 'service', type: '' },
+      { key: 'domain', value: 'domainNameStatus', type: '' },
+      { key: 'ssl', value: 'sslStatus', type: '' },
+      { key: 'error', value: 'notOpen', type: 'danger-convert' },
+      { key: 'warning', value: 'partiallyOpen', type: 'warning-convert' },
+      { key: 'openable', value: 'open', type: 'success-convert' },
+    ];
+    groupKeys.forEach(item => {
+      advancedConditions[item.value] = groups[item.key].map(id => {
+        return {
+          label: id,
+          type: item.type,
+        };
+      });
+    });
+  };
+
+  return {
+    advancedConditions,
+    getAdvancedConditionsList,
   };
 };
