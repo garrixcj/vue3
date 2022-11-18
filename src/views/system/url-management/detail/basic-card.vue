@@ -12,7 +12,7 @@ rd-card(:title="t('basic_setting')")
       rd-form-item(:label="t('ways_to_purchase')" prop="buy")
         view-mode(component="RadioGroup" :has-modify="hasModify")
           rd-radio-group(v-model="form.buy" @change="changeBuy")
-            rd-radio(v-for="(key, index) in buy" :key="index" :label="key") {{ $t(priceListDict[key]) }}
+            rd-radio(v-for="(key, index) in buy" :key="index" :label="key") {{ t(priceListDict[key]) }}
       //- 管理權限
       rd-form-item(:label="t('management_permission')" prop="management")
         view-mode(component="RadioGroup" :has-modify="hasModify")
@@ -21,7 +21,7 @@ rd-card(:title="t('basic_setting')")
               v-for="(key, index) in management"
               :key="index"
               :label="key"
-            ) {{ $t(priceListDict[key]) }}
+            ) {{ t(priceListDict[key]) }}
       //- 域名類型
       rd-form-item(:label="t('domain_type')" prop="domainType")
         view-mode(component="RadioGroup" :has-modify="hasModify")
@@ -149,7 +149,7 @@ export default defineComponent({
   props: {
     hasModify: { type: Boolean, default: false },
   },
-  emits: ['validUrl'],
+  emits: ['changeBuy'],
   setup(props, { expose, emit }) {
     const { t } = useI18n({ useScope: 'local' });
     // 字典對照
@@ -218,7 +218,7 @@ export default defineComponent({
       // 連帶觸發異動管理權限
       changeManagement();
       // 觸發上層驗證網址
-      emit('validUrl');
+      emit('changeBuy');
     };
 
     // 異動管理權限時
@@ -274,7 +274,7 @@ export default defineComponent({
     // 封裝驗證，供外部使用
     const basicFormRef = ref();
     const validatorbasicForm = () => {
-      basicFormRef.value.validate();
+      return basicFormRef.value.validate((valid: boolean) => valid);
     };
     expose({ validatorbasicForm });
 
