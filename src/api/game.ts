@@ -237,6 +237,24 @@ export const lobby = {
   //   ];
   //   return this.http.get(`/domain/lobby/${lobby}`, { params: pick(options, keys) });
   // }
+
+  /**
+   * 取得支援外接遊戲注單核對的遊戲大廳
+   *
+   */
+  getWagersCheckLobby() {
+    return this.http.get('/lobby/wagers_check_lobby');
+  },
+};
+
+/**
+ * Wagers相關
+ */
+export const wagers = {
+  http,
+  getWagersCheckReport(params: object) {
+    return this.http.get('/game/external_wagers_check', { params });
+  },
 };
 
 /**
@@ -379,6 +397,7 @@ export const infinite = {
 const game = {
   ...gameTypeSet,
   ...lobby,
+  ...wagers,
   ...gametype,
   ...gameInfo,
   ...commssion,

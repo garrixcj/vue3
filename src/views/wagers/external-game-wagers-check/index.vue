@@ -1,10 +1,4 @@
-<i18n>
-{
-  "zh-tw": {
-    "external_wagers_check": "外接遊戲注單核對"
-  }
-}
-</i18n>
+<i18n src="@/languages/wagers/external_game_wagers_check/index.json"></i18n>
 
 <template lang="pug">
 rd-layout(
@@ -39,13 +33,13 @@ export default defineComponent({
       {
         name: 'wagersCheckList',
         label: t('external_wagers_check'),
-        perm: 'WagersCheck',
+        perm: 'WagersCheckList',
         to: { query: { tab: 'wagersCheckList' } },
       },
     ];
 
     const watcher = useWatcher();
-    const { currentTabs, tabPerms, setTabWatcher } = useTabAccess(tabs);
+    const { currentTabs, setTabWatcher } = useTabAccess(tabs);
     setTabWatcher(activeTab);
     watcher.setWatcher((query: { tab: string }) => {
       if (query.tab === 'wagersCheckList') {
@@ -57,7 +51,6 @@ export default defineComponent({
       t,
       activeTab,
       currentTabs,
-      tabPerms,
     };
   },
 });
