@@ -13,12 +13,12 @@ el-config-provider(:locale="elLocale")
 //-     header-navbar(v-if="layoutTest" @collapse="pinMenu")
 //-     el-main#main-panel(v-loading="mainLoading")
 //-       //- rd-scrollbar
-//-       router-view
+//-       router-view(v-if="mainView")
 //- 無外框版
 el-container#main-layout(v-loading="loading")
   el-container#main-body(:style="'height: 100%'")
     el-main#main-panel(v-loading="mainLoading")
-      router-view
+      router-view(v-if="mainView")
 </template>
 
 <script lang="ts">

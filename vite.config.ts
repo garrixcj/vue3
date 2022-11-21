@@ -55,10 +55,9 @@ export default defineConfig({
     // 開發暫時介接開發站api
     proxy: {
       '/hex': {
-        target: 'http://admin.vir888.com/hex',
+        target: 'http://admin.vir888.com',
         changeOrigin: true,
         secure: false,
-        rewrite: path => path.replace(/^\/hex/, ''),
       },
     },
   },
