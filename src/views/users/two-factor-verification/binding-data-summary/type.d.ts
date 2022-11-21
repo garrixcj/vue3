@@ -1,7 +1,7 @@
 export as namespace BindingDataSummary;
 
 // 綁定分類 key
-export type BindingType = 'all_binding' | 'ub_auth' | 'sms' | 'unbind';
+export type BindingType = 'all_binding' | 'ub_auth' | 'sms' | 'other';
 
 // 綁定資料總數格式
 export type BindingTotal = Record<BindingType, string>;
