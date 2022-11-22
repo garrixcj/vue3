@@ -454,13 +454,13 @@ export default defineComponent({
           }
         : querySet.getParam();
       userAPI.exportBindingList(form.domain, params).then(resp => {
+        visible.value = false;
         loadingStore.page = false;
         if (resp.data.result) {
           notify.success({
             title: t('success'),
             message: t('generation_success'),
           });
-          visible.value = false;
         }
       });
     };
