@@ -35,7 +35,7 @@ export const usePermissionStore = defineStore('permission', {
     // 檢查修改權限
     checkModifyPerm(name: string) {
       const perm = (this.permissions as Permissions)[name];
-      return !!perm.modify;
+      return !!perm?.modify;
     },
   },
 });
