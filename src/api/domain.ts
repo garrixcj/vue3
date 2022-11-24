@@ -1181,9 +1181,9 @@ export const url = {
   /*
    * 取單一站別當天已申請網域數量
    * @param  {string} site_group 站別
-   * @param  {number} company_purchase 是否為公司買
+   * @param  {0|1} company_purchase 是否為公司買
    */
-  getSingleRequestionNum(site_group: string, company_purchase: number) {
+  getSingleRequestionNum(site_group: string, company_purchase: 0 | 1) {
     return this.http.get(
       `/domain/domain_name/site_group/${site_group}/requestion_num`,
       { params: { company_purchase } },
@@ -1226,12 +1226,12 @@ export const url = {
     force_binding: boolean,
     provider_permission: boolean,
     domain_names: string[],
-    options?: {
+    options: {
       domain_provider?: boolean;
       provider_account?: string;
       provider_password?: string;
       verify_mode?: string;
-    },
+    } = {},
   ) {
     return this.http.post('/domain/domain_name/customer_ticket', {
       site_group,
@@ -1240,22 +1240,22 @@ export const url = {
       force_binding,
       domain_names,
       provider_permission,
-      options,
+      ...options,
     });
   },
   /**
    * 取得單一工單內容
-   * @param  {number} ticket_id 工單id
+   * @param  {number} id 工單id
    */
-  getTicket(ticket_id: number) {
-    return this.http.get(`/domain/domain_name/ticket/${ticket_id}`);
+  getTicket(id: number) {
+    return this.http.get(`/domain/domain_name/ticket/${id}`);
   },
   /**
    * 作廢工單
-   * @param  {number} ticket_id 工單id
+   * @param  {number} id 工單id
    */
-  abolishTicket(ticket_id: number) {
-    return this.http.put(`/domain/domain_name/ticket/${ticket_id}/cancel`);
+  abolishTicket(id: number) {
+    return this.http.put(`/domain/domain_name/ticket/${id}/cancel`);
   },
 };
 
