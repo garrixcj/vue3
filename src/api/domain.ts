@@ -1226,7 +1226,12 @@ export const url = {
     force_binding: boolean,
     provider_permission: boolean,
     domain_names: string[],
-    options: object,
+    options: {
+      domain_provider?: boolean;
+      provider_account?: string;
+      provider_password?: string;
+      verify_mode?: string;
+    },
   ) {
     // 網址商、帳號、密碼、驗證類型(TXT、name server)
     const paramOptions = [
