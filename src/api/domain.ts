@@ -1181,7 +1181,7 @@ export const url = {
   /*
    * 取單一站別當天已申請網域數量
    * @param  {string} site_group 站別
-   * @param  {boolean} company_purchase 是否為公司買
+   * @param  {number} company_purchase 是否為公司買
    */
   getSingleRequestionNum(site_group: string, company_purchase: number) {
     return this.http.get(
@@ -1217,7 +1217,7 @@ export const url = {
    * @param  {boolean} force_binding 是否為高風險域名綁定
    * @param  {boolean} provider_permission 是否有網址商權限
    * @param  {string[]} domain_names 新增的網域列表 array
-   * @param  {object} options 選填
+   * @param  {object} options 選填 - 網址商、帳號、密碼、驗證類型(TXT、name server)
    */
   postCustomerTicket(
     site_group: string,
@@ -1226,21 +1226,13 @@ export const url = {
     force_binding: boolean,
     provider_permission: boolean,
     domain_names: string[],
-    options: {
+    options?: {
       domain_provider?: boolean;
       provider_account?: string;
       provider_password?: string;
       verify_mode?: string;
     },
   ) {
-    // 網址商、帳號、密碼、驗證類型(TXT、name server)
-    const paramOptions = [
-      'domain_provider',
-      'provider_account',
-      'provider_password',
-      'verify_mode',
-    ];
-
     return this.http.post('/domain/domain_name/customer_ticket', {
       site_group,
       company_maintenance,
@@ -1248,7 +1240,7 @@ export const url = {
       force_binding,
       domain_names,
       provider_permission,
-      ...pick(options, paramOptions),
+      options,
     });
   },
   /**
