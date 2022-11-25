@@ -116,3 +116,41 @@ const setDomainNamesBeforeExport = (
     });
   });
 };
+
+// 匯出管端域名的參數
+export type ExportAgentDomainNameOption = {
+  domain_name?: string;
+  service_error?: number[];
+  sort?: string;
+  order?: string;
+  export_remark?: string;
+};
+
+/**
+ * 匯出 「管端域名」
+ * @param {string} type 搜尋類別(site、domainName)
+ * @param {string} site 站別
+ * @param {number} entrance 端口
+ * @param {string} lang 語系
+ * @param {object} options 其他條件選項
+ * @return {void}
+ */
+export const doExportAgentDomainNameList = (
+  type: string,
+  site: string,
+  entrance: number,
+  lang: string,
+  options: ExportAgentDomainNameOption,
+) => {
+  // 匯出「單一域名」條件資料
+  if (type === 'domainName' && typeof options.domain_name !== 'undefined') {
+    return urlAPI.exportAgentDomainName(
+      options.domain_name,
+      entrance,
+      lang,
+      options,
+    );
+  }
+  // 匯出「站別」條件資料
+  return urlAPI.exportAgentDomainNameBySite(site, entrance, lang, options);
+};

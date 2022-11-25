@@ -1682,6 +1682,107 @@ export const url = {
     };
     return this.http.post('/url/domain_names/export_param', params);
   },
+  /**
+   * 取得管端域名資料 (以域名搜尋)
+   * @param {string} domain_name 域名
+   * @param {number} entrance    端口(1: 廳主端, 2: 管端)
+   */
+  getAgentDomainName(domain_name: string, entrance: number) {
+    const params = {
+      domain_name,
+      entrance,
+    };
+    return this.http.get('/domain/agent/domain_name/by_domain_name', {
+      params,
+    });
+  },
+  /**
+   * 取得管端域名資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {number} entrance   端口(1: 廳主端, 2: 管端)
+   * @param {object} options    其他選項
+   */
+  getAgentDomainNameBySite(
+    site_group: string,
+    entrance: number,
+    options: { domain_name?: string },
+  ) {
+    const paramOptions = ['domain_name'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      entrance,
+      ...optionParams,
+    };
+    return this.http.get('domain/agent/domain_name/by_site', { params });
+  },
+  /**
+   * 匯出管端域名資料 (以域名搜尋)
+   * @param {string} domain_name 域名
+   * @param {number} entrance    端口(1: 廳主端, 2: 管端)
+   * @param {string} lang        語系
+   * @param {object} options     其他選項
+   */
+  exportAgentDomainName(
+    domain_name: string,
+    entrance: number,
+    lang: string,
+    options: {
+      domain_name?: string;
+      service_error?: number[];
+      sort?: string;
+      order?: string;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = ['service_error', 'sort', 'order', 'export_remark'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      domain_name,
+      entrance,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post(
+      '/domain/agent/domain_name/by_domain_name/export',
+      params,
+    );
+  },
+  /**
+   * 匯出管端域名資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {number} entrance   端口(1: 廳主端, 2: 管端)
+   * @param {string} lang       語系
+   * @param {object} options    其他選項
+   */
+  exportAgentDomainNameBySite(
+    site_group: string,
+    entrance: number,
+    lang: string,
+    options: {
+      domain_name?: string;
+      service_error?: number[];
+      sort?: string;
+      order?: string;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'domain_name',
+      'service_error',
+      'sort',
+      'order',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      entrance,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post('/domain/agent/domain_name/by_site/export', params);
+  },
 };
 
 const domain = {
