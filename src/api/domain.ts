@@ -1172,6 +1172,91 @@ export const url = {
       remark,
     });
   },
+  /**
+   * 取得工單申請限制設定
+   */
+  getTicketsRestriction() {
+    return this.http.get('/domain/domain_name/tickets/restriction');
+  },
+  /*
+   * 取單一站別當天已申請網域數量
+   * @param  {string} site_group 站別
+   * @param  {0|1} company_purchase 是否為公司買
+   */
+  getSingleRequestionNum(site_group: string, company_purchase: 0 | 1) {
+    return this.http.get(
+      `/domain/domain_name/site_group/${site_group}/requestion_num`,
+      { params: { company_purchase } },
+    );
+  },
+  /**
+   * 新增公司買工單
+   * @param  {string} site_group 站別
+   * @param  {string} web_layout 網域類型 (normal:一般型、simple:簡易型)
+   * @param  {boolean} force_binding 是否為高風險域名綁定
+   * @param  {string[]} domain_names 新增的網域列表 array
+   */
+  postCompanyTicket(
+    site_group: string,
+    web_layout: string,
+    force_binding: boolean,
+    domain_names: string[],
+  ) {
+    return this.http.post('/domain/domain_name/company_ticket', {
+      site_group,
+      web_layout,
+      force_binding,
+      domain_names,
+    });
+  },
+  /**
+   * 新增廳主買工單
+   * @param  {string} site_group 站別
+   * @param  {boolean} company_maintenance 是否為公司管
+   * @param  {string} web_layout 網域類型 (normal:一般型、simple:簡易型)
+   * @param  {boolean} force_binding 是否為高風險域名綁定
+   * @param  {boolean} provider_permission 是否有網址商權限
+   * @param  {string[]} domain_names 新增的網域列表 array
+   * @param  {object} options 選填 - 網址商、帳號、密碼、驗證類型(TXT、name server)
+   */
+  postCustomerTicket(
+    site_group: string,
+    company_maintenance: boolean,
+    web_layout: string,
+    force_binding: boolean,
+    provider_permission: boolean,
+    domain_names: string[],
+    options: {
+      domain_provider?: boolean;
+      provider_account?: string;
+      provider_password?: string;
+      verify_mode?: string;
+    } = {},
+  ) {
+    return this.http.post('/domain/domain_name/customer_ticket', {
+      site_group,
+      company_maintenance,
+      web_layout,
+      force_binding,
+      domain_names,
+      provider_permission,
+      ...options,
+    });
+  },
+  /**
+   * 取得單一工單內容
+   * @param  {number} id 工單id
+   */
+  getTicket(id: number) {
+    return this.http.get(`/domain/domain_name/ticket/${id}`);
+  },
+  /**
+   * 作廢工單
+   * @param  {number} id 工單id
+   */
+  abolishTicket(id: number) {
+    return this.http.put(`/domain/domain_name/ticket/${id}/cancel`);
+  },
 };
 
 const domain = {
