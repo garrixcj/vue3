@@ -136,11 +136,13 @@ export default defineComponent({
     ];
 
     const watcher = new RouteWatch();
-    const { currentTabs, tabPerms, setTabWatcher } = useTabAccess(tabs);
+    const { currentTabs, setTabWatcher } = useTabAccess(tabs);
     setTabWatcher(activeTab);
-
     watcher.setWatcher((query: { tab: string }) => {
-      activeTab.value = query.tab;
+      const currentTab = tabs.find(item => item.name === query.tab);
+      if (typeof currentTab !== 'undefined') {
+        activeTab.value = currentTab.name;
+      }
     });
 
     // 處理loading遮罩
@@ -183,7 +185,6 @@ export default defineComponent({
       t,
       activeTab,
       currentTabs,
-      tabPerms,
       layoutRef,
     };
   },
