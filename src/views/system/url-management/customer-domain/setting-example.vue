@@ -1,4 +1,4 @@
-<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
+<i18n src="@/languages/system_setting/url_management/common.json"></i18n>
 <template lang="pug">
 rd-button(type="default" @click="visible = !visible") {{ t('setting_example') }}
 rd-drawer(
