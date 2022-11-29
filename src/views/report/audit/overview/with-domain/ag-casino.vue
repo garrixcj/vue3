@@ -115,7 +115,7 @@ rd-table(border :data="data" :span-method="mergeGrid")
       | {{ groupSeparator(row.first_prize) }}
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { groupSeparator } from '@/components/utils/format/amount';
 import type { MergingColumnItem } from '../type';
@@ -128,28 +128,30 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n({ useScope: 'parent' });
 
-    const mergingColumns = props.data.reduce(
-      (
-        acc: MergingColumnItem[],
-        current: { wagers_type: string },
-        index: number,
-      ) => {
-        if (
-          acc.find(item => item.wagers_type === current.wagers_type) ===
-          undefined
-        ) {
-          acc.push({
-            wagers_type: current.wagers_type,
-            index,
-            count: props.data.filter(
-              (item: { wagers_type: string }) =>
-                item.wagers_type === current.wagers_type,
-            ).length,
-          });
-        }
-        return acc;
-      },
-      [] as MergingColumnItem[],
+    const mergingColumns = computed(() =>
+      props.data.reduce(
+        (
+          acc: MergingColumnItem[],
+          current: { wagers_type: string },
+          index: number,
+        ) => {
+          if (
+            acc.find(item => item.wagers_type === current.wagers_type) ===
+            undefined
+          ) {
+            acc.push({
+              wagers_type: current.wagers_type,
+              index,
+              count: props.data.filter(
+                (item: { wagers_type: string }) =>
+                  item.wagers_type === current.wagers_type,
+              ).length,
+            });
+          }
+          return acc;
+        },
+        [] as MergingColumnItem[],
+      ),
     );
     // merge邏輯
     const mergeGrid = ({
@@ -161,7 +163,7 @@ export default defineComponent({
     }) => {
       // game code欄位
       if (columnIndex === 0) {
-        const column = mergingColumns.find(
+        const column = mergingColumns.value.find(
           (row: MergingColumnItem) => row.index === rowIndex,
         );
         if (column !== undefined) {
@@ -177,6 +179,7 @@ export default defineComponent({
         }
       }
     };
+
     return { groupSeparator, t, mergeGrid };
   },
 });

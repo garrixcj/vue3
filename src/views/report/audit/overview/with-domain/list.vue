@@ -6,7 +6,8 @@
       ag-casino(:data="data.total")
   //- 廳主
   rd-card(
-    v-for="item in data.report"
+    v-for="(item, index) in data.report"
+    :key="index"
     no-separateLine
     no-padding
     :title="item[0].name"

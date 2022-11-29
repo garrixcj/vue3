@@ -45,7 +45,7 @@ rd-form(ref="formRef" size="large" inline :model="form" :rules="rules")
       i.mdi.mdi-magnify
       span {{ t('search') }}
 with-domain-list(v-if="showDomain" :data="list")
-total-list(v-else :data="list")
+total-list(v-else :data="list.total")
 </template>
 
 <script lang="ts">
@@ -78,7 +78,7 @@ export default defineComponent({
       currency: 'original',
     });
 
-    const list = ref([]);
+    const list = reactive({ report: [] as unknown[], total: [] as unknown[] });
 
     // TODO: 改call API
     const lobbyList = [
@@ -162,7 +162,11 @@ export default defineComponent({
           querySet.getParam(),
         )
         .then(resp => {
-          list.value = resp.data.data;
+          if (resp.data.result) {
+            list.report = resp.data.data.report;
+            list.total = resp.data.data.total;
+          }
+
           showDomain.value = showDomainLobbies.includes(+form.lobby);
           loadingStore.page = false;
         });
