@@ -1783,6 +1783,97 @@ export const url = {
     };
     return this.http.post('/domain/agent/domain_name/by_site/export', params);
   },
+  /**
+   * 取得IP服務資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {object} options    其他選項
+   */
+  getIPServiceBySite(site_group: string, options: { ip?: string }) {
+    const paramOptions = ['ip'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      ...optionParams,
+    };
+    return http.get('/domain/ip_service/by_site', { params });
+  },
+  /**
+   * 取得IP服務資料 (以IP搜尋)
+   * @param {string} ip IP
+   */
+  getIPServiceByIP(ip: string) {
+    const params = {
+      ip,
+    };
+    return http.get('/domain/ip_service/by_ip', { params });
+  },
+  /**
+   * 匯出IP服務資料 (以IP搜尋)
+   * @param {string} ip      IP
+   * @param {string} lang    語系
+   * @param {object} options 其他選項
+   */
+  exportIPService(
+    ip: string,
+    lang: string,
+    options: {
+      ip?: string;
+      ip_type?: number[];
+      purchase_method?: number[];
+      attack_status?: number[];
+      table_filter?: number;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'ip_type',
+      'purchase_method',
+      'attack_status',
+      'table_filter',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      ip,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post('/domain/ip_service/by_ip/export', params);
+  },
+  /**
+   * 匯出IP服務資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {string} lang       語系
+   * @param {object} options    其他選項
+   */
+  exportIPServiceBySite(
+    site_group: string,
+    lang: string,
+    options: {
+      ip?: string;
+      ip_type?: number[];
+      purchase_method?: number[];
+      attack_status?: number[];
+      table_filter?: number;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'ip',
+      'ip_type',
+      'purchase_method',
+      'attack_status',
+      'table_filter',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post('/domain/ip_service/by_site/export', params);
+  },
 };
 
 const domain = {

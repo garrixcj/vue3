@@ -154,3 +154,35 @@ export const doExportAgentDomainNameList = (
   // 匯出「站別」條件資料
   return urlAPI.exportAgentDomainNameBySite(site, entrance, lang, options);
 };
+
+// 匯出IP服務參數
+export type ExportIPServiceOption = {
+  ip?: string;
+  ip_type?: number[];
+  purchase_method?: number[];
+  attack_status?: number[];
+  table_filter?: number;
+  export_remark?: string;
+};
+
+/**
+ * 匯出 「IP服務」
+ * @param {string} type 搜尋類別(site、domainName)
+ * @param {string} site 站別
+ * @param {string} lang 語系
+ * @param {object} options 其他條件選項
+ * @return {void}
+ */
+export const doExportIPServiceList = (
+  type: string,
+  site: string,
+  lang: string,
+  options: ExportIPServiceOption,
+) => {
+  // 匯出「單一IP」條件資料
+  if (type === 'ip' && typeof options.ip !== 'undefined') {
+    return urlAPI.exportIPService(options.ip, lang, options);
+  }
+  // 匯出「站別」條件資料
+  return urlAPI.exportIPServiceBySite(site, lang, options);
+};

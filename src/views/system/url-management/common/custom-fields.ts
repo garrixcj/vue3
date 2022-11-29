@@ -268,4 +268,80 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
     ],
   };
 };
+
+// IP服務自訂欄位初始設定
+export const ipServiceFieldsInitial = (t: (key: string) => string) => {
+  return {
+    config: {
+      operation: 'urlManagementIPService',
+      groupId: 0,
+      groupName: '自訂欄位',
+    },
+    data: [
+      {
+        key: 'id',
+        name: t('increment_number'),
+        visible: true,
+        default: true,
+        disabled: false,
+      },
+      {
+        key: 'site',
+        name: t('site'),
+        visible: true,
+        default: true,
+        disabled: true,
+      },
+      {
+        key: 'suffix',
+        name: t('suffix'),
+        visible: true,
+        default: true,
+        disabled: false,
+      },
+      {
+        key: 'ipType',
+        name: t('ip_type'),
+        visible: true,
+        default: true,
+        disabled: true,
+      },
+      {
+        key: 'purchaseMethod',
+        name: t('ways_to_purchase'),
+        visible: true,
+        default: true,
+        disabled: true,
+      },
+      {
+        key: 'ipv4',
+        name: 'IPv4',
+        visible: true,
+        default: true,
+        disabled: true,
+      },
+      {
+        key: 'ipv6',
+        name: 'IPv6',
+        visible: true,
+        default: true,
+        disabled: true,
+      },
+      {
+        key: 'attackStatus',
+        name: t('attack_status'),
+        visible: true,
+        default: true,
+        disabled: false,
+      },
+      {
+        key: 'domainName',
+        name: t('domain_name'),
+        visible: true,
+        default: true,
+        disabled: false,
+      },
+    ],
+  };
+};
 /* eslint-enable  @typescript-eslint/no-explicit-any */
