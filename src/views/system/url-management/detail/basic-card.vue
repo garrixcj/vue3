@@ -113,19 +113,21 @@ rd-card(:title="t('basic_setting')")
         :label="t('check_item')"
         prop="checkItem"
       )
-        view-mode(:has-modify="hasModify")
+        view-mode(component="RadioGroup" :has-modify="hasModify")
           rd-radio-group(v-model="form.checkItem")
             rd-radio(
               v-for="(value, index) in checkItem"
               :key="index"
               :label="value"
             ) {{ t(dictKey[value]) }}
-      //- 申請日期
-      rd-form-item(v-if="!hasModify" :label="t('application_date')")
-        rd-format-timer(date-default="--" :date-time="form.applyTime")
-      //- 完成日期
-      rd-form-item(v-if="!hasModify" :label="t('finish_date')")
-        rd-format-timer(date-default="--" :date-time="form.finishTime")
+      //- 細項模式時才出現
+      template(v-if="mode === 'detail' && !hasModify")
+        //- 申請日期
+        rd-form-item(:label="t('application_date')")
+          rd-format-timer(date-default="--" :date-time="form.applyTime")
+        //- 完成日期
+        rd-form-item(:label="t('finish_date')")
+          rd-format-timer(date-default="--" :date-time="form.finishTime")
 </template>
 <script lang="ts">
 import {
@@ -147,6 +149,12 @@ export default defineComponent({
   name: 'UrlManagementBasicCard',
   components: { ViewMode, RdFormatTimer, PasswordText },
   props: {
+    // 模式(申請模式apply、細項模式detail) - 因模式不同會出現些微的欄位的不同
+    mode: {
+      type: String,
+      default: 'detail',
+    },
+    // 是否可異動
     hasModify: { type: Boolean, default: false },
   },
   emits: ['changeBuy'],
@@ -163,7 +171,6 @@ export default defineComponent({
     };
 
     const form = inject('UrlManagement:basicData') as Ref<BasicSetting>;
-
     // 購買方式
     const buy: BasicSetting['buy'][] = ['bbin', 'domain'];
 

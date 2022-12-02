@@ -43,3 +43,40 @@ export type RestrictionNumApi = {
   restriction_type: string;
   restriction_limit: number;
 };
+
+// 域名設定 - 申請域名 - 送單的Response
+type FailedType = 'verify_DNS' | 'verify_domain';
+type FailedDetail = {
+  domain: string;
+  result: string;
+};
+export type PostApplyFailedResponse = Record<FailedType, FailedDetail[]>;
+
+// 域名設定 - 申請域名 - 送單過後的列表
+export type CallbackUrlList = {
+  domain: string;
+  format: boolean;
+  formatMsg: string;
+  dns: boolean;
+  dnsMsg: string;
+  result: boolean;
+};
+
+// 單號詳情 - 工單 - 資訊
+export type TicketInfo = {
+  id: number;
+  siteGroup: string;
+  domain: number;
+  status: number;
+};
+// 單號詳情 - 工單 - 域名設定格式
+export type TicketDetailUrl = {
+  domain: string;
+  progressRate: number;
+};
+
+// 單號詳情 - 域名設定格式api回傳url部分
+type TicketDetailUrlFromApi = {
+  domain_name: string;
+  progress_rate: number;
+};

@@ -26,7 +26,7 @@ import {
   priceListDict,
   type PriceListType,
 } from '../common/estimate';
-import type { BasicSetting, EstimateTableData, ApplyDomain } from './detail';
+import type { BasicSetting, EstimateTableData } from './detail';
 import { exchangeRate } from '@/components/utils/format/amount';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
 import RdGridTableRow from '@/components/custom/grid-table/row.vue';
@@ -38,16 +38,13 @@ export default defineComponent({
     RdGridTable,
     RdGridTableRow,
   },
-  setup() {
+  props: {
+    urlCount: { type: Number, required: true },
+  },
+  setup(props) {
     const { t } = useI18n({ useScope: 'local' });
     // 基本資料
     const basicData = inject('UrlManagement:basicData') as Ref<BasicSetting>;
-    // 網址
-    const urlList = inject('UrlManagement:urlList') as Ref<ApplyDomain[]>;
-    // 筆數
-    const urlCount = computed(
-      () => urlList.value.filter(obj => obj.legal).length,
-    );
 
     // 標題列
     const columns: ColumnSet[] = [
@@ -95,8 +92,8 @@ export default defineComponent({
           option: t(priceListDict[option]),
           pay: pay,
           cost: `${exchangeRate(pay, 1)}/${t(priceListDict[time])}`,
-          count: urlCount.value.toString(),
-          amount: exchangeRate(pay, urlCount.value),
+          count: props.urlCount.toString(),
+          amount: exchangeRate(pay, props.urlCount),
         };
       }
 
@@ -159,7 +156,6 @@ export default defineComponent({
       dataSource,
       totalColumns,
       totalDataSource,
-      urlCount,
     };
   },
 });
