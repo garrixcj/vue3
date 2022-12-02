@@ -58,6 +58,7 @@ import ActiveDomain from './active-domain/index.vue';
 import Record from './record/index.vue';
 import SiteInformation from './common/site-information.vue';
 import BetaMessage from './common/beta-message.vue';
+import { RouteWatch } from '@/components/utils/route-watch';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
@@ -122,14 +123,18 @@ export default defineComponent({
       {
         name: 'record',
         label: t('operate_record'),
-        // perm: 'UrlManagementRecord',
-        perm: 'ActiveUrl', // todo: 待加新權限
+        perm: 'URLManagementRecord',
         to: { query: { tab: 'record' } },
       },
     ];
 
+    const watcher = new RouteWatch();
     const { currentTabs, tabPerms, setTabWatcher } = useTabAccess(tabs);
     setTabWatcher(activeTab);
+
+    watcher.setWatcher((query: { tab: string }) => {
+      activeTab.value = query.tab;
+    });
 
     // 處理loading遮罩
     const loadingStore = useLoadingStore();
