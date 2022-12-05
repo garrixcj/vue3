@@ -2,6 +2,7 @@
 <i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-layout.url-management(
+  ref="layoutRef"
   v-model:active-tab="activeTab"
   tab-type="link"
   :menu="currentTabs"
@@ -44,7 +45,13 @@ rd-layout.url-management(
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide } from 'vue';
+import {
+  defineComponent,
+  ref,
+  provide,
+  type Ref,
+  type ComponentPublicInstance,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
 import host from '@/plugins/url';
@@ -163,11 +170,21 @@ export default defineComponent({
     };
     provide('UrlManagement:customSearch', customSearch);
 
+    // 處理頁面置頂
+    const layoutRef = ref(document.createElement('div')) as Ref<
+      ComponentPublicInstance<HTMLDivElement>
+    >;
+    const scrollToTop = () => {
+      layoutRef.value.$el.scrollTop = 0;
+    };
+    provide('UrlManagement:scrollToTop', scrollToTop);
+
     return {
       t,
       activeTab,
       currentTabs,
       tabPerms,
+      layoutRef,
     };
   },
 });

@@ -206,10 +206,14 @@ export default defineComponent({
     });
     provide('UrlManagementRecord:sortCondition', sortCondition);
 
+    // 處理置頂
+    const scrollToTop = inject('UrlManagement:scrollToTop') as Function;
+
     // 點擊搜尋
     const search = () => {
       formRef.value.validate((validate: boolean) => {
         if (validate) {
+          scrollToTop();
           watcher.queryRoute(querySet.getQuery());
         }
       });
