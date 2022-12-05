@@ -1,8 +1,0 @@
-# Wagers Category
-
-Wagers相關的頁面元件
-
-```
-admin/src/views/wagers
-└── external-game-wagers-check/ 外接遊戲注單核對
-```
