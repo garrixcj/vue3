@@ -344,4 +344,139 @@ export const ipServiceFieldsInitial = (t: (key: string) => string) => {
     ],
   };
 };
-/* eslint-enable  @typescript-eslint/no-explicit-any */
+
+// 活躍域名自訂欄位初始設定
+export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
+  return {
+    config: {
+      operation: 'urlManagementActiveDomainName',
+      groupId: 0,
+      groupName: '自訂欄位',
+    },
+    data: [
+      {
+        key: 'domain',
+        name: t('domain'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('basic_information'),
+      },
+      {
+        key: 'suffix',
+        name: t('suffix'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('basic_information'),
+      },
+      {
+        key: 'domainName',
+        name: t('domain_name'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('basic_information'),
+      },
+      {
+        key: 'abnormalState',
+        name: t('abnormal_state'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('basic_information'),
+      },
+      {
+        key: 'risk',
+        name: t('risk'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('basic_information'),
+      },
+      // 域名訪問群組
+      {
+        key: 'rank',
+        name: t('rank'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('domain_visited'),
+      },
+      {
+        key: 'requestTotal',
+        name: t('visited_num'),
+        visible: true,
+        default: true,
+        disabled: false,
+        group: t('domain_visited'),
+      },
+      {
+        key: 'requestRatio',
+        name: t('percent'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('domain_visited'),
+      },
+      {
+        key: 'requestGrow',
+        name: t('growing_percent'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('domain_visited'),
+      },
+      // 登入成功群組
+      {
+        key: 'loginPassTotal',
+        name: t('login_num'),
+        visible: true,
+        default: true,
+        disabled: false,
+        group: t('login_result_1'),
+      },
+      {
+        key: 'loginPassRatio',
+        name: t('percent'),
+        visible: true,
+        default: true,
+        disabled: false,
+        group: t('login_result_1'),
+      },
+      {
+        key: 'loginPassGrow',
+        name: t('growing_percent'),
+        visible: true,
+        default: true,
+        disabled: false,
+        group: t('login_result_1'),
+      },
+      // 登入失敗群組
+      {
+        key: 'loginFailTotal',
+        name: t('login_num'),
+        visible: true,
+        default: true,
+        disabled: true,
+        group: t('login_fail'),
+      },
+      {
+        key: 'loginFailRatio',
+        name: t('percent'),
+        visible: true,
+        default: true,
+        disabled: false,
+        group: t('login_fail'),
+      },
+      {
+        key: 'loginFailGrow',
+        name: t('growing_percent'),
+        visible: true,
+        default: true,
+        disabled: false,
+        group: t('login_fail'),
+      },
+    ],
+  };
+};

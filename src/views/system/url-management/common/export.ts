@@ -186,3 +186,29 @@ export const doExportIPServiceList = (
   // 匯出「站別」條件資料
   return urlAPI.exportIPServiceBySite(site, lang, options);
 };
+
+// 匯出活躍域名參數
+export type ExportActiveDomainNameOption = {
+  domain?: number;
+  keyword?: string;
+  export_remark?: string;
+  lang?: string;
+  sort?: string;
+  order?: string;
+  table_filter?: number;
+};
+
+/**
+ * 匯出 「活躍域名」
+ * @param {string} start_date 開始日期
+ * @param {string} end_date   結束日期
+ * @param {object} options    其他選項
+ * @return {void}
+ */
+export const doExportActiveDomainNameList = (
+  startDate: string,
+  endDate: string,
+  options: ExportActiveDomainNameOption,
+) => {
+  return urlAPI.exportActiveDomainName(startDate, endDate, options);
+};

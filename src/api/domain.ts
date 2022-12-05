@@ -1874,6 +1874,65 @@ export const url = {
     };
     return this.http.post('/domain/ip_service/by_site/export', params);
   },
+  /**
+   * 取得活躍域名
+   * @param {string} start_date 開始日期
+   * @param {string} end_date   結束日期
+   * @param {object} options    其他選項
+   */
+  getActiveDomainName(
+    start_date: string,
+    end_date: string,
+    options: {
+      domain?: number;
+      keyword?: string;
+    },
+  ) {
+    const paramOptions = ['keyword', 'domain'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      start_date,
+      end_date,
+      ...optionParams,
+    };
+    return this.http.get('/domain/active/domain_name', { params });
+  },
+  /**
+   * 匯出活躍域名
+   * @param {string} start_date 開始日期
+   * @param {string} end_date   結束日期
+   * @param {object} options    其他選項
+   */
+  exportActiveDomainName(
+    start_date: string,
+    end_date: string,
+    options: {
+      domain?: number;
+      keyword?: string;
+      export_remark?: string;
+      lang?: string;
+      sort?: string;
+      order?: string;
+      table_filter?: number;
+    },
+  ) {
+    const paramOptions = [
+      'keyword',
+      'domain',
+      'export_remark',
+      'lang',
+      'sort',
+      'order',
+      'table_filter',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      start_date,
+      end_date,
+      ...optionParams,
+    };
+    return this.http.post('/domain/active/domain_name/export', params);
+  },
 };
 
 const domain = {
