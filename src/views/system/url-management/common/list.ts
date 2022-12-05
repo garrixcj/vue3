@@ -1,5 +1,6 @@
-import { useI18n } from 'vue-i18n';
+import commonDict from '@/languages/system_setting/url_management/common.json';
 import { ref, reactive } from 'vue';
+import { useTrans } from '@/plugins/i18n/replace';
 import { url as urlAPI } from '@/api/domain';
 import type { AdvancedConditionsType } from './type';
 
@@ -60,8 +61,8 @@ export type AdvancedConditionsOptions = Record<
 >;
 
 // 取得「進階條件」域名狀態群組的各個過濾選項
-export const useAdvancedConditionList = () => {
-  const { t } = useI18n({ useScope: 'local' });
+export const useAdvancedConditionList = (lang: string) => {
+  const { t } = useTrans(commonDict, lang);
 
   // 進階搜尋條件
   const advancedConditions: AdvancedConditionsOptions = reactive({
@@ -76,15 +77,6 @@ export const useAdvancedConditionList = () => {
     attackStatus: [],
     growingPercent: [],
   });
-
-  // 取得進階條件的域名狀態選項
-  const getAdvancedConditionsList = () => {
-    return urlAPI.getDomainNameFilterOption().then(resp => {
-      if (resp.data.result) {
-        buildGroupOptions(resp.data.data);
-      }
-    });
-  };
 
   // 建構進階條件群組資料
   const buildGroupOptions = (
@@ -135,6 +127,15 @@ export const useAdvancedConditionList = () => {
           type: item.type,
         };
       });
+    });
+  };
+
+  // 取得進階條件的域名狀態選項
+  const getAdvancedConditionsList = () => {
+    return urlAPI.getDomainNameFilterOption().then(resp => {
+      if (resp.data.result) {
+        buildGroupOptions(resp.data.data);
+      }
     });
   };
 

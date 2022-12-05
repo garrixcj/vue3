@@ -1,5 +1,5 @@
 <template lang="pug">
-rd-card(v-loading="listCondition.loading" no-padding)
+rd-card(no-padding)
   template(#header)
     .header
       .header__prefix
@@ -93,7 +93,7 @@ rd-card(v-loading="listCondition.loading" no-padding)
         //- 匯出
         .export(v-if="hasExportPerm && listData.length > 0")
           rd-divider(direction="vertical")
-          rd-button(type="default" size="small" @click="checkExport") {{ t('export') }}
+          rd-button(type="default" size="small" @click="exportVisible = true") {{ t('export') }}
 
   template(#content)
     //- 查無域名列表
@@ -444,7 +444,6 @@ import {
   reactive,
   computed,
 } from 'vue';
-import { useLoadingStore } from '@/stores/loading';
 import RdStatusButton from '@/components/custom/status-button/index.vue';
 import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
 import BatchMode from '@/components/custom/batch-mode/index.vue';
@@ -458,7 +457,7 @@ import { notify } from '@/components/utils/notification';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { customerDomainFieldsInitial } from '../common/custom-fields';
-import { useExport, getExportPerm } from '../common/export';
+import { useExportAccesses } from '../common/export';
 import type { FormType } from '../common/search';
 import type {
   ListData,
@@ -488,9 +487,11 @@ export default defineComponent({
     ApplySsl,
   },
   emits: ['openDialog', 'change', 'export', 'sortChange'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const { t } = useI18n({ useScope: 'parent' });
-    const loadingStore = useLoadingStore();
+    // Loading
+    const setLoading = inject('UrlManagement:setLoading') as Function;
+
     // 數值相關格式轉換
     const { groupSeparator } = amount;
 
@@ -673,12 +674,12 @@ export default defineComponent({
     // 更新 DNS 資料
     const updateDNS = () => {
       dialogSwitch.updateDNS = false;
-      loadingStore.axios = true;
+      setLoading(true);
       return urlAPI.updateDNS(basicSearchForm.site).then(resp => {
         if (resp.data.result) {
           notify.success();
         }
-        loadingStore.axios = false;
+        setLoading(false);
       });
     };
 
@@ -711,22 +712,28 @@ export default defineComponent({
       useInitCustomField(customerDomainFieldsInitial(t));
 
     // 匯出相關
-    const hasExportPerm = getExportPerm('CustomerUrlExport');
-    const {
-      visible: exportVisible,
-      params: exportParams,
-      toggleDialog,
-      initExport,
-    } = useExport();
-    // 點擊觸發匯出初始設定
-    const checkExport = () => {
-      initExport();
-    };
+    const hasExportPerm = useExportAccesses('CustomerUrlExport');
+    const exportVisible = ref(false);
+    const exportParams = {
+      functionName: 'url_management',
+      tabName: 'customer_url',
+    } as const;
     // 執行匯出
     const exportFiled = (note: string) => {
-      toggleDialog(false);
+      exportVisible.value = false;
       emit('export', note);
     };
+
+    // 重置捲軸高度
+    const scrollTo = () => {
+      listRef.value?.setScrollTop(0);
+      listRef.value?.setScrollLeft(0);
+    };
+    // 封裝外部使用功能
+    expose({
+      scrollTo,
+      sortClear: sortAct.clear,
+    });
 
     return {
       t,
@@ -768,7 +775,6 @@ export default defineComponent({
       exportParams,
       hasExportPerm,
       exportFiled,
-      checkExport,
       // 權限
       hasCustomerUrlModifyPerm,
       hasApplySSLModifyPerm,

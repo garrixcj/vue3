@@ -1,8 +1,6 @@
-import { useI18n } from 'vue-i18n';
-
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 // 客端域名自訂欄位初始設定
-export const customerDomainFieldsInitial = () => {
-  const { t } = useI18n({ useScope: 'local' });
+export const customerDomainFieldsInitial = (t: any) => {
   return {
     config: {
       operation: 'urlManagementCustomerDomain',
@@ -139,3 +137,4 @@ export const customerDomainFieldsInitial = () => {
     ],
   };
 };
+/* eslint-enable  @typescript-eslint/no-explicit-any */

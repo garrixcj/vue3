@@ -1,13 +1,13 @@
 <i18n src="@/languages/system_setting/url_management/common.json"></i18n>
 <template lang="pug">
-rd-form(inline :model="advancedForm")
+rd-form(inline)
   //- 服務項目
-  rd-form-item(
+  rd-form-item.basic-item(
     v-if="showGroup('service')"
     :label="t('service_items')"
     prop="service"
   )
-    rd-checkbox(
+    rd-checkbox.basic-item__space(
       v-model="groupCheckAll.service"
       :indeterminate="advancedForm.service.length > 0 && !groupCheckAll.service"
       @change="selectAll('service', $event)"
@@ -17,7 +17,7 @@ rd-form(inline :model="advancedForm")
       size="small"
       @change="select('service', $event)"
     )
-      rd-checkbox-button(
+      rd-checkbox-button.button-width(
         v-for="(option, key) in advancedConditions.service"
         :key="key"
         :label="option.label"
@@ -25,12 +25,12 @@ rd-form(inline :model="advancedForm")
       )
         span {{ t(`url_service_items_tag_${option.label}`) }}
   //- 域名狀態
-  rd-form-item(
+  rd-form-item.basic-item(
     v-if="showGroup('domainNameStatus')"
     :label="t('domain_name_status')"
     prop="domainNameStatus"
   )
-    rd-checkbox(
+    rd-checkbox.basic-item__space(
       v-model="groupCheckAll.domainNameStatus"
       :indeterminate="advancedForm.domainNameStatus.length > 0 && !groupCheckAll.domainNameStatus"
       @change="selectAll('domainNameStatus', $event)"
@@ -40,7 +40,7 @@ rd-form(inline :model="advancedForm")
       size="small"
       @change="select('domainNameStatus', $event)"
     )
-      rd-checkbox-button(
+      rd-checkbox-button.button-width(
         v-for="(option, key) in advancedConditions.domainNameStatus"
         :key="key"
         :label="option.label"
@@ -48,12 +48,12 @@ rd-form(inline :model="advancedForm")
       )
         span {{ t(`domain_name_status_tag_${option.label}`) }}
   //- 憑證狀態
-  rd-form-item(
+  rd-form-item.basic-item(
     v-if="showGroup('sslStatus')"
     :label="t('ssl_status')"
     prop="sslStatus"
   )
-    rd-checkbox(
+    rd-checkbox.basic-item__space(
       v-model="groupCheckAll.sslStatus"
       :indeterminate="advancedForm.sslStatus.length > 0 && !groupCheckAll.sslStatus"
       @change="selectAll('sslStatus', $event)"
@@ -63,7 +63,7 @@ rd-form(inline :model="advancedForm")
       size="small"
       @change="select('sslStatus', $event)"
     )
-      rd-checkbox-button(
+      rd-checkbox-button.button-width(
         v-for="(option, key) in advancedConditions.sslStatus"
         :key="key"
         :label="option.label"
@@ -71,12 +71,12 @@ rd-form(inline :model="advancedForm")
       )
         span {{ t(`ssl_status_tag_${option.label}`) }}
   //- 異常狀態
-  rd-form-item(
+  rd-form-item.basic-item(
     v-if="showGroup('abnormalState')"
     :label="t('abnormal_state')"
     prop="abnormalState"
   )
-    rd-checkbox(
+    rd-checkbox.basic-item__space(
       v-model="abnormalStateSelectAll"
       :indeterminate="abnormalStateGroup.length > 0 && !abnormalStateSelectAll"
       @change="abnormalStatusAct.selectAll"
@@ -86,7 +86,7 @@ rd-form(inline :model="advancedForm")
         v-for="(option, key) in abnormalStateOptions"
         :key="key"
         :label="option.label"
-        :class="`${option.type}-convert`"
+        :class="[`${option.type}-convert`, 'button-width']"
         @change="abnormalStatusAct.select(option.label, $event)"
       )
         .abnormal-label {{ option.dict }}
@@ -97,7 +97,7 @@ rd-form(inline :model="advancedForm")
         )
 
     //- 異常細項
-    rd-button.abnormal-detail-btn(
+    rd-button.detail-btn(
       ref="btnRef"
       v-click-outside="onClickOutside"
       size="small"
@@ -112,19 +112,15 @@ rd-form(inline :model="advancedForm")
       :virtual-ref="btnRef"
       :width="510"
     )
-      rd-form.abnormal-detail-form(
-        label-width="70px"
-        inline
-        :model="advancedForm"
-      )
+      rd-form.detail(label-width="70px")
         //- 無法開啟
-        rd-form-item(:label="t('can_not_open')" prop="service")
-          rd-checkbox-group(
+        rd-form-item.basic-item(:label="t('can_not_open')")
+          rd-checkbox-group.detail__flex-warp(
             size="small"
             :model-value="advancedForm.notOpen"
             @change="selectAbnormalDetail('notOpen', $event)"
           )
-            rd-checkbox-button(
+            rd-checkbox-button.detail__button-width(
               v-for="(option, key) in advancedConditions.notOpen"
               :key="key"
               :label="option.label"
@@ -132,13 +128,13 @@ rd-form(inline :model="advancedForm")
             )
               span {{ t(`url_abnormal_state_tag_${option.label}`) }}
         //- 部分開啟
-        rd-form-item(:label="t('partially_open')" prop="service")
-          rd-checkbox-group(
+        rd-form-item.basic-item(:label="t('partially_open')")
+          rd-checkbox-group.detail__flex-warp(
             size="small"
             :model-value="advancedForm.partiallyOpen"
             @change="selectAbnormalDetail('partiallyOpen', $event)"
           )
-            rd-checkbox-button(
+            rd-checkbox-button.detail__button-width(
               v-for="(option, key) in advancedConditions.partiallyOpen"
               :key="key"
               :label="option.label"
@@ -146,13 +142,13 @@ rd-form(inline :model="advancedForm")
             )
               span {{ t(`url_abnormal_state_tag_${option.label}`) }}
         //- 可開啟
-        rd-form-item(:label="t('can_be_opened')" prop="service")
-          rd-checkbox-group(
+        rd-form-item.basic-item(:label="t('can_be_opened')")
+          rd-checkbox-group.detail__flex-warp(
             size="small"
             :model-value="advancedForm.open"
             @change="selectAbnormalDetail('open', $event)"
           )
-            rd-checkbox-button(
+            rd-checkbox-button.detail__button-width(
               v-for="(option, key) in advancedConditions.open"
               :key="key"
               :label="option.label"
@@ -160,8 +156,12 @@ rd-form(inline :model="advancedForm")
             )
               span {{ t(`url_abnormal_state_tag_${option.label}`) }}
   //- IP類型
-  rd-form-item(v-if="showGroup('ipType')" :label="t('ip_type')" prop="ipType")
-    rd-checkbox(
+  rd-form-item.basic-item(
+    v-if="showGroup('ipType')"
+    :label="t('ip_type')"
+    prop="ipType"
+  )
+    rd-checkbox.basic-item__space(
       v-model="groupCheckAll.ipType"
       :indeterminate="advancedForm.ipType.length > 0 && !groupCheckAll.ipType"
       @change="selectAll('ipType', $event)"
@@ -171,7 +171,7 @@ rd-form(inline :model="advancedForm")
       size="small"
       @change="select('ipType', $event)"
     )
-      rd-checkbox-button(
+      rd-checkbox-button.button-width(
         v-for="(option, key) in advancedConditions.ipType"
         :key="key"
         :label="option.label"
@@ -179,12 +179,12 @@ rd-form(inline :model="advancedForm")
       )
         span {{ option.dict }}
   //- 購買方式
-  rd-form-item(
+  rd-form-item.basic-item(
     v-if="showGroup('purchaseMethod')"
     :label="t('ways_to_purchase')"
     prop="purchaseMethod"
   )
-    rd-checkbox(
+    rd-checkbox.basic-item__space(
       v-model="groupCheckAll.purchaseMethod"
       :indeterminate="advancedForm.purchaseMethod.length > 0 && !groupCheckAll.purchaseMethod"
       @change="selectAll('purchaseMethod', $event)"
@@ -194,7 +194,7 @@ rd-form(inline :model="advancedForm")
       size="small"
       @change="select('purchaseMethod', $event)"
     )
-      rd-checkbox-button(
+      rd-checkbox-button.button-width(
         v-for="(option, key) in advancedConditions.purchaseMethod"
         :key="key"
         :label="option.label"
@@ -202,12 +202,12 @@ rd-form(inline :model="advancedForm")
       )
         span {{ option.dict }}
   //- 攻擊狀態
-  rd-form-item(
+  rd-form-item.basic-item(
     v-if="showGroup('attackStatus')"
     :label="t('attack_status')"
     prop="attackStatus"
   )
-    rd-checkbox(
+    rd-checkbox.basic-item__space(
       v-model="groupCheckAll.attackStatus"
       :indeterminate="advancedForm.attackStatus.length > 0 && !groupCheckAll.attackStatus"
       @change="selectAll('attackStatus', $event)"
@@ -217,7 +217,7 @@ rd-form(inline :model="advancedForm")
       size="small"
       @change="select('attackStatus', $event)"
     )
-      rd-checkbox-button(
+      rd-checkbox-button.button-width(
         v-for="(option, key) in advancedConditions.attackStatus"
         :key="key"
         :label="option.label"
@@ -225,12 +225,12 @@ rd-form(inline :model="advancedForm")
       )
         span {{ option.dict }}
   //- 成長％數
-  rd-form-item(
+  rd-form-item.basic-item(
     v-if="showGroup('growingPercent')"
     :label="t('growing_percent')"
     prop="growingPercent"
   )
-    rd-checkbox(
+    rd-checkbox.basic-item__space(
       v-model="groupCheckAll.growingPercent"
       :indeterminate="advancedForm.growingPercent.length > 0 && !groupCheckAll.growingPercent"
       @change="selectAll('growingPercent', $event)"
@@ -240,7 +240,7 @@ rd-form(inline :model="advancedForm")
       size="small"
       @change="select('growingPercent', $event)"
     )
-      rd-checkbox-button(
+      rd-checkbox-button.button-width(
         v-for="(option, key) in advancedConditions.growingPercent"
         :key="key"
         :label="option.label"
@@ -251,7 +251,8 @@ rd-form(inline :model="advancedForm")
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { map, uniq } from 'lodash';
+import { map, uniq, isEmpty } from 'lodash';
+import { type CheckboxValueType } from 'element-plus';
 import { type PropType, defineComponent, inject, ref } from 'vue';
 import {
   clickOutside,
@@ -277,7 +278,7 @@ export default defineComponent({
     },
   },
   emits: ['change'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const { t } = useI18n({ useScope: 'local' });
 
     const { visible, popoverRef, onClickOutside } = useClickOutside();
@@ -298,7 +299,10 @@ export default defineComponent({
     ) as Record<AdvancedConditionsType, boolean>;
 
     // 點擊「單一群組」全選 Checkbox(不包含異常狀態)
-    const selectAll = (groupName: AdvancedConditions, value: boolean) => {
+    const selectAll = (
+      groupName: AdvancedConditions,
+      value: CheckboxValueType,
+    ) => {
       const groupValues = map(advancedConditions[groupName], 'label');
       // 預設全取消
       advancedForm[groupName] = [];
@@ -308,7 +312,10 @@ export default defineComponent({
       emit('change');
     };
     // 點擊「單一群組」的子條件(不包含異常狀態)
-    const select = (groupName: AdvancedConditions, value: number[]) => {
+    const select = (
+      groupName: AdvancedConditions,
+      value: CheckboxValueType[],
+    ) => {
       // 若選中的項目數量等同全部的項目數量，為全選
       groupCheckAll[groupName] =
         value.length === advancedConditions[groupName].length;
@@ -336,7 +343,7 @@ export default defineComponent({
     // 同步異常細項
     const syncAbnormalDetail = (
       value: AbnormalStateConditions[],
-      selectedAll: boolean,
+      selectedAll: CheckboxValueType,
     ) => {
       value.forEach((key: AbnormalStateConditions) => {
         // 預設全取消
@@ -358,7 +365,7 @@ export default defineComponent({
         );
       },
       // 點擊「異常狀態」全選
-      selectAll: (value: boolean) => {
+      selectAll: (value: CheckboxValueType) => {
         const groupValues = map(abnormalStateOptions, 'label');
         // 預設全取消
         abnormalStateGroup.value = [];
@@ -370,7 +377,7 @@ export default defineComponent({
         emit('change');
       },
       // 點擊「異常狀態」的單一條件
-      select: (detailName: AbnormalStateConditions, val: boolean) => {
+      select: (detailName: AbnormalStateConditions, val: CheckboxValueType) => {
         let selectAll = val;
         // 預設先濾掉
         abnormalStateGroup.value = abnormalStateGroup.value.filter(
@@ -390,23 +397,18 @@ export default defineComponent({
         abnormalStatusAct.checkAll();
         emit('change');
       },
-      // 清空值
-      clear: () => {
-        abnormalStateGroup.value = [];
-        abnormalStateSelectAll.value = false;
-      },
     };
     // 點擊「異常細項」的子條件
     const selectAbnormalDetail = (
       groupName: AbnormalStateConditions,
-      value: number[],
+      value: CheckboxValueType[],
     ) => {
       const checkedCount = value.length;
       // 若選中的項目數量等同全部的項目數量，為全選
       groupCheckAll[groupName] =
         checkedCount === advancedConditions[groupName].length;
       // 設定異常細項值
-      advancedForm[groupName] = value;
+      advancedForm[groupName] = value as number[];
       // 設定異常狀態值
       abnormalStateGroup.value = abnormalStateGroup.value.filter(
         item => item !== groupName,
@@ -430,6 +432,34 @@ export default defineComponent({
     const showGroup = (groupName: string) => {
       return props.showUsageGroups?.includes(groupName);
     };
+
+    // 清空
+    const clear = () => {
+      // 還原進階條件
+      (Object.keys(advancedForm) as AdvancedConditionsType[]).forEach(key => {
+        // 全清空
+        advancedForm[key] = [];
+        // 全取消
+        groupCheckAll[key] = false;
+      });
+      abnormalStateGroup.value = [];
+      abnormalStateSelectAll.value = false;
+    };
+    // 初始設定
+    const init = () => {
+      (
+        ['notOpen', 'partiallyOpen', 'open'] as AbnormalStateConditions[]
+      ).forEach(key => {
+        if (!isEmpty(advancedForm[key])) {
+          abnormalStateGroup.value = [...abnormalStateGroup.value, key];
+        }
+      });
+    };
+    // 給父層使用的方法
+    expose({
+      clear,
+      init,
+    });
 
     return {
       t,
@@ -456,28 +486,28 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-form-item) {
+.basic-item {
   margin-bottom: 5px;
-}
-
-:deep(.el-checkbox-group) {
-  margin-left: 5px;
-  label {
-    min-width: 100px;
+  &__space {
+    margin-right: 5px;
   }
 }
 
-.abnormal-detail-form {
-  :deep(.el-checkbox-group) {
-    display: block;
-    label {
-      min-width: 130px;
-      margin-bottom: 5px;
-    }
+.button-width {
+  min-width: 100px;
+}
+
+.detail {
+  &__flex-warp {
+    flex-wrap: wrap;
+  }
+  &__button-width {
+    min-width: 130px;
+    margin-bottom: 5px;
   }
 }
 
-.abnormal-detail-btn {
+.detail-btn {
   margin-left: 10px;
 }
 </style>

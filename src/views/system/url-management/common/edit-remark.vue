@@ -6,7 +6,7 @@ rd-dialog(
   :model-value="visible"
   width="520px"
   @update:model-value="$emit('update:visible', $event)"
-  @close="close"
+  @close="reset"
 )
   rd-form.form-content(label-width="65px" size="small")
     //- 單一操作
@@ -38,15 +38,21 @@ rd-dialog(
         @input="form.remark = $event"
       )
   template(#footer)
-    rd-button(type="secondary" @click="close") {{ t('cancel') }}
+    rd-button(type="secondary" @click="$emit('update:visible', false)") {{ t('cancel') }}
     rd-button(type="primary" @click="save") {{ t('save') }}
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { isEmpty } from 'lodash';
-import { type PropType, defineComponent, reactive, computed, watch } from 'vue';
-import { useLoadingStore } from '@/stores/loading';
+import {
+  type PropType,
+  defineComponent,
+  inject,
+  reactive,
+  computed,
+  watch,
+} from 'vue';
 import { notify } from '@/components/utils/notification';
 import type { RemarkDomainNameForm } from './type';
 import { url as urlAPI } from '@/api/domain';
@@ -78,7 +84,8 @@ export default defineComponent({
   emits: ['update:visible'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
-    const loadingStore = useLoadingStore();
+    // Loading
+    const setLoading = inject('UrlManagement:setLoading') as Function;
 
     // 表單資料
     const form = reactive({
@@ -108,13 +115,13 @@ export default defineComponent({
       ) {
         notify.warning({ title: t('warning'), message: t('warning_msg') });
         emit('update:visible', false);
-        return Promise;
+        return;
       }
       // 單一操作
       if (isSingle.value) {
         form.type = 'cover';
       }
-      loadingStore.axios = true;
+      setLoading(true);
       return urlAPI
         .updateDomainNameRemark(
           getDomainName(),
@@ -125,7 +132,7 @@ export default defineComponent({
           if (resp.data.result) {
             notify.success({ title: t('success') });
           }
-          loadingStore.axios = false;
+          setLoading(false);
           emit('update:visible', false);
         });
     };
@@ -146,10 +153,10 @@ export default defineComponent({
       return [];
     };
 
-    // 關閉
-    const close = () => {
+    // 還原
+    const reset = () => {
+      form.type = 'cover';
       form.remark = props.data.remark;
-      emit('update:visible', false);
     };
 
     return {
@@ -157,7 +164,7 @@ export default defineComponent({
       form,
       isSingle,
       save,
-      close,
+      reset,
     };
   },
 });

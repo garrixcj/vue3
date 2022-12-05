@@ -147,40 +147,37 @@ advanced-conditions(
   v-if="searched"
   ref="advancedRef"
   :show-usage-groups="['service', 'domainNameStatus', 'sslStatus', 'abnormalState']"
-  @change="clickAct.advancedCondition"
+  @change="advancedConditionAct.change"
 )
 //- 列表資料
 List(
   v-if="searched"
   ref="listRef"
-  @change="clickAct.listCondition"
+  @change="listAct.change"
+  @sortChange="listAct.sort"
   @export="exportList"
-  @sortChange="clickAct.listSort"
 )
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { isEmpty, intersection, omitBy, orderBy } from 'lodash';
+import { isEmpty, intersection, omitBy, orderBy, toInteger } from 'lodash';
 import {
-  nextTick,
+  type Ref,
   defineComponent,
   onMounted,
   provide,
   inject,
   ref,
 } from 'vue';
-import { useLoadingStore } from '@/stores/loading';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import BatchInput from '@/components/custom/batch-input/index.vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import SettingExample from './setting-example.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
-import { randomAlphanumeric } from '@/components/utils/random/index';
 import { notify } from '@/components/utils/notification';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
-import { useSiteList } from '../common/list';
 import {
   type FormType,
   useForm,
@@ -195,6 +192,7 @@ import {
   setExportPermName,
   doExportCustomerDomainNameList,
 } from '../common/export';
+import type { SiteOption } from '../common/list';
 import type { ListData } from '../common/type';
 
 export default defineComponent({
@@ -210,17 +208,21 @@ export default defineComponent({
   setup() {
     const { t, locale } = useI18n({ useScope: 'local' });
 
-    const loadingStore = useLoadingStore();
+    // Loading
+    const setLoading = inject('UrlManagement:setLoading') as Function;
 
     // 已搜尋
     const searched = ref(false);
+    // 更新API資料
+    const updateApi = ref(false);
 
     // 下拉全部選項
     const allOption = inject<object>('UrlManagement:allOption');
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
-    // 站別相關
-    const { getSiteList, siteOptions } = useSiteList();
+
+    // 站別列表
+    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
     // 進階條件
     const {
@@ -228,7 +230,6 @@ export default defineComponent({
       advancedForm,
       advancedFormKeys,
       advancedGroupCheckAll,
-      resetAdvancedCondition,
     } = useAdvancedConditions();
     provide('UrlManagement:advancedForm', advancedForm);
     provide('UrlManagement:advancedGroupCheckAll', advancedGroupCheckAll);
@@ -237,11 +238,15 @@ export default defineComponent({
     const batchInputVisible = ref(false);
     const formRef = ref();
     // 表單相關
-    const { form, orgForm, cachedForm, resetForm, initForm } = useForm();
-    provide('CustomerDomain:basicSearchForm', orgForm);
+    const { form, initForm } = useForm();
+    // 切換搜尋類別
+    const changeType = (value: string) => {
+      initForm();
+      form.type = value;
+    };
     // 表單欄位
     const { displayField, supportSingleDomainName, supportMultipleDomainName } =
-      useFormField();
+      useFormField(form);
     // 表單下拉選項
     const {
       typeOptions,
@@ -251,11 +256,6 @@ export default defineComponent({
     } = useFormOptions();
     // 驗證相關
     const { rules } = useValidationRules();
-    // 切換搜尋類別
-    const changeType = (value: string) => {
-      initForm();
-      form.type = value;
-    };
 
     const listRef = ref();
     // 列表資料
@@ -274,63 +274,187 @@ export default defineComponent({
     provide('CustomerDomain:listAngleTotalData', listAngleTotalData);
     provide('CustomerDomain:listCondition', listCondition);
 
-    // 點擊動作
-    const clickAct = {
+    const watcher = useTabWatcher('customerDomain');
+    const querySet = useQuery([
+      {
+        key: 'type',
+        get: () => form.type,
+        set: (val: FormType['type']) => {
+          form.type = val;
+        },
+        default: '',
+        cached: true,
+      },
+      {
+        key: 'site',
+        get: () => form.site,
+        set: (val: string) => {
+          form.site = val;
+        },
+        default: '',
+        cached: true,
+      },
+      {
+        key: 'domain',
+        get: () => form.domain,
+        set: (val: number) => {
+          form.domain = val;
+        },
+        default: 0,
+        number: true,
+        cached: true,
+      },
+      {
+        key: 'domainName',
+        get: () => form.domainName,
+        set: (val: string) => {
+          form.domainName = val;
+        },
+        default: '',
+        cached: true,
+      },
+      {
+        key: 'multipleDomains',
+        get: () => form.multipleDomains,
+        set: (val: string[]) => {
+          form.multipleDomains = val;
+        },
+        default: [],
+        cached: true,
+      },
+      {
+        key: 'ip',
+        get: () => form.ip,
+        set: (val: string) => {
+          form.ip = val;
+        },
+        default: '',
+        cached: true,
+      },
+      {
+        key: 'area',
+        get: () => form.area,
+        set: (val: string) => {
+          form.area = val;
+        },
+        default: 'all',
+        cached: true,
+      },
       // 進階條件
-      advancedCondition: () => {
-        resetAct.listCondition();
-        resetForm();
-        setTableData();
+      {
+        key: 'service',
+        get: () => advancedForm.service,
+        set: (val: number[]) => {
+          advancedForm.service = updateApi.value
+            ? []
+            : val.map(item => toInteger(item));
+        },
+        default: [],
       },
-      // 列表條件
-      listCondition: () => {
-        resetForm();
-        setTableData();
+      {
+        key: 'domainNameStatus',
+        get: () => advancedForm.domainNameStatus,
+        set: (val: number[]) => {
+          advancedForm.domainNameStatus = updateApi.value
+            ? []
+            : val.map(item => toInteger(item));
+        },
+        default: [],
       },
-      // 列表欄位排序
-      listSort: (
-        field: 'abnormalDate' | 'automaticRenewalDate',
-        order: 'ascending' | 'descending' | null,
-      ) => {
-        // 排序對應表
-        const orders: {
-          ascending: 'asc';
-          descending: 'desc';
-        } = { ascending: 'asc', descending: 'desc' };
-        listCondition.sort = 'id';
-        listCondition.order = 'asc';
-        if (order !== null) {
-          listCondition.order = orders[order];
-          listCondition.sort = field;
-        }
-        setTableData();
+      {
+        key: 'sslStatus',
+        get: () => advancedForm.sslStatus,
+        set: (val: number[]) => {
+          advancedForm.sslStatus = updateApi.value
+            ? []
+            : val.map(item => toInteger(item));
+        },
+        default: [],
       },
-    };
-    // 重置動作
-    const resetAct = {
-      // 重置列表 Scrollbar 位置
-      scrollBar: () => {
-        listRef.value?.listRef?.setScrollTop(0);
-        listRef.value?.listRef?.setScrollLeft(0);
+      {
+        key: 'notOpen',
+        get: () => advancedForm.notOpen,
+        set: (val: number[]) => {
+          const value =
+            typeof val === 'string'
+              ? [toInteger(val)]
+              : val.map(item => toInteger(item));
+          advancedForm.notOpen = updateApi.value ? [] : value;
+        },
+        default: [],
       },
-      // 還原搜尋參數
-      listCondition: () => {
-        listCondition.formAngle = 'all';
-        listCondition.page = 1;
-
-        // 排序重置
-        listRef.value?.sortAct.clear();
+      {
+        key: 'partiallyOpen',
+        get: () => advancedForm.partiallyOpen,
+        set: (val: number[]) => {
+          const value =
+            typeof val === 'string'
+              ? [toInteger(val)]
+              : val.map(item => toInteger(item));
+          advancedForm.partiallyOpen = updateApi.value ? [] : value;
+        },
+        default: [],
       },
-      // 還原異常狀態
-      abnormalState: () => {
-        advancedRef.value?.abnormalStatusAct.clear();
+      {
+        key: 'open',
+        get: () => advancedForm.open,
+        set: (val: number[]) => {
+          const value =
+            typeof val === 'string'
+              ? [toInteger(val)]
+              : val.map(item => toInteger(item));
+          advancedForm.open = updateApi.value ? [] : value;
+        },
+        default: [],
       },
-    };
+      // Table條件
+      {
+        key: 'angle',
+        get: () => listCondition.formAngle,
+        set: (val: string) => {
+          listCondition.formAngle = updateApi.value ? 'all' : val;
+        },
+        default: 'all',
+      },
+      {
+        key: 'page',
+        get: () => listCondition.page,
+        set: (val: number) => {
+          listCondition.page = updateApi.value ? 1 : val;
+        },
+        default: 1,
+        number: true,
+      },
+      {
+        key: 'size',
+        get: () => listCondition.size,
+        set: (val: number) => {
+          listCondition.size = val;
+        },
+        default: 1000,
+        number: true,
+      },
+      {
+        key: 'sort',
+        get: () => listCondition.sort,
+        set: (val: 'id' | 'abnormalDate' | 'automaticRenewalDate') => {
+          listCondition.sort = updateApi.value ? 'id' : val;
+        },
+        default: 'id',
+      },
+      {
+        key: 'order',
+        get: () => listCondition.order,
+        set: (val: 'asc' | 'desc') => {
+          listCondition.order = updateApi.value ? 'asc' : val;
+        },
+        default: 'asc',
+      },
+    ]);
+    provide('CustomerDomain:basicSearchForm', querySet.getQuery());
 
     // 設定列表資料
     const setTableData = () => {
-      listCondition.loading = true;
-
       // 判斷為查無域名角度
       if (listCondition.formAngle === 'noDomainName') {
         // 分頁總數
@@ -369,14 +493,8 @@ export default defineComponent({
         }
       }
 
-      nextTick(() => {
-        setTimeout(() => {
-          // 重置 Scrollbar 位置
-          resetAct.scrollBar();
-
-          listCondition.loading = false;
-        }, 1000);
-      });
+      // 重置 Scrollbar 位置
+      listRef.value?.scrollTo();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -392,13 +510,13 @@ export default defineComponent({
           abnormalState: item.abnormalState,
         };
         // 判斷有中點擊的進階條件
-        const isAdSearch = advancedFormKeys.some(acKey => {
+        const isAdSearch = advancedFormKeys.some(key => {
           // 單一進階條件點擊項目
-          const clickASData: number[] = advancedForm[acKey];
+          const clickASData: number[] = advancedForm[key];
           if (!isEmpty(clickASData)) {
-            let fieldData: number[] = rowData[acKey as keyof typeof rowData];
+            let fieldData: number[] = rowData[key as keyof typeof rowData];
             // 異常狀態
-            if (['notOpen', 'partiallyOpen', 'open'].includes(acKey)) {
+            if (['notOpen', 'partiallyOpen', 'open'].includes(key)) {
               fieldData = rowData.abnormalState;
             }
             return !isEmpty(intersection(clickASData, fieldData));
@@ -421,10 +539,50 @@ export default defineComponent({
       }, []);
     };
 
+    // 列表
+    const listAct = {
+      reset: () => {
+        listCondition.formAngle = 'all';
+        listCondition.page = 1;
+
+        // 排序重置
+        listRef.value?.sortClear();
+      },
+      sort: (
+        field: 'abnormalDate' | 'automaticRenewalDate',
+        order: 'ascending' | 'descending' | null,
+      ) => {
+        // 排序對應表
+        const orders: {
+          ascending: 'asc';
+          descending: 'desc';
+        } = { ascending: 'asc', descending: 'desc' };
+        listCondition.sort = 'id';
+        listCondition.order = 'asc';
+        if (order !== null) {
+          listCondition.order = orders[order];
+          listCondition.sort = field;
+        }
+        watcher.queryRoute(querySet.getQuery());
+      },
+      change: () => {
+        watcher.queryRoute(querySet.getQuery());
+      },
+    };
+    // 進階條件
+    const advancedConditionAct = {
+      change: () => {
+        listAct.reset();
+        watcher.queryRoute(querySet.getQuery());
+      },
+    };
+
     // 匯出列表資料
     const exportList = (note: string) => {
-      loadingStore.axios = true;
+      setLoading(true);
       setExportPermName('CustomerUrlExport');
+
+      const query = querySet.getQuery() as FormType;
 
       // 列表角度
       let tableFilter = 0;
@@ -440,13 +598,13 @@ export default defineComponent({
       // 異常地區
       let abnormalArea = '';
       // 判斷異常地區不為「不限制」
-      if (orgForm.area !== 'all') {
-        abnormalArea = orgForm.area;
+      if (query.area !== 'all') {
+        abnormalArea = query.area;
       }
 
       const optionsTmp: ExportCustomerDomainNameParams = {
-        domain_name: orgForm.domainName,
-        ip: orgForm.ip,
+        domain_name: query.domainName,
+        ip: query.ip,
         abnormal_area: abnormalArea,
         service_item: advancedForm.service,
         domain_name_status: advancedForm.domainNameStatus,
@@ -478,12 +636,11 @@ export default defineComponent({
       );
 
       return doExportCustomerDomainNameList(
-        orgForm.type,
-        orgForm.site,
-        orgForm.domain,
+        query.type,
+        query.site,
+        query.domain,
+        query.multipleDomains,
         noDomainNameList,
-        orgForm.multipleDomains,
-        randomAlphanumeric(),
         locale.value,
         options,
       ).then(resp => {
@@ -494,108 +651,49 @@ export default defineComponent({
           });
         }
         setExportPermName('CustomerUrl');
-        loadingStore.axios = false;
+        setLoading(false);
       });
     };
 
     onMounted(() => {
-      loadingStore.page = true;
-      Promise.all([getSiteList(), getAbnormalAreas()]).then(() => {
-        loadingStore.page = false;
+      setLoading(true);
+      Promise.all([getAbnormalAreas()]).then(() => {
+        setLoading(false);
       });
     });
-    const watcher = useTabWatcher('customerDomain');
-    // route相關
-    const querySet = useQuery([
-      {
-        key: 'type',
-        get: () => form.type,
-        set: (val: FormType['type']) => {
-          form.type = val;
-        },
-        default: '',
-      },
-      {
-        key: 'site',
-        get: () => form.site,
-        set: (val: string) => {
-          form.site = val;
-        },
-        default: '',
-      },
-      {
-        key: 'domain',
-        get: () => form.domain,
-        set: (val: number) => {
-          form.domain = val;
-        },
-        default: 0,
-        number: true,
-      },
-      {
-        key: 'domainName',
-        get: () => form.domainName,
-        set: (val: string) => {
-          form.domainName = val;
-        },
-        default: '',
-      },
-      {
-        key: 'multipleDomains',
-        get: () => form.multipleDomains,
-        set: (val: string[]) => {
-          form.multipleDomains = val;
-        },
-        default: [],
-      },
-      {
-        key: 'ip',
-        get: () => form.ip,
-        set: (val: string) => {
-          form.ip = val;
-        },
-        default: '',
-      },
-      {
-        key: 'area',
-        get: () => form.area,
-        set: (val: string) => {
-          form.area = val;
-        },
-        default: 'all',
-      },
-    ]);
+
     // 點擊搜尋按鈕
     const search = () => {
       formRef.value.validate((validate: boolean) => {
         if (validate) {
-          watcher.queryRoute(querySet.getQuery());
+          updateApi.value = true;
+          // 還原列表條件
+          listAct.reset();
+          // 還原進階條件
+          advancedRef.value?.clear();
+          watcher.queryRoute(querySet.getQuery({ ignoreCached: true }));
         }
       });
     };
     // 更新列表資料
     const updateList = () => {
-      loadingStore.axios = true;
-      searched.value = true;
       querySet.setField();
-      getList().then(resp => {
-        if (resp.every(item => item)) {
-          // 緩存搜尋參數
-          cachedForm();
-          resetAdvancedCondition();
-          resetAct.listCondition();
-          resetAct.abnormalState();
-          setTableData();
-        }
-        loadingStore.axios = false;
-      });
+      if (!searched.value || updateApi.value) {
+        setLoading(true);
+        searched.value = true;
+        return getList().then(resp => {
+          if (resp) {
+            advancedRef.value?.init();
+            setTableData();
+          }
+          updateApi.value = false;
+          setLoading(false);
+        });
+      }
+      setTableData();
     };
     // route watcher
     watcher.setWatcher((query: FormType) => {
-      // 還原進階條件
-      resetAdvancedCondition();
-      // 還原列表條件
-      resetAct.listCondition();
       // 若有Type代表已有搜尋
       if (query.type && query.type !== '') {
         updateList();
@@ -627,9 +725,10 @@ export default defineComponent({
       changeType,
       // 進階條件
       advancedRef,
+      advancedConditionAct,
       // Table
       listRef,
-      clickAct,
+      listAct,
       // 異常地區相關
       abnormalAreaOptions,
       singleAreaOptions,

@@ -15,7 +15,6 @@ export type CheckNoDomainNameList = {
 };
 
 export type ListCondition = {
-  loading: boolean;
   formAngle: string;
   page: number;
   size: number;
@@ -43,7 +42,6 @@ export const useList = (form: FormType) => {
   });
   // 列表條件
   const listCondition: ListCondition = reactive({
-    loading: false,
     formAngle: 'all',
     page: 1,
     size: 1000,
@@ -51,70 +49,6 @@ export const useList = (form: FormType) => {
     sort: 'id',
     order: 'asc',
   });
-
-  // 取得列表資料
-  const getList = () => {
-    // 客端域名列表API
-    const listAct = {
-      // By 站別
-      bySite: () => {
-        return urlAPI
-          .getCustomerDomainBySite(form.site, getOptionalParam())
-          .then(resp => {
-            if (resp.data.result) {
-              getTableData(resp.data.data);
-            }
-            return true;
-          });
-      },
-      // By IP
-      byIP: () => {
-        return urlAPI
-          .getCustomerDomainByIP(form.ip, getOptionalParam())
-          .then(resp => {
-            if (resp.data.result) {
-              getTableData(resp.data.data);
-            }
-            return true;
-          });
-      },
-      // By 全廳 - 單一域名
-      bySingleDomainName: () => {
-        return urlAPI
-          .getCustomerDomainByDomainName(
-            form.domain,
-            [form.domainName],
-            getOptionalParam(),
-          )
-          .then(resp => {
-            if (resp.data.result) {
-              getTableData(resp.data.data);
-            }
-            return true;
-          });
-      },
-      // By 單一廳 - 多域名
-      byMultipleDomainName: () => {
-        return urlAPI
-          .getCustomerDomainByDomain(form.domain, getOptionalParam())
-          .then(resp => {
-            if (resp.data.result) {
-              getTableDataByMultipleDomain(resp.data.data);
-            }
-            return true;
-          });
-      },
-    };
-    let act: keyof typeof listAct = 'bySite';
-    if (form.type === 'domainName' && form.domain === 0) {
-      act = 'bySingleDomainName';
-    } else if (form.type === 'domainName' && form.domain > 0) {
-      act = 'byMultipleDomainName';
-    } else if (form.type === 'ip') {
-      act = 'byIP';
-    }
-    return Promise.all([listAct[act]()]);
-  };
 
   // 取得選填參數
   const getOptionalParam = () => {
@@ -283,6 +217,75 @@ export const useList = (form: FormType) => {
     return result;
   };
 
+  // 列表API
+  const updateList = {
+    // By 站別
+    site: () => {
+      return urlAPI
+        .getCustomerDomainBySite(form.site, getOptionalParam())
+        .then(resp => {
+          if (resp.data.result) {
+            getTableData(resp.data.data);
+          }
+          return true;
+        });
+    },
+    // By IP
+    IP: () => {
+      return urlAPI
+        .getCustomerDomainByIP(form.ip, getOptionalParam())
+        .then(resp => {
+          if (resp.data.result) {
+            getTableData(resp.data.data);
+          }
+          return true;
+        });
+    },
+    // By 全廳 - 單一域名
+    singleDomainName: () => {
+      return urlAPI
+        .getCustomerDomainByDomainName(
+          form.domain,
+          [form.domainName],
+          getOptionalParam(),
+        )
+        .then(resp => {
+          if (resp.data.result) {
+            getTableData(resp.data.data);
+          }
+          return true;
+        });
+    },
+    // By 單一廳 - 多域名
+    multipleDomainName: () => {
+      return urlAPI
+        .getCustomerDomainByDomain(form.domain, getOptionalParam())
+        .then(resp => {
+          if (resp.data.result) {
+            getTableDataByMultipleDomain(resp.data.data);
+          }
+          return true;
+        });
+    },
+  };
+
+  // 取得列表資料
+  const getList = () => {
+    let act: keyof typeof updateList = 'site';
+    if (form.type === 'domainName' && form.domain === 0) {
+      act = 'singleDomainName';
+    } else if (form.type === 'domainName' && form.domain > 0) {
+      act = 'multipleDomainName';
+    } else if (form.type === 'ip') {
+      act = 'IP';
+    }
+    return new Promise(resolve => {
+      updateList[act]().then(() => {
+        resolve(true);
+      });
+    });
+  };
+
   return {
     orgListData,
     listData,
@@ -299,12 +302,12 @@ const getUrlStatusOptions = (
   urlStatus: { https: boolean; http: boolean; ub: boolean },
   domainName: string,
 ) => {
-  const urlOptionTmp = <UrlStatusOption[]>[
+  const urlOptionTmp = [
     { label: 'www', type: 'info', url: `http://www.${domainName}`, key: 'www' },
     { label: 'https', type: 'success', url: '', key: 'https' },
     { label: 'http', type: 'success', url: '', key: 'http' },
     { label: 'UB', type: 'success', url: '', key: 'ub' },
-  ];
+  ] as UrlStatusOption[];
 
   const options = urlOptionTmp.map(item => {
     const result = item;

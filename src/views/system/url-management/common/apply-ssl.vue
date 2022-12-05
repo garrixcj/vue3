@@ -7,7 +7,7 @@ rd-dialog(
   :model-value="visible"
   width="550px"
   @update:model-value="$emit('update:visible', $event)"
-  @close="close"
+  @close="reset"
 )
   rd-form.form-content(label-width="90px" size="small")
     //- 單一操作
@@ -39,7 +39,7 @@ rd-dialog(
     rd-form-item
       span {{ t('go_to_old_ssl_msg', { function_name: t('domain_ssl') }) }}
   template(#footer)
-    rd-button(type="secondary" @click="close") {{ t('cancel') }}
+    rd-button(type="secondary" @click="$emit('update:visible', false)") {{ t('cancel') }}
     rd-button(type="primary" @click="submit") {{ t('go_to') }}
 </template>
 
@@ -60,12 +60,6 @@ type Data = {
   suffix: string;
   domainNameList: RemarkDomainNameForm[];
   remark: string;
-};
-
-type ApplySSLActive = {
-  type: 'success';
-  text: string;
-  inverseText: string;
 };
 
 export default defineComponent({
@@ -92,11 +86,11 @@ export default defineComponent({
       remark: '', // 備註
     });
 
-    const applySSLActive: ApplySSLActive = {
+    const applySSLActive = {
       type: 'success',
       text: t('enable'),
       inverseText: t('disable'),
-    };
+    } as const;
 
     // 單一操作
     const isSingle = computed(() => props.data.action === 'single');
@@ -127,10 +121,10 @@ export default defineComponent({
         });
     };
 
-    // 關閉
-    const close = () => {
+    // 還原
+    const reset = () => {
+      form.automaticExtension = true;
       form.remark = '';
-      emit('update:visible', false);
     };
 
     return {
@@ -140,7 +134,7 @@ export default defineComponent({
       applySSLActive,
       domainNameData,
       submit,
-      close,
+      reset,
     };
   },
 });

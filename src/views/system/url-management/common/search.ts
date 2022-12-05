@@ -29,59 +29,20 @@ type FieldName =
   | 'keyword'
   | 'date';
 
-// 原始搜尋參數
-const orgForm: FormType = reactive({
-  type: '',
-  site: '',
-  domain: 0,
-  domainName: '',
-  multipleDomains: [],
-  ip: '',
-  area: 'all',
-  keyword: '',
-  date: [],
-});
-
-// 搜尋參數
-const form: FormType = reactive({
-  type: '',
-  site: '',
-  domain: 0,
-  domainName: '',
-  multipleDomains: [],
-  ip: '',
-  area: 'all',
-  keyword: '',
-  date: [],
-});
-
 // 表單資料
 export const useForm = () => {
-  // 緩存搜尋參數
-  const cachedForm = () => {
-    orgForm.type = form.type;
-    orgForm.site = form.site;
-    orgForm.domain = form.domain;
-    orgForm.domainName = form.domainName;
-    orgForm.multipleDomains = form.multipleDomains;
-    orgForm.ip = form.ip;
-    orgForm.area = form.area;
-    orgForm.keyword = form.keyword;
-    orgForm.date = form.date;
-  };
-
-  // 還原搜尋前參數
-  const resetForm = () => {
-    form.type = orgForm.type;
-    form.site = orgForm.site;
-    form.domain = orgForm.domain;
-    form.domainName = orgForm.domainName;
-    form.multipleDomains = orgForm.multipleDomains;
-    form.ip = orgForm.ip;
-    form.area = orgForm.area;
-    form.keyword = orgForm.keyword;
-    form.date = orgForm.date;
-  };
+  // 搜尋參數
+  const form: FormType = reactive({
+    type: '',
+    site: '',
+    domain: 0,
+    domainName: '',
+    multipleDomains: [],
+    ip: '',
+    area: 'all',
+    keyword: '',
+    date: [],
+  });
 
   // 初始化搜尋參數
   const initForm = () => {
@@ -98,9 +59,6 @@ export const useForm = () => {
 
   return {
     form,
-    orgForm,
-    cachedForm,
-    resetForm,
     initForm,
   };
 };
@@ -217,7 +175,9 @@ export const useAdvancedConditions = () => {
     growingPercent: [],
   });
 
-  const advancedFormKeys = <AdvancedConditionsType[]>Object.keys(advancedForm);
+  const advancedFormKeys = Object.keys(
+    advancedForm,
+  ) as AdvancedConditionsType[];
 
   // 全選
   const advancedGroupCheckAll = reactive({
@@ -233,27 +193,16 @@ export const useAdvancedConditions = () => {
     growingPercent: false,
   });
 
-  // 還原搜尋參數
-  const resetAdvancedCondition = () => {
-    advancedFormKeys.forEach(key => {
-      // 全清空
-      advancedForm[key] = [];
-      // 全取消
-      advancedGroupCheckAll[key] = false;
-    });
-  };
-
   return {
     advancedRef,
     advancedForm,
     advancedFormKeys,
     advancedGroupCheckAll,
-    resetAdvancedCondition,
   };
 };
 
 // 表單欄位相關
-export const useFormField = () => {
+export const useFormField = (form: FormType) => {
   // 檢驗是否可以顯示該欄位
   const displayField = (value: FieldName) => {
     // 搜尋類別對應的搜尋條件

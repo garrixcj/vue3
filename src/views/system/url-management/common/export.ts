@@ -1,40 +1,15 @@
-import { ref, reactive } from 'vue';
 import { chunk } from 'lodash';
 import { url as urlAPI } from '@/api/domain';
+import { randomAlphanumeric } from '@/components/utils/random/index';
 import { useAccesses } from '@/plugins/access/view';
 import http from '@/http';
-
-// 匯出基本設定
-export const useExport = () => {
-  const visible = ref(false);
-  const params = reactive({
-    functionName: '',
-    tabName: '',
-  });
-  // 初始匯出設定
-  const initExport = () => {
-    toggleDialog(true);
-    params.functionName = 'url_management';
-    params.tabName = 'customer_url';
-  };
-  // 切換匯出視窗
-  const toggleDialog = (status: boolean) => {
-    visible.value = status;
-  };
-  return {
-    visible,
-    params,
-    toggleDialog,
-    initExport,
-  };
-};
 
 /**
  * 取得匯出權限
  * @param {string} permName 匯出權限名稱
  * @return {boolean}
  */
-export const getExportPerm = (permName: string) => {
+export const useExportAccesses = (permName: string) => {
   return useAccesses(['Downloads', permName]);
 };
 
@@ -66,9 +41,8 @@ export const doExportCustomerDomainNameList = (
   type: string,
   site: string,
   domain: number,
-  checkNoDomainNameList: string[],
   multipleDomainNameList: string[],
-  token: string,
+  checkNoDomainNameList: string[],
   lang: string,
   options: ExportCustomerDomainNameParams,
 ) => {
@@ -85,6 +59,8 @@ export const doExportCustomerDomainNameList = (
         options,
       );
     }
+
+    const token = randomAlphanumeric();
 
     // 多域名切筆數並用並發方式
     const chunkDomains = chunk(multipleDomainNameList, 30);
