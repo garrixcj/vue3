@@ -1257,6 +1257,29 @@ export const url = {
   abolishTicket(id: number) {
     return this.http.put(`/domain/domain_name/ticket/${id}/cancel`);
   },
+  /**
+   * 操作記錄
+   * @param {object} options 選填 - 操作時間、站別、操作項目、域名、單號、操作者、IP
+   */
+  getRecord(options = {}) {
+    const paramOptions = [
+      'start_date',
+      'end_date',
+      'site_group',
+      'operator_type',
+      'domain_name',
+      'ticket_id',
+      'operator',
+      'ip',
+      'page',
+      'limit',
+      'sort',
+      'order',
+    ];
+    const params = pick(options, paramOptions);
+
+    return this.http.get('/domain/domain_name/operator_record', { params });
+  },
 };
 
 const domain = {
