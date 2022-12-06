@@ -214,6 +214,9 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const watcher = useTabWatcher('bindingDataSummary');
     const searched = inject('BindingDataSummary:searched', ref(false));
+    const scrollToTop = inject(
+      'MemberTwoFactorVerification:scrollToTop',
+    ) as Function;
     const tableRef = ref();
     const form = inject('BindingDataSummary:searchForm', {
       domain: 0,
@@ -408,6 +411,7 @@ export default defineComponent({
       loadingStore.page = true;
       Promise.all([getList(), getTotal()]).then(() => {
         resetScrollBar();
+        scrollToTop();
         loadingStore.page = false;
       });
     };
