@@ -2,10 +2,12 @@ import type { PriceListType } from '../common/estimate';
 
 export as namespace UrlManagementDetail;
 
+export type Buy = NonNullable<PriceListType['option']>;
+export type Management = NonNullable<PriceListType['option']>;
 // 基本設定
 export type BasicSetting = {
-  buy: NonNullable<PriceListType['option']>;
-  management: NonNullable<PriceListType['option']>;
+  buy: Buy;
+  management: Management;
   domainType: 'normal' | 'simple';
   highRisk: 'over' | 'binding';
   checkItem: 'txt' | 'nameserver' | '';
@@ -33,4 +35,11 @@ export type EstimateTableData = {
   pay: number;
   count: string;
   amount: string;
+};
+
+// 各購買方式的上限筆數 - api回傳
+export type RestrictionNumApi = {
+  id: number;
+  restriction_type: string;
+  restriction_limit: number;
 };
