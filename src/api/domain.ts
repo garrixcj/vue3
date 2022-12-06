@@ -1178,6 +1178,17 @@ export const url = {
   getTicketsRestriction() {
     return this.http.get('/domain/domain_name/tickets/restriction');
   },
+  /**
+   * 修改工單申請限制數量
+   * @param  {number} company_verify 公司限制數量
+   * @param  {number} customer_verify 廳主限制數量
+   */
+  putTicketRestriction(company_verify: number, customer_verify: number) {
+    return this.http.put('/domain/domain_name/tickets/restriction', {
+      company_verify,
+      customer_verify,
+    });
+  },
   /*
    * 取單一站別當天已申請網域數量
    * @param  {string} site_group 站別
@@ -1252,10 +1263,55 @@ export const url = {
   },
   /**
    * 作廢工單
-   * @param  {number} id 工單id
+   * @param  {number[]} id 工單id
    */
-  abolishTicket(id: number) {
-    return this.http.put(`/domain/domain_name/ticket/${id}/cancel`);
+  abolishTicket(ids: number[]) {
+    return this.http.put(`/domain/domain_name/tickets/cancel`, { ids });
+  },
+  /**
+   * 取得工單列表
+   * @param options.domain 廳主
+   * @param options.site_group 站別
+   * @param options.domain_name 域名
+   * @param options.fuzzy 網域名稱是否模糊搜尋
+   * @param options.ticket_id 單號
+   * @param options.tickets_status 單據狀態
+   * @param options.progress_rates 域名狀態
+   * @param options.purchase_method 購買方式
+   * @param options.maintenance_method 管理方式
+   * @param options.start_date_time 申請起始日期時間
+   * @param options.end_date_time 申請結束日期時間
+   * @param options.finish_start_date_time 完成起始日期時間
+   * @param options.finish_end_date_time 完成結束日期時間
+   * @param options.page 頁碼
+   * @param options.limit 一頁幾筆
+   * @param options.sort 排序條件
+   * @param options.order 排序方法
+   */
+  getTicketList(
+    options: {
+      domain?: number;
+      site_group?: string;
+      domain_name?: string;
+      fuzzy?: 0 | 1;
+      ticket_id?: string;
+      tickets_status?: number[];
+      progress_rates?: number[];
+      purchase_method?: number[];
+      maintenance_method?: number[];
+      start_date_time?: string;
+      end_date_time?: string;
+      finish_start_date_time?: string;
+      finish_end_date_time?: string;
+      page?: number;
+      limit?: number;
+      sort?: string;
+      order?: string;
+    } = {},
+  ) {
+    return this.http.get('/domain/domain_name/tickets', {
+      params: { ...options },
+    });
   },
 };
 
