@@ -205,20 +205,18 @@ export default defineComponent({
     const multiUserNameValid = (rule: never, value: string[]) => {
       return new Promise<void>((resolve, reject) => {
         if (value.length > 200) {
-          reject(new Error(t('username_number_limit', { num: 200 })));
+          reject(t('username_number_limit', { num: 200 }));
         }
         value.forEach((item: string) => {
           if (item) {
             if (!/^[a-z0-9]+$/.test(item)) {
-              reject(new Error(t('form_verify_msg_2')));
+              reject(t('form_verify_msg_2'));
             } else if (item.length < 4 || item.length > 20) {
               reject(
-                new Error(
-                  t('form_verify_msg_3', {
-                    min: 4,
-                    max: 20,
-                  }),
-                ),
+                t('form_verify_msg_3', {
+                  min: 4,
+                  max: 20,
+                }),
               );
             }
           }

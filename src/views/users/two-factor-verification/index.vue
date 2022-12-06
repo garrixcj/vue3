@@ -1,6 +1,7 @@
 <i18n src="@/languages/user/member_two_factor_auth.json"></i18n>
 <template lang="pug">
 rd-layout(
+  ref="layoutRef"
   v-model:active-tab="activeTab"
   tab-type="link"
   :title="t('member_two_factor_auth')"
@@ -11,8 +12,9 @@ rd-layout(
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, defineAsyncComponent } from 'vue';
+import { defineComponent, defineAsyncComponent, ref, provide } from 'vue';
 import { useI18n } from 'vue-i18n';
+import RdLayout from '@/components/common/layout/normal.vue';
 import { RouteWatch } from '@/components/utils/route-watch';
 import { useTabAccess } from '@/plugins/access/view';
 
@@ -46,10 +48,20 @@ export default defineComponent({
       }
     });
 
+    // 頁面置頂
+    const layoutRef = ref<InstanceType<typeof RdLayout>>();
+    const scrollToTop = () => {
+      if (layoutRef.value) {
+        layoutRef.value.$el.scrollTop = 0;
+      }
+    };
+    provide('MemberTwoFactorVerification:scrollToTop', scrollToTop);
+
     return {
       t,
       activeTab,
       currentTabs,
+      layoutRef,
     };
   },
 });
