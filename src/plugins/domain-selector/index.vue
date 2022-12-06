@@ -12,7 +12,6 @@ rd-select(
     key="all-opt"
     :value="allOptionsSet.value !== undefined ? allOptionsSet.value : 'all'"
     :label="allOptionsSet.label !== undefined ? allOptionsSet.label : t('all')"
-    :option="{}"
   )
     template(v-if="$slots.allLabel" #default="{ current }")
       slot(name="allLabel" :current="current")
