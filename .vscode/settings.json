@@ -6,6 +6,9 @@
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "[json]": {
+    "editor.formatOnSave": false
+  },
   "eslint.validate": ["javascript", "typescript", "vue"],
   "stylelint.packageManager": "yarn",
   "stylelint.validate": ["css", "less", "postcss", "sass", "scss", "vue"]

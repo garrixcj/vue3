@@ -60,7 +60,7 @@ export default defineComponent({
   },
   emits: ['update:value'],
   setup(props, { emit }) {
-    const { t } = useI18n();
+    const { t } = useI18n({ useScope: 'local' });
     const { domains, getDomainList } = useDomainList();
     onMounted(() => {
       // 只會取得開放廳主

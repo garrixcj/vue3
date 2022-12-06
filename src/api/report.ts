@@ -1,4 +1,4 @@
-// import pick from "lodash/pick";
+import { pick } from 'lodash';
 import http from '@/http/http';
 import multiHttp from '@/http/multi';
 // import inf from '@/http/inf';
@@ -633,11 +633,42 @@ export const infinite = {
   // }
 };
 
+export const audit = {
+  http,
+
+  /**
+   * 取得核帳查詢資料
+   * @param  {number} lobby
+   * @param  {string} start_date
+   * @param  {string} end_date
+   * @param  {object} options
+   */
+  getAuditData(
+    lobby: number,
+    start_date: string,
+    end_date: string,
+    options: object,
+  ) {
+    const paramOptions = [
+      'domain', // 廳主id
+      'exchange', // 是否要轉換幣別(RMB)
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      start_date,
+      end_date,
+      ...optionParams,
+    };
+    return this.http.get(`/lobby/${lobby}/audit`, { params });
+  },
+};
+
 export const report = {
   // 月結對帳相關
   ...monthly,
   ...analysis,
   ...infinite,
+  ...audit,
 };
 
 export default report;
