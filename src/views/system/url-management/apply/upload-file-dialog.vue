@@ -4,7 +4,7 @@ rd-dialog(
   :title="t('batch_add_domain_name')"
   :close-on-click-modal="false"
   width="750px"
-  @close="close"
+  @update:model-value="open($event)"
 )
   .content
     //- 提示
@@ -35,7 +35,7 @@ rd-dialog(
         span --
   template(#footer)
     //- 取消
-    rd-button(type="secondary" @click="close") {{ t('cancel') }}
+    rd-button(type="secondary" @click="open(false)") {{ t('cancel') }}
     //- 確定
     rd-button(type="primary" :disabled="!fileValid" @click="confirm") {{ t('confirm') }}
 </template>
@@ -56,7 +56,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['confirm', 'cancel', 'update:modelValue'],
+  emits: ['confirm', 'update:modelValue'],
   setup(props, { emit }) {
     // 字典
     const { t } = useI18n({ useScope: 'local' });
@@ -90,35 +90,35 @@ export default defineComponent({
           .split(/\s+/)
           .splice(1)
           .filter(url => url);
-        let result = '';
 
         if (!data.length) {
           // 如果匯入的是沒有資料的檔案
-          result = 'error_no_domain';
+          fileValidText.value = t('error_no_domain');
         } else if (data.length > props.maxRows) {
           // 如果匯入的筆數超過上限
-          result = 'error_over_limit';
+          fileValidText.value = t('error_over_limit');
         } else {
           fileValid.value = true;
-          result = 'pass';
+          fileValidText.value = `${t('pass')}，${file.name}`;
           // 塞入陣列暫存
           urlList.value = data;
         }
-        fileValidText.value = t(result);
       };
     };
 
-    // 關閉
-    const close = () => {
-      // 觸發父層v-model值異動
-      emit('update:modelValue', false);
-      // 驗證清空
-      fileValid.value = false;
-      fileValidText.value = '';
-      // 暫存清空
-      urlList.value = [];
-      // 回歸為未上傳
-      afterUpload.value = false;
+    // 觸發父層值的異動
+    const open = (value: boolean) => {
+      emit('update:modelValue', value);
+
+      if (!value) {
+        // 驗證清空
+        fileValid.value = false;
+        fileValidText.value = '';
+        // 暫存清空
+        urlList.value = [];
+        // 回歸為未上傳
+        afterUpload.value = false;
+      }
     };
 
     // 確定
@@ -127,7 +127,7 @@ export default defineComponent({
         // 觸發父層動作(傳遞有值的url)
         emit('confirm', urlList.value);
         // 關閉
-        close();
+        open(false);
       }
     };
 
@@ -140,6 +140,7 @@ export default defineComponent({
       afterUpload,
       importFile,
       fileValidText,
+      open,
     };
   },
 });

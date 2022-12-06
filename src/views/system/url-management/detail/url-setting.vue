@@ -10,6 +10,7 @@ rd-card(
         type="index"
         :label="t('increment_number')"
         align="center"
+        :resizable="false"
         width="60"
       )
       //- 域名
@@ -17,24 +18,32 @@ rd-card(
         :label="t('domain_name')"
         prop="domain"
         header-align="center"
+        :resizable="false"
       )
       //- 進度
       rd-table-column(
         :label="t('processe')"
         prop="progressRate"
         align="center"
+        :resizable="false"
       )
-        template(#default="scope")
+        template(#default="{ row }")
           rd-tag(
-            :type="getProgressTagStyle(scope.row.progressRate).type"
+            :type="progressListMap[progressKeyMap[row.progress]].type"
             size="small"
           )
-            | {{ t(getProgressTagStyle(scope.row.progressRate).dict) }}
-      //- //- 進度詳細
-      //- rd-table-column(:label="t('processe')" prop="progressRate")
+            | {{ t(progressListMap[progressKeyMap[row.progress]].dict) }}
+      //- 進度詳細
+      rd-table-column(
+        :label="t('proress_detail')"
+        prop="message"
+        :resizable="false"
+      )
+        template(#default="{ row }")
+          span {{ row.message ? row.message : '--' }}
   template(#headerSuffix)
     rd-switch(
-      v-model="onlyShowCanBingingUrl"
+      v-model="filterCanNotBind"
       :active="{ type: 'success', text: t('only_show_can_not_binding'), inverseText: t('only_show_can_not_binding') }"
     )
 </template>
@@ -42,6 +51,10 @@ rd-card(
 import { defineComponent, computed, ref, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { TicketDetailUrl } from './detail';
+import {
+  progressListMap,
+  progressKeyMap,
+} from '../single-number-progress/progress';
 
 export default defineComponent({
   name: 'UrlManagementUrlSettingCard',
@@ -53,61 +66,23 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'local' });
 
     // 是否僅顯示「無法綁定的域名」
-    const onlyShowCanBingingUrl = ref(false);
+    const filterCanNotBind = ref(false);
     const urlList = computed(() => {
       let list = props.data;
-      if (onlyShowCanBingingUrl.value) {
-        list = list.filter(obj => obj.progressRate === 3);
+      if (filterCanNotBind.value) {
+        list = list.filter(obj => obj.progress === 3);
       }
 
       return list;
     });
 
-    // 1:處理中、2:已完成、3:無法綁定、4:已作廢
-    // 域名狀態
-    const progressStyle = {
-      1: {
-        type: 'warning',
-        dict: 'processing',
-      },
-      2: {
-        type: 'success',
-        dict: 'finished',
-      },
-      3: {
-        type: 'danger',
-        dict: 'can_not_bind',
-      },
-      4: {
-        type: 'danger',
-        dict: 'abolished',
-      },
-    };
-    const getProgressTagStyle = (progress: keyof typeof progressStyle) => {
-      return progressStyle[progress]
-        ? progressStyle[progress]
-        : { type: '', dict: '' };
-    };
-
     return {
       t,
-      onlyShowCanBingingUrl,
+      filterCanNotBind,
       urlList,
-      getProgressTagStyle,
+      progressListMap,
+      progressKeyMap,
     };
   },
 });
 </script>
-<style lang="scss" scoped>
-.format-class-label {
-  .header-space {
-    @include space(3px);
-  }
-  .mdi {
-    color: $text-3;
-  }
-}
-.tag-pill {
-  @include tag-border(true, true);
-}
-</style>

@@ -1,0 +1,426 @@
+<template lang="pug">
+//- 右方警示訊息
+rd-information(v-show="isApplySite")
+  ul
+    li {{ t('apply_domain_information1') }}
+    li {{ t('apply_domain_information2', { num: restrictionNum.bbin, money: 200 }) }}
+    li {{ t('apply_domain_information3', { num: restrictionNum.domain }) }}
+rd-navbar-layout(:title="t('apply_url')")
+  //- TODO: 站別form沒有置中問題
+  template(#afterTitle)
+    //- 站別form
+    rd-form(
+      ref="siteFormRef"
+      inline
+      size="small"
+      :model="siteForm"
+      :rules="siteForm.rules"
+    )
+      rd-form-item(:label="t('site')" prop="site")
+        rd-select(
+          v-model:value="siteForm.site"
+          :quick-search="customSearch"
+          :popper-setting="{ width: 'auto' }"
+        )
+          rd-option(
+            v-for="(option, index) in siteOptions"
+            :key="index"
+            :value="option.value"
+            :label="option.label"
+            :option="option"
+          )
+            template(#suffix)
+              | {{ `[ ${option.code} ]` }}
+          template(#selected="{ current }")
+            | {{ `${current.label} [${current.option.code}]` }}
+      //- 套用
+      rd-form-item
+        rd-button(type="default" size="small" @click="apply") {{ t('apply') }}
+  template(#titleSuffix)
+    //- 有套用域名才會出現
+    template(v-if="isApplySite")
+      //- 取消
+      rd-button(type="secondary" :disabled="disabledBtn" @click="leaveConfirm") {{ t('cancel') }}
+      //- 送出
+      rd-button(type="gradient" :disabled="disabledBtn" @click="initSubmit") {{ t('validation_and_submit') }}
+  template(#body)
+    rd-layout-content
+      //- 套用域名前 - 開始搜尋吧
+      template(v-if="!isApplySite")
+        before-search-empty(:label="t('start_search')")
+      //- 套用域名後
+      template(v-else)
+        //- 基本設定
+        basic-card(
+          ref="basicFormRef"
+          mode="apply"
+          has-modify
+          @changeBuy="updateRestrictionAndUrl"
+        )
+        //- 域名設定
+        url-setting-edit-card(
+          ref="urlFormRef"
+          :restriction-num="restrictionNum[basicData.buy]"
+          :requestion-num="requestionNum"
+          :can-apply-num="canApplyNum(basicData.buy)"
+          :basic-data="basicData"
+        )
+        //- 預估費用
+        estimate-card(:url-count="legalCount")
+        .button-group
+          //- 取消
+          rd-button(
+            type="secondary"
+            :disabled="disabledBtn"
+            @click="leaveConfirm"
+          ) {{ t('cancel') }}
+          //- 送出
+          rd-button(
+            type="gradient"
+            :disabled="disabledBtn"
+            @click="initSubmit"
+          ) {{ t('validation_and_submit') }}
+//- 送出前確定的dialog
+rd-dialog(
+  v-model="visible.submit"
+  :title="t('validation_and_submit')"
+  width="430px"
+)
+  i18n-t(keypath="validate_and_apply_num_info1" tag="div")
+    template(#buy)
+      span {{ t(priceListDict[basicData.buy]) }}
+    template(#total)
+      span.total-text {{ restrictionNum[basicData.buy] }}
+  i18n-t(keypath="validate_and_apply_num_info2" tag="div")
+    template(#rest)
+      span.rest-text {{ canApplyNum(basicData.buy) }}
+    template(#sub)
+      span.sub-text {{ legalCount }}
+  template(#footer)
+    rd-button(type="secondary" @click="visible.submit = false") {{ t('cancel') }}
+    rd-button(type="primary" @click="submit") {{ t('comfirm') }}
+//- 尚未儲存 Dialog
+rd-dialog(v-model="visible.leave" :title="t('not_saved')" width="430px")
+  span {{ t('not_saved_check_info') }}
+  template(#footer)
+    rd-button(type="secondary" @click="visible.leave = false") {{ t('cancel') }}
+    rd-button(type="primary" @click="back") {{ t('confirm') }}
+</template>
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  type Ref,
+  nextTick,
+  computed,
+  inject,
+  reactive,
+  type PropType,
+} from 'vue';
+import { useI18n } from 'vue-i18n';
+import EstimateCard from './estimate-card.vue';
+import BasicCard from './basic-card.vue';
+import UrlSettingEditCard from './url-setting.vue';
+import type { BasicSetting, ApplyDomain, CallbackUrlList } from './apply';
+import type { SiteOption } from '../common/list';
+import { useTicket } from './ticket';
+import { match } from '@/components/utils/string-match/index';
+import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import { priceListDict } from '../common/estimate';
+import { useSiteRestriction } from '../single-number-progress/restriction';
+import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
+
+export default defineComponent({
+  name: 'UrlManagementDetailApply',
+  components: {
+    EstimateCard,
+    BasicCard,
+    UrlSettingEditCard,
+    BeforeSearchEmpty,
+  },
+  props: {
+    // 站別
+    siteOptions: { type: Array as PropType<SiteOption[]>, required: true },
+  },
+  setup() {
+    const { t } = useI18n({ useScope: 'local' });
+    // 域名form與規則
+    const siteForm = reactive({
+      site: '',
+      rules: {
+        site: {
+          required: true,
+          message: t('please_select_site'),
+          trigger: 'change',
+        },
+      },
+    });
+    // 實際上使用的site
+    const site = inject('UrlManagement:applySite') as Ref<string>;
+    // 域名設定的ref
+    const siteFormRef = ref();
+    // 按鈕是否disable
+    const disabledBtn = ref(false);
+    // 基本設定的ref
+    const basicFormRef = ref();
+    // 編輯狀態的域名設定ref
+    const urlFormRef = ref();
+    // 處理loading遮罩
+    const loading = inject('UrlManagement:applyLoading') as Ref<boolean>;
+    const visible = reactive({
+      // 離開前的確認dialog
+      leave: false,
+      // 送出前的確認dialog
+      submit: false,
+    });
+    // 是否套用站別
+    const isApplySite = ref(false);
+
+    // 基本資料
+    const basicData = inject('UrlManagement:basicData') as BasicSetting;
+    // 基本資料(預設值 - 對比用)
+    const basicDataDefault = inject(
+      'UrlManagement:basicDataDefault',
+    ) as BasicSetting;
+    // 網址
+    const urlList = inject('UrlManagement:urlList') as Ref<ApplyDomain[]>;
+    // 送出後得到的結果
+    const result = inject('UrlManagement:applyResult') as {
+      id: number;
+      list: CallbackUrlList[];
+    };
+
+    // 申請筆數與還可申請的數量
+    const {
+      requestionNum,
+      restrictionNum,
+      canApplyNum,
+      getRestriction,
+      getRequestionNum,
+    } = useSiteRestriction();
+
+    // 載入申請筆數與還可申請的數量
+    const updateRestriction = (showLoading = true) => {
+      if (showLoading) {
+        loading.value = true;
+      }
+      return Promise.all([
+        getRequestionNum(site.value, basicData.buy === 'bbin' ? 1 : 0),
+        getRestriction(),
+      ]).then(() => {
+        loading.value = false;
+      });
+    };
+
+    // 按下套用站別才更新實際使用的site
+    const apply = () => {
+      disabledBtn.value = true;
+      siteFormRef.value.validate((valid: boolean) => {
+        if (valid) {
+          site.value = siteForm.site;
+          isApplySite.value = true;
+          nextTick(() => {
+            updateRestriction().then(() => {
+              disabledBtn.value = false;
+            });
+          });
+        }
+      });
+    };
+
+    // 自定義快搜
+    const customSearch = {
+      filter: (
+        searchedValue: string,
+        options: { label: string; option: { code: string } },
+      ) => {
+        const escapeRegexpString = (value = '') =>
+          value.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
+        const re = new RegExp(escapeRegexpString(searchedValue), 'i');
+
+        // 過濾功能 (可過濾 label 及 code)
+        return (
+          re.test(options.label) ||
+          match(options.label, searchedValue) ||
+          re.test(options.option.code)
+        );
+      },
+    };
+
+    // 域名(僅取有填入的)
+    const notEmptyUrl = computed(() => urlList.value.filter(obj => obj.domain));
+
+    // 載入域名限制與格式檢查
+    const updateRestrictionAndUrl = () => {
+      // 將送出按鈕都disable
+      disabledBtn.value = true;
+      // 蓋上域名列表的loading
+      urlFormRef.value.showLoading();
+      // 格式驗證
+      urlFormRef.value.validAllFormat();
+
+      // 重新載入申請筆數與還可申請的數量(不顯示全版loading)
+      updateRestriction(false).then(() => {
+        urlFormRef.value.showLoading(false);
+        disabledBtn.value = false;
+      });
+    };
+
+    // 送出前
+    const initSubmit = () => {
+      Promise.all([
+        // 驗證基本設定
+        basicFormRef.value.validForm(),
+        // 驗證網址設定
+        urlFormRef.value.validForm(),
+      ]).then(results => {
+        // 當全部驗證成功時出現確定的dialog
+        if (results.every(result => result)) {
+          visible.submit = true;
+        }
+      });
+    };
+
+    // 工單相關
+    const {
+      ticketId,
+      callbackUrlList,
+      arrangeCustomerOption,
+      postCompanyTicket,
+      postCustomerTicket,
+    } = useTicket();
+
+    // 送出後要執行的動作
+    const submitCallback = () => {
+      // 塞入回傳資訊
+      result.id = ticketId.value;
+      result.list = callbackUrlList.value;
+
+      // 降loading
+      loading.value = false;
+    };
+
+    // 送單
+    const submit = () => {
+      // 隱藏dialog
+      visible.submit = false;
+      // 升loading
+      loading.value = true;
+
+      // 是否為高風險域名綁定
+      const isHighRisk = basicData.highRisk === 'binding';
+      const list = notEmptyUrl.value.map(obj => obj.domain);
+
+      // 依照購買方式call不同api
+      if (basicData.buy === 'bbin') {
+        // 當今天是公司買
+        postCompanyTicket(
+          site.value,
+          basicData.domainType,
+          isHighRisk,
+          list,
+        ).then(result => {
+          if (result) {
+            submitCallback();
+          }
+        });
+      } else {
+        // 判定管理方式是否為bbin
+        const managementIsBBin = basicData.management === 'bbin';
+        // 選填資料
+        const option = arrangeCustomerOption(basicData, managementIsBBin);
+
+        // 當今天是廳主買
+        postCustomerTicket(
+          site.value,
+          managementIsBBin,
+          basicData.domainType,
+          isHighRisk,
+          basicData.websiteProviderPerm,
+          list,
+          option,
+        ).then(result => {
+          if (result) {
+            submitCallback();
+          }
+        });
+      }
+    };
+
+    // 正常域名的筆數
+    const legalCount = computed(
+      () => urlList.value.filter(obj => obj.legal).length,
+    );
+
+    // 顯示離開前的確定
+    const leaveConfirm = () => {
+      // 是否有異動基本資料
+      const changeBasicData = !isEqual(basicDataDefault, cloneDeep(basicData));
+
+      // 當今天有異動域名與基本資料時
+      if (notEmptyUrl.value.length || changeBasicData) {
+        // 顯示確認的Dialog
+        visible.leave = true;
+      } else {
+        // 沒有異動的話直接離開
+        back();
+      }
+    };
+
+    // 返回列表
+    const back = () => {
+      window.location.href =
+        '/system_setting/url_management/index?tab=customerDomain';
+    };
+
+    return {
+      t,
+      basicFormRef,
+      siteForm,
+      updateRestrictionAndUrl,
+      legalCount,
+      siteFormRef,
+      urlFormRef,
+      customSearch,
+      apply,
+      isApplySite,
+      submit,
+      loading,
+      disabledBtn,
+      initSubmit,
+      basicData,
+      priceListDict,
+      requestionNum,
+      restrictionNum,
+      canApplyNum,
+      urlList,
+      leaveConfirm,
+      visible,
+      back,
+    };
+  },
+});
+</script>
+<style lang="scss" scoped>
+.site-form {
+  @include flex-basic;
+}
+.rd-layout-content {
+  @include space-vertical;
+
+  .button-group {
+    @include flex-basic(flex-end);
+  }
+}
+.total-text {
+  font-weight: bold;
+}
+.reset-text {
+  font-weight: bold;
+}
+.submit-text {
+  font-weight: bold;
+  color: $danger;
+}
+</style>

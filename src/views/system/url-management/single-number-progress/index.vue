@@ -187,7 +187,7 @@ import {
 } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
-import type { Buy, Management } from '../detail/detail';
+import type { Buy, Management } from '../apply/apply';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { flatten, omit } from 'lodash';
 
@@ -599,7 +599,7 @@ export default defineComponent({
       {
         key: 'purchase_method',
         // 將購買方式轉換為後端的id
-        get: () => form.buy.map(value => buyMap[value]),
+        get: () => form.buy.map(value => buyMap[value as Buy]),
         filter: (type, target) =>
           type === 'api' && arrayFilter('buy', type, target?.current as string),
         default: [],
@@ -621,7 +621,8 @@ export default defineComponent({
       {
         key: 'maintenance_method',
         // 將管理權限轉換為後端的id
-        get: () => form.management.map(value => managementMap[value]),
+        get: () =>
+          form.management.map(value => managementMap[value as Management]),
         filter: (type, target) =>
           type === 'api' &&
           arrayFilter('management', type, target?.current as string),

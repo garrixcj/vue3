@@ -4,7 +4,7 @@ rd-dialog(
   :title="t('batch_add_domain_name')"
   :close-on-click-modal="false"
   width="480px"
-  @close="close"
+  @update:model-value="open($event)"
 )
   .content
     //- 提示
@@ -28,7 +28,7 @@ rd-dialog(
       span {{ t('result') }}
   template(#footer)
     //- 取消
-    rd-button(type="secondary" @click="close") {{ t('cancel') }}
+    rd-button(type="secondary" @click="open(false)") {{ t('cancel') }}
     //- 確定
     rd-button(type="primary" @click="confirm") {{ t('confirm') }}
 </template>
@@ -47,7 +47,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['confirm', 'cancel', 'update:modelValue'],
+  emits: ['confirm', 'update:model-value'],
   setup(props, { emit }) {
     // 字典
     const { t } = useI18n({ useScope: 'local' });
@@ -68,15 +68,18 @@ export default defineComponent({
       content: [
         {
           trigger: 'change',
-          message: t('over_apply_domain_limit'),
-          validator: (rule: object, domains: string[], callback: Function) => {
-            if (domains.length > props.maxRows) {
-              callback(new Error());
-            }
-            callback();
+          validator: (rule: object, domains: string[]) => {
+            return new Promise<void>((resolve, reject) => {
+              // 檢查數量是否超過最大值
+              if (domains.length > props.maxRows) {
+                reject(t('over_apply_domain_limit'));
+              } else {
+                resolve();
+              }
+            });
           },
         },
-        { trigger: 'change', required: true, message: t('') },
+        { trigger: 'change', required: true, message: t('not_null') },
       ],
     };
 
@@ -87,12 +90,16 @@ export default defineComponent({
       t('batch_add_placeholder_msg3'),
     ].join('\n');
 
-    // 關閉
-    const close = () => {
-      // 觸發父層v-model值異動
-      emit('update:modelValue', false);
-      // input清空
-      batchValue.value = '';
+    // 觸發父層值的異動
+    const open = (value: boolean) => {
+      if (!value) {
+        // input清空
+        batchValue.value = '';
+        // 清空驗證
+        batchFormRef.value.resetFields();
+      }
+
+      emit('update:model-value', value);
     };
 
     // 確定
@@ -105,7 +112,7 @@ export default defineComponent({
             batchForm.value.content.filter(url => url),
           );
           // 關閉
-          close();
+          open(false);
         }
       });
     };
@@ -120,6 +127,7 @@ export default defineComponent({
       batchFormRef,
       textreaPlaceholder,
       emit,
+      open,
     };
   },
 });

@@ -18,7 +18,7 @@ rd-card.estimate-card(:title="t('estimate')" :sub-title="t('estimate_info')")
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, inject, type Ref } from 'vue';
+import { defineComponent, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Big from 'big.js';
 import {
@@ -26,7 +26,7 @@ import {
   priceListDict,
   type PriceListType,
 } from '../common/estimate';
-import type { BasicSetting, EstimateTableData } from './detail';
+import type { BasicSetting, EstimateTableData } from './apply';
 import { exchangeRate } from '@/components/utils/format/amount';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
 import RdGridTableRow from '@/components/custom/grid-table/row.vue';
@@ -44,7 +44,7 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n({ useScope: 'local' });
     // 基本資料
-    const basicData = inject('UrlManagement:basicData') as Ref<BasicSetting>;
+    const basicData = inject('UrlManagement:basicData') as BasicSetting;
 
     // 標題列
     const columns: ColumnSet[] = [
@@ -102,12 +102,12 @@ export default defineComponent({
 
     // 取得購買方式的相關資訊
     const buyInfo = computed(() => {
-      return singleDataSource('buy', basicData.value.buy);
+      return singleDataSource('buy', basicData.buy);
     });
 
     // 取得管理權相方式的相關資訊
     const managementInfo = computed(() => {
-      return singleDataSource('management', basicData.value.management);
+      return singleDataSource('management', basicData.management);
     });
 
     // 資料列

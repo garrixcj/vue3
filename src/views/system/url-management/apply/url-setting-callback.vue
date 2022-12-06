@@ -1,9 +1,14 @@
 <template lang="pug">
 rd-card(v-loading="loading" :title="t('domain_name_setting')")
+  template(#subTitle)
+    i18n-t(keypath="apply_domain_info1" tag="span")
+      template(#buyMethod) {{ t(priceListDict[basicData.buy]) }}
+      template(#already) {{ requestionNum }}
+      template(#rest) {{ canApplyNum(basicData.buy) }}
   template(#content)
     rd-table(
       border
-      :data="callbackUrlList"
+      :data="result.list"
       :default-sort="{ prop: 'result', order: 'descending' }"
     )
       //- 序號
@@ -11,6 +16,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
         type="index"
         :label="t('increment_number')"
         align="center"
+        :resizable="false"
         width="60"
       )
       //- 域名
@@ -18,12 +24,14 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
         :label="t('domain_name')"
         prop="domain"
         header-align="center"
+        :resizable="false"
       )
       //- 格式檢查
       rd-table-column(
         prop="format"
         align="center"
         label-class-name="format-class-label"
+        :resizable="false"
       )
         template(#header)
           .header-space
@@ -35,6 +43,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
                 div {{ t('check_format_msg3') }}
                 div {{ t('check_format_msg4') }}
                 div {{ t('check_format_msg5') }}
+                div {{ t('check_format_msg7') }}
                 div {{ t('check_format_msg6') }}
               i.mdi.mdi-information
         template(#default="scope")
@@ -45,6 +54,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
         prop="dns"
         align="center"
         label-class-name="format-class-label"
+        :resizable="false"
       )
         template(#header)
           .header-space
@@ -67,6 +77,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
         align="center"
         label-class-name="format-class-label"
         sortable
+        :resizable="false"
       )
         template(#header)
           .header-space
@@ -80,11 +91,12 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
           rd-tag.tag-pill(v-else type="danger" size="small") {{ t('fail2') }}
 </template>
 <script lang="ts">
-import { defineComponent, type Ref, inject, ref, nextTick } from 'vue';
+import { defineComponent, type Ref, inject, onMounted } from 'vue';
+import { priceListDict } from '../common/estimate';
 import { useI18n } from 'vue-i18n';
-import type { BasicSetting, CallbackUrlList } from './detail';
-import { useSiteRestriction } from './restriction';
+import type { BasicSetting, CallbackUrlList } from './apply';
 import { snakeCase } from 'lodash';
+import { useSiteRestriction } from '../single-number-progress/restriction';
 
 export default defineComponent({
   name: 'UrlManagementUrlSettingCallbackCard',
@@ -94,33 +106,26 @@ export default defineComponent({
     // 站別
     const site = inject('UrlManagement:applySite') as Ref<string>;
     // 基本資料
-    const basicForm = inject('UrlManagement:basicData') as Ref<BasicSetting>;
-    // 送出後得到回傳的列表
-    const callbackUrlList = inject('UrlManagement:callbackUrlList') as Ref<
-      CallbackUrlList[]
-    >;
-    // 是否顯示loading
-    const loading = ref(false);
+    const basicData = inject('UrlManagement:basicData') as BasicSetting;
+    // 送出後得到的結果
+    const result = inject('UrlManagement:applyResult') as {
+      id: number;
+      list: CallbackUrlList[];
+    };
+    // 處理loading遮罩
+    const loading = inject('UrlManagement:applyLoading') as Ref<boolean>;
 
     // 申請筆數與還可申請的數量
-    const {
-      requestionNum,
-      restrictionNumByBuy,
-      getTicketsRestriction,
-      getSingleRequestionNum,
-    } = useSiteRestriction();
+    const { requestionNum, canApplyNum, getRestriction, getRequestionNum } =
+      useSiteRestriction();
 
-    loading.value = true;
-
-    // 取得申請筆數與還可申請的數量
-    Promise.all([
-      getSingleRequestionNum(
-        site.value,
-        basicForm.value.buy === 'bbin' ? 1 : 0,
-      ),
-      getTicketsRestriction(),
-    ]).then(() => {
-      nextTick(() => {
+    // 載入申請筆數與還可申請的數量
+    onMounted(() => {
+      loading.value = true;
+      return Promise.all([
+        getRequestionNum(site.value, basicData.buy === 'bbin' ? 1 : 0),
+        getRestriction(),
+      ]).then(() => {
         loading.value = false;
       });
     });
@@ -128,10 +133,12 @@ export default defineComponent({
     return {
       t,
       requestionNum,
-      restrictionNumByBuy,
-      callbackUrlList,
+      canApplyNum,
+      result,
+      basicData,
       loading,
       snakeCase,
+      priceListDict,
     };
   },
 });

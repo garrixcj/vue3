@@ -39,14 +39,8 @@ export const useSiteList = () => {
     });
   };
 
-  // 根據站別取得相關資料
-  const getSiteInfo = (site: string) => {
-    return siteOptions.value.find(item => item.value === site);
-  };
-
   return {
     siteOptions,
     getSiteList,
-    getSiteInfo,
   };
 };

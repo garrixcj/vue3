@@ -52,20 +52,20 @@ rd-card(:title="t('basic_setting')")
             ) {{ t(dictKey[value]) }}
       //- 網址商權限
       rd-form-item(
-        v-if="showWebsiteProvider"
+        v-if="showWebsite"
         :label="t('domain_provider_perm')"
         prop="websiteProviderPerm"
       )
         view-mode(component="RadioGroup" :has-modify="hasModify")
           rd-radio-group(
             v-model="form.websiteProviderPerm"
-            @change="changeWebsiteProviderPerm"
+            @change="changeWebsitePerm"
           )
             rd-radio(:label="false") {{ t('none') }}
             rd-radio(:label="true") {{ t('have') }}
       //- 網址商
       rd-form-item(
-        v-if="showWebsiteProviderDetail"
+        v-if="showWebsiteDetail"
         :label="t('domain_provider')"
         prop="websiteProvider"
       )
@@ -77,7 +77,7 @@ rd-card(:title="t('basic_setting')")
           )
       //- 帳號
       rd-form-item(
-        v-if="showWebsiteProviderDetail"
+        v-if="showWebsiteDetail"
         :label="t('username')"
         prop="username"
       )
@@ -89,7 +89,7 @@ rd-card(:title="t('basic_setting')")
           )
       //- 密碼
       rd-form-item(
-        v-if="showWebsiteProviderDetail"
+        v-if="showWebsiteDetail"
         :label="t('password')"
         prop="password"
       )
@@ -130,16 +130,9 @@ rd-card(:title="t('basic_setting')")
           rd-format-timer(date-default="--" :date-time="form.finishTime")
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  inject,
-  reactive,
-  type Ref,
-  ref,
-} from 'vue';
+import { defineComponent, computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { BasicSetting } from './detail';
+import type { BasicSetting } from './apply';
 import { priceListDict } from '../common/estimate';
 import PasswordText from '@/components/custom/format-password/visible-text.vue';
 import ViewMode from '@/components/custom/view-mode/index.vue';
@@ -170,7 +163,7 @@ export default defineComponent({
       txt: 'TXT',
     };
 
-    const form = inject('UrlManagement:basicData') as Ref<BasicSetting>;
+    const form = inject('UrlManagement:basicData') as BasicSetting;
     // 購買方式
     const buy: BasicSetting['buy'][] = ['bbin', 'domain'];
 
@@ -182,7 +175,7 @@ export default defineComponent({
       bbin: ['bbin'],
       domain: ['bbin', 'domain'],
     };
-    const management = computed(() => managementOption[form.value.buy]);
+    const management = computed(() => managementOption[form.buy]);
 
     // 域名類型
     const domainType: BasicSetting['domainType'][] = ['normal', 'simple'];
@@ -191,63 +184,63 @@ export default defineComponent({
     const highRisk: BasicSetting['highRisk'][] = ['over', 'binding'];
 
     // 是否顯示管理商權限
-    const showWebsiteProvider = computed(
-      () => form.value.buy === 'domain' && form.value.management === 'bbin',
+    const showWebsite = computed(
+      () => form.buy === 'domain' && form.management === 'bbin',
     );
 
     // 是否顯示有關於管理商權限的細向
-    const showWebsiteProviderDetail = computed(
-      () => showWebsiteProvider.value && form.value.websiteProviderPerm,
+    const showWebsiteDetail = computed(
+      () => showWebsite.value && form.websiteProviderPerm,
     );
 
     // 檢查項目(依照購買方式與管理權限決定其選項)
     const checkItem = computed(() => {
       const checkItemOption = {
         domain: {
-          bbin: form.value.websiteProviderPerm
+          bbin: form.websiteProviderPerm
             ? []
             : (['txt', 'nameserver'] as const),
           domain: ['txt'] as const,
         },
       };
 
-      const formBuy = form.value.buy as keyof typeof checkItemOption;
+      const formBuy = form.buy as keyof typeof checkItemOption;
 
       return checkItemOption[formBuy]
-        ? checkItemOption[formBuy][form.value.management]
+        ? checkItemOption[formBuy][form.management]
         : [];
     });
+
+    // 異動網址商權限時
+    const changeWebsitePerm = () => {
+      // 不論異動成什麼都將網址商與帳號密碼清空
+      form.websiteProvider = '';
+      form.username = '';
+      form.password = '';
+      // 將檢查項目回歸預設第一個
+      form.checkItem = checkItem.value[0] ? checkItem.value[0] : '';
+    };
+
+    // 異動管理權限時
+    const changeManagement = () => {
+      // 將網址商預設改回無
+      form.websiteProviderPerm = false;
+      // 連帶觸發網址商權限
+      changeWebsitePerm();
+    };
 
     // 異動購買方式時
     const changeBuy = () => {
       // 將管理權限選項回歸預設第一個
-      form.value.management = management.value[0];
+      form.management = management.value[0];
       // 連帶觸發異動管理權限
       changeManagement();
       // 觸發上層驗證網址
       emit('changeBuy');
     };
 
-    // 異動管理權限時
-    const changeManagement = () => {
-      // 將網址商預設改回無
-      form.value.websiteProviderPerm = false;
-      // 連帶觸發網址商權限
-      changeWebsiteProviderPerm();
-    };
-
-    // 異動網址商權限時
-    const changeWebsiteProviderPerm = () => {
-      // 不論異動成什麼都將網址商與帳號密碼清空
-      form.value.websiteProvider = '';
-      form.value.username = '';
-      form.value.password = '';
-      // 將檢查項目回歸預設第一個
-      form.value.checkItem = checkItem.value[0] ? checkItem.value[0] : '';
-    };
-
     // 驗證
-    const rules = reactive({
+    const rules = {
       websiteProvider: [
         {
           // 當網址商權限為有時，為必填
@@ -276,14 +269,14 @@ export default defineComponent({
           trigger: 'blur',
         },
       ],
-    });
+    };
 
     // 封裝驗證，供外部使用
     const basicFormRef = ref();
-    const validatorbasicForm = () => {
+    const validForm = () => {
       return basicFormRef.value.validate((valid: boolean) => valid);
     };
-    expose({ validatorbasicForm });
+    expose({ validForm });
 
     // 密碼的影藏顯示
     const passwordVisible = ref(false);
@@ -298,13 +291,13 @@ export default defineComponent({
       domainType,
       highRisk,
       checkItem,
-      showWebsiteProvider,
-      showWebsiteProviderDetail,
+      showWebsite,
+      showWebsiteDetail,
       rules,
       basicFormRef,
       changeBuy,
       changeManagement,
-      changeWebsiteProviderPerm,
+      changeWebsitePerm,
       passwordVisible,
     };
   },
