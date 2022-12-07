@@ -6,18 +6,18 @@ export type OperatorType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 // 參數資料格式
 export type ParamsType = {
-  start_date: string;
-  end_date: string;
-  operator_type: OperatorType;
-  domain_name: string;
-  site_group: string;
-  ticket_id: string | number;
-  operator: string;
-  ip: string;
-  page: string | number;
-  limit: string | number;
-  sort: string;
-  order: string;
+  start_date?: string;
+  end_date?: string;
+  operator_type?: OperatorType;
+  domain_name?: string;
+  site_group?: string;
+  ticket_id?: string | number;
+  operator?: string;
+  ip?: string;
+  page?: string | number;
+  limit?: string | number;
+  sort?: string;
+  order?: string;
 };
 
 // 操作記錄資料格式
