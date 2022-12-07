@@ -223,7 +223,7 @@ export default defineComponent({
     //觸發搜尋
     const searchData = () => {
       loadingStore.page = true;
-      const options = {} as ParamsType;
+      const options: ParamsType = {};
       if (form.date[0] !== '' && form.date[1] !== '') {
         options.start_date = form.date[0];
         options.end_date = form.date[1];
