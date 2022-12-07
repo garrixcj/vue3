@@ -1313,6 +1313,46 @@ export const url = {
       params: { ...options },
     });
   },
+  /**
+   * 匯出工單列表
+   * @param note 備註
+   * @param options.domain 廳主
+   * @param options.site_group 站別
+   * @param options.domain_name 域名
+   * @param options.fuzzy 網域名稱是否模糊搜尋
+   * @param options.ticket_id 單號
+   * @param options.tickets_status 單據狀態
+   * @param options.progress_rates 域名狀態
+   * @param options.purchase_method 購買方式
+   * @param options.maintenance_method 管理方式
+   * @param options.start_date_time 申請起始日期時間
+   * @param options.end_date_time 申請結束日期時間
+   * @param options.finish_start_date_time 完成起始日期時間
+   * @param options.finish_end_date_time 完成結束日期時間
+   */
+  exportTicketList(
+    note: string,
+    options: {
+      domain?: number;
+      site_group?: string;
+      domain_name?: string;
+      fuzzy?: 0 | 1;
+      ticket_id?: string;
+      tickets_status?: number[];
+      progress_rates?: number[];
+      purchase_method?: number[];
+      maintenance_method?: number[];
+      start_date_time?: string;
+      end_date_time?: string;
+      finish_start_date_time?: string;
+      finish_end_date_time?: string;
+    },
+  ) {
+    return this.http.post('/domain/domain_name/tickets/export', {
+      note,
+      ...options,
+    });
+  },
 };
 
 const domain = {

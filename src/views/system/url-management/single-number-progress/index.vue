@@ -151,10 +151,11 @@ restriction-dialog(v-model="restrictionVisible")
 before-search(v-if="isBeforeSearch" label="開始搜尋吧")
 table-card(
   v-else
-  :current-page="form.page"
-  :page-size="form.limit"
-  :order="form.order"
-  :sort="form.sort"
+  :search-options="exportOptions"
+  :current-page="tableForm.page"
+  :page-size="tableForm.limit"
+  :order="tableForm.order"
+  :sort="tableForm.sort"
   :site-options="siteOptions"
   :list="list"
   :total="listTotal"
@@ -171,7 +172,11 @@ import { useSiteList } from '../common/list';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import TableCard from './table.vue';
 import BeforeSearch from '@/components/custom/before-search/index.vue';
-import type { SearchForm, SearchOptions } from './single-number-progress';
+import type {
+  SearchForm,
+  SearchOptions,
+  SearchTable,
+} from './single-number-progress';
 import { progressListMap } from './progress';
 import { statusListMap } from './status';
 import { useList, buyMap, managementMap } from './list';
@@ -184,7 +189,7 @@ import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
 import type { Buy, Management } from '../detail/detail';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { flatten } from 'lodash';
+import { flatten, omit } from 'lodash';
 
 export default defineComponent({
   name: 'SingleNumberProgress', // 網址管理 - 單號進度
@@ -206,7 +211,7 @@ export default defineComponent({
     const { hasModify } = useModifyAccess('ApplicationProgress');
 
     // 搜尋條件
-    const form: SearchForm = reactive({
+    const form = reactive<SearchForm>({
       condition: 'site',
       site: '',
       domain: '',
@@ -219,11 +224,18 @@ export default defineComponent({
       management: [],
       progress: [],
       status: [],
+    });
+
+    // table條件
+    const tableForm = reactive<SearchTable>({
       page: 1,
       limit: 30,
       sort: 'finished_at',
       order: 'descending',
     });
+
+    // 匯出的條件
+    const exportOptions = ref<SearchOptions>({});
 
     // 條件選項
     const conditionOptions = [
@@ -666,9 +678,9 @@ export default defineComponent({
       // 前後端 － 頁數
       {
         key: 'page',
-        get: () => form.page,
+        get: () => tableForm.page,
         set: (val: number) => {
-          form.page = val;
+          tableForm.page = val;
         },
         optional: false,
         default: 1,
@@ -677,9 +689,9 @@ export default defineComponent({
       // 前後端 － 每頁幾筆
       {
         key: 'limit',
-        get: () => form.limit,
+        get: () => tableForm.limit,
         set: (val: number) => {
-          form.limit = val;
+          tableForm.limit = val;
         },
         optional: false,
         default: 30,
@@ -688,9 +700,9 @@ export default defineComponent({
       // 前後端 － 排序欄位
       {
         key: 'sort',
-        get: () => form.sort,
+        get: () => tableForm.sort,
         set: (val: string) => {
-          form.sort = val;
+          tableForm.sort = val;
         },
         optional: false,
         default: 'finished_at',
@@ -699,9 +711,9 @@ export default defineComponent({
       {
         key: 'order',
         query: 'order',
-        get: () => form.order,
+        get: () => tableForm.order,
         set: (val: string) => {
-          form.order = val;
+          tableForm.order = val;
         },
         optional: false,
         default: 'descending',
@@ -710,7 +722,7 @@ export default defineComponent({
       // 後端 － 排序
       {
         key: 'order',
-        get: () => (form.order === 'descending' ? 'desc' : 'asc'),
+        get: () => (tableForm.order === 'descending' ? 'desc' : 'asc'),
         optional: false,
         default: 'desc',
         filter: type => type === 'api',
@@ -722,7 +734,9 @@ export default defineComponent({
 
     // 更新資料
     const updateData = () => {
-      const params = querySet.getParam() as SearchOptions;
+      const params = querySet.getParam() as SearchOptions & SearchTable;
+      // 順便將條件塞入，提供給匯出使用
+      exportOptions.value = omit(params, Object.keys(tableForm));
 
       getList(params).then(() => {
         isBeforeSearch.value = false;
@@ -762,10 +776,10 @@ export default defineComponent({
           form.management = [];
           form.progress = [];
           form.status = [];
-          form.page = 1;
-          form.limit = 30;
-          form.sort = 'finished_at';
-          form.order = 'descending';
+          tableForm.page = 1;
+          tableForm.limit = 30;
+          tableForm.sort = 'finished_at';
+          tableForm.order = 'descending';
 
           updateQuery(true);
         }
@@ -782,22 +796,22 @@ export default defineComponent({
     const listAction = {
       // 切換頁數
       changePage: (page = 1) => {
-        form.page = page;
+        tableForm.page = page;
 
         updateQuery(false);
       },
       // 切換每頁幾筆
       changePageSize: (size = 30) => {
         listAction.changePage();
-        form.limit = size;
+        tableForm.limit = size;
 
         updateQuery(false);
       },
       // 切換排序
       changeSort: (event = { prop: 'finished_at', order: 'descending' }) => {
         listAction.changePage();
-        form.sort = sort[event.prop as keyof typeof sort];
-        form.order = event.order;
+        tableForm.sort = sort[event.prop as keyof typeof sort];
+        tableForm.order = event.order;
 
         updateQuery(false);
       },
@@ -832,6 +846,8 @@ export default defineComponent({
       listAction,
       hasModify,
       updateQuery,
+      exportOptions,
+      tableForm,
     };
   },
 });

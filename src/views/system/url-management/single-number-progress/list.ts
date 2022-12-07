@@ -1,5 +1,10 @@
 import { ref } from 'vue';
-import type { List, ListApi, SearchOptions } from './single-number-progress';
+import type {
+  List,
+  ListApi,
+  SearchOptions,
+  SearchTable,
+} from './single-number-progress';
 import { url as urlAPI } from '@/api/domain';
 
 // 購買方式前後端對照表
@@ -19,9 +24,9 @@ export const useList = () => {
 
   /**
    * 取得工單列表
-   * @param  {SearchOptions} options 選填
+   * @param  {SearchOptions & SearchTable} options 選填
    */
-  const getList = (options: SearchOptions) => {
+  const getList = (options: SearchOptions & SearchTable) => {
     return urlAPI.getTicketList(options).then(({ data }) => {
       if (data.result) {
         listTotal.value = data.data.total;

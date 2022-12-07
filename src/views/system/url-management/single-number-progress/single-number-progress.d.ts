@@ -1,5 +1,13 @@
 export as namespace UrlManagementSingleBumberProgress;
 
+// 搜尋時table的參數
+export type SearchTable = {
+  page: number;
+  limit: number;
+  sort: string;
+  order: string;
+};
+
 // 搜尋form
 export type SearchForm = {
   condition: string;
@@ -14,10 +22,6 @@ export type SearchForm = {
   management: string[];
   progress: string[];
   status: string[];
-  page: number;
-  limit: number;
-  sort: string;
-  order: string;
 };
 
 // 搜尋的參數
@@ -35,10 +39,6 @@ export type SearchOptions = {
   finish_end_date_time?: string;
   purchase_method?: number[];
   maintenance_method?: number[];
-  page: number;
-  limit: number;
-  sort: string;
-  order: string;
 };
 
 type DomainNameApi = {
