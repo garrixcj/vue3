@@ -92,11 +92,10 @@ export default defineComponent({
   .tag-container {
     @include flex-basic;
     flex-wrap: wrap;
-    row-gap: 5px;
+    gap: 5px;
 
     .tag-item {
       @include tag-border(false, true);
-      @include space-multiline(5px);
     }
   }
 }
