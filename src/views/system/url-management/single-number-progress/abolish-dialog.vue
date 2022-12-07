@@ -16,12 +16,13 @@
           rd-form-item(:label="t('suffix')") {{ list[0].suffix }}
       template(v-else)
         .msg {{ t('domain_abolish_check_multi') }}
-        rd-collapse-card(v-model:collapse="collapse")
+        rd-collapse-card(v-model:collapse="collapse" type="small-card")
           template(#title)
             span {{ t('change_trans_number') }}
           template(#content)
-            .tag-container
-              rd-tag.tag-item(v-for="(data, index) in list" :key="index") {{ data.id }}
+            rd-scrollbar(max-height="100px" always)
+              .tag-container
+                rd-tag.tag-item(v-for="(data, index) in list" :key="index") {{ data.id }}
     template(#footer)
       rd-button(type="secondary" @click="open(false)") {{ t('cancel') }}
       rd-button(type="primary" @click="confirm") {{ t('void') }}
@@ -89,17 +90,13 @@ export default defineComponent({
   @include space-vertical(10px);
 
   .tag-container {
+    @include flex-basic;
+    flex-wrap: wrap;
+    row-gap: 5px;
+
     .tag-item {
       @include tag-border(false, true);
       @include space-multiline(5px);
-    }
-  }
-
-  .rd-collapse-card {
-    border: 1px solid $background-4;
-    :deep(.card-header__title) {
-      font-size: 12px;
-      color: $background-1;
     }
   }
 }
