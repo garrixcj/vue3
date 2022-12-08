@@ -83,3 +83,28 @@ export const checkFormatLegal = (format: string) => {
 
   return correctFormat.includes(format);
 };
+
+/**
+ * 取得判斷域名格式的列表
+ * @param  {ApplyDomain[]} urlList urlList 域名列表
+ * @param  {BasicSetting} basicData basicData 基本資料
+ * @param  {number} inputLimit 域名字數上限
+ */
+export const getListState = (
+  urlList: ApplyDomain[],
+  basicData: BasicSetting,
+  inputLimit: number,
+) => {
+  return urlList.map((obj, index) => {
+    // 取得域名格式檢查狀態
+    const format = getState(urlList, basicData, index, obj.domain, inputLimit);
+    return {
+      key: obj.key,
+      domain: obj.domain,
+      // 塞入判斷出來的格式
+      format: format,
+      // 塞入是否合法的判斷
+      legal: checkFormatLegal(format),
+    };
+  });
+};

@@ -14,7 +14,7 @@ rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
     //- 單據狀態
   template(#titleSuffix)
     //- 作廢
-    rd-button(type="secondary" @click="initAbolish") {{ t('void') }}
+    rd-button(v-if="hasModify" type="secondary" @click="initAbolish") {{ t('void') }}
   template(#body)
     rd-layout-content(v-if="!loading")
       //- 基本設定
@@ -22,10 +22,10 @@ rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
       //- 域名設定
       url-setting-card(:data="ticketUrlList")
       //- 預估費用
-      estimate-card(:url-count="valuableUrlCount")
+      estimate-card(:count="valuableUrlCount")
       .button-group
         //- 作廢
-        rd-button(type="secondary" @click="initAbolish") {{ t('void') }}
+        rd-button(v-if="hasModify" type="secondary" @click="initAbolish") {{ t('void') }}
     //- 作廢確定 Dialog
     abolish-dialog(
       v-model="abolishVisible"
@@ -45,6 +45,7 @@ import { useSiteList, type SiteOption } from '../common/list';
 import { statusKeyMap, statusListMap } from '../single-number-progress/status';
 import AbolishDialog from '../single-number-progress/abolish-dialog.vue';
 import type { AbolishList } from '../single-number-progress/single-number-progress';
+import { useModifyAccess } from '@/plugins/access/modify';
 
 export default defineComponent({
   name: 'UrlManagementDetailApply',
@@ -58,6 +59,9 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'local' });
     const route = useRoute();
     const loading = ref(true);
+
+    // 是否有修改權限
+    const { hasModify } = useModifyAccess('ApplicationProgress');
 
     // 作廢確定dialog顯示
     const abolishVisible = ref(false);
@@ -129,6 +133,7 @@ export default defineComponent({
       siteList,
       statusKeyMap,
       statusListMap,
+      hasModify,
     };
   },
 });

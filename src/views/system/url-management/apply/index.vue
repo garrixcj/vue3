@@ -1,22 +1,28 @@
 <template lang="pug">
 .url-management-apply(v-loading="loading")
-  apply(v-if="beforePost" :site-options="siteOptions")
-  apply-callback(v-else :site-options="siteOptions")
+  apply(
+    v-if="beforePost"
+    :site-options="siteOptions"
+    :basic-data-change="basicDataChange"
+  )
+  apply-callback(v-else :site="site" :sites="siteOptions")
 </template>
 <script lang="ts">
 import {
   defineComponent,
   ref,
   provide,
-  type Ref,
   reactive,
   onMounted,
+  computed,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { BasicSetting, ApplyDomain, CallbackUrlList } from './apply';
 import { useSiteList } from '../common/list';
 import Apply from './apply.vue';
 import ApplyCallback from './apply-callback.vue';
+import { useModifyAccess } from '@/plugins/access/modify';
+import { isEqual, cloneDeep } from 'lodash';
 
 export default defineComponent({
   name: 'UrlManagementDetailApplyIndex',
@@ -25,6 +31,15 @@ export default defineComponent({
     ApplyCallback,
   },
   setup() {
+    // 是否有修改權限
+    const { hasModify } = useModifyAccess('CustomerUrl');
+
+    // 沒有客端域名的修改權限時直接導走
+    if (!hasModify) {
+      window.location.href =
+        '/v3/system_setting/url_management/index?tab=customerDomain';
+    }
+
     const { t } = useI18n({ useScope: 'local' });
 
     // 實際上使用的site
@@ -63,11 +78,14 @@ export default defineComponent({
       finishTime: '',
     };
     const basicData = reactive(basicDataDefault);
-    provide('UrlManagement:basicDataDefault', basicDataDefault);
     provide('UrlManagement:basicData', basicData);
+    // 是否有異動基本資料
+    const basicDataChange = computed(() => {
+      return !isEqual(basicDataDefault, basicData);
+    });
 
     // 域名設定
-    const urlList: Ref<ApplyDomain[]> = ref<ApplyDomain[]>([]);
+    const urlList = ref<ApplyDomain[]>([]);
     provide('UrlManagement:urlList', urlList);
 
     // 送出結果
@@ -77,7 +95,7 @@ export default defineComponent({
     });
     provide('UrlManagement:applyResult', result);
 
-    return { t, loading, beforePost, siteOptions };
+    return { t, loading, beforePost, siteOptions, site, basicDataChange };
   },
 });
 </script>

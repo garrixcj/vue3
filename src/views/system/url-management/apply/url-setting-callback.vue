@@ -38,13 +38,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
             span {{ t('check_format') }}
             rd-tooltip(placement="top")
               template(#content)
-                div {{ t('check_format_msg1') }}
-                div {{ t('check_format_msg2') }}
-                div {{ t('check_format_msg3') }}
-                div {{ t('check_format_msg4') }}
-                div {{ t('check_format_msg5') }}
-                div {{ t('check_format_msg7') }}
-                div {{ t('check_format_msg6') }}
+                div(v-for="n in 7" :key="n") {{ t(`check_format_msg${n}`) }}
               i.mdi.mdi-information
         template(#default="scope")
           //- 因api特殊所以直接使用文字轉成字典檔的key
@@ -61,10 +55,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
             span {{ t('dns_check') }}
             rd-tooltip(placement="top")
               template(#content)
-                div {{ t('dns_title_info1') }}
-                div {{ t('dns_title_info2') }}
-                div {{ t('dns_title_info3') }}
-                div {{ t('dns_title_info4') }}
+                div(v-for="n in 4" :key="n") {{ t(`dns_title_info${n}`) }}
               i.mdi.mdi-information
         template(#default="scope")
           //- 因api特殊所以直接使用文字轉成字典檔的key
@@ -100,11 +91,13 @@ import { useSiteRestriction } from '../single-number-progress/restriction';
 
 export default defineComponent({
   name: 'UrlManagementUrlSettingCallbackCard',
-  setup() {
+  props: {
+    // 站別
+    site: { type: String, required: true },
+  },
+  setup(props) {
     // 字典
     const { t } = useI18n({ useScope: 'local' });
-    // 站別
-    const site = inject('UrlManagement:applySite') as Ref<string>;
     // 基本資料
     const basicData = inject('UrlManagement:basicData') as BasicSetting;
     // 送出後得到的結果
@@ -123,7 +116,7 @@ export default defineComponent({
     onMounted(() => {
       loading.value = true;
       return Promise.all([
-        getRequestionNum(site.value, basicData.buy === 'bbin' ? 1 : 0),
+        getRequestionNum(props.site, basicData.buy === 'bbin' ? 1 : 0),
         getRestriction(),
       ]).then(() => {
         loading.value = false;

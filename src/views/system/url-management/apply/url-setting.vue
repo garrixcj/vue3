@@ -1,5 +1,5 @@
 <template lang="pug">
-rd-card(v-loading="loading" :title="t('domain_name_setting')")
+rd-card(:title="t('domain_name_setting')")
   template(#subTitle)
     //- 申請已達上限
     template(v-if="!canApplyNum")
@@ -111,12 +111,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
               span {{ t('check_format') }}
               rd-tooltip(placement="top")
                 template(#content)
-                  div {{ t('check_format_msg1') }}
-                  div {{ t('check_format_msg2') }}
-                  div {{ t('check_format_msg3') }}
-                  div {{ t('check_format_msg4') }}
-                  div {{ t('check_format_msg5') }}
-                  div {{ t('check_format_msg6') }}
+                  div(v-for="n in 6" :key="n") {{ t(`check_format_msg${n}`) }}
                 i.mdi.mdi-information
           template(#default="scope")
             template(v-if="scope.row.format")
@@ -139,7 +134,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
             rd-button(
               text
               :disabled="urlList.length === 1"
-              @click="remove(scope.$index)"
+              @click="removeRow(scope.$index)"
             ) {{ t('delete') }}
     //- 上傳域名dialog
     upload-file-dialog(
@@ -172,8 +167,6 @@ import {
   type Ref,
   inject,
   computed,
-  nextTick,
-  type PropType,
   reactive,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -184,8 +177,14 @@ import { notify } from '@/components/utils/notification';
 import BatchInputDialog from './batch-input-dialog.vue';
 import UploadFileDialog from './upload-file-dialog.vue';
 import { priceListDict } from '../common/estimate';
-import { getState, checkFormatLegal } from './url';
+import { getState, checkFormatLegal, getListState } from './url';
 import { useRow } from './row';
+
+// expose出去的func type
+export type urlSettingExpose = {
+  validForm: () => boolean;
+  validAllFormat: () => void;
+};
 
 export default defineComponent({
   name: 'UrlManagementUrlSettingEditCard',
@@ -197,12 +196,12 @@ export default defineComponent({
     requestionNum: { type: Number, required: true },
     // 今日還可申請的數量
     canApplyNum: { type: Number, required: true },
-    // 基本資料
-    basicData: { type: Object as PropType<BasicSetting>, required: true },
   },
   setup(props, { expose }) {
     // 字典
     const { t } = useI18n({ useScope: 'local' });
+    // 基本資料
+    const basicData = inject('UrlManagement:basicData') as BasicSetting;
     // 網址
     const urlList = inject('UrlManagement:urlList') as Ref<ApplyDomain[]>;
     // 表格的ref
@@ -249,24 +248,9 @@ export default defineComponent({
 
     // 檢查所有域名的格式
     const validAllFormat = () => {
-      urlList.value.forEach((obj, index) => {
-        // 取得域名格式檢查狀態
-        const format = getState(
-          urlList.value,
-          props.basicData,
-          index,
-          obj.domain,
-          inputLimit,
-        );
-
-        // 塞入判斷出來的格式
-        urlList.value[index].format = format;
-        // 塞入是否合法的判斷
-        urlList.value[index].legal = checkFormatLegal(format);
-      });
-
+      urlList.value = getListState(urlList.value, basicData, inputLimit);
       // 驗證
-      nextTick(() => urlFormRef.value.validate());
+      urlFormRef.value.validate();
     };
 
     // 批次新增域名
@@ -335,7 +319,7 @@ export default defineComponent({
       // 取得格式
       const format = getState(
         urlList.value,
-        props.basicData,
+        basicData,
         +index,
         domain,
         inputLimit,
@@ -362,17 +346,11 @@ export default defineComponent({
       window.open('/hex/domain/domain_name/application_example/export');
     };
 
-    // 封裝loading顯示，供上層使用(因切換個買方式時只想把遮罩蓋在域名列表，其他地方不蓋)
-    const showLoading = (showLoading = true) => {
-      loading.value = showLoading;
-    };
-
     // 提供「重新載入申請筆數與還可申請的數量」、「驗證form」、「格式檢查」給外部使用
     expose({
-      showLoading,
       validForm,
       validAllFormat,
-    });
+    } as urlSettingExpose);
 
     return {
       t,
@@ -380,7 +358,6 @@ export default defineComponent({
       listLimit,
       inputLimit,
       addNew: row.addNew,
-      remove: row.remove,
       batchAdd,
       downloadExample,
       autoAdd: row.autoAdd,
@@ -395,6 +372,7 @@ export default defineComponent({
       visible,
       priceListDict,
       removeRow,
+      basicData,
     };
   },
 });

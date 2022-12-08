@@ -138,6 +138,11 @@ import PasswordText from '@/components/custom/format-password/visible-text.vue';
 import ViewMode from '@/components/custom/view-mode/index.vue';
 import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
 
+// expose出去的func type
+export type basicDataExpose = {
+  validForm: () => boolean;
+};
+
 export default defineComponent({
   name: 'UrlManagementBasicCard',
   components: { ViewMode, RdFormatTimer, PasswordText },
@@ -276,7 +281,7 @@ export default defineComponent({
     const validForm = () => {
       return basicFormRef.value.validate((valid: boolean) => valid);
     };
-    expose({ validForm });
+    expose({ validForm } as basicDataExpose);
 
     // 密碼的影藏顯示
     const passwordVisible = ref(false);

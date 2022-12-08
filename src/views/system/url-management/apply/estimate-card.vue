@@ -39,7 +39,8 @@ export default defineComponent({
     RdGridTableRow,
   },
   props: {
-    urlCount: { type: Number, required: true },
+    // 要算錢的域名數量
+    count: { type: Number, required: true },
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'local' });
@@ -92,8 +93,8 @@ export default defineComponent({
           option: t(priceListDict[option]),
           pay: pay,
           cost: `${exchangeRate(pay, 1)}/${t(priceListDict[time])}`,
-          count: props.urlCount.toString(),
-          amount: exchangeRate(pay, props.urlCount),
+          count: props.count.toString(),
+          amount: exchangeRate(pay, props.count),
         };
       }
 

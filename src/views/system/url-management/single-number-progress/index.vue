@@ -77,7 +77,12 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         span {{ t('search') }}
     //- 限制設定
     rd-form-item
-      rd-button(type="primary" size="large" @click="restrictionVisible = true") {{ t('setting_limit') }}
+      rd-button(
+        v-if="hasModify"
+        type="primary"
+        size="large"
+        @click="restrictionVisible = true"
+      ) {{ t('setting_limit') }}
   .search__secondary(v-if="!isBeforeSearch")
     //- 購買方式
     rd-form-item(:label="t('ways_to_purchase')" prop="buy")
@@ -166,7 +171,7 @@ table-card(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, nextTick, onMounted } from 'vue';
+import { defineComponent, reactive, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteList } from '../common/list';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -741,10 +746,7 @@ export default defineComponent({
 
       getList(params).then(() => {
         isBeforeSearch.value = false;
-
-        nextTick(() => {
-          loading.page = false;
-        });
+        loading.page = false;
       });
     };
 

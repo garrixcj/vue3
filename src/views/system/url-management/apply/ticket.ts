@@ -15,9 +15,26 @@ import keyBy from 'lodash/keyBy';
 // 取得工單相關
 export const useTicket = () => {
   // 工單資訊
-  const ticketInfo = reactive({}) as TicketInfo;
+  const ticketInfo = reactive<TicketInfo>({
+    id: 0,
+    siteGroup: '',
+    domain: 0,
+    status: 0,
+  });
   // 工單資本資料部分
-  const ticketBasicData = reactive({}) as BasicSetting;
+  const ticketBasicData = reactive<BasicSetting>({
+    buy: 'bbin',
+    management: 'bbin',
+    domainType: 'normal',
+    highRisk: 'over',
+    checkItem: '',
+    websiteProviderPerm: false,
+    websiteProvider: '',
+    username: '',
+    password: '',
+    applyTime: '',
+    finishTime: '',
+  });
   // 工單網址部分
   const ticketUrlList = ref<TicketDetailUrl[]>([]);
   // 取得單一工單內容
@@ -71,9 +88,9 @@ export const useTicket = () => {
   };
 
   // 送出後得到回傳的列表
-  const callbackUrlList: Ref<CallbackUrlList[]> = ref([]);
+  const callbackUrlList = ref<CallbackUrlList[]>([]);
   // 送出後得到的單號
-  const ticketId: Ref<number> = ref(0);
+  const ticketId = ref<number>(0);
 
   // 整理post的回傳
   const arrangePostCallback = (

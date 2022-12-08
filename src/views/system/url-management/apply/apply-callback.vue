@@ -12,32 +12,26 @@ rd-navbar-layout(
     //- 返回列表
     rd-button(type="secondary" @click="back") {{ t('back_to_list') }}
     //- 查看單號進度
-    rd-button(v-if="resultInfo().type !== 'error'" type="gradient") {{ t('go_to_ticket_status') }}
+    rd-button(v-if="type !== 'error'" type="gradient") {{ t('go_to_ticket_status') }}
   template(#body)
     rd-layout-content
       //- 結果Alert
-      rd-alert(:type="resultInfo().type" :title="t(resultInfo().type)")
-        div(v-for="(msg, index) in resultInfo().msg" :key="index") {{ msg }}
+      rd-alert(:type="type" :title="t(type)")
+        div(v-for="(msg, index) in typeInfo" :key="index") {{ msg }}
       //- 基本設定
       basic-card(mode="apply")
       //- 域名設定
-      url-setting-callback-card
+      url-setting-callback-card(:site="site")
       //- 預估費用
-      estimate-card(:url-count="urlCount")
+      estimate-card(:count="successCount")
       .button-group
         //- 返回列表
         rd-button(type="secondary" @click="back") {{ t('back_to_list') }}
         //- 查看單號進度(當有成功的域名時才顯示)
-        rd-button(v-if="resultInfo().type !== 'error'" type="gradient") {{ t('go_to_ticket_status') }}
+        rd-button(v-if="type !== 'error'" type="gradient" @click="guideDetail") {{ t('go_to_ticket_status') }}
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  type Ref,
-  computed,
-  inject,
-  type PropType,
-} from 'vue';
+import { defineComponent, computed, inject, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import EstimateCard from './estimate-card.vue';
 import BasicCard from './basic-card.vue';
@@ -53,17 +47,17 @@ export default defineComponent({
     UrlSettingCallbackCard,
   },
   props: {
-    // 站別
-    siteOptions: { type: Array as PropType<SiteOption[]>, required: true },
+    // 現正使用的站別
+    site: { type: String, required: true },
+    // 站別列表
+    sites: { type: Array as PropType<SiteOption[]>, required: true },
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'local' });
 
-    // 實際上使用的site
-    const site = inject('UrlManagement:applySite') as Ref<string>;
     // 站別資料 - 轉換為用站別當key的資料
     const siteList = computed(() =>
-      props.siteOptions.reduce((acc, obj) => {
+      props.sites.reduce((acc, obj) => {
         acc[obj.value] = obj;
 
         return acc;
@@ -71,77 +65,89 @@ export default defineComponent({
     );
 
     // 送出後得到的結果
-    const result = inject('UrlManagement:applyResult') as {
+    const result = inject('UrlManagement:applyResult', { id: 0, list: [] }) as {
       id: number;
       list: CallbackUrlList[];
     };
 
-    // 正常域名的筆數
-    const urlCount = computed(
+    // 正常域名數量
+    const successCount = computed(
       () => result.list.filter(obj => obj.result).length,
     );
+    // 失敗數量
+    const errorCount = computed(() => result.list.length - successCount.value);
 
-    // 最終結果的資訊
-    const resultInfo = () => {
-      // 申請數量
-      const applyNum = result.list.length;
-      // 成功數量
-      const successNum = urlCount.value;
-      // 失敗數量
-      const errorNum = applyNum - successNum;
+    // 結果的狀態
+    const type = computed(() => {
+      // 全成功
+      let type = 'success';
 
-      let type = '';
-      let msg: string[] = [];
-
-      if (!successNum) {
+      if (!successCount.value) {
         // 全失敗
         type = 'error';
-        msg = [
-          t('add_domain_error_msg1'),
-          t('add_domain_error_msg2', {
-            apply: applyNum,
-            error: errorNum,
-          }),
-        ];
-      } else if (successNum !== applyNum) {
+      } else if (errorCount.value > 0) {
         // 部分成功
         type = 'warning';
-        msg = [
-          t('add_domain_success_msg1', { id: result.id }),
-          t('add_domain_success_msg2', {
-            apply: applyNum,
-            success: successNum,
-            error: errorNum,
-          }),
-        ];
-      } else {
-        // 全成功
-        type = 'success';
-        msg = [
-          t('add_domain_warning_msg1', { id: result.id }),
-          t('add_domain_warning_msg2', {
-            apply: applyNum,
-            success: successNum,
-          }),
-        ];
       }
 
-      return { type, msg };
-    };
+      return type;
+    });
+
+    // 狀態相關資訊
+    const typeInfo = computed(() => {
+      let info: string[] = [];
+      switch (type.value) {
+        case 'success':
+          info = [
+            t('add_domain_error_msg1'),
+            t('add_domain_error_msg2', {
+              apply: result.list.length,
+              success: errorCount.value,
+            }),
+          ];
+          break;
+        case 'warning':
+          info = [
+            t('add_domain_warning_msg1', { id: result.id }),
+            t('add_domain_warning_msg2', {
+              apply: result.list.length,
+              success: successCount.value,
+              error: errorCount.value,
+            }),
+          ];
+          break;
+        case 'error':
+          info = [
+            t('add_domain_error_msg1'),
+            t('add_domain_error_msg2', {
+              apply: result.list.length,
+              error: errorCount.value,
+            }),
+          ];
+      }
+
+      return info;
+    });
 
     // 返回列表
     const back = () => {
       window.location.href =
-        '/system_setting/url_management/index?tab=customerDomain';
+        '/v3/system_setting/url_management/index?tab=customerDomain';
+    };
+
+    // 導向單號詳情
+    const guideDetail = () => {
+      window.location.href = `/v3/system_setting/url_management/detail/${result.id}`;
     };
 
     return {
       t,
-      site,
       siteList,
-      urlCount,
-      resultInfo,
+      successCount,
+      type,
+      typeInfo,
       back,
+      guideDetail,
     };
   },
 });

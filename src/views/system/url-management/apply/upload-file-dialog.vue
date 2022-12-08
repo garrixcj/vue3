@@ -25,7 +25,7 @@ rd-dialog(
         em {{ t('click_upload') }}
     //- 上傳的檢查結果
     .check(
-      :class="{ 'is-success': afterUpload && fileValid, 'is-error': afterUpload && !fileValid }"
+      :class="{ uploaded: afterUpload, 'is-success': fileValid, 'is-error': !fileValid }"
     )
       span {{ `${t('check_file')}：` }}
       template(v-if="afterUpload")
@@ -56,7 +56,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['confirm', 'update:modelValue'],
+  emits: ['confirm', 'update:model-value'],
   setup(props, { emit }) {
     // 字典
     const { t } = useI18n({ useScope: 'local' });
@@ -108,7 +108,7 @@ export default defineComponent({
 
     // 觸發父層值的異動
     const open = (value: boolean) => {
-      emit('update:modelValue', value);
+      emit('update:model-value', value);
 
       if (!value) {
         // 驗證清空
@@ -148,11 +148,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .content {
   @include space-vertical;
-  .is-error {
-    color: $danger;
-  }
-  .is-success {
-    color: $success;
+  .uploaded {
+    &.is-error {
+      color: $danger;
+    }
+    &.is-success {
+      color: $success;
+    }
   }
   .mdi-size {
     font-size: 46px;

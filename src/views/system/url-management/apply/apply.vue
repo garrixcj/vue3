@@ -60,13 +60,13 @@ rd-navbar-layout(:title="t('apply_url')")
         //- 域名設定
         url-setting-edit-card(
           ref="urlFormRef"
+          v-loading="urlLoading"
           :restriction-num="restrictionNum[basicData.buy]"
           :requestion-num="requestionNum"
           :can-apply-num="canApplyNum(basicData.buy)"
-          :basic-data="basicData"
         )
         //- 預估費用
-        estimate-card(:url-count="legalCount")
+        estimate-card(:count="legalCount")
         .button-group
           //- 取消
           rd-button(
@@ -111,7 +111,6 @@ import {
   defineComponent,
   ref,
   type Ref,
-  nextTick,
   computed,
   inject,
   reactive,
@@ -128,8 +127,6 @@ import { match } from '@/components/utils/string-match/index';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import { priceListDict } from '../common/estimate';
 import { useSiteRestriction } from '../single-number-progress/restriction';
-import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
 
 export default defineComponent({
   name: 'UrlManagementDetailApply',
@@ -142,8 +139,10 @@ export default defineComponent({
   props: {
     // 站別
     siteOptions: { type: Array as PropType<SiteOption[]>, required: true },
+    // 基本資料是否異動
+    basicDataChange: { type: Boolean, required: true },
   },
-  setup() {
+  setup(props) {
     const { t } = useI18n({ useScope: 'local' });
     // 域名form與規則
     const siteForm = reactive({
@@ -166,6 +165,8 @@ export default defineComponent({
     const basicFormRef = ref();
     // 編輯狀態的域名設定ref
     const urlFormRef = ref();
+    // 域名設定卡片的loading
+    const urlLoading = ref(false);
     // 處理loading遮罩
     const loading = inject('UrlManagement:applyLoading') as Ref<boolean>;
     const visible = reactive({
@@ -179,12 +180,12 @@ export default defineComponent({
 
     // 基本資料
     const basicData = inject('UrlManagement:basicData') as BasicSetting;
-    // 基本資料(預設值 - 對比用)
-    const basicDataDefault = inject(
-      'UrlManagement:basicDataDefault',
-    ) as BasicSetting;
     // 網址
     const urlList = inject('UrlManagement:urlList') as Ref<ApplyDomain[]>;
+
+    // 是否送出前
+    const beforePost = inject('UrlManagement:beforePost') as Ref<boolean>;
+
     // 送出後得到的結果
     const result = inject('UrlManagement:applyResult') as {
       id: number;
@@ -220,10 +221,8 @@ export default defineComponent({
         if (valid) {
           site.value = siteForm.site;
           isApplySite.value = true;
-          nextTick(() => {
-            updateRestriction().then(() => {
-              disabledBtn.value = false;
-            });
+          updateRestriction().then(() => {
+            disabledBtn.value = false;
           });
         }
       });
@@ -256,13 +255,13 @@ export default defineComponent({
       // 將送出按鈕都disable
       disabledBtn.value = true;
       // 蓋上域名列表的loading
-      urlFormRef.value.showLoading();
+      urlLoading.value = true;
       // 格式驗證
       urlFormRef.value.validAllFormat();
 
       // 重新載入申請筆數與還可申請的數量(不顯示全版loading)
       updateRestriction(false).then(() => {
-        urlFormRef.value.showLoading(false);
+        urlLoading.value = false;
         disabledBtn.value = false;
       });
     };
@@ -296,6 +295,9 @@ export default defineComponent({
       // 塞入回傳資訊
       result.id = ticketId.value;
       result.list = callbackUrlList.value;
+
+      // 改成已送出
+      beforePost.value = false;
 
       // 降loading
       loading.value = false;
@@ -355,11 +357,8 @@ export default defineComponent({
 
     // 顯示離開前的確定
     const leaveConfirm = () => {
-      // 是否有異動基本資料
-      const changeBasicData = !isEqual(basicDataDefault, cloneDeep(basicData));
-
       // 當今天有異動域名與基本資料時
-      if (notEmptyUrl.value.length || changeBasicData) {
+      if (notEmptyUrl.value.length || props.basicDataChange) {
         // 顯示確認的Dialog
         visible.leave = true;
       } else {
@@ -371,7 +370,7 @@ export default defineComponent({
     // 返回列表
     const back = () => {
       window.location.href =
-        '/system_setting/url_management/index?tab=customerDomain';
+        '/v3/system_setting/url_management/index?tab=customerDomain';
     };
 
     return {
@@ -398,6 +397,7 @@ export default defineComponent({
       leaveConfirm,
       visible,
       back,
+      urlLoading,
     };
   },
 });
