@@ -2,6 +2,7 @@
 <i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-layout.url-management(
+  ref="layoutRef"
   v-model:active-tab="activeTab"
   tab-type="link"
   :menu="currentTabs"
@@ -44,7 +45,13 @@ rd-layout.url-management(
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide } from 'vue';
+import {
+  defineComponent,
+  ref,
+  provide,
+  type Ref,
+  type ComponentPublicInstance,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
 import host from '@/plugins/url';
@@ -58,6 +65,7 @@ import ActiveDomain from './active-domain/index.vue';
 import Record from './record/index.vue';
 import SiteInformation from './common/site-information.vue';
 import BetaMessage from './common/beta-message.vue';
+import { RouteWatch } from '@/components/utils/route-watch';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
@@ -122,14 +130,18 @@ export default defineComponent({
       {
         name: 'record',
         label: t('operate_record'),
-        // perm: 'UrlManagementRecord',
-        perm: 'ActiveUrl', // todo: 待加新權限
+        perm: 'URLManagementRecord',
         to: { query: { tab: 'record' } },
       },
     ];
 
+    const watcher = new RouteWatch();
     const { currentTabs, tabPerms, setTabWatcher } = useTabAccess(tabs);
     setTabWatcher(activeTab);
+
+    watcher.setWatcher((query: { tab: string }) => {
+      activeTab.value = query.tab;
+    });
 
     // 處理loading遮罩
     const loadingStore = useLoadingStore();
@@ -158,11 +170,21 @@ export default defineComponent({
     };
     provide('UrlManagement:customSearch', customSearch);
 
+    // 處理頁面置頂
+    const layoutRef = ref(document.createElement('div')) as Ref<
+      ComponentPublicInstance<HTMLDivElement>
+    >;
+    const scrollToTop = () => {
+      layoutRef.value.$el.scrollTop = 0;
+    };
+    provide('UrlManagement:scrollToTop', scrollToTop);
+
     return {
       t,
       activeTab,
       currentTabs,
       tabPerms,
+      layoutRef,
     };
   },
 });

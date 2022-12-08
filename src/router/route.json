@@ -1,25 +1,13 @@
 [
     {
-        "id": 741,
-        "name": "URLManagement",
-        "note": "網址管理(PID)",
-        "dict": "url_management",
-        "route": "/system/url-management/index",
-        "perm": "URLManagement",
-        "host": "VUE3_HOST",
-        "file": "/system/url-management/index",
-        "qstr": "",
-        "component": ""
-    },
-    {
         "id": 851,
         "name": "WagersCheck",
         "note": "外接遊戲注單核對",
         "dict": "external_wagers_check",
-        "route": "/wagers/external-game-wagers-check/index",
+        "route": "/wagers/external-game-check/index",
         "perm": "WagersCheck",
         "host": "VUE3_HOST",
-        "file": "/wagers/external-game-wagers-check/index",
+        "file": "/wagers/external-game-check/index",
         "qstr": "",
         "component": ""
     },
@@ -44,6 +32,18 @@
         "perm": "MemberTwoFactorVerification",
         "host": "VUE3_HOST",
         "file": "/users/two-factor-verification/index",
+        "qstr": "",
+        "component": ""
+    },
+    {
+        "id": 884,
+        "name": "ExternalAudit",
+        "note": "外接遊戲核帳查詢",
+        "dict": "external_audit",
+        "route": "/report/audit/index",
+        "perm": "ExternalAudit",
+        "host": "VUE3_HOST",
+        "file": "/report/audit/index",
         "qstr": "",
         "component": ""
     },
