@@ -2,6 +2,7 @@
 rd-card(no-padding)
   template(#header)
     .header
+      //- 批次
       batch-mode(
         v-if="hasModify"
         v-model:visible="visible.batchMode"
@@ -25,7 +26,13 @@ rd-card(no-padding)
       )
       rd-divider(direction="vertical")
       span {{ t('search_result_common', { num: list.length }) }}
-      rd-button.push(type="default" size="small" @click="visible.export") {{ t('export') }}
+      //- 匯出
+      rd-button.push(
+        v-if="exportPerm"
+        type="default"
+        size="small"
+        @click="visible.export = true"
+      ) {{ t('export') }}
   template(#content)
     rd-table.selection-table(
       ref="tableRef"
@@ -199,12 +206,11 @@ rd-card(no-padding)
       @update:current-page="$emit('update:current-page', $event)"
       @update:page-size="$emit('update:page-size', $event)"
     )
-//- TODO:待common的ts上之後補
-//- export-note(
-//-   v-model:visible="exportVisible"
-//-   :params="exportParams"
-//-   @confirm="exportFiled"
-//- )
+export-note(
+  v-model:visible="visible.export"
+  :params="exportParams"
+  @confirm="exportData"
+)
 //- 作廢
 abolish-dialog(
   v-model="visible.abolish"
@@ -226,6 +232,7 @@ import type {
   List,
   AbolishList,
   AbolishAction,
+  SearchOptions,
 } from './single-number-progress';
 import { priceListDict } from '../common/estimate';
 import { statusKeyMap, statusListMap, abolishable } from './status';
@@ -233,6 +240,9 @@ import { progressListMap } from './progress';
 import AbolishDialog from './abolish-dialog.vue';
 import type { SiteOption } from '../common/list';
 import { useModifyAccess } from '@/plugins/access/modify';
+import { useAccesses } from '@/plugins/access/view';
+import { url as urlAPI } from '@/api/domain';
+import { notify } from '@/components/utils/notification';
 
 export default defineComponent({
   name: 'UrlManagementProgressList',
@@ -244,6 +254,8 @@ export default defineComponent({
     AbolishDialog,
   },
   props: {
+    // 搜尋條件
+    searchOptions: { type: Object as PropType<SearchOptions>, required: true },
     // 列表資料
     list: { type: Array as PropType<List[]>, required: true },
     // 站別列表 - 用於顯示用，因外層已撈過一次故直接傳
@@ -344,6 +356,27 @@ export default defineComponent({
       visible.abolish = true;
     };
 
+    // 判斷是否有 匯出 權限
+    const exportPerm = useAccesses(['Downloads', 'ApplicationProgressExport']);
+
+    // 匯出用參數
+    const exportParams = {
+      functionName: 'single_number_progress',
+      tabName: 'single_number_progress',
+    };
+    // 匯出
+    const exportData = (note: string) => {
+      visible.export = false;
+      urlAPI.exportTicketList(note, props.searchOptions).then(response => {
+        if (response.data.result) {
+          notify.success({
+            title: t('success'),
+            message: t('generation_success'),
+          });
+        }
+      });
+    };
+
     return {
       t,
       tableRef,
@@ -367,6 +400,9 @@ export default defineComponent({
       statusListMap,
       progressListMap,
       visible,
+      exportPerm,
+      exportParams,
+      exportData,
     };
   },
 });
