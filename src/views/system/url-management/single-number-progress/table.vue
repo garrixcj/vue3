@@ -276,7 +276,7 @@ export default defineComponent({
   },
   emits: ['sortChange', 'update:current-page', 'update:page-size'],
   setup(props) {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 是否有修改權限
     const { hasModify } = useModifyAccess('ApplicationProgress');
     // 顯示

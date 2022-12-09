@@ -1,3 +1,4 @@
+<!-- <i18n src="@/languages/system_setting/url_management/abolish.json"></i18n> -->
 <template lang="pug">
 .abolish-dialog(v-loading="loading")
   rd-dialog(

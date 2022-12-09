@@ -97,7 +97,7 @@ export default defineComponent({
   },
   setup(props) {
     // 字典
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 基本資料
     const basicData = inject('UrlManagement:basicData') as BasicSetting;
     // 送出後得到的結果

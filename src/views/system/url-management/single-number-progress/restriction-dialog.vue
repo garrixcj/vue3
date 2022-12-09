@@ -72,7 +72,7 @@ export default defineComponent({
   },
   emits: ['update:model-value'],
   setup(props, { emit }) {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 站別限制相關
     const { restrictionNum, getRestriction, putRestriction } =
       useSiteRestriction();

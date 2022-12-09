@@ -157,7 +157,7 @@ export default defineComponent({
   },
   emits: ['changeBuy'],
   setup(props, { expose, emit }) {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 字典對照
     const dictKey = {
       normal: 'normal_type',

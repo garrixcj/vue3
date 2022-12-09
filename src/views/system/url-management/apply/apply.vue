@@ -1,3 +1,4 @@
+<!-- <i18n src="@/languages/system_setting/url_management/apply.json"></i18n> -->
 <template lang="pug">
 //- 右方警示訊息
 rd-information(v-show="isApplySite")
@@ -104,7 +105,7 @@ rd-dialog(v-model="visible.leave" :title="t('not_saved')" width="430px")
   span {{ t('not_saved_check_info') }}
   template(#footer)
     rd-button(type="secondary" @click="visible.leave = false") {{ t('cancel') }}
-    rd-button(type="primary" @click="back") {{ t('confirm') }}
+    rd-button(type="primary" @click="back") {{ t('comfirm') }}
 </template>
 <script lang="ts">
 import {
@@ -416,10 +417,10 @@ export default defineComponent({
 .total-text {
   font-weight: bold;
 }
-.reset-text {
+.rest-text {
   font-weight: bold;
 }
-.submit-text {
+.sub-text {
   font-weight: bold;
   color: $danger;
 }

@@ -22,7 +22,7 @@ import { useSiteList } from '../common/list';
 import Apply from './apply.vue';
 import ApplyCallback from './apply-callback.vue';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { isEqual, cloneDeep } from 'lodash';
+import { isEqual } from 'lodash';
 
 export default defineComponent({
   name: 'UrlManagementDetailApplyIndex',

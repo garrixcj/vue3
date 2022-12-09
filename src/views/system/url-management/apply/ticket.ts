@@ -1,4 +1,4 @@
-import { reactive, ref, type Ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { url as urlAPI } from '@/api/domain';
 import type {
   CallbackUrlList,

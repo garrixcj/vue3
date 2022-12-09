@@ -1,3 +1,4 @@
+<!-- <i18n src="@/languages/system_setting/url_management/apply.json"></i18n> -->
 <template lang="pug">
 //- 右方警示訊息
 rd-information
@@ -99,8 +100,8 @@ export default defineComponent({
       switch (type.value) {
         case 'success':
           info = [
-            t('add_domain_error_msg1'),
-            t('add_domain_error_msg2', {
+            t('add_domain_success_msg1'),
+            t('add_domain_success_msg2', {
               apply: result.list.length,
               success: errorCount.value,
             }),

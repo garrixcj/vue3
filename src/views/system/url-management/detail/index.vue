@@ -1,3 +1,4 @@
+<!-- <i18n src="@/languages/system_setting/url_management/detail.json"></i18n> -->
 <template lang="pug">
 rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
   template(#subTitle)

@@ -111,7 +111,7 @@ rd-card(:title="t('domain_name_setting')")
               span {{ t('check_format') }}
               rd-tooltip(placement="top")
                 template(#content)
-                  div(v-for="n in 6" :key="n") {{ t(`check_format_msg${n}`) }}
+                  div(v-for="n in 7" :key="n") {{ t(`check_format_msg${n}`) }}
                 i.mdi.mdi-information
           template(#default="scope")
             template(v-if="scope.row.format")
@@ -199,7 +199,7 @@ export default defineComponent({
   },
   setup(props, { expose }) {
     // 字典
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 基本資料
     const basicData = inject('UrlManagement:basicData') as BasicSetting;
     // 網址
@@ -298,7 +298,7 @@ export default defineComponent({
           notify.error({
             title: t('error'),
             message: t('please_edit_error_domain', {
-              num: urlList.value.filter(obj => !obj.legal).length,
+              num: urlList.value.filter(obj => !obj.legal && obj.domain).length,
             }),
           });
         }

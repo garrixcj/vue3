@@ -43,7 +43,7 @@ export default defineComponent({
     count: { type: Number, required: true },
   },
   setup(props) {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 基本資料
     const basicData = inject('UrlManagement:basicData') as BasicSetting;
 

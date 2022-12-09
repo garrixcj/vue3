@@ -35,7 +35,7 @@ rd-card(
             | {{ t(progressListMap[progressKeyMap[row.progress]].dict) }}
       //- 進度詳細
       rd-table-column(
-        :label="t('proress_detail')"
+        :label="t('progress_detail')"
         prop="message"
         :resizable="false"
       )
@@ -63,7 +63,7 @@ export default defineComponent({
   },
   setup(props) {
     // 字典
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
 
     // 是否僅顯示「無法綁定的域名」
     const filterCanNotBind = ref(false);

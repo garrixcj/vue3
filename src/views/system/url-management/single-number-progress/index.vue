@@ -1,3 +1,6 @@
+<!-- <i18n
+  src="@/languages/system_setting/url_management/single-number-progress.json"
+></i18n> -->
 <template lang="pug">
 rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
   .search__main
@@ -153,7 +156,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
             :label="stauts"
           ) {{ t(info.dict) }}
 restriction-dialog(v-model="restrictionVisible")
-before-search(v-if="isBeforeSearch" label="開始搜尋吧")
+before-search(v-if="isBeforeSearch" :label="t('start_search')")
 table-card(
   v-else
   :search-options="exportOptions"
@@ -258,6 +261,8 @@ export default defineComponent({
 
     // 當搜尋條件異動時，將2個條件都清空
     const resetCondition = () => {
+      form.domain = '';
+      form.site = '';
       formRef.value.resetFields('site');
       formRef.value.resetFields('domain');
     };
@@ -456,7 +461,9 @@ export default defineComponent({
         key: 'domain',
         get: () => form.domain,
         set: (val: number | 'all') => {
-          form.domain = val === 'all' ? val : +val;
+          if (val) {
+            form.domain = val === 'all' ? val : +val;
+          }
         },
         optional: true,
         default: '',
