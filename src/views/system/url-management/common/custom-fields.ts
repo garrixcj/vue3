@@ -102,6 +102,13 @@ export const customerDomainFieldsInitial = () => {
         disabled: false,
       },
       {
+        key: 'abnormalArea',
+        name: t('abnormal_area'),
+        visible: true,
+        default: true,
+        disabled: true,
+      },
+      {
         key: 'manage',
         name: t('manage'),
         visible: true,

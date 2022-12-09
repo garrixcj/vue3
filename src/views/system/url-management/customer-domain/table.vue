@@ -323,6 +323,19 @@ rd-card(v-loading="listCondition.loading" no-padding)
         template(#default="{ row }")
           span(v-if="row.systemDetection !== ''") {{ row.systemDetection }}
           span(v-else) --
+      //- 異常地區
+      rd-table-column(
+        v-if="isDisplayedColumns('abnormalArea')"
+        :label="t('abnormal_area')"
+        header-align="center"
+        prop="abnormalArea"
+        :resizable="false"
+        width="200"
+      )
+        template(#default="{ row }")
+          span(v-if="row.abnormalArea.length > 0")
+            div(v-for="(item, index) in row.abnormalArea" :key="index") {{ item }}
+          span(v-else) --
       //- 管理
       rd-table-column(
         v-if="isDisplayedColumns('manage')"

@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue';
-import { values, isEmpty, omitBy } from 'lodash';
+import { values, isEmpty, omitBy, groupBy, forIn, trimEnd } from 'lodash';
 import { url as urlAPI } from '@/api/domain';
 import type {
   ListData,
@@ -229,6 +229,32 @@ export const useList = (form: FormType) => {
     listCondition.total = orgListData.value.length;
   };
 
+  // 取得異常地區資料
+  const getAbnormalAreas = (
+    data: {
+      alert_time: string;
+      area: string;
+      d_status: string;
+      id: string;
+      isp: string;
+    }[],
+  ) => {
+    let result: string[] = [];
+    if (data.length > 0) {
+      forIn(groupBy(data, 'alert_time'), (value, key) => {
+        // 格式 日期 異常狀態[地區/isp],異常狀態[地區/isp]...
+        let content = `${key} 檢查網址`;
+        value.forEach(item => {
+          content = `${content}${item.d_status}[${item.area}/${item.isp}],`;
+        });
+        // 去掉字尾逗號
+        content = trimEnd(content, ',');
+        result = [...result, content];
+      });
+    }
+    return result;
+  };
+
   // 建構資料
   const buildData = (item: ListForAPI, key: number) => {
     const result = {
@@ -250,6 +276,7 @@ export const useList = (form: FormType) => {
       ip: item.ip, // IP
       automaticRenewalDate: item.renew_date, // 域名到期日
       systemDetection: item.system_note, // 系統檢測
+      abnormalArea: getAbnormalAreas(item.error_note), // 異常地區
       applySSLEnable: item.ssl_enable, // 可申請憑證
       remark: item.note, // 備註
     };

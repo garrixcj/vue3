@@ -38,6 +38,7 @@ export type ListData = {
   ip: string;
   automaticRenewalDate: string;
   systemDetection: string;
+  abnormalArea: string[];
   applySSLEnable: boolean;
   remark: string;
 };
@@ -61,6 +62,13 @@ export type ListForAPI = {
   ssl_enable: boolean;
   ssl_status: number;
   system_note: string;
+  error_note: {
+    alert_time: string;
+    area: string;
+    d_status: string;
+    id: string;
+    isp: string;
+  }[];
   url_status: UrlStatus;
   tip: number[];
 };
