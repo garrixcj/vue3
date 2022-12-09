@@ -139,7 +139,7 @@ import ViewMode from '@/components/custom/view-mode/index.vue';
 import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
 
 // expose出去的func type
-export type basicDataExpose = {
+export type BasicDataExpose = {
   validForm: () => boolean;
 };
 
@@ -281,7 +281,7 @@ export default defineComponent({
     const validForm = () => {
       return basicFormRef.value.validate((valid: boolean) => valid);
     };
-    expose({ validForm } as basicDataExpose);
+    expose({ validForm } as BasicDataExpose);
 
     // 密碼的影藏顯示
     const passwordVisible = ref(false);

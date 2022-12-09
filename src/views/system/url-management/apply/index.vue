@@ -22,7 +22,7 @@ import { useSiteList } from '../common/list';
 import Apply from './apply.vue';
 import ApplyCallback from './apply-callback.vue';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { isEqual } from 'lodash';
+import { isEqual, cloneDeep } from 'lodash';
 
 export default defineComponent({
   name: 'UrlManagementDetailApplyIndex',
@@ -77,7 +77,7 @@ export default defineComponent({
       applyTime: '',
       finishTime: '',
     };
-    const basicData = reactive(basicDataDefault);
+    const basicData = reactive(cloneDeep(basicDataDefault));
     provide('UrlManagement:basicData', basicData);
     // 是否有異動基本資料
     const basicDataChange = computed(() => {
@@ -95,7 +95,15 @@ export default defineComponent({
     });
     provide('UrlManagement:applyResult', result);
 
-    return { t, loading, beforePost, siteOptions, site, basicDataChange };
+    return {
+      t,
+      loading,
+      beforePost,
+      siteOptions,
+      site,
+      basicDataChange,
+      basicDataDefault,
+    };
   },
 });
 </script>

@@ -1,4 +1,4 @@
-<!-- <i18n src="@/language/system_setting/url_management/batch_add.json"></i18n> -->
+<i18n src="@/languages/system_setting/url_management/batch_add.json"></i18n>
 <template lang="pug">
 rd-dialog(
   :model-value="modelValue"

@@ -1,4 +1,4 @@
-<!-- <i18n src="@/languages/system_setting/url_management/detail.json"></i18n> -->
+<i18n src="@/languages/system_setting/url_management/detail.json"></i18n>
 <template lang="pug">
 rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
   template(#subTitle)
@@ -47,6 +47,7 @@ import { statusKeyMap, statusListMap } from '../single-number-progress/status';
 import AbolishDialog from '../single-number-progress/abolish-dialog.vue';
 import type { AbolishList } from '../single-number-progress/single-number-progress';
 import { useModifyAccess } from '@/plugins/access/modify';
+import { mapKeys } from 'lodash';
 
 export default defineComponent({
   name: 'UrlManagementDetailApply',
@@ -91,11 +92,7 @@ export default defineComponent({
 
     // 站別資料 - 轉換為用站別當key的資料
     const siteList = computed(() =>
-      siteOptions.value.reduce((acc, obj) => {
-        acc[obj.value] = obj;
-
-        return acc;
-      }, {} as Record<string, SiteOption>),
+      mapKeys(siteOptions.value, obj => obj.value),
     );
 
     // 1:處理中、2:已完成、3:無法綁定、4:已作廢

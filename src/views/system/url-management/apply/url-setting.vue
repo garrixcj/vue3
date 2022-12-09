@@ -77,27 +77,25 @@ rd-card(:title="t('domain_name_setting')")
                   div {{ t('domain_name_info2') }}
                   div {{ t('domain_name_info3') }}
                 i.mdi.mdi-information
-          template(#default="scope")
+          template(#default="{ row, $index }")
             rd-form-item(
-              :key="scope.row.key"
-              :prop="`${scope.$index}.domain`"
+              :key="row.key"
+              :prop="`${$index}.domain`"
               :rules="{ trigger: 'blur', asyncValidator: urlValidatePass }"
               :show-message="false"
             )
               rd-input.can-focus(
-                v-model="scope.row.domain"
+                v-model="row.domain"
                 :placeholder="t('please_enter_domain_name')"
                 clearable
                 error="error"
                 @input="autoAdd(canApplyNum)"
                 @blur="validAllFormat"
                 @clear="validAllFormat"
+                @keydown.tab="tabNext($index, $event)"
               )
                 template(#suffix)
-                  rd-text-counter(
-                    :text="scope.row.domain"
-                    :maxlength="inputLimit"
-                  )
+                  rd-text-counter(:text="row.domain" :maxlength="inputLimit")
         //- 格式檢查
         rd-table-column(
           prop="format"
@@ -181,7 +179,7 @@ import { getState, checkFormatLegal, getListState } from './url';
 import { useRow } from './row';
 
 // expose出去的func type
-export type urlSettingExpose = {
+export type UrlSettingExpose = {
   validForm: () => boolean;
   validAllFormat: () => void;
 };
@@ -208,6 +206,7 @@ export default defineComponent({
     const urlTableRef = ref();
     // 表單的ref
     const urlFormRef = ref();
+
     // 域名長度上限
     const inputLimit = 62;
     // dialog顯示
@@ -317,13 +316,12 @@ export default defineComponent({
       // 使用source來取得index(source key會是 index.domain)
       const index = Object.keys(source)[0].split('.')[0];
       // 取得格式
-      const format = getState(
-        urlList.value,
+      const format = getState(domain, {
+        urlList: urlList.value,
         basicData,
-        +index,
-        domain,
+        idx: +index,
         inputLimit,
-      );
+      });
       return new Promise<void>((resolve, reject) => {
         // 當域名為空時視為正常、判定格式是否合法
         if (!domain || checkFormatLegal(format)) {
@@ -350,7 +348,7 @@ export default defineComponent({
     expose({
       validForm,
       validAllFormat,
-    } as urlSettingExpose);
+    } as UrlSettingExpose);
 
     return {
       t,
@@ -361,6 +359,7 @@ export default defineComponent({
       batchAdd,
       downloadExample,
       autoAdd: row.autoAdd,
+      tabNext: row.tabNext,
       snakeCase,
       showWarning,
       removeErrorRow,

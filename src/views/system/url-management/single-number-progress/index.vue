@@ -1,6 +1,6 @@
-<!-- <i18n
+<i18n
   src="@/languages/system_setting/url_management/single-number-progress.json"
-></i18n> -->
+></i18n>
 <template lang="pug">
 rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
   .search__main
@@ -80,12 +80,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         span {{ t('search') }}
     //- 限制設定
     rd-form-item
-      rd-button(
-        v-if="hasModify"
-        type="primary"
-        size="large"
-        @click="restrictionVisible = true"
-      ) {{ t('setting_limit') }}
+      rd-button(type="primary" size="large" @click="restrictionVisible = true") {{ t('setting_limit') }}
   .search__secondary(v-if="!isBeforeSearch")
     //- 購買方式
     rd-form-item(:label="t('ways_to_purchase')" prop="buy")

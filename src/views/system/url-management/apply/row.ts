@@ -27,18 +27,22 @@ export const useRow = () => {
     }
   };
 
-  //- TODO: 有bug，為附屬功能故先行註解，待其餘主要功能完成再回來修
-  // @keydown.tab="tabNextRow(scope.$index, $event)
   // focus到下一行input
-  // const tabNextRow = (index: number, event: KeyboardEvent) => {
-  //   const nextIndex = index + 1;
-  //   const inputDomGroup =
-  //     urlTableRef.value.$el.getElementsByClassName('can-focus');
-  //   if (nextIndex < inputDomGroup.length) {
-  //     event.preventDefault();
-  //     inputDomGroup.value[nextIndex].focus();
-  //   }
-  // };
+  const tabNext = (index: number, event: KeyboardEvent) => {
+    const nextIndex = index + 1;
+    const target = event.target as HTMLInputElement;
+
+    // 取得所有input
+    const inputGroup = target.form?.getElementsByTagName('input') || [];
+    // 當還有下一個input時才動作
+    if (nextIndex < inputGroup.length) {
+      // 停掉原本的動作
+      event.preventDefault();
+
+      // focus下一行
+      inputGroup[nextIndex].focus();
+    }
+  };
 
   // 移除一行
   const remove = (index: number) => {
@@ -66,6 +70,6 @@ export const useRow = () => {
     autoAdd,
     remove,
     removeError,
-    // tabNext,
+    tabNext,
   };
 };

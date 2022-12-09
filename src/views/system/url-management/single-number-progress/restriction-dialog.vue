@@ -27,7 +27,7 @@
             :content="t('member_limit_info', { minimum, maximum: bbinMaximum })"
           )
             i.mdi.mdi-information
-        rd-input-number.input-width(
+        rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.bbin"
           :min="minimum"
           :max="bbinMaximum"
@@ -40,7 +40,7 @@
             :content="t('member_limit_info', { minimum, maximum: domainMaximum })"
           )
             i.mdi.mdi-information
-        rd-input-number.input-width(
+        rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.domain"
           :min="minimum"
           :max="domainMaximum"

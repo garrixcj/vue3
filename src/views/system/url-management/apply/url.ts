@@ -5,16 +5,23 @@ import { findIndex } from 'lodash';
  * 取得域名格式檢查狀態
  * @param  {ApplyDomain[]} urlList 域名列表
  * @param  {BasicSetting} basicData 基本資料
- * @param  {number} index 當下域名索引
+ * @param  {number} idx 當下域名索引
  * @param  {string} domain 域名
  * @param  {number} inputLimit 域名字數上限
  */
 export const getState = (
-  urlList: ApplyDomain[],
-  basicData: BasicSetting,
-  index: number,
   domain: string,
-  inputLimit: number,
+  {
+    urlList,
+    basicData,
+    idx,
+    inputLimit,
+  }: {
+    urlList: ApplyDomain[];
+    basicData: BasicSetting;
+    idx: number;
+    inputLimit: number;
+  },
 ) => {
   // 當今天域名是空的
   if (!domain) {
@@ -24,7 +31,7 @@ export const getState = (
   // 域名重複輸入(列表裡有重複的域名，第一個以外的才被視為重複)
   if (
     urlList.filter(obj => obj.domain === domain).length > 1 &&
-    findIndex(urlList, ['domain', domain]) !== index
+    findIndex(urlList, ['domain', domain]) !== idx
   ) {
     return 'double';
   }
@@ -95,9 +102,14 @@ export const getListState = (
   basicData: BasicSetting,
   inputLimit: number,
 ) => {
-  return urlList.map((obj, index) => {
+  return urlList.map((obj, idx) => {
     // 取得域名格式檢查狀態
-    const format = getState(urlList, basicData, index, obj.domain, inputLimit);
+    const format = getState(obj.domain, {
+      urlList,
+      basicData,
+      idx,
+      inputLimit,
+    });
     return {
       key: obj.key,
       domain: obj.domain,

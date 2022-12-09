@@ -1,4 +1,4 @@
-<!-- <i18n src="@/languages/system_setting/url_management/apply.json"></i18n> -->
+<i18n src="@/languages/system_setting/url_management/apply.json"></i18n>
 <template lang="pug">
 //- 右方警示訊息
 rd-information(v-show="isApplySite")
@@ -7,36 +7,35 @@ rd-information(v-show="isApplySite")
     li {{ t('apply_domain_information2', { num: restrictionNum.bbin, money: 200 }) }}
     li {{ t('apply_domain_information3', { num: restrictionNum.domain }) }}
 rd-navbar-layout(:title="t('apply_url')")
-  //- TODO: 站別form沒有置中問題
   template(#afterTitle)
     //- 站別form
-    rd-form(
-      ref="siteFormRef"
-      inline
-      size="small"
-      :model="siteForm"
-      :rules="siteForm.rules"
-    )
-      rd-form-item(:label="t('site')" prop="site")
-        rd-select(
-          v-model:value="siteForm.site"
-          :quick-search="customSearch"
-          :popper-setting="{ width: 'auto' }"
+    .after-title
+      span
+        span.required-mark *
+        span {{ ` ${t('site')}` }}
+      rd-select(
+        v-model:value="siteForm"
+        size="small"
+        :quick-search="customSearch"
+        :popper-setting="{ width: 'auto' }"
+      )
+        rd-option(
+          v-for="(option, index) in siteOptions"
+          :key="index"
+          :value="option.value"
+          :label="option.label"
+          :option="option"
         )
-          rd-option(
-            v-for="(option, index) in siteOptions"
-            :key="index"
-            :value="option.value"
-            :label="option.label"
-            :option="option"
-          )
-            template(#suffix)
-              | {{ `[ ${option.code} ]` }}
-          template(#selected="{ current }")
-            | {{ `${current.label} [${current.option.code}]` }}
-      //- 套用
-      rd-form-item
-        rd-button(type="default" size="small" @click="apply") {{ t('apply') }}
+          template(#suffix)
+            | {{ `[ ${option.code} ]` }}
+        template(#selected="{ current }")
+          | {{ `${current.label} [${current.option.code}]` }}
+      rd-button(
+        type="default"
+        size="small"
+        :disabled="!siteForm"
+        @click="apply"
+      ) {{ t('apply') }}
   template(#titleSuffix)
     //- 有套用域名才會出現
     template(v-if="isApplySite")
@@ -99,13 +98,13 @@ rd-dialog(
       span.sub-text {{ legalCount }}
   template(#footer)
     rd-button(type="secondary" @click="visible.submit = false") {{ t('cancel') }}
-    rd-button(type="primary" @click="submit") {{ t('comfirm') }}
+    rd-button(type="primary" @click="submit") {{ t('confirm') }}
 //- 尚未儲存 Dialog
 rd-dialog(v-model="visible.leave" :title="t('not_saved')" width="430px")
   span {{ t('not_saved_check_info') }}
   template(#footer)
     rd-button(type="secondary" @click="visible.leave = false") {{ t('cancel') }}
-    rd-button(type="primary" @click="back") {{ t('comfirm') }}
+    rd-button(type="primary" @click="back") {{ t('leave') }}
 </template>
 <script lang="ts">
 import {
@@ -145,23 +144,12 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'local' });
-    // 域名form與規則
-    const siteForm = reactive({
-      site: '',
-      rules: {
-        site: {
-          required: true,
-          message: t('please_select_site'),
-          trigger: 'change',
-        },
-      },
-    });
+    // 域名form
+    const siteForm = ref('');
     // 實際上使用的site
     const site = inject('UrlManagement:applySite') as Ref<string>;
-    // 域名設定的ref
-    const siteFormRef = ref();
     // 按鈕是否disable
-    const disabledBtn = ref(false);
+    const disabledBtn = ref(true);
     // 基本設定的ref
     const basicFormRef = ref();
     // 編輯狀態的域名設定ref
@@ -217,16 +205,14 @@ export default defineComponent({
 
     // 按下套用站別才更新實際使用的site
     const apply = () => {
-      disabledBtn.value = true;
-      siteFormRef.value.validate((valid: boolean) => {
-        if (valid) {
-          site.value = siteForm.site;
-          isApplySite.value = true;
-          updateRestriction().then(() => {
-            disabledBtn.value = false;
-          });
-        }
-      });
+      if (siteForm.value) {
+        disabledBtn.value = true;
+        site.value = siteForm.value;
+        isApplySite.value = true;
+        updateRestriction().then(() => {
+          disabledBtn.value = false;
+        });
+      }
     };
 
     // 自定義快搜
@@ -380,7 +366,6 @@ export default defineComponent({
       siteForm,
       updateRestrictionAndUrl,
       legalCount,
-      siteFormRef,
       urlFormRef,
       customSearch,
       apply,
@@ -404,8 +389,12 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-.site-form {
+.after-title {
   @include flex-basic;
+  @include space(10px);
+  .required-mark {
+    color: $danger;
+  }
 }
 .rd-layout-content {
   @include space-vertical;

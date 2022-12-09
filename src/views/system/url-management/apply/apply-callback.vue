@@ -1,4 +1,4 @@
-<!-- <i18n src="@/languages/system_setting/url_management/apply.json"></i18n> -->
+<i18n src="@/languages/system_setting/url_management/apply.json"></i18n>
 <template lang="pug">
 //- 右方警示訊息
 rd-information
@@ -39,6 +39,7 @@ import BasicCard from './basic-card.vue';
 import UrlSettingCallbackCard from './url-setting-callback.vue';
 import type { SiteOption } from '../common/list';
 import type { CallbackUrlList } from './apply';
+import { mapKeys } from 'lodash';
 
 export default defineComponent({
   name: 'UrlManagementDetailApplyCallback',
@@ -57,13 +58,7 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'local' });
 
     // 站別資料 - 轉換為用站別當key的資料
-    const siteList = computed(() =>
-      props.sites.reduce((acc, obj) => {
-        acc[obj.value] = obj;
-
-        return acc;
-      }, {} as Record<string, SiteOption>),
-    );
+    const siteList = computed(() => mapKeys(props.sites, obj => obj.value));
 
     // 送出後得到的結果
     const result = inject('UrlManagement:applyResult', { id: 0, list: [] }) as {
@@ -96,35 +91,34 @@ export default defineComponent({
 
     // 狀態相關資訊
     const typeInfo = computed(() => {
-      let info: string[] = [];
-      switch (type.value) {
-        case 'success':
-          info = [
-            t('add_domain_success_msg1'),
-            t('add_domain_success_msg2', {
-              apply: result.list.length,
-              success: errorCount.value,
-            }),
-          ];
-          break;
-        case 'warning':
-          info = [
-            t('add_domain_warning_msg1', { id: result.id }),
-            t('add_domain_warning_msg2', {
-              apply: result.list.length,
-              success: successCount.value,
-              error: errorCount.value,
-            }),
-          ];
-          break;
-        case 'error':
-          info = [
-            t('add_domain_error_msg1'),
-            t('add_domain_error_msg2', {
-              apply: result.list.length,
-              error: errorCount.value,
-            }),
-          ];
+      // 全成功
+      let info = [
+        t('add_domain_success_msg1'),
+        t('add_domain_success_msg2', {
+          apply: result.list.length,
+          success: successCount.value,
+        }),
+      ];
+
+      if (!successCount.value) {
+        // 全失敗
+        info = [
+          t('add_domain_error_msg1'),
+          t('add_domain_error_msg2', {
+            apply: result.list.length,
+            error: errorCount.value,
+          }),
+        ];
+      } else if (errorCount.value > 0) {
+        // 部分成功
+        info = [
+          t('add_domain_warning_msg1', { id: result.id }),
+          t('add_domain_warning_msg2', {
+            apply: result.list.length,
+            success: successCount.value,
+            error: errorCount.value,
+          }),
+        ];
       }
 
       return info;
