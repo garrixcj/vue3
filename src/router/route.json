@@ -82,5 +82,29 @@
         "perm": "ApplicationProgress",
         "file": "/system_setting/url_management/detail/:id(\\d+)",
         "qstr": ""
+    },
+    {
+        "id": 741,
+        "route": "/system/url-management/teaching/txt",
+        "note": "網站管理 - 網址管理 - TXT教學",
+        "dict": "txt_teaching",
+        "component": "/system/url-management/teaching/txt",
+        "host": "VUE3_HOST",
+        "name": "URLManagement_71",
+        "perm": "URLManagement",
+        "file": "/system/url-management/teaching/txt",
+        "qstr": ""
+    },
+    {
+        "id": 741,
+        "route": "/system/url-management/teaching/name-server",
+        "note": "網站管理 - 網址管理 - NameServer教學",
+        "dict": "name_server_teaching",
+        "component": "/system/url-management/teaching/name-server",
+        "host": "VUE3_HOST",
+        "name": "URLManagement_72",
+        "perm": "URLManagement",
+        "file": "/system/url-management/teaching/name-server",
+        "qstr": ""
     }
 ]
