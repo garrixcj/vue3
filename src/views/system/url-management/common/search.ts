@@ -1,15 +1,14 @@
 import { reactive, ref, computed } from 'vue';
-import { isEmpty } from 'lodash';
+import { isEmpty, keys } from 'lodash';
 import dayjs from 'dayjs';
 import { formatCheck } from '@/components/utils/validator/validator';
-import { useI18n } from 'vue-i18n';
-import type { AdvancedConditionsType } from './type';
+import type { AdvancedConditionsType, AbnormalStateConditions } from './type';
 import { url as urlAPI } from '@/api/domain';
 
 export type FormType = {
   type: string;
   site: string;
-  domain: number;
+  domain: number | 'all';
   domainName: string;
   multipleDomains: string[];
   ip: string;
@@ -35,7 +34,7 @@ export const useForm = () => {
   const form: FormType = reactive({
     type: '',
     site: '',
-    domain: 0,
+    domain: 'all',
     domainName: '',
     multipleDomains: [],
     ip: '',
@@ -48,7 +47,7 @@ export const useForm = () => {
   const initForm = () => {
     form.type = '';
     form.site = '';
-    form.domain = 0;
+    form.domain = 'all';
     form.domainName = '';
     form.multipleDomains = [];
     form.ip = '';
@@ -64,9 +63,9 @@ export const useForm = () => {
 };
 
 // 驗證規則
-export const useValidationRules = () => {
-  const { t } = useI18n({ useScope: 'local' });
-
+export const useValidationRules = (
+  t: (key: string, params?: { num?: number; day?: number }) => string,
+) => {
   /* eslint-disable @typescript-eslint/no-explicit-any */
   // 客製化「域名」驗證
   const customDomainNameValid = (rule: any, value: string | string[]) => {
@@ -166,38 +165,25 @@ export const useAdvancedConditions = () => {
     service: [],
     domainNameStatus: [],
     sslStatus: [],
-    notOpen: [],
+    failToOpen: [],
     partiallyOpen: [],
-    open: [],
+    openable: [],
     ipType: [],
     purchaseMethod: [],
     attackStatus: [],
     growingPercent: [],
   });
 
-  const advancedFormKeys = Object.keys(
-    advancedForm,
-  ) as AdvancedConditionsType[];
+  const advancedFormKeys = keys(advancedForm) as AdvancedConditionsType[];
 
-  // 全選
-  const advancedGroupCheckAll = reactive({
-    service: false,
-    domainNameStatus: false,
-    sslStatus: false,
-    notOpen: false,
-    partiallyOpen: false,
-    open: false,
-    ipType: false,
-    purchaseMethod: false,
-    attackStatus: false,
-    growingPercent: false,
-  });
+  // 異常狀態
+  const abnormalStateGroup = ref<AbnormalStateConditions[]>([]);
 
   return {
     advancedRef,
     advancedForm,
     advancedFormKeys,
-    advancedGroupCheckAll,
+    abnormalStateGroup,
   };
 };
 
@@ -211,7 +197,7 @@ export const useFormField = (form: FormType) => {
       domainName: ['domain', 'domainName', 'multipleDomains', 'area'],
       ip: ['ip', 'area'],
     };
-    const type = <keyof typeof searchType>form.type;
+    const type = form.type as keyof typeof searchType;
     if (form.type !== '') {
       return searchType[type].includes(value);
     }
@@ -221,13 +207,13 @@ export const useFormField = (form: FormType) => {
   // 支援單一域名的搜尋條件
   const supportSingleDomainName = computed(() => {
     const typeOfSupport = ['site', 'domainName'];
-    return typeOfSupport.includes(form.type) && form.domain === 0;
+    return typeOfSupport.includes(form.type) && form.domain === 'all';
   });
 
   // 支援多域名的搜尋條件
   const supportMultipleDomainName = computed(() => {
     const typeOfSupport = ['domainName'];
-    return typeOfSupport.includes(form.type) && form.domain > 0;
+    return typeOfSupport.includes(form.type) && form.domain !== 'all';
   });
 
   return {
@@ -238,9 +224,7 @@ export const useFormField = (form: FormType) => {
 };
 
 // 表單下拉選項
-export const useFormOptions = () => {
-  const { t } = useI18n({ useScope: 'local' });
-
+export const useFormOptions = (t: (key: string) => string) => {
   // 類別選項
   const typeOptions = ref([
     { value: 'site', label: t('site') },
@@ -256,10 +240,10 @@ export const useFormOptions = () => {
   const getAbnormalAreas = () => {
     return urlAPI.getAbnormalAreas().then(response => {
       if (response.data.result) {
-        singleAreaOptions.value = response.data.data.map((item: string) => {
-          const result = { label: item, value: item };
-          return result;
-        });
+        singleAreaOptions.value = response.data.data.map((item: string) => ({
+          label: item,
+          value: item,
+        }));
       }
     });
   };

@@ -1,5 +1,8 @@
 // 異常狀態條件
-export type AbnormalStateConditions = 'notOpen' | 'partiallyOpen' | 'open';
+export type AbnormalStateConditions =
+  | 'failToOpen'
+  | 'partiallyOpen'
+  | 'openable';
 // 基本進階條件
 export type AdvancedConditions =
   | 'service'
@@ -38,7 +41,7 @@ export type ListData = {
   ip: string;
   automaticRenewalDate: string;
   systemDetection: string;
-  abnormalArea: string[];
+  abnormalArea?: string[];
   applySSLEnable: boolean;
   remark: string;
 };

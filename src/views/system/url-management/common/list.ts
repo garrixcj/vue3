@@ -69,9 +69,9 @@ export const useAdvancedConditionList = (lang: string) => {
     service: [],
     domainNameStatus: [],
     sslStatus: [],
-    notOpen: [],
+    failToOpen: [],
     partiallyOpen: [],
-    open: [],
+    openable: [],
     ipType: [],
     purchaseMethod: [],
     attackStatus: [],
@@ -106,20 +106,18 @@ export const useAdvancedConditionList = (lang: string) => {
       { label: 2, type: '', dict: t('non_negative_number') },
     ];
     // 群組名稱對應
-    const groupKeys = <
-      {
-        key: AdvancedConditionsAPIType;
-        value: AdvancedConditionsType;
-        type: string;
-      }[]
-    >[
+    const groupKeys = [
       { key: 'service', value: 'service', type: '' },
       { key: 'domain', value: 'domainNameStatus', type: '' },
       { key: 'ssl', value: 'sslStatus', type: '' },
-      { key: 'error', value: 'notOpen', type: 'danger-convert' },
+      { key: 'error', value: 'failToOpen', type: 'danger-convert' },
       { key: 'warning', value: 'partiallyOpen', type: 'warning-convert' },
-      { key: 'openable', value: 'open', type: 'success-convert' },
-    ];
+      { key: 'openable', value: 'openable', type: 'success-convert' },
+    ] as {
+      key: AdvancedConditionsAPIType;
+      value: AdvancedConditionsType;
+      type: string;
+    }[];
     groupKeys.forEach(item => {
       advancedConditions[item.value] = groups[item.key].map(id => {
         return {

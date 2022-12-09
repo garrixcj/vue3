@@ -38,7 +38,7 @@
       :label="t('domain')"
       prop="domain"
     )
-      domain-selector(v-model:value="form.domain" :allOpt="allOption")
+      domain-selector(v-model:value="form.domain" all-opt)
     //- 域名關鍵字(全部廳 or 單一站別)
     rd-form-item(
       v-if="supportSingleDomainName && displayField('domainName')"
@@ -139,18 +139,17 @@
     //- 設定範例
     setting-example
     //- 申請域名
-    rd-button.apply-url-btn(type="primary") {{ t('apply_url') }}
+    rd-button.apply-url-btn(type="primary" @click="applyDomainName") {{ t('apply_url') }}
 
 before-search-empty(v-show="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"
-  ref="advancedRef"
   :show-usage-groups="['service', 'domainNameStatus', 'sslStatus', 'abnormalState']"
   @change="advancedConditionAct.change"
 )
 //- 列表資料
-List(
+list(
   v-if="searched"
   ref="listRef"
   @change="listAct.change"
@@ -169,6 +168,7 @@ import {
   provide,
   inject,
   ref,
+  computed,
 } from 'vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import BatchInput from '@/components/custom/batch-input/index.vue';
@@ -193,7 +193,7 @@ import {
   doExportCustomerDomainNameList,
 } from '../common/export';
 import type { SiteOption } from '../common/list';
-import type { ListData } from '../common/type';
+import type { ListData, AbnormalStateConditions } from '../common/type';
 
 export default defineComponent({
   name: 'CustomerDomain', // 網址管理 - 客端域名
@@ -207,32 +207,22 @@ export default defineComponent({
   },
   setup() {
     const { t, locale } = useI18n({ useScope: 'local' });
-
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
-
     // 已搜尋
     const searched = ref(false);
     // 更新API資料
     const updateApi = ref(false);
-
-    // 下拉全部選項
-    const allOption = inject<object>('UrlManagement:allOption');
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
-
     // 站別列表
     const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
     // 進階條件
-    const {
-      advancedRef,
-      advancedForm,
-      advancedFormKeys,
-      advancedGroupCheckAll,
-    } = useAdvancedConditions();
+    const { advancedForm, advancedFormKeys, abnormalStateGroup } =
+      useAdvancedConditions();
     provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:advancedGroupCheckAll', advancedGroupCheckAll);
+    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
     // 批次輸入框下拉開關
     const batchInputVisible = ref(false);
@@ -253,26 +243,44 @@ export default defineComponent({
       abnormalAreaOptions,
       singleAreaOptions,
       getAbnormalAreas,
-    } = useFormOptions();
+    } = useFormOptions(t);
     // 驗證相關
-    const { rules } = useValidationRules();
+    const { rules } = useValidationRules(t);
 
     const listRef = ref();
     // 列表資料
     const {
       listData,
       orgListData,
-      orgCheckNoDomainNameList,
-      checkNoDomainNameList,
+      unknownDomainNames,
       listAngleTotalData,
       listCondition,
       getList,
     } = useList(form);
     provide('CustomerDomain:listData', listData);
     provide('CustomerDomain:orgListData', orgListData);
-    provide('CustomerDomain:checkNoDomainNameList', checkNoDomainNameList);
     provide('CustomerDomain:listAngleTotalData', listAngleTotalData);
     provide('CustomerDomain:listCondition', listCondition);
+
+    // 查無域名列表
+    const unknownDomainNameList = computed(() => {
+      return unknownDomainNames.value
+        .filter((domainName, key) => {
+          const mixNum = (listCondition.page - 1) * listCondition.size;
+          const maxNum = listCondition.page * listCondition.size;
+          return mixNum <= key && key < maxNum;
+        })
+        .map((domainName, id) => ({
+          id,
+          domainName,
+        }));
+    });
+    provide('CustomerDomain:unknownDomainNameList', unknownDomainNameList);
+
+    // 申請域名
+    const applyDomainName = () => {
+      window.open('/v3/system_setting/url_management/apply');
+    };
 
     const watcher = useTabWatcher('customerDomain');
     const querySet = useQuery([
@@ -297,11 +305,10 @@ export default defineComponent({
       {
         key: 'domain',
         get: () => form.domain,
-        set: (val: number) => {
-          form.domain = val;
+        set: (val: number | 'all') => {
+          form.domain = val === 'all' ? val : +val;
         },
-        default: 0,
-        number: true,
+        default: 'all',
         cached: true,
       },
       {
@@ -372,14 +379,14 @@ export default defineComponent({
         default: [],
       },
       {
-        key: 'notOpen',
-        get: () => advancedForm.notOpen,
+        key: 'failToOpen',
+        get: () => advancedForm.failToOpen,
         set: (val: number[]) => {
           const value =
             typeof val === 'string'
               ? [toInteger(val)]
               : val.map(item => toInteger(item));
-          advancedForm.notOpen = updateApi.value ? [] : value;
+          advancedForm.failToOpen = updateApi.value ? [] : value;
         },
         default: [],
       },
@@ -396,14 +403,14 @@ export default defineComponent({
         default: [],
       },
       {
-        key: 'open',
-        get: () => advancedForm.open,
+        key: 'openable',
+        get: () => advancedForm.openable,
         set: (val: number[]) => {
           const value =
             typeof val === 'string'
               ? [toInteger(val)]
               : val.map(item => toInteger(item));
-          advancedForm.open = updateApi.value ? [] : value;
+          advancedForm.openable = updateApi.value ? [] : value;
         },
         default: [],
       },
@@ -458,16 +465,7 @@ export default defineComponent({
       // 判斷為查無域名角度
       if (listCondition.formAngle === 'noDomainName') {
         // 分頁總數
-        listCondition.total = orgCheckNoDomainNameList.value.length;
-
-        // 分頁顯示筆數
-        checkNoDomainNameList.value = orgCheckNoDomainNameList.value.filter(
-          (item: { id: number; domainName: string }, key: number) => {
-            const mixNum = (listCondition.page - 1) * listCondition.size;
-            const maxNum = listCondition.page * listCondition.size;
-            return mixNum <= key && key < maxNum;
-          },
-        );
+        listCondition.total = unknownDomainNames.value.length;
       } else {
         listData.value = filterData();
 
@@ -516,7 +514,7 @@ export default defineComponent({
           if (!isEmpty(clickASData)) {
             let fieldData: number[] = rowData[key as keyof typeof rowData];
             // 異常狀態
-            if (['notOpen', 'partiallyOpen', 'open'].includes(key)) {
+            if (['failToOpen', 'partiallyOpen', 'openable'].includes(key)) {
               fieldData = rowData.abnormalState;
             }
             return !isEmpty(intersection(clickASData, fieldData));
@@ -575,6 +573,22 @@ export default defineComponent({
         listAct.reset();
         watcher.queryRoute(querySet.getQuery());
       },
+      clear: () => {
+        // 還原進階條件
+        advancedFormKeys.forEach(key => {
+          advancedForm[key] = [];
+        });
+        abnormalStateGroup.value = [];
+      },
+      init: () => {
+        abnormalStateGroup.value = (
+          [
+            'failToOpen',
+            'partiallyOpen',
+            'openable',
+          ] as AbnormalStateConditions[]
+        ).filter(key => !isEmpty(advancedForm[key]));
+      },
     };
 
     // 匯出列表資料
@@ -610,9 +624,9 @@ export default defineComponent({
         domain_name_status: advancedForm.domainNameStatus,
         certificate_status: advancedForm.sslStatus,
         service_error: [
-          ...advancedForm.notOpen,
+          ...advancedForm.failToOpen,
           ...advancedForm.partiallyOpen,
-          ...advancedForm.open,
+          ...advancedForm.openable,
         ],
         table_filter: tableFilter,
         sort: listCondition.sort,
@@ -630,17 +644,12 @@ export default defineComponent({
         return false;
       });
 
-      // 查無域名資料
-      const noDomainNameList = orgCheckNoDomainNameList.value.map(
-        item => item.domainName,
-      );
-
       return doExportCustomerDomainNameList(
         query.type,
         query.site,
-        query.domain,
+        query.domain === 'all' ? 0 : query.domain,
         query.multipleDomains,
-        noDomainNameList,
+        unknownDomainNames.value,
         locale.value,
         options,
       ).then(resp => {
@@ -670,7 +679,7 @@ export default defineComponent({
           // 還原列表條件
           listAct.reset();
           // 還原進階條件
-          advancedRef.value?.clear();
+          advancedConditionAct.clear();
           watcher.queryRoute(querySet.getQuery({ ignoreCached: true }));
         }
       });
@@ -683,7 +692,7 @@ export default defineComponent({
         searched.value = true;
         return getList().then(resp => {
           if (resp) {
-            advancedRef.value?.init();
+            advancedConditionAct.init();
             setTableData();
           }
           updateApi.value = false;
@@ -706,7 +715,6 @@ export default defineComponent({
 
     return {
       t,
-      allOption,
       // 站別相關
       customSearch,
       siteOptions,
@@ -724,7 +732,6 @@ export default defineComponent({
       supportMultipleDomainName,
       changeType,
       // 進階條件
-      advancedRef,
       advancedConditionAct,
       // Table
       listRef,
@@ -734,6 +741,7 @@ export default defineComponent({
       singleAreaOptions,
       // 匯出相關
       exportList,
+      applyDomainName,
     };
   },
 });

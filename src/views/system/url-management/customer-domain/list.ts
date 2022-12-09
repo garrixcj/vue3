@@ -9,11 +9,6 @@ import type {
 } from '../common/type';
 import type { FormType } from '../common/search';
 
-export type CheckNoDomainNameList = {
-  id: number;
-  domainName: string;
-};
-
 export type ListCondition = {
   formAngle: string;
   page: number;
@@ -29,10 +24,8 @@ export const useList = (form: FormType) => {
   const orgListData = ref<ListData[]>([]);
   // 列表資料
   const listData = ref<ListData[]>([]);
-  // 原始查無域名列表
-  const orgCheckNoDomainNameList = ref<CheckNoDomainNameList[]>([]);
   // 查無域名列表
-  const checkNoDomainNameList = ref<CheckNoDomainNameList[]>([]);
+  const unknownDomainNames = ref<string[]>([]);
   // 列表角度各個總數
   const listAngleTotalData = reactive({
     all: 0,
@@ -90,7 +83,7 @@ export const useList = (form: FormType) => {
   };
 
   const getTableDataByMultipleDomain = (data: ListDataForAPI) => {
-    let domainNameInSearch = <string[]>[];
+    let domainNameInSearch = [] as string[];
     let abnormal = 0;
     let normal = 0;
     let count = 0;
@@ -139,25 +132,15 @@ export const useList = (form: FormType) => {
     listData.value = orgListData.value;
 
     // 查無域名
-    let noCount = 1;
-    orgCheckNoDomainNameList.value = form.multipleDomains.reduce(
-      (acc: CheckNoDomainNameList[], item: string) => {
-        let result = acc;
-        if (!isEmpty(item) && !domainNameInSearch.includes(item)) {
-          result = [...result, { id: noCount, domainName: item }];
-          noCount += 1;
-        }
-        return result;
-      },
-      [],
+    unknownDomainNames.value = form.multipleDomains.filter(
+      item => !isEmpty(item) && !domainNameInSearch.includes(item),
     );
-    checkNoDomainNameList.value = orgCheckNoDomainNameList.value;
 
     // 列表 - 顯示角度資料
     listAngleTotalData.all = orgListData.value.length;
     listAngleTotalData.normal = normal;
     listAngleTotalData.abnormal = abnormal;
-    listAngleTotalData.noDomainName = checkNoDomainNameList.value.length;
+    listAngleTotalData.noDomainName = unknownDomainNames.value.length;
 
     // 總筆數
     listCondition.total = orgListData.value.length;
@@ -192,7 +175,7 @@ export const useList = (form: FormType) => {
   // 建構資料
   const buildData = (item: ListForAPI, key: number) => {
     const result = {
-      id: key + 1, // 流水號
+      id: key, // 流水號
       site: {
         group: item.site_group, // 站別
         name: item.site_name, // 站別名稱
@@ -245,7 +228,7 @@ export const useList = (form: FormType) => {
     singleDomainName: () => {
       return urlAPI
         .getCustomerDomainByDomainName(
-          form.domain,
+          form.domain === 'all' ? 0 : form.domain,
           [form.domainName],
           getOptionalParam(),
         )
@@ -259,7 +242,10 @@ export const useList = (form: FormType) => {
     // By 單一廳 - 多域名
     multipleDomainName: () => {
       return urlAPI
-        .getCustomerDomainByDomain(form.domain, getOptionalParam())
+        .getCustomerDomainByDomain(
+          form.domain === 'all' ? 0 : form.domain,
+          getOptionalParam(),
+        )
         .then(resp => {
           if (resp.data.result) {
             getTableDataByMultipleDomain(resp.data.data);
@@ -272,9 +258,9 @@ export const useList = (form: FormType) => {
   // 取得列表資料
   const getList = () => {
     let act: keyof typeof updateList = 'site';
-    if (form.type === 'domainName' && form.domain === 0) {
+    if (form.type === 'domainName' && form.domain === 'all') {
       act = 'singleDomainName';
-    } else if (form.type === 'domainName' && form.domain > 0) {
+    } else if (form.type === 'domainName' && form.domain !== 'all') {
       act = 'multipleDomainName';
     } else if (form.type === 'ip') {
       act = 'IP';
@@ -289,8 +275,7 @@ export const useList = (form: FormType) => {
   return {
     orgListData,
     listData,
-    orgCheckNoDomainNameList,
-    checkNoDomainNameList,
+    unknownDomainNames,
     listAngleTotalData,
     listCondition,
     getList,

@@ -1,106 +1,105 @@
 <template lang="pug">
 rd-card(no-padding)
   template(#header)
-    .header
-      .header__prefix
-        batch-mode(
-          v-if="showBatchMode"
-          v-model:visible="batchModuleData.visible"
-          :count="batchModuleData.selected.length"
-          :disabled="listData.length === 0"
-          @change="clickBatchModule"
-        )
-          template(#operate)
-            //- 申請憑證
-            rd-button(
-              v-if="hasApplySSLModifyPerm"
-              type="default"
-              size="small"
-              text
-              :disabled="batchApplySSLValue === 0"
-              @click="openDialog(batchModuleData.selected, 'batchApplySSL')"
-            )
-              | {{ t('go_to_apply_ssl_certificate') }}({{ batchApplySSLValue }})
-            //- 編輯備註
-            rd-button(
-              v-if="hasCustomerUrlModifyPerm"
-              type="default"
-              size="small"
-              text
-              :disabled="batchModuleData.selected.length === 0"
-              @click="openDialog(batchModuleData.selected, 'batchRemark')"
-            )
-              div {{ t('edit_remark') }}({{ batchModuleData.selected.length }})
-        rd-divider(v-if="showUpdateDNS" direction="vertical")
-        //- 更新DNS資訊
+    batch-mode(
+      v-if="showBatchMode"
+      v-model:visible="batchModuleData.visible"
+      :count="batchModuleData.selected.length"
+      :disabled="listData.length === 0"
+      @change="clickBatchModule"
+    )
+      template(#operate)
+        //- 申請憑證
         rd-button(
-          v-if="showUpdateDNS"
+          v-if="hasApplySSLModifyPerm"
           type="default"
           size="small"
-          @click="dialogSwitch.updateDNS = true"
+          text
+          :disabled="batchApplySSLValue === 0"
+          @click="openDialog(batchModuleData.selected, 'batchApplySSL')"
         )
-          span {{ t('update_dns_info') }}
-          //- ｉ提示訊息
-          rd-tooltip(effect="dark" placement="top")
-            template(#content)
-              div {{ t('update_dns_info_msg_1') }}
-              div {{ t('update_dns_info_msg_2') }}
-            i.mdi.mdi-information.tooltip-info
-        rd-divider(v-if="showBatchMode" direction="vertical")
-        //- 自訂欄位
-        rd-field-filter(
+          | {{ t('go_to_apply_ssl_certificate') }}({{ batchApplySSLValue }})
+        //- 編輯備註
+        rd-button(
+          v-if="hasCustomerUrlModifyPerm"
+          type="default"
           size="small"
-          :fields="fieldsData"
-          :default-value="customOptions"
-          @confirm="confirm"
+          text
+          :disabled="batchModuleData.selected.length === 0"
+          @click="openDialog(batchModuleData.selected, 'batchRemark')"
         )
-        rd-divider(direction="vertical")
-        //- 搜尋結果
-        span {{ t('search_result_common', { num: groupSeparator(`${listCondition.total}`) }) }}
+          div {{ t('edit_remark') }}({{ batchModuleData.selected.length }})
+    rd-divider(v-if="showUpdateDNS" direction="vertical")
+    //- 更新DNS資訊
+    rd-button(
+      v-if="showUpdateDNS"
+      type="default"
+      size="small"
+      @click="dialogSwitch.updateDNS = true"
+    )
+      span {{ t('update_dns_info') }}
+      //- ｉ提示訊息
+      rd-tooltip(effect="dark" placement="top")
+        template(#content)
+          div {{ t('update_dns_info_msg_1') }}
+          div {{ t('update_dns_info_msg_2') }}
+        i.mdi.mdi-information.tooltip-info
+    rd-divider(v-if="showBatchMode" direction="vertical")
+    //- 自訂欄位
+    rd-field-filter(
+      size="small"
+      :fields="fieldsData"
+      :default-value="customOptions"
+      @confirm="confirm"
+    )
+    rd-divider(direction="vertical")
+    //- 搜尋結果
+    span.suffix {{ t('search_result_common', { num: groupSeparator(`${listCondition.total}`) }) }}
 
-      .header__suffix
-        //- 列表角度
-        rd-status-button(
-          v-for="(item, key) in listAnglesOptions"
-          :key="key"
-          :type="item.type"
-          :value="listAngleTotalData[item.value]"
-          :label="item.label"
-          min-width="140"
-          :active="item.value === listCondition.formAngle"
-          @click="setListAngle(item.value)"
-        )
-          //- 全部域名
-          template(v-if="item.value === 'all'" #label)
-            span.status-span {{ t('all_domain_name') }}
-            rd-tooltip(effect="dark" placement="top")
-              template(#content)
-                div {{ t('all_domain_name_tooltip_info') }}
-              i.mdi.mdi-information.tooltip-info
-        //- 其他列表角度
-        .other-options(v-if="showCheckNoDomainNameAngleBtn")
-          rd-divider(direction="vertical")
-          rd-status-button(
-            v-for="(item, key) in listAnglesOtherOptions"
-            :key="key"
-            :type="item.type"
-            :value="listAngleTotalData[item.value]"
-            :label="item.label"
-            min-width="140"
-            :active="item.value === listCondition.formAngle"
-            @click="setListAngle(item.value)"
-          )
-        //- 匯出
-        .export(v-if="hasExportPerm && listData.length > 0")
-          rd-divider(direction="vertical")
-          rd-button(type="default" size="small" @click="exportVisible = true") {{ t('export') }}
+    //- 列表角度
+    rd-status-button(
+      v-for="(item, key) in listAnglesOptions"
+      :key="key"
+      :type="item.type"
+      :value="listAngleTotalData[item.value]"
+      :label="item.label"
+      min-width="140"
+      :active="item.value === listCondition.formAngle"
+      @click="setListAngle(item.value)"
+    )
+      //- 全部域名
+      template(v-if="item.value === 'all'" #label)
+        span.status-span {{ t('all_domain_name') }}
+        rd-tooltip(effect="dark" placement="top")
+          template(#content)
+            div {{ t('all_domain_name_tooltip_info') }}
+          i.mdi.mdi-information.tooltip-info
+    //- 其他列表角度
+    .other-options(v-if="showCheckNoDomainNameAngleBtn")
+      rd-divider(direction="vertical")
+      rd-status-button(
+        v-for="(item, key) in listAnglesOtherOptions"
+        :key="key"
+        :type="item.type"
+        :value="listAngleTotalData[item.value]"
+        :label="item.label"
+        min-width="140"
+        :active="item.value === listCondition.formAngle"
+        @click="setListAngle(item.value)"
+      )
+    //- 匯出
+    .export(
+      v-if="(hasExportPerm && listData.length > 0) || unknownDomainNameList.length > 0"
+    )
+      rd-divider(direction="vertical")
+      rd-button(type="default" size="small" @click="exportVisible = true") {{ t('export') }}
 
   template(#content)
     //- 查無域名列表
     rd-table(
       v-if="isNoDomainNameAngle"
       border
-      :data="checkNoDomainNameList"
+      :data="unknownDomainNameList"
       :max-height="800"
     )
       //- 序號
@@ -112,6 +111,8 @@ rd-card(no-padding)
         :resizable="false"
         width="60"
       )
+        template(#default="{ row }")
+          span {{ row.id + 1 }}
       //- 域名
       rd-table-column(
         :label="t('domain_name')"
@@ -131,7 +132,7 @@ rd-card(no-padding)
       :max-height="800"
       :min-width="1248"
       @selection-change="selectAct.change"
-      @sort-change="sortAct.change"
+      @sort-change="tableAct.sort"
     )
       rd-table-column(
         v-if="batchModuleData.visible"
@@ -150,6 +151,8 @@ rd-card(no-padding)
         :resizable="false"
         width="60"
       )
+        template(#default="{ row }")
+          span {{ row.id + 1 }}
       //- 站別名稱
       rd-table-column(
         v-if="isDisplayedColumns('site')"
@@ -240,10 +243,8 @@ rd-card(no-padding)
       )
         template(#default="{ row }")
           rd-format-timer(
-            v-if="row.abnormalDate !== ''"
-            :date-default="row.abnormalDate"
+            :date-default="row.abnormalDate !== '' ? row.abnormalDate : '--'"
           )
-          span(v-else) --
       //- 服務項目
       rd-table-column(
         v-if="isDisplayedColumns('service')"
@@ -306,11 +307,10 @@ rd-card(no-padding)
       )
         template(#default="{ row }")
           rd-format-timer(
-            v-if="row.automaticRenewalDate !== ''"
             wrap
+            date-default="--"
             :date-time="row.automaticRenewalDate"
           )
-          span(v-else) --
       //- 系統檢測
       rd-table-column(
         v-if="isDisplayedColumns('systemDetection')"
@@ -407,8 +407,8 @@ rd-card(no-padding)
       :page-size="listCondition.size"
       :page-sizes="[1000, 1500, 2000]"
       :total="listCondition.total"
-      @update:page-size="paginationAct.pageSizeChange"
-      @current-change="paginationAct.pageChange"
+      @update:page-size="tableAct.size"
+      @current-change="tableAct.page"
     )
 //- 匯出
 export-note(
@@ -452,7 +452,7 @@ import ExportNote from '@/plugins/export-note/index.vue';
 import EditRemark from '../common/edit-remark.vue';
 import ApplySsl from '../common/apply-ssl.vue';
 import { ElTable } from 'element-plus';
-import amount from '@/components/utils/format/amount';
+import { groupSeparator } from '@/components/utils/format/amount';
 import { notify } from '@/components/utils/notification';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useModifyAccess } from '@/plugins/access/modify';
@@ -464,7 +464,7 @@ import type {
   BatchModule,
   RemarkDomainNameForm,
 } from '../common/type';
-import type { CheckNoDomainNameList, ListCondition } from './list';
+import type { ListCondition } from './list';
 import { url as urlAPI } from '@/api/domain';
 
 type ListAngles = 'all' | 'normal' | 'abnormal' | 'noDomainName';
@@ -492,13 +492,12 @@ export default defineComponent({
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
 
-    // 數值相關格式轉換
-    const { groupSeparator } = amount;
-
     // 判斷是否客端域名修改權限
-    const hasCustomerUrlModifyPerm = useModifyAccess('CustomerUrl').hasModify;
+    const { hasModify: hasCustomerUrlModifyPerm } =
+      useModifyAccess('CustomerUrl');
     // 判斷是否申請憑證修改權限
-    const hasApplySSLModifyPerm = useModifyAccess('ApplyCertificate').hasModify;
+    const { hasModify: hasApplySSLModifyPerm } =
+      useModifyAccess('ApplyCertificate');
 
     // 基本搜尋條件
     const basicSearchForm = inject(
@@ -507,13 +506,24 @@ export default defineComponent({
     // 原始列表資料
     const listData = inject('CustomerDomain:listData') as ListData[];
     // 查無域名資料
-    const checkNoDomainNameList = inject(
-      'CustomerDomain:checkNoDomainNameList',
-    ) as Ref<CheckNoDomainNameList[]>;
+    const unknownDomainNameList = inject(
+      'CustomerDomain:unknownDomainNameList',
+    ) as Ref<
+      {
+        id: number;
+        domainName: string;
+      }[]
+    >;
+
     // 取得異常狀態色系
     const getAbnormalStateColor = inject(
       'UrlManagement:getAbnormalStateColor',
     ) as Function;
+    // 批次模組資料
+    const batchModuleData: BatchModule = reactive({
+      visible: false,
+      selected: [],
+    });
 
     const listRef = ref<InstanceType<typeof ElTable>>();
     const selectAct = {
@@ -527,22 +537,6 @@ export default defineComponent({
         batchModuleData.selected.find(selectedRow => selectedRow.id === row.id)
           ? 'selected-row'
           : '',
-    };
-    const sortAct = {
-      change: ({
-        prop,
-        order,
-      }: {
-        order: 'ascending' | 'descending' | null;
-        prop: 'abnormalDate' | 'automaticRenewalDate';
-      }) => {
-        emit('sortChange', prop, order);
-      },
-      clear: () => {
-        listCondition.sort = 'id';
-        listCondition.order = 'asc';
-        listRef.value?.clearSort();
-      },
     };
 
     const listCondition = inject(
@@ -566,47 +560,57 @@ export default defineComponent({
         type: 'default',
       },
     ]);
+
+    // table 動作
+    const tableAct = {
+      page: (value: number) => {
+        listCondition.page = value;
+        emit('change');
+      },
+      size: (value: number) => {
+        listCondition.page = 1;
+        listCondition.size = value;
+        emit('change');
+      },
+      sort: ({
+        prop,
+        order,
+      }: {
+        order: 'ascending' | 'descending' | null;
+        prop: 'abnormalDate' | 'automaticRenewalDate';
+      }) => {
+        emit('sortChange', prop, order);
+      },
+      clear: () => {
+        listCondition.sort = 'id';
+        listCondition.order = 'asc';
+        listRef.value?.clearSort();
+      },
+    };
+
     // 設定列表角度
     const setListAngle = (value: ListAngles) => {
       listCondition.page = 1;
-      sortAct.clear();
+      tableAct.clear();
       listCondition.total = listAngleTotalData[value];
       listCondition.formAngle = value;
-      change();
+      emit('change');
     };
     // 顯示查無域名
     const isNoDomainNameAngle = computed(() => {
       return (
         listCondition.formAngle === 'noDomainName' &&
-        checkNoDomainNameList.value.length > 0
+        unknownDomainNameList.value.length > 0
       );
     });
     // 顯示查無域名角度的按鈕
     const showCheckNoDomainNameAngleBtn = computed(() => {
       return (
         basicSearchForm.type === 'domainName' &&
-        basicSearchForm.domain > 0 &&
+        basicSearchForm.domain !== 'all' &&
         basicSearchForm.multipleDomains.length > 1
       );
     });
-
-    // 分頁
-    const paginationAct = {
-      pageChange: (value: number) => {
-        listCondition.page = value;
-        change();
-      },
-      pageSizeChange: (value: number) => {
-        listCondition.page = 1;
-        listCondition.size = value;
-        change();
-      },
-    };
-
-    // 更動 Table 資料
-    const change = () => {
-      emit('change');
-    };
 
     // 開關
     const dialogSwitch = reactive({
@@ -677,17 +681,12 @@ export default defineComponent({
       setLoading(true);
       return urlAPI.updateDNS(basicSearchForm.site).then(resp => {
         if (resp.data.result) {
-          notify.success();
+          notify.success({ title: t('success') });
         }
         setLoading(false);
       });
     };
 
-    // 批次模組資料
-    const batchModuleData: BatchModule = reactive({
-      visible: false,
-      selected: [],
-    });
     // 監聽批次模式開啟 or 關閉
     const clickBatchModule = (status: boolean) => {
       if (!status) {
@@ -732,7 +731,7 @@ export default defineComponent({
     // 封裝外部使用功能
     expose({
       scrollTo,
-      sortClear: sortAct.clear,
+      sortClear: tableAct.clear,
     });
 
     return {
@@ -741,7 +740,7 @@ export default defineComponent({
       listRef,
       listData,
       listCondition,
-      checkNoDomainNameList,
+      unknownDomainNameList,
       selectAct,
       groupSeparator,
       getAbnormalStateColor,
@@ -752,8 +751,7 @@ export default defineComponent({
       listAnglesOtherOptions,
       setListAngle,
       showCheckNoDomainNameAngleBtn,
-      paginationAct,
-      sortAct,
+      tableAct,
       // Dialog 共用
       openDialog,
       dialogForm,
@@ -785,33 +783,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header {
-  @include flex-basic(space-between);
-  width: 100%;
-
-  &__prefix {
-    @include flex-basic;
-  }
-
-  &__suffix {
-    @include flex-basic;
-
-    .status-span {
-      margin-right: 5px;
-    }
-    .other-options {
-      min-width: 160px;
-    }
-    .export {
-      min-width: 65px;
-    }
+  @include flex-basic();
+  .suffix {
+    margin-right: auto;
   }
 }
 .tag-container {
+  @include space-multiline(5px);
   margin-bottom: 5px;
-
-  &:not(:last-child) {
-    margin-right: 5px;
-  }
 }
 .remark-content {
   @include flex-basic();

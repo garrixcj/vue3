@@ -1,6 +1,5 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 // 客端域名自訂欄位初始設定
-export const customerDomainFieldsInitial = (t: any) => {
+export const customerDomainFieldsInitial = (t: (key: string) => string) => {
   return {
     config: {
       operation: 'urlManagementCustomerDomain',

@@ -47,7 +47,6 @@ rd-layout.url-management(
 import {
   defineComponent,
   onMounted,
-  reactive,
   ref,
   provide,
   type Ref,
@@ -187,10 +186,6 @@ export default defineComponent({
     };
     provide('UrlManagement:scrollToTop', scrollToTop);
 
-    // 下拉全部選項
-    const allOption = reactive({ label: t('all'), value: 0, code: '' });
-    provide('UrlManagement:allOption', allOption);
-
     // 域名狀態群組的過濾選項
     const { advancedConditions, getAdvancedConditionsList } =
       useAdvancedConditionList(locale.value);
@@ -198,20 +193,21 @@ export default defineComponent({
 
     // 取得異常狀態 - 子項目顏色
     const getAbnormalStateColor = (value: number) => {
-      const notOpen = advancedConditions.notOpen;
+      const failToOpen = advancedConditions.failToOpen;
       const partiallyOpen = advancedConditions.partiallyOpen;
-      const open = advancedConditions.open;
+      const openable = advancedConditions.openable;
 
       switch (true) {
         // 無法開啟
-        case typeof notOpen.find(item => item.label === value) !== 'undefined':
+        case typeof failToOpen.find(item => item.label === value) !==
+          'undefined':
           return 'danger';
         // 部分開啟
         case typeof partiallyOpen.find(item => item.label === value) !==
           'undefined':
           return 'warning';
         // 可開啟
-        case typeof open.find(item => item.label === value) !== 'undefined':
+        case typeof openable.find(item => item.label === value) !== 'undefined':
           return 'success';
         // 預設空的
         default:
