@@ -108,7 +108,7 @@ export default defineComponent({
       {
         name: 'singleNumberProgress',
         label: t('single_number_progress'),
-        perm: 'BindAlternateUrl', // todo: 待加新權限
+        perm: 'ApplicationProgress',
         to: { query: { tab: 'singleNumberProgress' } },
       },
       // SSL憑證(舊頁面)
