@@ -1152,7 +1152,7 @@ export const url = {
    */
   getSingleSettingExampleTemplate(site_group: string) {
     return this.http.get(
-      `/domain/domain_name/request_templete/site_group/${site_group}`,
+      `/domain/domain_name/request_template/site_group/${site_group}`,
     );
   },
   /**
