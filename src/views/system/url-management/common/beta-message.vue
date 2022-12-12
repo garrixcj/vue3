@@ -1,6 +1,6 @@
 <i18n src="@/languages/common/beta_message.json"></i18n>
 <template lang="pug">
-rd-alert(type="warning" title="warning alert" :closable="false")
+rd-alert.beta-message(type="warning" title="warning alert" :closable="false")
   template(#title)
     i18n-t(keypath="beta_version_msg")
       template(#function)
@@ -28,3 +28,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.beta-message {
+  margin-bottom: 10px;
+}
+</style>
