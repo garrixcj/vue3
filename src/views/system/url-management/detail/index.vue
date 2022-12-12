@@ -42,7 +42,7 @@ import { useTicket } from '../apply/ticket';
 import EstimateCard from '../apply/estimate-card.vue';
 import BasicCard from '../apply/basic-card.vue';
 import UrlSettingCard from './url-setting.vue';
-import { useSiteList, type SiteOption } from '../common/list';
+import { useSiteList } from '../common/list';
 import { statusKeyMap, statusListMap } from '../single-number-progress/status';
 import AbolishDialog from '../single-number-progress/abolish-dialog.vue';
 import type { AbolishList } from '../single-number-progress/single-number-progress';
