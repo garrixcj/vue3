@@ -1682,6 +1682,257 @@ export const url = {
     };
     return this.http.post('/url/domain_names/export_param', params);
   },
+  /**
+   * 取得管端域名資料 (以域名搜尋)
+   * @param {string} domain_name 域名
+   * @param {number} entrance    端口(1: 廳主端, 2: 管端)
+   */
+  getAgentDomainName(domain_name: string, entrance: number) {
+    const params = {
+      domain_name,
+      entrance,
+    };
+    return this.http.get('/domain/agent/domain_name/by_domain_name', {
+      params,
+    });
+  },
+  /**
+   * 取得管端域名資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {number} entrance   端口(1: 廳主端, 2: 管端)
+   * @param {object} options    其他選項
+   */
+  getAgentDomainNameBySite(
+    site_group: string,
+    entrance: number,
+    options: { domain_name?: string },
+  ) {
+    const paramOptions = ['domain_name'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      entrance,
+      ...optionParams,
+    };
+    return this.http.get('domain/agent/domain_name/by_site', { params });
+  },
+  /**
+   * 匯出管端域名資料 (以域名搜尋)
+   * @param {string} domain_name 域名
+   * @param {number} entrance    端口(1: 廳主端, 2: 管端)
+   * @param {string} lang        語系
+   * @param {object} options     其他選項
+   */
+  exportAgentDomainName(
+    domain_name: string,
+    entrance: number,
+    lang: string,
+    options: {
+      domain_name?: string;
+      service_error?: number[];
+      sort?: string;
+      order?: string;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = ['service_error', 'sort', 'order', 'export_remark'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      domain_name,
+      entrance,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post(
+      '/domain/agent/domain_name/by_domain_name/export',
+      params,
+    );
+  },
+  /**
+   * 匯出管端域名資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {number} entrance   端口(1: 廳主端, 2: 管端)
+   * @param {string} lang       語系
+   * @param {object} options    其他選項
+   */
+  exportAgentDomainNameBySite(
+    site_group: string,
+    entrance: number,
+    lang: string,
+    options: {
+      domain_name?: string;
+      service_error?: number[];
+      sort?: string;
+      order?: string;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'domain_name',
+      'service_error',
+      'sort',
+      'order',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      entrance,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post('/domain/agent/domain_name/by_site/export', params);
+  },
+  /**
+   * 取得IP服務資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {object} options    其他選項
+   */
+  getIPServiceBySite(site_group: string, options: { ip?: string }) {
+    const paramOptions = ['ip'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      ...optionParams,
+    };
+    return http.get('/domain/ip_service/by_site', { params });
+  },
+  /**
+   * 取得IP服務資料 (以IP搜尋)
+   * @param {string} ip IP
+   */
+  getIPServiceByIP(ip: string) {
+    const params = {
+      ip,
+    };
+    return http.get('/domain/ip_service/by_ip', { params });
+  },
+  /**
+   * 匯出IP服務資料 (以IP搜尋)
+   * @param {string} ip      IP
+   * @param {string} lang    語系
+   * @param {object} options 其他選項
+   */
+  exportIPService(
+    ip: string,
+    lang: string,
+    options: {
+      ip?: string;
+      ip_type?: number[];
+      purchase_method?: number[];
+      attack_status?: number[];
+      table_filter?: number;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'ip_type',
+      'purchase_method',
+      'attack_status',
+      'table_filter',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      ip,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post('/domain/ip_service/by_ip/export', params);
+  },
+  /**
+   * 匯出IP服務資料 (以站別搜尋)
+   * @param {string} site_group 站別
+   * @param {string} lang       語系
+   * @param {object} options    其他選項
+   */
+  exportIPServiceBySite(
+    site_group: string,
+    lang: string,
+    options: {
+      ip?: string;
+      ip_type?: number[];
+      purchase_method?: number[];
+      attack_status?: number[];
+      table_filter?: number;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'ip',
+      'ip_type',
+      'purchase_method',
+      'attack_status',
+      'table_filter',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post('/domain/ip_service/by_site/export', params);
+  },
+  /**
+   * 取得活躍域名
+   * @param {string} start_date 開始日期
+   * @param {string} end_date   結束日期
+   * @param {object} options    其他選項
+   */
+  getActiveDomainName(
+    start_date: string,
+    end_date: string,
+    options: {
+      domain?: number;
+      keyword?: string;
+    },
+  ) {
+    const paramOptions = ['keyword', 'domain'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      start_date,
+      end_date,
+      ...optionParams,
+    };
+    return this.http.get('/domain/active/domain_name', { params });
+  },
+  /**
+   * 匯出活躍域名
+   * @param {string} start_date 開始日期
+   * @param {string} end_date   結束日期
+   * @param {object} options    其他選項
+   */
+  exportActiveDomainName(
+    start_date: string,
+    end_date: string,
+    options: {
+      domain?: number;
+      keyword?: string;
+      export_remark?: string;
+      lang?: string;
+      sort?: string;
+      order?: string;
+      table_filter?: number;
+    },
+  ) {
+    const paramOptions = [
+      'keyword',
+      'domain',
+      'export_remark',
+      'lang',
+      'sort',
+      'order',
+      'table_filter',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      start_date,
+      end_date,
+      ...optionParams,
+    };
+    return this.http.post('/domain/active/domain_name/export', params);
+  },
 };
 
 const domain = {
