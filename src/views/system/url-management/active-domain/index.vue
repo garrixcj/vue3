@@ -296,9 +296,9 @@ export default defineComponent({
           };
           // 是負數
           const isNegativeNumber =
-            item.requestGrow < 0 ||
-            item.loginPassGrow < 0 ||
-            item.loginFailGrow < 0;
+            (item.requestGrow < 0 && item.requestGrow !== -Infinity) ||
+            (item.loginPassGrow < 0 && item.loginPassGrow !== -Infinity) ||
+            (item.loginFailGrow < 0 && item.loginFailGrow !== -Infinity);
           // 判斷有中點擊的進階條件
           const isAdSearch = advancedFormKeys.some(key => {
             // 單一進階條件點擊項目

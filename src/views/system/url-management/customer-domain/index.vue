@@ -334,6 +334,7 @@ export default defineComponent({
         filter: () => !isEmpty(form.multipleDomains),
         optional: true,
         cached: true,
+        array: true,
       },
       {
         key: 'ip',
@@ -427,6 +428,25 @@ export default defineComponent({
         },
         default: [],
         filter: () => !isEmpty(advancedForm.openable),
+        optional: true,
+        numberArray: true,
+      },
+      {
+        key: 'service_error',
+        query: 'abnormalStatus',
+        get: () => [
+          ...advancedForm.failToOpen,
+          ...advancedForm.partiallyOpen,
+          ...advancedForm.openable,
+        ],
+        default: [],
+        filter: type =>
+          !(type === 'route') &&
+          !isEmpty([
+            ...advancedForm.failToOpen,
+            ...advancedForm.partiallyOpen,
+            ...advancedForm.openable,
+          ]),
         optional: true,
         numberArray: true,
       },
@@ -618,6 +638,11 @@ export default defineComponent({
       const query = querySet.getQuery() as FormType;
       const params = querySet.getParam();
 
+      // 判斷是否有備註
+      if (!isEmpty(note)) {
+        params.export_remark = note;
+      }
+
       return doExportCustomerDomainNameList(
         query.type,
         query.site,
@@ -625,15 +650,7 @@ export default defineComponent({
         query.multipleDomains,
         unknownDomainNames.value,
         locale.value,
-        {
-          ...params,
-          service_error: [
-            ...(params.fail_to_oOpen as number[]),
-            ...(params.partially_open as number[]),
-            ...(params.openable as number[]),
-          ],
-          export_remark: note,
-        },
+        params,
       ).then(resp => {
         if (resp.data.result) {
           notify.success({
