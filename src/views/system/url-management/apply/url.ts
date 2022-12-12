@@ -1,6 +1,13 @@
 import type { ApplyDomain, BasicSetting } from './apply';
 import { findIndex } from 'lodash';
 
+type GetState = {
+  urlList: ApplyDomain[];
+  basicData: BasicSetting;
+  idx: number;
+  inputLimit: number;
+};
+
 /**
  * 取得域名格式檢查狀態
  * @param  {ApplyDomain[]} urlList 域名列表
@@ -11,17 +18,7 @@ import { findIndex } from 'lodash';
  */
 export const getState = (
   domain: string,
-  {
-    urlList,
-    basicData,
-    idx,
-    inputLimit,
-  }: {
-    urlList: ApplyDomain[];
-    basicData: BasicSetting;
-    idx: number;
-    inputLimit: number;
-  },
+  { urlList, basicData, idx, inputLimit }: GetState,
 ) => {
   // 當今天域名是空的
   if (!domain) {
