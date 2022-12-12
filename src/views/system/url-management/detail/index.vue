@@ -15,7 +15,11 @@ rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
     //- 單據狀態
   template(#titleSuffix)
     //- 作廢
-    rd-button(v-if="hasModify" type="secondary" @click="initAbolish") {{ t('void') }}
+    rd-button(
+      v-if="hasModify && abolishable(ticketInfo.status, ticketBasicData.buy, ticketUrlList)"
+      type="secondary"
+      @click="initAbolish"
+    ) {{ t('void') }}
   template(#body)
     rd-layout-content(v-if="!loading")
       //- 基本設定
@@ -26,12 +30,17 @@ rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
       estimate-card(:count="valuableUrlCount")
       .button-group
         //- 作廢
-        rd-button(v-if="hasModify" type="secondary" @click="initAbolish") {{ t('void') }}
+        rd-button(
+          v-if="hasModify && abolishable(ticketInfo.status, ticketBasicData.buy, ticketUrlList)"
+          type="secondary"
+          @click="initAbolish"
+        ) {{ t('void') }}
     //- 作廢確定 Dialog
     abolish-dialog(
       v-model="abolishVisible"
       action="single"
       :list="abolishList"
+      @submit="updateTicket"
     )
 </template>
 
@@ -44,7 +53,11 @@ import EstimateCard from '../apply/estimate-card.vue';
 import BasicCard from '../apply/basic-card.vue';
 import UrlSettingCard from './url-setting.vue';
 import { useSiteList } from '../common/list';
-import { statusKeyMap, statusListMap } from '../single-number-progress/status';
+import {
+  statusKeyMap,
+  statusListMap,
+  abolishable,
+} from '../single-number-progress/status';
 import AbolishDialog from '../single-number-progress/abolish-dialog.vue';
 import type { AbolishList } from '../single-number-progress/single-number-progress';
 import { useModifyAccess } from '@/plugins/access/modify';
@@ -91,6 +104,15 @@ export default defineComponent({
       });
     });
 
+    // 更新工單資料(用於作廢後資料更新)
+    const updateTicket = () => {
+      loading.value = true;
+
+      getTicket(id).then(() => {
+        loading.value = false;
+      });
+    };
+
     // 站別資料 - 轉換為用站別當key的資料
     const siteList = computed(() =>
       mapKeys(siteOptions.value, obj => obj.value),
@@ -133,6 +155,8 @@ export default defineComponent({
       statusKeyMap,
       statusListMap,
       hasModify,
+      abolishable,
+      updateTicket,
     };
   },
 });

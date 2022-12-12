@@ -10,7 +10,7 @@ rd-dialog(
   .content
     //- 提示
     .msg
-      div {{ t('batch_add_domain_name_msg1') }}
+      div {{ t('batch_add_domain_name_msg1', { num: maxRows }) }}
       div {{ t('batch_add_domain_name_msg2') }}
     //- 批次輸入框
     rd-form(ref="batchFormRef" :model="batchForm" :rules="rules")

@@ -165,6 +165,7 @@ table-card(
   @update:current-page="listAction.changePage"
   @update:page-size="listAction.changePageSize"
   @sort-change="listAction.changeSort"
+  @update-data="updateQuery(false)"
 )
 </template>
 

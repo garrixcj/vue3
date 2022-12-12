@@ -13,7 +13,7 @@ rd-navbar-layout(
     //- 返回列表
     rd-button(type="secondary" @click="back") {{ t('back_to_list') }}
     //- 查看單號進度
-    rd-button(v-if="type !== 'error'" type="gradient") {{ t('go_to_ticket_status') }}
+    rd-button(v-if="type !== 'error'" type="gradient" @click="guideDetail") {{ t('go_to_ticket_status') }}
   template(#body)
     rd-layout-content
       //- 結果Alert
@@ -94,7 +94,7 @@ export default defineComponent({
     const typeInfo = computed(() => {
       // 全成功
       let info = [
-        t('add_domain_success_msg1'),
+        t('add_domain_success_msg1', { id: result.id }),
         t('add_domain_success_msg2', {
           apply: result.list.length,
           success: successCount.value,
@@ -127,8 +127,7 @@ export default defineComponent({
 
     // 返回列表
     const back = () => {
-      window.location.href =
-        '/v3/system_setting/url_management/index?tab=customerDomain';
+      window.location.href = '/system_setting/url_management/index';
     };
 
     // 導向單號詳情

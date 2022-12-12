@@ -25,8 +25,8 @@
               .tag-container
                 rd-tag.tag-item(v-for="(data, index) in list" :key="index") {{ data.id }}
     template(#footer)
-      rd-button(type="secondary" @click="open(false)") {{ t('cancel') }}
-      rd-button(type="primary" @click="confirm") {{ t('void') }}
+      rd-button(type="secondary" :disabled="loading" @click="open(false)") {{ t('cancel') }}
+      rd-button(type="primary" :disabled="loading" @click="confirm") {{ t('void') }}
 </template>
 
 <script lang="ts">
@@ -51,13 +51,14 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['update:model-value'],
+  emits: ['update:model-value', 'submit'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
     const loading = ref(false);
     const collapse = ref(true);
 
     const confirm = () => {
+      loading.value = true;
       urlAPI.abolishTicket(props.list.map(obj => obj.id)).then(response => {
         if (response.data.result) {
           notify.success({
@@ -71,8 +72,16 @@ export default defineComponent({
                     num: props.list.length,
                   }),
           });
+        } else {
+          // TODO: 待後端更改完成後再替換成對應的數量
+          notify.error({
+            title: t('error'),
+            message: t('change_trans_number_fail', { fail: 0, success: 0 }),
+          });
         }
         open(false);
+        emit('submit');
+        loading.value = false;
       });
     };
 

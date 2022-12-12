@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteRestriction } from './restriction';
 import { notify } from '@/components/utils/notification';
@@ -93,12 +93,19 @@ export default defineComponent({
       });
     };
 
+    watch(
+      () => props.modelValue,
+      async value => {
+        if (value) {
+          // 當今天是要開啟時重新設定現在的限定筆數
+          resetRestriction();
+        }
+      },
+    );
+
     // 根據狀態進行重置並觸發上層值的更新
     const resetAndEmit = (visible: boolean) => {
-      if (visible) {
-        // 當今天是要開啟時重新設定現在的限定筆數
-        resetRestriction();
-      } else {
+      if (!visible) {
         // 當今天是要關閉時重置form
         formRef.value.resetFields();
       }
