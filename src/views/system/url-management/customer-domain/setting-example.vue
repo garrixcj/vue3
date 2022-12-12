@@ -1,4 +1,4 @@
-<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
+<i18n src="@/languages/system_setting/url_management/common.json"></i18n>
 <template lang="pug">
 rd-button(type="default" @click="visible = !visible") {{ t('setting_example') }}
 rd-drawer(
@@ -81,13 +81,13 @@ rd-drawer(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { replace } from 'lodash';
-import { defineComponent, inject, ref, reactive } from 'vue';
+import { type Ref, defineComponent, inject, ref, reactive } from 'vue';
 import RdDrawer from '@/components/custom/drawer/index.vue';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
 import RdCollapseCard from '@/components/custom/collapse-card/index.vue';
 import { useCopy } from '@/components/utils/copy';
 import { notify } from '@/components/utils/notification';
-import { useSiteList } from '../common/list';
+import type { SiteOption } from '../common/list';
 import { url as urlAPI } from '@/api/domain';
 
 export default defineComponent({
@@ -99,7 +99,7 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
-    const loading = ref(true);
+    const loading = ref(false);
     // 站別資訊開關
     const visible = ref(false);
     // 搜尋前
@@ -107,12 +107,8 @@ export default defineComponent({
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
 
-    // 站別相關
-    const { getSiteList, siteOptions } = useSiteList();
-    // 取的站別列表
-    getSiteList().then(() => {
-      loading.value = false;
-    });
+    // 站別列表
+    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
     // 表單 Ref
     const drawerRef = ref();

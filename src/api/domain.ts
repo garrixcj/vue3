@@ -1376,6 +1376,312 @@ export const url = {
       ...options,
     });
   },
+  /**
+   * 取得異常地區列表
+   */
+  getAbnormalAreas() {
+    return this.http.get('/domain/domain_name/abnormal_areas');
+  },
+  /**
+   * 取得域名狀態選項過濾器資料
+   */
+  getDomainNameFilterOption() {
+    return this.http.get('/domain_name/filter/option');
+  },
+  /**
+   * 申請SSL憑證
+   * @param  {array}   urls       域名
+   * @param  {boolean} auto_renew 自動展延
+   * @param  {string}  hash_token Token
+   * @param  {object}  options    其他選項
+   */
+  applySSL(
+    urls: string[],
+    auto_renew: boolean,
+    hash_token: string,
+    options: { remark?: string },
+  ) {
+    const paramOptions = ['remark'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      urls,
+      auto_renew,
+      hash_token,
+      ...optionParams,
+    };
+    return this.http.post('/ssl/apply', params);
+  },
+  /**
+   * 更新DNS資訊
+   */
+  updateDNS(site_group: string) {
+    return this.http.put('/domain/dns', { site_group });
+  },
+  /**
+   * 取得客端域名資料 (以站別搜尋)
+   * @param  {string} site_group 站別
+   * @param  {object} options    其他選項
+   */
+  getCustomerDomainBySite(
+    site_group: string,
+    options: { domain_name?: string; ip?: string; abnormal_area?: string },
+  ) {
+    const paramOptions = ['domain_name', 'ip', 'abnormal_area'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      ...optionParams,
+    };
+    return this.http.get('/domain/customer/domain_name/by_site', { params });
+  },
+  /**
+   * 取得客端域名資料 (以域名搜尋)
+   * @param  {number} domain       廳主id
+   * @param  {array}  domain_names 域名資料
+   * @param  {object} options      其他選項
+   */
+  getCustomerDomainByDomainName(
+    domain: number,
+    domain_names: string[],
+    options: { abnormal_area?: string },
+  ) {
+    const paramOptions = ['abnormal_area'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      domain,
+      domain_names,
+      ...optionParams,
+    };
+    return this.http.get('/domain/customer/domain_name/by_domain_name', {
+      params,
+    });
+  },
+  /**
+   * 取得客端域名資料 (以單一廳主搜尋)
+   * @param  {number} domain  廳主id
+   * @param  {object} options 其他選項
+   */
+  // 取得客端域名資料 (以廳主搜尋)
+  getCustomerDomainByDomain(
+    domain: number,
+    options: { abnormal_area?: string },
+  ) {
+    const paramOptions = ['abnormal_area'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      ...optionParams,
+    };
+    return this.http.get(`/domain/${domain}/customer/domain_name`, { params });
+  },
+  /**
+   * 取得客端域名資料 (以IP搜尋)
+   * @param  {string} ip      ip
+   * @param  {object} options 其他選項
+   */
+  getCustomerDomainByIP(ip: string, options: { abnormal_area?: string }) {
+    const paramOptions = ['abnormal_area'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      ip,
+      ...optionParams,
+    };
+    return this.http.get('/domain/customer/domain_name/by_ip', { params });
+  },
+  /**
+   * 匯出客端域名資料 (以站別搜尋)
+   * @param  {string} site_group 站別
+   * @param  {string} lang       語系
+   * @param  {object} options    其他選項
+   */
+  exportCustomerDomainBySite(
+    site_group: string,
+    lang: string,
+    options: {
+      domain_name?: string;
+      ip?: string;
+      abnormal_area?: string;
+      service_item?: number[];
+      domain_name_status?: number[];
+      certificate_status?: number[];
+      service_error?: number[];
+      table_filter?: number;
+      sort?: string;
+      order?: string;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'domain_name',
+      'ip',
+      'abnormal_area',
+      'service_item',
+      'domain_name_status',
+      'certificate_status',
+      'service_error',
+      'table_filter',
+      'sort',
+      'order',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      site_group,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post(
+      '/domain/customer/domain_name/by_site/export',
+      params,
+    );
+  },
+  /**
+   * 匯出客端域名資料 (以單一域名搜尋)
+   * @param  {string} domain_name 域名
+   * @param  {string} lang        語系
+   * @param  {object} options     其他選項
+   */
+  exportCustomerDomainByDomainName(
+    domain_name: string,
+    lang: string,
+    options: {
+      domain_name?: string;
+      ip?: string;
+      abnormal_area?: string;
+      service_item?: number[];
+      domain_name_status?: number[];
+      certificate_status?: number[];
+      service_error?: number[];
+      table_filter?: number;
+      sort?: string;
+      order?: string;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'abnormal_area',
+      'service_item',
+      'domain_name_status',
+      'certificate_status',
+      'service_error',
+      'table_filter',
+      'sort',
+      'order',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      domain_name,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post(
+      '/domain/customer/domain_name/by_domain_name/export',
+      params,
+    );
+  },
+  /**
+   * 匯出客端域名資料 (以IP搜尋)
+   * @param  {string} ip      IP
+   * @param  {string} lang    語系
+   * @param  {object} options 其他選項
+   */
+  exportCustomerDomainByIP(
+    ip: string,
+    lang: string,
+    options: {
+      domain_name?: string;
+      ip?: string;
+      abnormal_area?: string;
+      service_item?: number[];
+      domain_name_status?: number[];
+      certificate_status?: number[];
+      service_error?: number[];
+      table_filter?: number;
+      sort?: string;
+      order?: string;
+      export_remark?: string;
+    },
+  ) {
+    const paramOptions = [
+      'abnormal_area',
+      'service_item',
+      'domain_name_status',
+      'certificate_status',
+      'service_error',
+      'table_filter',
+      'sort',
+      'order',
+      'export_remark',
+    ];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      ip,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post('/domain/customer/domain_name/by_ip/export', params);
+  },
+  /**
+   * 匯出客端域名資料 - 多域名
+   * @param  {number} domain     廳主
+   * @param  {array}  hash_token token
+   * @param  {string} lang       語系
+   * @param  {object} options    其他選項
+   */
+  exportCustomerDomainByMultipleDomain(
+    domain: number,
+    hash_token: string,
+    lang: string,
+    options: { export_remark?: string },
+  ) {
+    const paramOptions = ['export_remark'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      domain,
+      hash_token,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post(
+      '/domain/customer/domain_name/by_batch/export',
+      params,
+    );
+  },
+  /**
+   * 匯出客端域名資料 - 查無域名
+   * @param  {array}  domain_names 域名
+   * @param  {string} lang         語系
+   * @param  {object} options      其他選項
+   */
+  exportCustomerDomainByNoDomain(
+    domain_names: string[],
+    lang: string,
+    options: { export_remark?: string },
+  ) {
+    const paramOptions = ['export_remark'];
+    const optionParams = pick(options, paramOptions);
+    const params = {
+      domain_names,
+      lang,
+      ...optionParams,
+    };
+    return this.http.post(
+      '/domain/customer/domain_name/no_result/export',
+      params,
+    );
+  },
+  /**
+   * 匯出前需設定多域名資料
+   * @param {array}  domain_names 多域名
+   * @param {string} hash_token   token
+   */
+  setDomainNamesBeforeExport(domain_names: string[], hash_token: string) {
+    const params = {
+      domain_names,
+      hash_token,
+    };
+    return this.http.post('/url/domain_names/export_param', params);
+  },
 };
 
 const domain = {
