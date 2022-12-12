@@ -6,14 +6,15 @@ import type {
   SearchTable,
 } from './single-number-progress';
 import { url as urlAPI } from '@/api/domain';
+import { Buy, Management } from '../apply/apply';
 
 // 購買方式前後端對照表
-export const buyMap: Record<string, number> = {
+export const buyMap: Record<Buy, number> = {
   bbin: 1,
   domain: 2,
 };
 // 管理權限前後端對照表
-export const managementMap: Record<string, number> = {
+export const managementMap: Record<Management, number> = {
   bbin: 1,
   domain: 2,
 };
