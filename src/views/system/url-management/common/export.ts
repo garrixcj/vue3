@@ -116,3 +116,99 @@ const setDomainNamesBeforeExport = (
     });
   });
 };
+
+// 匯出管端域名的參數
+export type ExportAgentDomainNameOption = {
+  domain_name?: string;
+  service_error?: number[];
+  sort?: string;
+  order?: string;
+  export_remark?: string;
+};
+
+/**
+ * 匯出 「管端域名」
+ * @param {string} type 搜尋類別(site、domainName)
+ * @param {string} site 站別
+ * @param {number} entrance 端口
+ * @param {string} lang 語系
+ * @param {object} options 其他條件選項
+ * @return {void}
+ */
+export const doExportAgentDomainNameList = (
+  type: string,
+  site: string,
+  entrance: number,
+  lang: string,
+  options: ExportAgentDomainNameOption,
+) => {
+  // 匯出「單一域名」條件資料
+  if (type === 'domainName' && typeof options.domain_name !== 'undefined') {
+    return urlAPI.exportAgentDomainName(
+      options.domain_name,
+      entrance,
+      lang,
+      options,
+    );
+  }
+  // 匯出「站別」條件資料
+  return urlAPI.exportAgentDomainNameBySite(site, entrance, lang, options);
+};
+
+// 匯出IP服務參數
+export type ExportIPServiceOption = {
+  ip?: string;
+  ip_type?: number[];
+  purchase_method?: number[];
+  attack_status?: number[];
+  table_filter?: number;
+  export_remark?: string;
+};
+
+/**
+ * 匯出 「IP服務」
+ * @param {string} type 搜尋類別(site、domainName)
+ * @param {string} site 站別
+ * @param {string} lang 語系
+ * @param {object} options 其他條件選項
+ * @return {void}
+ */
+export const doExportIPServiceList = (
+  type: string,
+  site: string,
+  lang: string,
+  options: ExportIPServiceOption,
+) => {
+  // 匯出「單一IP」條件資料
+  if (type === 'ip' && typeof options.ip !== 'undefined') {
+    return urlAPI.exportIPService(options.ip, lang, options);
+  }
+  // 匯出「站別」條件資料
+  return urlAPI.exportIPServiceBySite(site, lang, options);
+};
+
+// 匯出活躍域名參數
+export type ExportActiveDomainNameOption = {
+  domain?: number;
+  keyword?: string;
+  export_remark?: string;
+  lang?: string;
+  sort?: string;
+  order?: string;
+  table_filter?: number;
+};
+
+/**
+ * 匯出 「活躍域名」
+ * @param {string} start_date 開始日期
+ * @param {string} end_date   結束日期
+ * @param {object} options    其他選項
+ * @return {void}
+ */
+export const doExportActiveDomainNameList = (
+  startDate: string,
+  endDate: string,
+  options: ExportActiveDomainNameOption,
+) => {
+  return urlAPI.exportActiveDomainName(startDate, endDate, options);
+};
