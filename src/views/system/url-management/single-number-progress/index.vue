@@ -1,3 +1,6 @@
+<i18n
+  src="@/languages/system_setting/url_management/single-number-progress.json"
+></i18n>
 <template lang="pug">
 rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
   .search__main
@@ -148,7 +151,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
             :label="stauts"
           ) {{ t(info.dict) }}
 restriction-dialog(v-model="restrictionVisible")
-before-search(v-if="isBeforeSearch" label="開始搜尋吧")
+before-search(v-if="isBeforeSearch" :label="t('start_search')")
 table-card(
   v-else
   :search-options="exportOptions"
@@ -166,7 +169,7 @@ table-card(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, nextTick, onMounted } from 'vue';
+import { defineComponent, reactive, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteList } from '../common/list';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -187,7 +190,7 @@ import {
 } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
-import type { Buy, Management } from '../detail/detail';
+import type { Buy, Management } from '../apply/apply';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { flatten, omit } from 'lodash';
 
@@ -253,6 +256,8 @@ export default defineComponent({
 
     // 當搜尋條件異動時，將2個條件都清空
     const resetCondition = () => {
+      form.domain = '';
+      form.site = '';
       formRef.value.resetFields('site');
       formRef.value.resetFields('domain');
     };
@@ -451,7 +456,9 @@ export default defineComponent({
         key: 'domain',
         get: () => form.domain,
         set: (val: number | 'all') => {
-          form.domain = val === 'all' ? val : +val;
+          if (val) {
+            form.domain = val === 'all' ? val : +val;
+          }
         },
         optional: true,
         default: '',
@@ -599,7 +606,7 @@ export default defineComponent({
       {
         key: 'purchase_method',
         // 將購買方式轉換為後端的id
-        get: () => form.buy.map(value => buyMap[value]),
+        get: () => form.buy.map(value => buyMap[value as Buy]),
         filter: (type, target) =>
           type === 'api' && arrayFilter('buy', type, target?.current as string),
         default: [],
@@ -621,7 +628,8 @@ export default defineComponent({
       {
         key: 'maintenance_method',
         // 將管理權限轉換為後端的id
-        get: () => form.management.map(value => managementMap[value]),
+        get: () =>
+          form.management.map(value => managementMap[value as Management]),
         filter: (type, target) =>
           type === 'api' &&
           arrayFilter('management', type, target?.current as string),
@@ -740,10 +748,7 @@ export default defineComponent({
 
       getList(params).then(() => {
         isBeforeSearch.value = false;
-
-        nextTick(() => {
-          loading.page = false;
-        });
+        loading.page = false;
       });
     };
 
