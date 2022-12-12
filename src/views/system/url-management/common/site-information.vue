@@ -55,12 +55,12 @@ rd-drawer(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { isEmpty, keys } from 'lodash';
-import { defineComponent, inject, ref, reactive } from 'vue';
+import { type Ref, defineComponent, inject, ref, reactive } from 'vue';
 import RdDrawer from '@/components/custom/drawer/index.vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import RdGridTable from '@/components/custom/grid-table/index.vue';
-import { useSiteList } from './list';
 import { type SiteDetail, useSiteDetail } from './detail';
+import type { SiteOption } from './list';
 
 export default defineComponent({
   name: 'SiteInformation', // 網址管理 - 站別資訊
@@ -71,7 +71,7 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
-    const loading = ref(true);
+    const loading = ref(false);
     // 站別資訊開關
     const visible = ref(false);
     // 搜尋前
@@ -79,12 +79,8 @@ export default defineComponent({
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
 
-    // 站別相關
-    const { getSiteList, siteOptions } = useSiteList();
-    // 取的站別列表
-    getSiteList().then(() => {
-      loading.value = false;
-    });
+    // 站別列表
+    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
     // 表單 Ref
     const drawerRef = ref();
