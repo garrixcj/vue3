@@ -7,6 +7,7 @@
   )
   apply-callback(v-else :site="site" :sites="siteOptions")
 </template>
+
 <script lang="ts">
 import {
   defineComponent,

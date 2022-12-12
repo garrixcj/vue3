@@ -47,6 +47,7 @@ rd-card(
       :active="{ type: 'success', text: t('only_show_can_not_binding'), inverseText: t('only_show_can_not_binding') }"
     )
 </template>
+
 <script lang="ts">
 import { defineComponent, computed, ref, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';

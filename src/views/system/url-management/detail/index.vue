@@ -34,6 +34,7 @@ rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
       :list="abolishList"
     )
 </template>
+
 <script lang="ts">
 import { defineComponent, ref, provide, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -136,6 +137,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style lang="scss" scoped>
 .title-space {
   @include space;

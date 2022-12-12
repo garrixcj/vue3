@@ -81,6 +81,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
           rd-tag.tag-pill(v-if="scope.row.result" type="success" size="small") {{ t('success') }}
           rd-tag.tag-pill(v-else type="danger" size="small") {{ t('fail2') }}
 </template>
+
 <script lang="ts">
 import { defineComponent, type Ref, inject, onMounted } from 'vue';
 import { priceListDict } from '../common/estimate';
@@ -136,6 +137,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style lang="scss" scoped>
 .format-class-label {
   .header-space {

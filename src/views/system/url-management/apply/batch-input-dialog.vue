@@ -133,6 +133,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style lang="scss" scoped>
 .content {
   @include space-vertical;

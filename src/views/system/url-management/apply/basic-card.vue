@@ -129,6 +129,7 @@ rd-card(:title="t('basic_setting')")
         rd-form-item(:label="t('finish_date')")
           rd-format-timer(date-default="--" :date-time="form.finishTime")
 </template>
+
 <script lang="ts">
 import { defineComponent, computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -99,13 +99,14 @@ rd-dialog(
   template(#footer)
     rd-button(type="secondary" @click="visible.submit = false") {{ t('cancel') }}
     rd-button(type="primary" @click="submit") {{ t('confirm') }}
-//- 尚未儲存 Dialog
+//- 尚未儲存的 Dialog
 rd-dialog(v-model="visible.leave" :title="t('not_saved')" width="430px")
   span {{ t('not_saved_check_info') }}
   template(#footer)
     rd-button(type="secondary" @click="visible.leave = false") {{ t('cancel') }}
     rd-button(type="primary" @click="back") {{ t('leave') }}
 </template>
+
 <script lang="ts">
 import {
   defineComponent,
@@ -190,7 +191,7 @@ export default defineComponent({
       getRequestionNum,
     } = useSiteRestriction();
 
-    // 載入申請筆數與還可申請的數量
+    // 更新申請筆數與還可申請的數量
     const updateRestriction = (showLoading = true) => {
       if (showLoading) {
         loading.value = true;
@@ -237,7 +238,7 @@ export default defineComponent({
     // 域名(僅取有填入的)
     const notEmptyUrl = computed(() => urlList.value.filter(obj => obj.domain));
 
-    // 載入域名限制與格式檢查
+    // 更新域名限制與格式檢查
     const updateRestrictionAndUrl = () => {
       // 將送出按鈕都disable
       disabledBtn.value = true;
@@ -388,6 +389,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style lang="scss" scoped>
 .after-title {
   @include flex-basic;

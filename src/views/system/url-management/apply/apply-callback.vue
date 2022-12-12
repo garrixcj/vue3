@@ -31,6 +31,7 @@ rd-navbar-layout(
         //- 查看單號進度(當有成功的域名時才顯示)
         rd-button(v-if="type !== 'error'" type="gradient" @click="guideDetail") {{ t('go_to_ticket_status') }}
 </template>
+
 <script lang="ts">
 import { defineComponent, computed, inject, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -147,6 +148,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style lang="scss" scoped>
 .rd-layout-content {
   @include space-vertical;
