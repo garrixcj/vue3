@@ -160,7 +160,7 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { isEmpty, intersection, omitBy, orderBy, toInteger } from 'lodash';
+import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
 import {
   type Ref,
   defineComponent,
@@ -188,7 +188,6 @@ import {
 } from '../common/search';
 import { useList } from './list';
 import {
-  type ExportCustomerDomainNameParams,
   setExportPermName,
   doExportCustomerDomainNameList,
 } from '../common/export';
@@ -256,7 +255,7 @@ export default defineComponent({
       listAngleTotalData,
       listCondition,
       getList,
-    } = useList(form);
+    } = useList();
     provide('CustomerDomain:listData', listData);
     provide('CustomerDomain:orgListData', orgListData);
     provide('CustomerDomain:listAngleTotalData', listAngleTotalData);
@@ -300,24 +299,29 @@ export default defineComponent({
           form.site = val;
         },
         default: '',
+        filter: () => !isEmpty(form.site),
+        optional: true,
         cached: true,
       },
       {
         key: 'domain',
         get: () => form.domain,
-        set: (val: number | 'all') => {
-          form.domain = val === 'all' ? val : +val;
+        set: (val: 'all' | number) => {
+          form.domain = val === 'all' ? val : toInteger(val);
         },
         default: 'all',
         cached: true,
       },
       {
-        key: 'domainName',
+        key: 'domain_name',
+        query: 'domainName',
         get: () => form.domainName,
         set: (val: string) => {
           form.domainName = val;
         },
         default: '',
+        filter: () => !isEmpty(form.domainName),
+        optional: true,
         cached: true,
       },
       {
@@ -327,6 +331,8 @@ export default defineComponent({
           form.multipleDomains = val;
         },
         default: [],
+        filter: () => !isEmpty(form.multipleDomains),
+        optional: true,
         cached: true,
       },
       {
@@ -336,91 +342,104 @@ export default defineComponent({
           form.ip = val;
         },
         default: '',
+        filter: () => !isEmpty(form.ip),
+        optional: true,
         cached: true,
       },
       {
-        key: 'area',
+        key: 'abnormal_area',
+        query: 'area',
         get: () => form.area,
         set: (val: string) => {
           form.area = val;
         },
         default: 'all',
+        filter: type => !(type === 'api' && form.area === 'all'),
         cached: true,
+        optional: true,
       },
       // 進階條件
       {
-        key: 'service',
+        key: 'service_item',
+        query: 'service',
         get: () => advancedForm.service,
         set: (val: number[]) => {
-          advancedForm.service = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.service = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.service),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'domainNameStatus',
+        key: 'domain_name_status',
+        query: 'domainNameStatus',
         get: () => advancedForm.domainNameStatus,
         set: (val: number[]) => {
-          advancedForm.domainNameStatus = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.domainNameStatus = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.domainNameStatus),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'sslStatus',
+        key: 'certificate_status',
+        query: 'sslStatus',
         get: () => advancedForm.sslStatus,
         set: (val: number[]) => {
-          advancedForm.sslStatus = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.sslStatus = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.sslStatus),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'failToOpen',
+        key: 'fail_to_oOpen',
+        query: 'failToOpen',
         get: () => advancedForm.failToOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.failToOpen = updateApi.value ? [] : value;
+          advancedForm.failToOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.failToOpen),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'partiallyOpen',
+        key: 'partially_open',
+        query: 'partiallyOpen',
         get: () => advancedForm.partiallyOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.partiallyOpen = updateApi.value ? [] : value;
+          advancedForm.partiallyOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.partiallyOpen),
+        optional: true,
+        numberArray: true,
       },
       {
         key: 'openable',
         get: () => advancedForm.openable,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.openable = updateApi.value ? [] : value;
+          advancedForm.openable = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.openable),
+        optional: true,
+        numberArray: true,
       },
       // Table條件
       {
-        key: 'angle',
+        key: 'table_filter',
+        query: 'angle',
         get: () => listCondition.formAngle,
-        set: (val: string) => {
-          listCondition.formAngle = updateApi.value ? 'all' : val;
+        set: (val: 'all' | number) => {
+          listCondition.formAngle = val === 'all' ? val : toInteger(val);
         },
+        filter: type => !(type === 'api' && listCondition.formAngle === 'all'),
+        optional: true,
         default: 'all',
       },
       {
@@ -463,7 +482,7 @@ export default defineComponent({
     // 設定列表資料
     const setTableData = () => {
       // 判斷為查無域名角度
-      if (listCondition.formAngle === 'noDomainName') {
+      if (listCondition.formAngle === 3) {
         // 分頁總數
         listCondition.total = unknownDomainNames.value.length;
       } else {
@@ -527,8 +546,8 @@ export default defineComponent({
         // 判斷列表顯示的網址狀態角度
         const isUrlStatus =
           listCondition.formAngle === 'all' ||
-          (listCondition.formAngle === 'normal' && !isAbnormal) ||
-          (listCondition.formAngle === 'abnormal' && isAbnormal);
+          (listCondition.formAngle === 1 && !isAbnormal) ||
+          (listCondition.formAngle === 2 && isAbnormal);
 
         if (isUrlStatus && (isAdSearch || isNotAdvancedCondition)) {
           result = [...result, item];
@@ -597,52 +616,7 @@ export default defineComponent({
       setExportPermName('CustomerUrlExport');
 
       const query = querySet.getQuery() as FormType;
-
-      // 列表角度
-      let tableFilter = 0;
-      if (listCondition.formAngle === 'normal') {
-        tableFilter = 2;
-      } else if (listCondition.formAngle === 'abnormal') {
-        tableFilter = 2;
-        // 查無域名
-      } else if (listCondition.formAngle === 'noDomainName') {
-        tableFilter = 3;
-      }
-
-      // 異常地區
-      let abnormalArea = '';
-      // 判斷異常地區不為「不限制」
-      if (query.area !== 'all') {
-        abnormalArea = query.area;
-      }
-
-      const optionsTmp: ExportCustomerDomainNameParams = {
-        domain_name: query.domainName,
-        ip: query.ip,
-        abnormal_area: abnormalArea,
-        service_item: advancedForm.service,
-        domain_name_status: advancedForm.domainNameStatus,
-        certificate_status: advancedForm.sslStatus,
-        service_error: [
-          ...advancedForm.failToOpen,
-          ...advancedForm.partiallyOpen,
-          ...advancedForm.openable,
-        ],
-        table_filter: tableFilter,
-        sort: listCondition.sort,
-        order: listCondition.order,
-        export_remark: note,
-      };
-      // 過濾為空的都不帶入
-      const options = omitBy(optionsTmp, value => {
-        if (
-          (typeof value !== 'number' && isEmpty(value)) ||
-          (typeof value === 'number' && value === 0)
-        ) {
-          return true;
-        }
-        return false;
-      });
+      const params = querySet.getParam();
 
       return doExportCustomerDomainNameList(
         query.type,
@@ -651,7 +625,15 @@ export default defineComponent({
         query.multipleDomains,
         unknownDomainNames.value,
         locale.value,
-        options,
+        {
+          ...params,
+          service_error: [
+            ...(params.fail_to_oOpen as number[]),
+            ...(params.partially_open as number[]),
+            ...(params.openable as number[]),
+          ],
+          export_remark: note,
+        },
       ).then(resp => {
         if (resp.data.result) {
           notify.success({
@@ -690,7 +672,7 @@ export default defineComponent({
       if (!searched.value || updateApi.value) {
         setLoading(true);
         searched.value = true;
-        return getList().then(resp => {
+        return getList(form, querySet.getParam()).then(resp => {
           if (resp) {
             advancedConditionAct.init();
             setTableData();

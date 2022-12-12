@@ -61,11 +61,11 @@ rd-card(no-padding)
       v-for="(item, key) in listAnglesOptions"
       :key="key"
       :type="item.type"
-      :value="listAngleTotalData[item.value]"
+      :value="listAngleTotalData[item.key]"
       :label="item.label"
       min-width="140"
       :active="item.value === listCondition.formAngle"
-      @click="setListAngle(item.value)"
+      @click="setListAngle(item.key, item.value)"
     )
       //- 全部域名
       template(v-if="item.value === 'all'" #label)
@@ -81,11 +81,11 @@ rd-card(no-padding)
         v-for="(item, key) in listAnglesOtherOptions"
         :key="key"
         :type="item.type"
-        :value="listAngleTotalData[item.value]"
+        :value="listAngleTotalData[item.key]"
         :label="item.label"
         min-width="140"
         :active="item.value === listCondition.formAngle"
-        @click="setListAngle(item.value)"
+        @click="setListAngle(item.key, item.value)"
       )
     //- 匯出
     .export(
@@ -468,10 +468,12 @@ import type { ListCondition } from './list';
 import { url as urlAPI } from '@/api/domain';
 
 type ListAngles = 'all' | 'normal' | 'abnormal' | 'noDomainName';
+type ListAnglesValue = 'all' | 1 | 2 | 3;
 
 type ListAnglesOptions = {
   label: string;
-  value: ListAngles;
+  value: ListAnglesValue;
+  key: ListAngles;
   type: 'default' | 'danger';
 };
 
@@ -548,15 +550,21 @@ export default defineComponent({
     ) as Record<ListAngles, number>;
     // 列表角度選項
     const listAnglesOptions = ref<ListAnglesOptions[]>([
-      { label: t('all_domain_name'), value: 'all', type: 'default' },
-      { label: t('normal'), value: 'normal', type: 'default' },
-      { label: t('abnormal'), value: 'abnormal', type: 'danger' },
+      {
+        label: t('all_domain_name'),
+        value: 'all',
+        key: 'all',
+        type: 'default',
+      },
+      { label: t('normal'), value: 1, key: 'normal', type: 'default' },
+      { label: t('abnormal'), value: 2, key: 'abnormal', type: 'danger' },
     ]);
     // 列表角度其他選項
     const listAnglesOtherOptions = ref<ListAnglesOptions[]>([
       {
         label: t('check_no_domain_name'),
-        value: 'noDomainName',
+        value: 3,
+        key: 'noDomainName',
         type: 'default',
       },
     ]);
@@ -589,18 +597,17 @@ export default defineComponent({
     };
 
     // 設定列表角度
-    const setListAngle = (value: ListAngles) => {
+    const setListAngle = (key: ListAngles, value: ListAnglesValue) => {
       listCondition.page = 1;
       tableAct.clear();
-      listCondition.total = listAngleTotalData[value];
+      listCondition.total = listAngleTotalData[key];
       listCondition.formAngle = value;
       emit('change');
     };
     // 顯示查無域名
     const isNoDomainNameAngle = computed(() => {
       return (
-        listCondition.formAngle === 'noDomainName' &&
-        unknownDomainNameList.value.length > 0
+        listCondition.formAngle === 3 && unknownDomainNameList.value.length > 0
       );
     });
     // 顯示查無域名角度的按鈕

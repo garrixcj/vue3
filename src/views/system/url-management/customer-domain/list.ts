@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue';
-import { values, isEmpty, omitBy, groupBy, forIn, trimEnd } from 'lodash';
+import { values, isEmpty, groupBy, forIn, trimEnd } from 'lodash';
 import { url as urlAPI } from '@/api/domain';
 import type {
   ListData,
@@ -10,7 +10,7 @@ import type {
 import type { FormType } from '../common/search';
 
 export type ListCondition = {
-  formAngle: string;
+  formAngle: 'all' | number;
   page: number;
   size: number;
   total: number;
@@ -18,8 +18,14 @@ export type ListCondition = {
   order: 'asc' | 'desc';
 };
 
+type ListApiOptions = {
+  domain_name?: string;
+  ip?: string;
+  abnormal_area?: string;
+};
+
 // 取得列表資料
-export const useList = (form: FormType) => {
+export const useList = () => {
   // 原始列表資料
   const orgListData = ref<ListData[]>([]);
   // 列表資料
@@ -43,29 +49,6 @@ export const useList = (form: FormType) => {
     order: 'asc',
   });
 
-  // 取得選填參數
-  const getOptionalParam = () => {
-    const options = {
-      domain_name: form.domainName,
-      ip: form.ip,
-      abnormal_area: '',
-    };
-    // 判斷異常地區不為「不限制」
-    if (form.area !== 'all') {
-      options.abnormal_area = form.area;
-    }
-    // 過濾為空的都不帶入
-    return omitBy(options, value => {
-      if (
-        (typeof value !== 'number' && isEmpty(value)) ||
-        (typeof value === 'number' && value === 0)
-      ) {
-        return true;
-      }
-      return false;
-    });
-  };
-
   // 取得域名資料
   const getTableData = (data: ListDataForAPI) => {
     orgListData.value = data.list.map((item: ListForAPI, key: number) =>
@@ -82,7 +65,10 @@ export const useList = (form: FormType) => {
     listCondition.total = data.total;
   };
 
-  const getTableDataByMultipleDomain = (data: ListDataForAPI) => {
+  const getTableDataByMultipleDomain = (
+    multipleDomains: string[],
+    data: ListDataForAPI,
+  ) => {
     let domainNameInSearch = [] as string[];
     let abnormal = 0;
     let normal = 0;
@@ -92,8 +78,8 @@ export const useList = (form: FormType) => {
         let result = acc;
         // 模糊搜尋(單一域名)
         if (
-          form.multipleDomains.length <= 1 &&
-          item.domain_name.indexOf(form.multipleDomains[0]) !== -1
+          multipleDomains.length <= 1 &&
+          item.domain_name.indexOf(multipleDomains[0]) !== -1
         ) {
           // 判斷正常和異常的域名數量
           if (
@@ -109,7 +95,7 @@ export const useList = (form: FormType) => {
           count += 1;
 
           // 精準搜尋(多域名)
-        } else if (form.multipleDomains.includes(item.domain_name)) {
+        } else if (multipleDomains.includes(item.domain_name)) {
           // 有搜尋到的域名
           domainNameInSearch = [...domainNameInSearch, item.domain_name];
           // 判斷正常和異常的域名數量
@@ -132,7 +118,7 @@ export const useList = (form: FormType) => {
     listData.value = orgListData.value;
 
     // 查無域名
-    unknownDomainNames.value = form.multipleDomains.filter(
+    unknownDomainNames.value = multipleDomains.filter(
       item => !isEmpty(item) && !domainNameInSearch.includes(item),
     );
 
@@ -203,34 +189,30 @@ export const useList = (form: FormType) => {
   // 列表API
   const updateList = {
     // By 站別
-    site: () => {
-      return urlAPI
-        .getCustomerDomainBySite(form.site, getOptionalParam())
-        .then(resp => {
-          if (resp.data.result) {
-            getTableData(resp.data.data);
-          }
-          return true;
-        });
+    site: (form: FormType, params: ListApiOptions) => {
+      return urlAPI.getCustomerDomainBySite(form.site, params).then(resp => {
+        if (resp.data.result) {
+          getTableData(resp.data.data);
+        }
+        return true;
+      });
     },
     // By IP
-    IP: () => {
-      return urlAPI
-        .getCustomerDomainByIP(form.ip, getOptionalParam())
-        .then(resp => {
-          if (resp.data.result) {
-            getTableData(resp.data.data);
-          }
-          return true;
-        });
+    IP: (form: FormType, params: ListApiOptions) => {
+      return urlAPI.getCustomerDomainByIP(form.ip, params).then(resp => {
+        if (resp.data.result) {
+          getTableData(resp.data.data);
+        }
+        return true;
+      });
     },
     // By 全廳 - 單一域名
-    singleDomainName: () => {
+    singleDomainName: (form: FormType, params: ListApiOptions) => {
       return urlAPI
         .getCustomerDomainByDomainName(
           form.domain === 'all' ? 0 : form.domain,
           [form.domainName],
-          getOptionalParam(),
+          params,
         )
         .then(resp => {
           if (resp.data.result) {
@@ -240,15 +222,15 @@ export const useList = (form: FormType) => {
         });
     },
     // By 單一廳 - 多域名
-    multipleDomainName: () => {
+    multipleDomainName: (form: FormType, params: ListApiOptions) => {
       return urlAPI
         .getCustomerDomainByDomain(
           form.domain === 'all' ? 0 : form.domain,
-          getOptionalParam(),
+          params,
         )
         .then(resp => {
           if (resp.data.result) {
-            getTableDataByMultipleDomain(resp.data.data);
+            getTableDataByMultipleDomain(form.multipleDomains, resp.data.data);
           }
           return true;
         });
@@ -256,7 +238,7 @@ export const useList = (form: FormType) => {
   };
 
   // 取得列表資料
-  const getList = () => {
+  const getList = (form: FormType, params: ListApiOptions) => {
     let act: keyof typeof updateList = 'site';
     if (form.type === 'domainName' && form.domain === 'all') {
       act = 'singleDomainName';
@@ -266,7 +248,7 @@ export const useList = (form: FormType) => {
       act = 'IP';
     }
     return new Promise(resolve => {
-      updateList[act]().then(() => {
+      updateList[act](form, params).then(() => {
         resolve(true);
       });
     });
