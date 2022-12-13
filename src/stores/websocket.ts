@@ -4,33 +4,48 @@
  */
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import store from './index';
+import { uniq } from 'lodash';
+import { useOperatorStore } from './operator';
 
 export type WebSocketState = {
-  isConnected: boolean;
-  message: string;
-  reconnectError: boolean;
+  // 可用頻道
+  channels: string[];
+  // 公用頻道
+  publicChannel: 'admin';
+  // 個人頻道
+  userChannel: string;
+  // 初始化完成(個人頻道設置完成)
+  initialized: boolean;
 };
 
 export const useWebSocketStore = defineStore('websocket', {
   state: (): WebSocketState => ({
-    isConnected: false,
-    message: '',
-    reconnectError: false,
+    channels: ['admin'],
+    publicChannel: 'admin',
+    userChannel: '',
+    initialized: false,
   }),
   actions: {
-    onOpen() {
-      this.isConnected = true;
+    // 新增頻道
+    addChannel(channel: string) {
+      // 排除重複訂閱
+      this.channels = uniq([...this.channels, channel]);
     },
-    onClose() {
-      this.isConnected = false;
+    // 設置user
+    init() {
+      const operatorStore = useOperatorStore();
+      if (operatorStore.operator.id) {
+        const user = `admin.${operatorStore.operator.id}`;
+        this.userChannel = user;
+        this.initialized = true;
+        this.addChannel(user);
+      }
     },
-    onError() {},
-    onMessage(message: string) {
-      this.message = message;
-    },
-    onReconnect() {},
-    onReconnectError() {
-      this.reconnectError = true;
+    // 重置頻道設定
+    resetChannels() {
+      this.channels = ['admin'];
+      this.userChannel = '';
+      this.initialized = false;
     },
   },
 });
