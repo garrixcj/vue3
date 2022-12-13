@@ -11,4 +11,13 @@ export const enum HostMap {
   'RDE_URL' = 'rde',
 }
 
+export const useHosts = () => {
+  const domain = window.location.hostname;
+  let hosts = env.hosts;
+  if (domain.includes('cloud')) {
+    hosts = env.cloudHosts;
+  }
+  return { hosts };
+};
+
 export default env.hosts;

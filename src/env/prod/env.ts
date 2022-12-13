@@ -26,5 +26,15 @@ const env: Env = {
     appKey: 'hex-ws',
     host: 'socket.vir000.com',
   },
+  cloudHosts: {
+    ws: 'ws.vir000.com',
+    bigBallOld: 'https://ctl-v2-dev.vir000.com',
+    bigBallV3: 'https://cloud-ctl-v3.vir000.com',
+    pidAdmin: 'https://admin-cloud.vir000.com',
+    rd3Casino: 'https://casino-admin-bbin.vir000.com',
+    rd3: 'https://admin-cloud-v0.vir000.com',
+    rd3Live: 'https://live-admin-bbin.vir000.com',
+    rde: 'https://ltadmin.vir000.com',
+  },
 };
 export default env;
