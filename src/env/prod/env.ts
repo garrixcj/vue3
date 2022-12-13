@@ -22,5 +22,9 @@ const env: Env = {
     appId: '1:547647742912:web:b4e4d859e851c5cf231e25',
     measurementId: 'G-JD4R7WNVTZ',
   },
+  pusher: {
+    appKey: 'hex-ws',
+    host: 'socket.vir000.com',
+  },
 };
 export default env;

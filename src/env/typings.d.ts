@@ -14,4 +14,5 @@ export type Env = {
     [key: string]: string;
   };
   firebase: Record<string, string>;
+  pusher: Record<string, string>;
 };
