@@ -1,5 +1,4 @@
 import { ref, reactive } from 'vue';
-import { isEmpty, omitBy } from 'lodash';
 import { url as urlAPI } from '@/api/domain';
 import type {
   ActiveDomainNameListData,
@@ -9,7 +8,7 @@ import type {
 import type { FormType } from '../common/search';
 
 export type ListCondition = {
-  formAngle: string;
+  formAngle: 'all' | number;
   total: number;
   sort: string;
   order: 'asc' | 'desc';
@@ -17,10 +16,9 @@ export type ListCondition = {
 
 /**
  * 取得列表資料
- * @param {object} form     搜尋表單
  * @return {void}
  */
-export const useList = (form: FormType) => {
+export const useList = () => {
   // 原始列表資料
   const orgListData = ref<ActiveDomainNameListData[]>([]);
   // 列表資料
@@ -38,21 +36,6 @@ export const useList = (form: FormType) => {
     normal: 0,
     highRisk: 0,
   });
-
-  // 取得選填參數
-  const getOptionalParam = () => {
-    const options = {
-      domain: form.domain,
-      keyword: form.keyword,
-    };
-    // 過濾為空的都不帶入
-    return omitBy(options, value => {
-      if (isEmpty(value)) {
-        return true;
-      }
-      return false;
-    });
-  };
 
   // 取得Table資料
   const getTableData = (data: ActiveDomainNameListDataForAPI) => {
@@ -102,10 +85,16 @@ export const useList = (form: FormType) => {
   };
 
   // 取得列表資料
-  const getList = () => {
+  const getList = (
+    form: FormType,
+    params: {
+      domain?: number;
+      keyword?: string;
+    },
+  ) => {
     return new Promise(resolve => {
       urlAPI
-        .getActiveDomainName(form.date[0], form.date[1], getOptionalParam())
+        .getActiveDomainName(form.date[0], form.date[1], params)
         .then(resp => {
           if (resp.data.result) {
             getTableData(resp.data.data);

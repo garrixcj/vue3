@@ -61,7 +61,7 @@ list(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import { isEmpty, intersection, omitBy, orderBy, toInteger } from 'lodash';
+import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
 import { defineComponent, provide, inject, ref } from 'vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -70,7 +70,6 @@ import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
 import { notify } from '@/components/utils/notification';
 import {
-  type FormType,
   useForm,
   useFormField,
   useFormOptions,
@@ -78,7 +77,6 @@ import {
   useAdvancedConditions,
 } from '../common/search';
 import {
-  type ExportActiveDomainNameOption,
   setExportPermName,
   doExportActiveDomainNameList,
 } from '../common/export';
@@ -143,7 +141,7 @@ export default defineComponent({
       listCondition,
       listAngleTotalData,
       getList,
-    } = useList(form);
+    } = useList();
     provide('ActiveDomainName:listData', listData);
     provide('ActiveDomainName:listCondition', listCondition);
     provide('ActiveDomainName:listAngleTotalData', listAngleTotalData);
@@ -153,11 +151,12 @@ export default defineComponent({
       {
         key: 'domain',
         get: () => form.domain,
-        set: (val: number | 'all') => {
-          form.domain = val === 'all' ? val : +val;
+        set: (val: 'all' | number) => {
+          form.domain = val === 'all' ? val : toInteger(val);
         },
         default: 'all',
-        number: true,
+        filter: type => !(type === 'api' && form.domain === 'all'),
+        optional: true,
         cached: true,
       },
       {
@@ -167,6 +166,8 @@ export default defineComponent({
           form.keyword = val;
         },
         default: '',
+        filter: () => !isEmpty(form.keyword),
+        optional: true,
         cached: true,
       },
       // 開始日期
@@ -176,7 +177,7 @@ export default defineComponent({
         set: (val: string) => {
           form.date[0] = val;
         },
-        filter: () => form.date.length > 0,
+        filter: () => !isEmpty(form.date[0]),
         optional: true,
         cached: true,
       },
@@ -187,66 +188,95 @@ export default defineComponent({
         set: (val: string) => {
           form.date[1] = val;
         },
-        filter: () => form.date.length > 0,
+        filter: () => !isEmpty(form.date[1]),
         optional: true,
         cached: true,
       },
+      {
+        key: 'date',
+        get: () => form.date,
+        filter: type => !(type === 'api') && !isEmpty(form.date),
+        optional: true,
+        cached: true,
+        array: true,
+      },
       // 進階條件
       {
-        key: 'growingPercent',
-        get: () => advancedForm.growingPercent,
-        set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.growingPercent = updateApi.value ? [] : value;
-        },
-        default: [],
-      },
-      {
-        key: 'failToOpen',
+        key: 'fail_to_oOpen',
+        query: 'failToOpen',
         get: () => advancedForm.failToOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.failToOpen = updateApi.value ? [] : value;
+          advancedForm.failToOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.failToOpen),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'partiallyOpen',
+        key: 'partially_open',
+        query: 'partiallyOpen',
         get: () => advancedForm.partiallyOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.partiallyOpen = updateApi.value ? [] : value;
+          advancedForm.partiallyOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.partiallyOpen),
+        optional: true,
+        numberArray: true,
       },
       {
         key: 'openable',
         get: () => advancedForm.openable,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.openable = updateApi.value ? [] : value;
+          advancedForm.openable = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.openable),
+        optional: true,
+        numberArray: true,
+      },
+      {
+        key: 'service_error',
+        query: 'abnormalStatus',
+        get: () => [
+          ...advancedForm.failToOpen,
+          ...advancedForm.partiallyOpen,
+          ...advancedForm.openable,
+        ],
+        default: [],
+        filter: type =>
+          !(type === 'route') &&
+          !isEmpty([
+            ...advancedForm.failToOpen,
+            ...advancedForm.partiallyOpen,
+            ...advancedForm.openable,
+          ]),
+        optional: true,
+        numberArray: true,
+      },
+      {
+        key: 'growing_percent',
+        query: 'growingPercent',
+        get: () => advancedForm.growingPercent,
+        set: (val: number[]) => {
+          advancedForm.growingPercent = val;
+        },
+        default: [],
+        filter: () => !isEmpty(advancedForm.growingPercent),
+        optional: true,
+        numberArray: true,
       },
       // Table條件
       {
-        key: 'angle',
+        key: 'table_filter',
+        query: 'angle',
         get: () => listCondition.formAngle,
-        set: (val: string) => {
-          listCondition.formAngle = updateApi.value ? 'all' : val;
+        set: (val: 'all' | number) => {
+          listCondition.formAngle = val === 'all' ? val : toInteger(val);
         },
+        filter: type => !(type === 'api' && listCondition.formAngle === 'all'),
+        optional: true,
         default: 'all',
       },
       {
@@ -306,13 +336,15 @@ export default defineComponent({
             if (!isEmpty(clickASData)) {
               // 成長％數條件
               if (key === 'growingPercent') {
-                // 勾選負數條件
-                if (clickASData.includes(1)) {
-                  return isNegativeNumber;
-                }
-                // 勾選非負數條件
-                if (clickASData.includes(2)) {
-                  return !isNegativeNumber;
+                if (clickASData.length < 2) {
+                  // 勾選負數條件
+                  if (clickASData.includes(1)) {
+                    return isNegativeNumber;
+                  }
+                  // 勾選非負數條件
+                  if (clickASData.includes(2)) {
+                    return !isNegativeNumber;
+                  }
                 }
                 return true;
               }
@@ -331,8 +363,8 @@ export default defineComponent({
           // 判斷列表顯示角度
           const isTableAngle =
             listCondition.formAngle === 'all' ||
-            (listCondition.formAngle === 'normal' && !isHighRisk) ||
-            (listCondition.formAngle === 'highRisk' && isHighRisk);
+            (listCondition.formAngle === 1 && !isHighRisk) ||
+            (listCondition.formAngle === 2 && isHighRisk);
 
           if (isTableAngle && (isAdSearch || isNotAdvancedCondition)) {
             result = [...result, item];
@@ -398,41 +430,24 @@ export default defineComponent({
       setLoading(true);
       setExportPermName('ActiveUrlExport');
 
-      const query = querySet.getQuery() as FormType;
+      const query = querySet.getQuery() as {
+        start_date: string;
+        end_date: string;
+        growingPercent: number[];
+        order: 'acs' | 'desc';
+        sort: string;
+      };
+      const params = querySet.getParam();
 
-      // 列表角度
-      let tableFilter = 0;
-      if (listCondition.formAngle === 'normal') {
-        tableFilter = 1;
-      } else if (listCondition.formAngle === 'highRisk') {
-        tableFilter = 2;
+      // 判斷是否有備註
+      if (!isEmpty(note)) {
+        params.export_remark = note;
       }
 
-      const optionsTmp: ExportActiveDomainNameOption = {
-        domain: query.domain === 'all' ? 0 : query.domain,
-        keyword: query.keyword,
+      return doExportActiveDomainNameList(query.start_date, query.end_date, {
+        ...params,
         lang: locale.value,
-        table_filter: tableFilter,
-        sort: listCondition.sort,
-        order: listCondition.order,
-        export_remark: note,
-      };
-      // 過濾為空的都不帶入
-      const options = omitBy(optionsTmp, value => {
-        if (
-          (typeof value !== 'number' && isEmpty(value)) ||
-          (typeof value === 'number' && value === 0)
-        ) {
-          return true;
-        }
-        return false;
-      });
-
-      return doExportActiveDomainNameList(
-        query.date[0],
-        query.date[1],
-        options,
-      ).then(resp => {
+      }).then(resp => {
         if (resp.data.result) {
           notify.success({
             title: t('success'),
@@ -463,7 +478,7 @@ export default defineComponent({
       if (!searched.value || updateApi.value) {
         setLoading(true);
         searched.value = true;
-        return getList().then(resp => {
+        return getList(form, querySet.getParam()).then(resp => {
           if (resp) {
             advancedConditionAct?.init();
             setTableData();
@@ -477,19 +492,22 @@ export default defineComponent({
     // route watcher
     watcher.setWatcher(
       (query: {
-        domain: number;
+        domain?: number;
         start_date: string;
         end_date: string;
         keyword: string;
         tab: string;
         re: string;
+        growingPercent?: number[];
+        failToOpen?: number[];
+        partiallyOpen?: number[];
+        openable?: number[];
+        angle?: number;
+        sort: string;
+        order: 'asc' | 'desc';
       }) => {
         // 若有Type代表已有搜尋
-        if (
-          query.domain &&
-          !isEmpty(query.start_date) &&
-          !isEmpty(query.end_date)
-        ) {
+        if (!isEmpty(query.start_date) && !isEmpty(query.end_date)) {
           updateList();
         } else {
           searched.value = false;

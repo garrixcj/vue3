@@ -1899,6 +1899,7 @@ export const url = {
     options: {
       domain?: number;
       keyword?: string;
+      service_error?: number[];
       export_remark?: string;
       lang?: string;
       sort?: string;
@@ -1909,6 +1910,7 @@ export const url = {
     const paramOptions = [
       'keyword',
       'domain',
+      'service_error',
       'export_remark',
       'lang',
       'sort',
