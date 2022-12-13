@@ -95,7 +95,7 @@ export default defineComponent({
 
     watch(
       () => props.modelValue,
-      async value => {
+      value => {
         if (value) {
           // 當今天是要開啟時重新設定現在的限定筆數
           resetRestriction();
