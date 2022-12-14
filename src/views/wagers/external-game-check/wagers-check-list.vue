@@ -193,16 +193,13 @@ export default defineComponent({
     });
 
     // 驗證開始時間是否有小於結束時間
-    const validHour = (
-      rule: never,
-      value: never,
-      callback: (error?: string) => void,
-    ) => {
-      if (!compareHour(form.startHour, form.endHour)) {
-        callback(t('start_time_can_not_after_end_time'));
-      } else {
-        callback();
-      }
+    const validHour = (rule: never, value: never) => {
+      return new Promise<void>((resolve, reject) => {
+        if (!compareHour(form.startHour, form.endHour)) {
+          reject(t('start_time_can_not_after_end_time'));
+        }
+        resolve();
+      });
     };
 
     // 表單驗證
