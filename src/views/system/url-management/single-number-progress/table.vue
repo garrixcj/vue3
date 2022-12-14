@@ -219,6 +219,7 @@ abolish-dialog(
   v-model="visible.abolish"
   :action="abolishAction"
   :list="abolishList"
+  @updateData="updateQuery(false)"
 )
 </template>
 
@@ -230,6 +231,7 @@ import {
   computed,
   reactive,
   watch,
+  inject,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BatchMode from '@/components/custom/batch-mode/index.vue';
@@ -291,6 +293,8 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'parent' });
     // 是否有修改權限
     const { hasModify } = useModifyAccess('ApplicationProgress');
+    // 取得在作廢後要動作的function
+    const updateQuery = inject('UrlManagement:updateQuery', () => ({}), false);
     // 顯示
     const visible = reactive({
       // 匯出dialog
@@ -428,6 +432,7 @@ export default defineComponent({
       exportPerm,
       exportParams,
       exportData,
+      updateQuery,
     };
   },
 });

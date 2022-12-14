@@ -341,9 +341,7 @@ export default defineComponent({
     };
 
     // 提供更新方法給作廢後的資料刷新
-    provide('UrlManagement:abolishConfirmCallback', () => {
-      updateQuery(false);
-    });
+    provide('UrlManagement:updateQuery', updateQuery);
 
     // 全部的購買方式
     const allBuy = buyOptions.map(obj => obj.value) as Buy[];

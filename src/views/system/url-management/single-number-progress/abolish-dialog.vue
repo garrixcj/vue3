@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, type PropType, inject } from 'vue';
+import { defineComponent, ref, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notify } from '@/components/utils/notification';
 import type { AbolishAction, AbolishList } from './single-number-progress';
@@ -51,17 +51,11 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['update:model-value'],
+  emits: ['update:model-value', 'updateData'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
     const loading = ref(false);
     const collapse = ref(true);
-
-    // 取得在確定後要動作的function
-    const confirmCallback = inject(
-      'UrlManagement:abolishConfirmCallback',
-      () => ({}),
-    );
 
     const confirm = () => {
       loading.value = true;
@@ -79,7 +73,7 @@ export default defineComponent({
                   }),
           });
         }
-        confirmCallback();
+        emit('updateData');
         open(false);
         loading.value = false;
       });
