@@ -1,15 +1,21 @@
 <template lang="pug">
-rd-dialog(v-bind="$attrs" :title="t('domain_name')" width="509px")
+rd-dialog(
+  v-bind="$attrs"
+  :title="t('domain_name')"
+  :close-on-click-modal="false"
+  width="509px"
+  @close="close"
+)
   .top-bar
     .top-bar__label {{ t('domain_name') }}
     .top-bar__item
-      rd-input(v-model="keyword" :placeholder="t('input_keyword')")
+      rd-input(v-model="keyword" :placeholder="t('input_keyword')" clearable)
   .content
     rd-card(no-padding)
       template(#content)
         rd-table(border :data="domainNamesFilter")
           rd-table-column(
-            label="#"
+            :label="t('increment_number')"
             header-align="center"
             align="center"
             prop="serial_number"
@@ -29,7 +35,8 @@ import type { DomainNamesType } from './type';
 
 export default defineComponent({
   name: 'RecordDialog',
-  setup() {
+  emits: ['update:visible'],
+  setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'parent' });
     const domainNames = inject('UrlManagementRecord:domainNames') as Ref<
       DomainNamesType[]
@@ -46,10 +53,16 @@ export default defineComponent({
       });
     });
 
+    const close = () => {
+      keyword.value = '';
+      emit('update:visible', false);
+    };
+
     return {
       t,
       keyword,
       domainNamesFilter,
+      close,
     };
   },
 });
@@ -64,5 +77,8 @@ export default defineComponent({
   .top-bar__item {
     width: 207px;
   }
+}
+.content {
+  margin-bottom: 10px;
 }
 </style>
