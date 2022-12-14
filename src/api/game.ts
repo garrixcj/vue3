@@ -240,7 +240,6 @@ export const lobby = {
 
   /**
    * 取得支援外接遊戲注單核對的遊戲大廳
-   *
    */
   getWagersCheckLobby() {
     return this.http.get('/lobby/wagers_check_lobby');
@@ -249,11 +248,22 @@ export const lobby = {
 
 /**
  * Wagers相關
+ * @param {string} lobby
+ * @param {string} start_date_time
+ * @param {string} end_date_time
  */
 export const wagers = {
   http,
-  getWagersCheckReport(params: object) {
-    return this.http.get('/game/external_wagers_check', { params });
+  getWagersCheckReport(
+    lobby: string,
+    params: {
+      start_date_time: string;
+      end_date_time: string;
+    },
+  ) {
+    return this.http.get(`/game/lobby/${lobby}/external_wagers_check`, {
+      params,
+    });
   },
 };
 
