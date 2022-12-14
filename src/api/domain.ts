@@ -700,7 +700,7 @@ export const auth = {
    * @param  {object} options
    */
   getTotalBinding(domain: number, options = {}) {
-    const paramOptions = ['users', 'start_date_time', 'end_date_time'];
+    const paramOptions = ['usernames', 'start_date_time', 'end_date_time'];
     const params = pick(options, paramOptions);
 
     return this.http.get(
