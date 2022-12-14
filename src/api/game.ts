@@ -248,12 +248,16 @@ export const lobby = {
 
 /**
  * Wagers相關
- * @param {string} lobby
- * @param {string} start_date_time
- * @param {string} end_date_time
  */
 export const wagers = {
   http,
+  /**
+   * 取得外接遊戲注單核對結果
+   * @param {string} lobby
+   * @param {object} params
+   * @param {string} params.start_date_time
+   * @param {string} params.end_date_time
+   */
   getWagersCheckReport(
     lobby: string,
     params: {

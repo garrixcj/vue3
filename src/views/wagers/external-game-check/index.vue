@@ -12,18 +12,17 @@ rd-layout(
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useWatcher } from '@/components/utils/route-watch';
 import { useTabAccess } from '@/plugins/access/view';
+import WagersCheckList from './wagers-check-list.vue';
 
 export default defineComponent({
   name: 'ExternalGameWagersCheck', //外接遊戲注單核對
   components: {
     // 外接遊戲注單核對
-    WagersCheckList: defineAsyncComponent(
-      () => import('./wagers-check-list.vue'),
-    ),
+    WagersCheckList,
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
