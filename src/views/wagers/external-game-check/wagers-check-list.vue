@@ -193,7 +193,7 @@ export default defineComponent({
     });
 
     // 驗證開始時間是否有小於結束時間
-    const validHour = (rule: never, value: never) => {
+    const validHour = () => {
       return new Promise<void>((resolve, reject) => {
         if (!compareHour(form.startHour, form.endHour)) {
           reject(t('start_time_can_not_after_end_time'));
