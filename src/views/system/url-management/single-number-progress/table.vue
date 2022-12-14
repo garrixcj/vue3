@@ -92,7 +92,10 @@ rd-card(no-padding)
         width="100"
       )
         template(#default="{ row }")
-          rd-link(href="#") {{ row.id }}
+          rd-link(
+            :href="`/v3/system_setting/url_management/detail/${row.id}`"
+            target="_blank"
+          ) {{ row.id }}
       //- 已完成 / 申請筆數
       rd-table-column(
         v-if="isDisplayedColumns('count')"
@@ -273,7 +276,7 @@ export default defineComponent({
   },
   emits: ['sortChange', 'update:current-page', 'update:page-size'],
   setup(props) {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 是否有修改權限
     const { hasModify } = useModifyAccess('ApplicationProgress');
     // 顯示

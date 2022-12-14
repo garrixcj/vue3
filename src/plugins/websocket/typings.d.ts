@@ -1,12 +1,9 @@
+import type Echo from 'laravel-echo';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export as namespace Websocket;
 
 export class State {
-  connect?: any;
-  disconnect?: any;
-  sender?: Function;
+  pusher?: any;
+  echo?: Echo;
 }
-
-export type Proxy = {
-  $socket?: { sendObj: Function };
-};
