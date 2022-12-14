@@ -195,7 +195,6 @@ export default defineComponent({
           form.site = val;
         },
         default: '',
-        filter: () => !isEmpty(form.site),
         optional: true,
         cached: true,
       },
@@ -207,7 +206,6 @@ export default defineComponent({
           form.domainName = val;
         },
         default: '',
-        filter: () => !isEmpty(form.domainName),
         optional: true,
         cached: true,
       },
@@ -223,7 +221,7 @@ export default defineComponent({
       },
       // 進階條件
       {
-        key: 'fail_to_oOpen',
+        key: 'fail_to_open',
         query: 'failToOpen',
         get: () => advancedForm.failToOpen,
         set: (val: number[]) => {

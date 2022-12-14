@@ -153,7 +153,6 @@ export default defineComponent({
           form.site = val;
         },
         default: '',
-        filter: () => !isEmpty(form.site),
         optional: true,
         cached: true,
       },
@@ -164,7 +163,6 @@ export default defineComponent({
           form.ip = val;
         },
         default: '',
-        filter: () => !isEmpty(form.ip),
         optional: true,
         cached: true,
       },

@@ -166,7 +166,6 @@ export default defineComponent({
           form.keyword = val;
         },
         default: '',
-        filter: () => !isEmpty(form.keyword),
         optional: true,
         cached: true,
       },
@@ -202,7 +201,7 @@ export default defineComponent({
       },
       // 進階條件
       {
-        key: 'fail_to_oOpen',
+        key: 'fail_to_open',
         query: 'failToOpen',
         get: () => advancedForm.failToOpen,
         set: (val: number[]) => {
