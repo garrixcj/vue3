@@ -30,7 +30,7 @@ export default defineComponent({
       {
         name: 'auditOverview',
         label: t('audit_overview'),
-        perm: 'auditOverview',
+        perm: 'AuditOverview',
         to: { query: { tab: 'auditOverview' } },
       },
     ];

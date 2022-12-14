@@ -1,11 +1,12 @@
 import { ref, reactive } from 'vue';
 import { url as urlAPI } from '@/api/domain';
-import type { RestrictionNumApi } from '../detail/detail';
+import type { RestrictionNumApi } from '../apply/apply';
+import { Buy } from '../apply/apply';
 
 // 取得站別限制相關
 export const useSiteRestriction = () => {
   // 取得各購買方式可申請上限
-  const restrictionNum: Record<string, number> = reactive({
+  const restrictionNum: Record<Buy, number> = reactive({
     bbin: 0,
     domain: 0,
   });
@@ -54,11 +55,15 @@ export const useSiteRestriction = () => {
       });
   };
 
+  // 今日還可申請的總筆數
+  const canApplyNum = (buy: Buy) => restrictionNum[buy] - requestionNum.value;
+
   return {
     requestionNum,
     restrictionNum,
     getRestriction,
     putRestriction,
     getRequestionNum,
+    canApplyNum,
   };
 };
