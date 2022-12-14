@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, type PropType } from 'vue';
+import { defineComponent, ref, type PropType, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notify } from '@/components/utils/notification';
 import type { AbolishAction, AbolishList } from './single-number-progress';
@@ -51,11 +51,17 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['update:model-value', 'submit'],
+  emits: ['update:model-value'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
     const loading = ref(false);
     const collapse = ref(true);
+
+    // 取得在確定後要動作的function
+    const confirmCallback = inject(
+      'UrlManagement:abolishConfirmCallback',
+      () => ({}),
+    );
 
     const confirm = () => {
       loading.value = true;
@@ -72,15 +78,9 @@ export default defineComponent({
                     num: props.list.length,
                   }),
           });
-        } else {
-          // TODO: 待後端更改完成後再替換成對應的數量
-          notify.error({
-            title: t('error'),
-            message: t('change_trans_number_fail', { fail: 0, success: 0 }),
-          });
         }
+        confirmCallback();
         open(false);
-        emit('submit');
         loading.value = false;
       });
     };

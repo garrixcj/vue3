@@ -40,7 +40,6 @@ rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
       v-model="abolishVisible"
       action="single"
       :list="abolishList"
-      @submit="updateTicket"
     )
 </template>
 
@@ -112,6 +111,8 @@ export default defineComponent({
         loading.value = false;
       });
     };
+    // 提供更新方法給作廢後的資料刷新
+    provide('UrlManagement:abolishConfirmCallback', updateTicket);
 
     // 站別資料 - 轉換為用站別當key的資料
     const siteList = computed(() =>

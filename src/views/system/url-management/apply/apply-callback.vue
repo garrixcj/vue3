@@ -13,7 +13,7 @@ rd-navbar-layout(
     //- 返回列表
     rd-button(type="secondary" @click="back") {{ t('back_to_list') }}
     //- 查看單號進度
-    rd-button(v-if="type !== 'error'" type="gradient" @click="guideDetail") {{ t('go_to_ticket_status') }}
+    rd-button(v-if="type !== 'error'" type="gradient" @click="toDetail") {{ t('go_to_ticket_status') }}
   template(#body)
     rd-layout-content
       //- 結果Alert
@@ -29,7 +29,7 @@ rd-navbar-layout(
         //- 返回列表
         rd-button(type="secondary" @click="back") {{ t('back_to_list') }}
         //- 查看單號進度(當有成功的域名時才顯示)
-        rd-button(v-if="type !== 'error'" type="gradient" @click="guideDetail") {{ t('go_to_ticket_status') }}
+        rd-button(v-if="type !== 'error'" type="gradient" @click="toDetail") {{ t('go_to_ticket_status') }}
 </template>
 
 <script lang="ts">
@@ -131,7 +131,7 @@ export default defineComponent({
     };
 
     // 導向單號詳情
-    const guideDetail = () => {
+    const toDetail = () => {
       window.location.href = `/v3/system_setting/url_management/detail/${result.id}`;
     };
 
@@ -142,7 +142,7 @@ export default defineComponent({
       type,
       typeInfo,
       back,
-      guideDetail,
+      toDetail,
     };
   },
 });

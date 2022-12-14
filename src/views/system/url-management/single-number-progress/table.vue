@@ -219,7 +219,6 @@ abolish-dialog(
   v-model="visible.abolish"
   :action="abolishAction"
   :list="abolishList"
-  @submit="$emit('updateData')"
 )
 </template>
 
