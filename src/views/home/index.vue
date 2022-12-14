@@ -13,23 +13,21 @@ el-config-provider(:locale="elLocale")
 //-     header-navbar(v-if="layoutTest" @collapse="pinMenu")
 //-     el-main#main-panel(v-loading="mainLoading")
 //-       //- rd-scrollbar
-//-       router-view
+//-       router-view(v-if="mainView")
 //- 無外框版
 el-container#main-layout(v-loading="loading")
   el-container#main-body(:style="'height: 100%'")
     el-main#main-panel(v-loading="mainLoading")
-      router-view
+      router-view(v-if="mainView")
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide, computed, watch } from 'vue';
+import { defineComponent, ref, provide, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLoadingStore } from '@/stores/loading';
-import { useOperatorStore } from '@/stores/operator';
-import { useWebSocketStore } from '@/stores/websocket';
 import { useDisplayStore } from '@/stores/display';
+import { useWebSocketStore } from '@/stores/websocket';
 import { onBeforeRouteUpdate } from 'vue-router';
-import { useWs } from '@/plugins/websocket';
 import isEmpty from 'lodash/isEmpty';
 import { ElContainer, ElMain } from 'element-plus';
 import HeaderNavbar from './header/index.vue';
@@ -124,26 +122,9 @@ export default defineComponent({
       }
     });
 
-    const operatorStore = useOperatorStore();
-    const webSocketStore = useWebSocketStore();
-    const ws = useWs();
-
-    // 連上 websocket
-    const operatorId = computed(() => {
-      return operatorStore.operator.id;
-    });
-    watch(
-      () => operatorId.value,
-      value => {
-        const isConnected = webSocketStore.isConnected;
-        if (!value && !isConnected) {
-          ws.connect();
-        } else if (isConnected) {
-          ws.disconnect();
-        }
-      },
-      { immediate: true },
-    );
+    // 連上 websocket 綁定 user channel
+    const wsStore = useWebSocketStore();
+    wsStore.init();
 
     return {
       layoutTest,

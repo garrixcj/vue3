@@ -7,9 +7,25 @@ import {
 } from 'vue-router';
 // todo use new v3 route setting
 import routeJson from './route.json';
+import ManualRouteJson from './manual-route.json';
 import type { RouteSet } from './route-set';
 
-const routeSets = routeJson as RouteSet[];
+// v2轉v3過渡期需手動加路由，透過此method合併
+const mergeRoute = (route: RouteSet[], manualRoute: RouteSet[]) => {
+  manualRoute.forEach(manualItem => {
+    // 以匯出檔案為主，沒有相同route資料才會加入手動新增的路由
+    if (route.findIndex(item => item.route === manualItem.route) === -1) {
+      route.push(manualItem);
+    }
+  });
+
+  return route;
+};
+
+const routeSets = mergeRoute(
+  routeJson as RouteSet[],
+  ManualRouteJson as RouteSet[],
+);
 
 const view = (page: string) => () => import(`@/views/${page}.vue`);
 

@@ -1,0 +1,14 @@
+[
+  {
+      "id": 741,
+      "name": "URLManagement",
+      "note": "網址管理(PID)",
+      "dict": "url_management",
+      "route": "/system/url-management/index",
+      "perm": "URLManagement",
+      "host": "VUE3_HOST",
+      "file": "/system/url-management/index",
+      "qstr": "",
+      "component": ""
+  }
+]

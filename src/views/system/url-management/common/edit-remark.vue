@@ -1,106 +1,177 @@
 <i18n src="@/languages/system_setting/url_management/common.json"></i18n>
 <template lang="pug">
 rd-dialog(
-  v-model="editRemarkForm.visible"
-  :title="isSingleOperation ? t('edit_remark') : t('batch_remark')"
+  :title="isSingle ? t('edit_remark') : t('batch_remark')"
   :close-on-click-modal="false"
+  :model-value="visible"
   width="520px"
+  @update:model-value="$emit('update:visible', $event)"
+  @close="reset"
 )
-  rd-form(label-width="65px" size="small")
+  rd-form.form-content(label-width="65px" size="small")
     //- 單一操作
-    .single-option(v-if="isSingleOperation")
+    .single-option(v-if="isSingle")
       rd-form-item(:label="t('site')")
-        span {{ domainNameData[0].site }}
+        span {{ data.domainNameList[0].site }}
       rd-form-item(:label="t('suffix')")
-        span @{{ domainNameData[0].suffix }}
+        span @{{ data.domainNameList[0].suffix }}
       rd-form-item(:label="t('domain_name')")
         rd-link(
-          :href="`http://${domainNameData[0].domainName}`"
+          :href="`http://${data.domainNameList[0].domainName}`"
           target="_blank"
-        ) {{ domainNameData[0].domainName }}
+        ) {{ data.domainNameList[0].domainName }}
     //- 批次操作
     .batch-option(v-else)
-      .remark-illustrate {{ t('remark_illustrate_2', { num: domainNameData.length }) }}
-      rd-form-item(:label="t('cover')")
-        rd-radio-group(v-model="editRemarkForm.type")
-          rd-radio(label="cover") {{ t('direct_coverage') }}
+      .remark-illustrate {{ t('remark_illustrate', { num: data.domainNameList.length }) }}
+      rd-form-item(:label="t('overwrite')")
+        rd-radio-group(v-model="form.type")
+          rd-radio(label="cover") {{ t('overwrite_remarks') }}
           rd-radio(label="noRemark") {{ t('only_modify_no_remark') }}
     //- 備註
     rd-form-item(:label="t('remark')")
       rd-input(
-        v-model="editRemarkForm.remark"
         type="textarea"
         :placeholder="t('please_enter_remarks')"
         show-word-limit
+        :model-value="form.remark"
         :maxlength="200"
+        @input="form.remark = $event"
       )
   template(#footer)
-    rd-button(type="secondary" @click="editRemarkForm.visible = false") {{ t('cancel') }}
+    rd-button(type="secondary" @click="$emit('update:visible', false)") {{ t('cancel') }}
     rd-button(type="primary" @click="save") {{ t('save') }}
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { isEmpty } from 'lodash';
-import { type Ref, defineComponent, inject, computed } from 'vue';
+import {
+  type PropType,
+  defineComponent,
+  inject,
+  reactive,
+  computed,
+  watch,
+} from 'vue';
 import { notify } from '@/components/utils/notification';
+import type { RemarkDomainNameForm } from './type';
+import { url as urlAPI } from '@/api/domain';
 
-type domainNameData = 'site' | 'siteName' | 'suffix' | 'domainName' | 'remark';
-
-type editRemarkForm = {
-  visible: boolean;
+type Data = {
   action: string;
-  type: string;
+  site: string;
+  siteName: string;
+  siteType: number;
+  suffix: string;
+  domainNameList: RemarkDomainNameForm[];
   remark: string;
 };
 
 export default defineComponent({
   name: 'EditRemark', // 網址管理 - 編輯備註
-  emits: ['save'],
+  props: {
+    // 開關
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    // 資料
+    data: {
+      type: Object as PropType<Data>,
+      default: () => ({}),
+    },
+  },
+  emits: ['update:visible'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
-    // 域名資料
-    const domainNameData = inject('CustomerDomain:domainNameData') as Ref;
-    // Form 資料
-    const editRemarkForm = inject(
-      'CustomerDomain:editRemarkForm',
-    ) as editRemarkForm;
-    // 單一操作
-    const isSingleOperation = computed(
-      () => editRemarkForm.action === 'single',
+    // Loading
+    const setLoading = inject('UrlManagement:setLoading') as Function;
+
+    // 表單資料
+    const form = reactive({
+      type: 'cover', // 類型(覆蓋 cover、只修改無備註 noRemark)
+      remark: '', // 備註
+    });
+
+    // 監聽 props 的 表單備註是否改變
+    watch(
+      () => props.data.remark,
+      (value: string) => {
+        form.remark = value;
+      },
+      { immediate: true },
     );
+
+    // 單一操作
+    const isSingle = computed(() => props.data.action === 'single');
+
     // 點擊儲存
     const save = () => {
       // 批次操作選擇只修改無備註，且域名資料全部都有備註時，需跳 Warning
-      if (!isSingleOperation.value && editRemarkForm.type === 'noRemark') {
-        if (
-          !domainNameData.value.some((item: Record<domainNameData, string>) =>
-            isEmpty(item.remark),
-          )
-        ) {
-          notify.warning({ title: t('warning'), message: t('warning_msg') });
-          return emit('save', false);
-        }
+      if (
+        !isSingle.value &&
+        form.type === 'noRemark' &&
+        props.data.domainNameList.every(item => !isEmpty(item.remark))
+      ) {
+        notify.warning({ title: t('warning'), message: t('warning_msg') });
+        emit('update:visible', false);
+        return;
       }
       // 單一操作
-      if (isSingleOperation.value) {
-        editRemarkForm.type = 'cover';
+      if (isSingle.value) {
+        form.type = 'cover';
       }
-      return emit('save', true);
+      setLoading(true);
+      return urlAPI
+        .updateDomainNameRemark(
+          getDomainName(),
+          props.data.siteType,
+          form.remark,
+        )
+        .then(resp => {
+          if (resp.data.result) {
+            notify.success({ title: t('success') });
+          }
+          setLoading(false);
+          emit('update:visible', false);
+        });
     };
+
+    // 取得需更改備註的域名
+    const getDomainName = () => {
+      if (typeof props.data.domainNameList !== 'undefined') {
+        return props.data.domainNameList
+          .filter(
+            item =>
+              form.type === 'cover' ||
+              (form.type === 'noRemark' && isEmpty(item.remark)),
+          )
+          .map(item => {
+            return { site_group: item.site, domain_name: item.domainName };
+          });
+      }
+      return [];
+    };
+
+    // 還原
+    const reset = () => {
+      form.type = 'cover';
+      form.remark = props.data.remark;
+    };
+
     return {
       t,
-      domainNameData,
-      editRemarkForm,
-      isSingleOperation,
+      form,
+      isSingle,
       save,
+      reset,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.el-form {
+.form-content {
   @include space-vertical(15px);
 }
 .remark-illustrate {

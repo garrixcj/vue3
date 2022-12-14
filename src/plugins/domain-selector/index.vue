@@ -11,8 +11,7 @@ rd-select(
     v-if="allOpt"
     key="all-opt"
     :value="allOptionsSet.value !== undefined ? allOptionsSet.value : 'all'"
-    :label="allOptionsSet.label !== undefined ? allOptionsSet.label : 'all'"
-    :option="{}"
+    :label="allOptionsSet.label !== undefined ? allOptionsSet.label : t('all')"
   )
     template(v-if="$slots.allLabel" #default="{ current }")
       slot(name="allLabel" :current="current")
@@ -61,7 +60,7 @@ export default defineComponent({
   },
   emits: ['update:value'],
   setup(props, { emit }) {
-    const { t } = useI18n();
+    const { t } = useI18n({ useScope: 'local' });
     const { domains, getDomainList } = useDomainList();
     onMounted(() => {
       // 只會取得開放廳主

@@ -2,6 +2,7 @@
 <i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-layout.url-management(
+  ref="layoutRef"
   v-model:active-tab="activeTab"
   tab-type="link"
   :menu="currentTabs"
@@ -11,9 +12,8 @@ rd-layout.url-management(
   template(#afterTitle)
     //- 站別資訊
     site-information
-
-    //- 操作教學(todo: 代刻元件)
-    //- teach(url-key='domain_management')
+    //- 操作教學
+    teach(feature-key="domain_management")
   //- 客端域名
   template(#customerDomain)
     beta-message
@@ -44,12 +44,20 @@ rd-layout.url-management(
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide } from 'vue';
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  provide,
+  type Ref,
+  type ComponentPublicInstance,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
 import host from '@/plugins/url';
 import { useLoadingStore } from '@/stores/loading';
 import { match } from '@/components/utils/string-match/index';
+import Teach from '@/plugins/teach-guide/index.vue';
 import CustomerDomain from './customer-domain/index.vue';
 import AgentDomain from './agent-domain/index.vue';
 import IpService from './ip-service/index.vue';
@@ -58,6 +66,10 @@ import ActiveDomain from './active-domain/index.vue';
 import Record from './record/index.vue';
 import SiteInformation from './common/site-information.vue';
 import BetaMessage from './common/beta-message.vue';
+import { RouteWatch } from '@/components/utils/route-watch';
+import { useSiteList } from './common/list';
+import { useDomainList } from '@/plugins/domain-selector/domain';
+import { useAdvancedConditionList } from './common/list';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
@@ -70,9 +82,10 @@ export default defineComponent({
     Record, // 操作紀錄
     SiteInformation, // 站別資訊
     BetaMessage, // Beta警示訊息
+    Teach, // 教學連結
   },
   setup() {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t, locale } = useI18n({ useScope: 'local' });
     const activeTab = ref('customerDomain');
     const tabs = [
       // 客端域名
@@ -100,7 +113,7 @@ export default defineComponent({
       {
         name: 'singleNumberProgress',
         label: t('single_number_progress'),
-        perm: 'BindAlternateUrl', // todo: 待加新權限
+        perm: 'ApplicationProgress',
         to: { query: { tab: 'singleNumberProgress' } },
       },
       // SSL憑證(舊頁面)
@@ -122,14 +135,20 @@ export default defineComponent({
       {
         name: 'record',
         label: t('operate_record'),
-        // perm: 'UrlManagementRecord',
-        perm: 'ActiveUrl', // todo: 待加新權限
+        perm: 'URLManagementRecord',
         to: { query: { tab: 'record' } },
       },
     ];
 
-    const { currentTabs, tabPerms, setTabWatcher } = useTabAccess(tabs);
+    const watcher = new RouteWatch();
+    const { currentTabs, setTabWatcher } = useTabAccess(tabs);
     setTabWatcher(activeTab);
+    watcher.setWatcher((query: { tab: string }) => {
+      const currentTab = tabs.find(item => item.name === query.tab);
+      if (typeof currentTab !== 'undefined') {
+        activeTab.value = currentTab.name;
+      }
+    });
 
     // 處理loading遮罩
     const loadingStore = useLoadingStore();
@@ -158,11 +177,68 @@ export default defineComponent({
     };
     provide('UrlManagement:customSearch', customSearch);
 
+    // 處理頁面置頂
+    const layoutRef = ref(document.createElement('div')) as Ref<
+      ComponentPublicInstance<HTMLDivElement>
+    >;
+    const scrollToTop = () => {
+      layoutRef.value.$el.scrollTop = 0;
+    };
+    provide('UrlManagement:scrollToTop', scrollToTop);
+
+    // 域名狀態群組的過濾選項
+    const { advancedConditions, getAdvancedConditionsList } =
+      useAdvancedConditionList(locale.value);
+    provide('UrlManagement:advancedConditions', advancedConditions);
+
+    // 取得異常狀態 - 子項目顏色
+    const getAbnormalStateColor = (value: number) => {
+      const failToOpen = advancedConditions.failToOpen;
+      const partiallyOpen = advancedConditions.partiallyOpen;
+      const openable = advancedConditions.openable;
+
+      switch (true) {
+        // 無法開啟
+        case typeof failToOpen.find(item => item.label === value) !==
+          'undefined':
+          return 'danger';
+        // 部分開啟
+        case typeof partiallyOpen.find(item => item.label === value) !==
+          'undefined':
+          return 'warning';
+        // 可開啟
+        case typeof openable.find(item => item.label === value) !== 'undefined':
+          return 'success';
+        // 預設空的
+        default:
+          return '';
+      }
+    };
+    provide('UrlManagement:getAbnormalStateColor', getAbnormalStateColor);
+
+    // 站別相關
+    const { getSiteList, siteOptions } = useSiteList();
+    provide('UrlManagement:siteList', siteOptions);
+    // 廳主列表
+    const { domains, getDomainList } = useDomainList();
+    provide('UrlManagement:domainList', domains);
+
+    onMounted(() => {
+      loadingStore.page = true;
+      Promise.all([
+        getDomainList(),
+        getSiteList(),
+        getAdvancedConditionsList(),
+      ]).then(() => {
+        loadingStore.page = false;
+      });
+    });
+
     return {
       t,
       activeTab,
       currentTabs,
-      tabPerms,
+      layoutRef,
     };
   },
 });

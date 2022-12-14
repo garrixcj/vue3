@@ -79,7 +79,7 @@ export const priceListByMethod = mapKeys(
 );
 
 // 價格類型字典對照
-export const priceListDict = {
+export const priceListDict: Record<string, string> = {
   domainName: 'domain_name',
   ssl: 'ssl_certificate',
   ip: 'IP',
