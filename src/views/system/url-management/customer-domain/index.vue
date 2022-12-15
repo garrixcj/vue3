@@ -169,6 +169,7 @@ import {
   provide,
   inject,
   ref,
+  reactive,
   computed,
 } from 'vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -217,6 +218,18 @@ export default defineComponent({
     const customSearch = inject<object>('UrlManagement:customSearch');
     // 站別列表
     const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
+    // 基本搜尋
+    const basicForm = reactive({
+      type: '',
+      site: '',
+      domain: 'all',
+      multipleDomains: [],
+    }) as {
+      type: string;
+      site: string;
+      domain: 'all' | number;
+      multipleDomains: string[];
+    };
 
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
@@ -498,7 +511,7 @@ export default defineComponent({
         default: 'asc',
       },
     ]);
-    provide('CustomerDomain:basicSearchForm', querySet.getQuery());
+    provide('CustomerDomain:basicSearchForm', basicForm);
 
     // 設定列表資料
     const setTableData = () => {
@@ -698,6 +711,12 @@ export default defineComponent({
           if (resp) {
             advancedConditionAct.init();
             setTableData();
+
+            const query = querySet.getQuery() as FormType;
+            basicForm.type = query.type;
+            basicForm.domain = query.domain;
+            basicForm.multipleDomains = query.multipleDomains;
+            basicForm.site = query.site;
           }
           updateApi.value = false;
           setLoading(false);
