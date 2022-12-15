@@ -55,7 +55,7 @@ export default defineConfig({
     // 開發暫時介接開發站api
     proxy: {
       '/hex': {
-        target: 'http://admin.vir888.com',
+        target: 'http://admin.garrix-chang.rd6.vir777.net',
         changeOrigin: true,
         secure: false,
       },
