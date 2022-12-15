@@ -62,7 +62,14 @@ list(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { isEmpty, intersection, toInteger } from 'lodash';
-import { type Ref, defineComponent, provide, inject, ref } from 'vue';
+import {
+  type Ref,
+  defineComponent,
+  onMounted,
+  provide,
+  inject,
+  ref,
+} from 'vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
@@ -78,7 +85,7 @@ import {
 } from '../common/search';
 import { setExportPermName, doExportIPServiceList } from '../common/export';
 import { useList } from './list';
-import type { SiteOption } from '../common/list';
+import { type SiteOption, useAdvancedConditionList } from '../common/list';
 import type { IPServiceListData } from '../common/type';
 
 export default defineComponent({
@@ -115,6 +122,11 @@ export default defineComponent({
     typeOptions.value = typeOptions.value.filter(item => {
       return item.value !== 'domainName';
     });
+
+    // 域名狀態群組的過濾選項
+    const { advancedConditions, getAdvancedConditionsList } =
+      useAdvancedConditionList(locale.value);
+    provide('UrlManagement:advancedConditions', advancedConditions);
 
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
@@ -347,6 +359,13 @@ export default defineComponent({
         setLoading(false);
       });
     };
+
+    onMounted(() => {
+      setLoading(true);
+      Promise.all([getAdvancedConditionsList()]).then(() => {
+        setLoading(false);
+      });
+    });
 
     // 點擊搜尋按鈕
     const search = () => {

@@ -380,7 +380,7 @@ export default defineComponent({
     const listRef = ref<InstanceType<typeof ElTable>>();
     // 取得異常狀態色系
     const getAbnormalStateColor = inject(
-      'UrlManagement:getAbnormalStateColor',
+      'AgentDomainName:getAbnormalStateColor',
     ) as Function;
     const listCondition = inject(
       'AgentDomainName:listCondition',

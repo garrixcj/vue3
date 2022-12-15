@@ -80,6 +80,7 @@ import { isEmpty, intersection, orderBy } from 'lodash';
 import {
   type Ref,
   defineComponent,
+  onMounted,
   watch,
   computed,
   provide,
@@ -104,7 +105,7 @@ import {
   doExportAgentDomainNameList,
 } from '../common/export';
 import { useList } from './list';
-import type { SiteOption } from '../common/list';
+import { type SiteOption, useAdvancedConditionList } from '../common/list';
 import type { ListData, AbnormalStateConditions } from '../common/type';
 
 export default defineComponent({
@@ -125,8 +126,6 @@ export default defineComponent({
     const updateApi = ref(false);
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
-    // 站別列表
-    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
     const formRef = ref();
     // 表單相關
@@ -153,6 +152,39 @@ export default defineComponent({
       return subTabs.value.filter(item => item.key === subActiveTab.value)[0]
         ?.value;
     });
+
+    // 站別列表
+    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
+
+    // 域名狀態群組的過濾選項
+    const { advancedConditions, getAdvancedConditionsList } =
+      useAdvancedConditionList(locale.value);
+    provide('UrlManagement:advancedConditions', advancedConditions);
+
+    // 取得異常狀態 - 子項目顏色
+    const getAbnormalStateColor = (value: number) => {
+      const failToOpen = advancedConditions.failToOpen;
+      const partiallyOpen = advancedConditions.partiallyOpen;
+      const openable = advancedConditions.openable;
+
+      switch (true) {
+        // 無法開啟
+        case typeof failToOpen.find(item => item.label === value) !==
+          'undefined':
+          return 'danger';
+        // 部分開啟
+        case typeof partiallyOpen.find(item => item.label === value) !==
+          'undefined':
+          return 'warning';
+        // 可開啟
+        case typeof openable.find(item => item.label === value) !== 'undefined':
+          return 'success';
+        // 預設空的
+        default:
+          return '';
+      }
+    };
+    provide('AgentDomainName:getAbnormalStateColor', getAbnormalStateColor);
 
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
@@ -457,6 +489,13 @@ export default defineComponent({
         setLoading(false);
       });
     };
+
+    onMounted(() => {
+      setLoading(true);
+      Promise.all([getAdvancedConditionsList()]).then(() => {
+        setLoading(false);
+      });
+    });
 
     // 點擊搜尋按鈕
     const search = () => {

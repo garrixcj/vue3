@@ -73,13 +73,14 @@ list(
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
-import { defineComponent, provide, inject, ref } from 'vue';
+import { defineComponent, onMounted, provide, inject, ref } from 'vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
 import { notify } from '@/components/utils/notification';
+import { useDomainList } from '@/plugins/domain-selector/domain';
 import {
   useForm,
   useFormField,
@@ -92,6 +93,7 @@ import {
   doExportActiveDomainNameList,
 } from '../common/export';
 import { useList } from './list';
+import { useAdvancedConditionList } from '../common/list';
 import type {
   ActiveDomainNameListData,
   AbnormalStateConditions,
@@ -139,6 +141,39 @@ export default defineComponent({
         dayjs(time).diff(dayjs(), 'day', true) < -180
       );
     };
+    // 廳主列表
+    const { domains, getDomainList } = useDomainList();
+    provide('ActiveDomainName:domainList', domains);
+
+    // 域名狀態群組的過濾選項
+    const { advancedConditions, getAdvancedConditionsList } =
+      useAdvancedConditionList(locale.value);
+    provide('UrlManagement:advancedConditions', advancedConditions);
+
+    // 取得異常狀態 - 子項目顏色
+    const getAbnormalStateColor = (value: number) => {
+      const failToOpen = advancedConditions.failToOpen;
+      const partiallyOpen = advancedConditions.partiallyOpen;
+      const openable = advancedConditions.openable;
+
+      switch (true) {
+        // 無法開啟
+        case typeof failToOpen.find(item => item.label === value) !==
+          'undefined':
+          return 'danger';
+        // 部分開啟
+        case typeof partiallyOpen.find(item => item.label === value) !==
+          'undefined':
+          return 'warning';
+        // 可開啟
+        case typeof openable.find(item => item.label === value) !== 'undefined':
+          return 'success';
+        // 預設空的
+        default:
+          return '';
+      }
+    };
+    provide('ActiveDomainName:getAbnormalStateColor', getAbnormalStateColor);
 
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
@@ -489,6 +524,13 @@ export default defineComponent({
         setLoading(false);
       });
     };
+
+    onMounted(() => {
+      setLoading(true);
+      Promise.all([getDomainList(), getAdvancedConditionsList()]).then(() => {
+        setLoading(false);
+      });
+    });
 
     // 點擊搜尋按鈕
     const search = () => {

@@ -306,11 +306,11 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'parent' });
     // 取得異常狀態色系
     const getAbnormalStateColor = inject(
-      'UrlManagement:getAbnormalStateColor',
+      'ActiveDomainName:getAbnormalStateColor',
     ) as Function;
 
     // 廳主列表
-    const domainList = inject('UrlManagement:domainList') as Ref<
+    const domainList = inject('ActiveDomainName:domainList') as Ref<
       DomainOption[]
     >;
     // 取得廳主名稱
