@@ -417,7 +417,11 @@ export-note(
   @confirm="exportFiled"
 )
 //- 編輯備註(含批次操作)
-edit-remark(v-model:visible="dialogSwitch.remark" :data="dialogForm")
+edit-remark(
+  v-model:visible="dialogSwitch.remark"
+  :data="dialogForm"
+  @update="tableAct.updateApi()"
+)
 //- 申請憑證
 apply-ssl(v-model:visible="dialogSwitch.applySSL" :data="dialogForm")
 //- 更新DNS資訊
@@ -488,7 +492,7 @@ export default defineComponent({
     EditRemark,
     ApplySsl,
   },
-  emits: ['openDialog', 'change', 'export', 'sortChange'],
+  emits: ['openDialog', 'change', 'export', 'sortChange', 'update'],
   setup(props, { emit, expose }) {
     const { t } = useI18n({ useScope: 'parent' });
     // Loading
@@ -593,6 +597,9 @@ export default defineComponent({
         listCondition.sort = 'id';
         listCondition.order = 'asc';
         listRef.value?.clearSort();
+      },
+      updateApi: () => {
+        emit('update', true);
       },
     };
 

@@ -155,6 +155,7 @@ list(
   @change="listAct.change"
   @sortChange="listAct.sort"
   @export="exportList"
+  @update="listAct.updateApi"
 )
 </template>
 
@@ -603,6 +604,10 @@ export default defineComponent({
         watcher.queryRoute(querySet.getQuery());
       },
       change: () => {
+        watcher.queryRoute(querySet.getQuery());
+      },
+      updateApi: () => {
+        updateApi.value = true;
         watcher.queryRoute(querySet.getQuery());
       },
     };
