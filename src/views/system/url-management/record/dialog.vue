@@ -19,7 +19,7 @@ rd-dialog(
             header-align="center"
             align="center"
             prop="serial_number"
-            width="50"
+            width="80"
           )
           rd-table-column(
             :label="t('domain_name')"
