@@ -561,6 +561,7 @@ export default defineComponent({
         batchModuleData.selected = val;
       },
       clear: () => {
+        batchModuleData.visible = false;
         batchModuleData.selected = [];
         listCondition.selectAll = false;
         listData.value.forEach(item => {
@@ -799,6 +800,7 @@ export default defineComponent({
     expose({
       scrollTo,
       sortClear: tableAct.clear,
+      selectClear: selectAct.clear,
     });
 
     return {
