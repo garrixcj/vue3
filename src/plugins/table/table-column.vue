@@ -1,5 +1,5 @@
 <template lang="pug">
-.og-table-row(:class="setContentClass" :style="setContentStyle")
+.og-table-row(:class="getBgClass" :style="getBgStyle")
   //- row
   .og-table-row__wrap
     //- 多選欄位
@@ -73,18 +73,22 @@ export default defineComponent({
       return props.slotNames.filter(item => keys(slots).includes(item));
     };
 
-    // 設定 content class
-    const setContentClass = computed(() => {
-      const returnClass = [getBgClass()];
-
-      return returnClass;
+    // 取得背景顏色的class
+    const getBgClass = computed(() => {
+      if (allowBgColor.includes(props.background)) {
+        return `bg-${props.background}`;
+      }
+      return 'bg-white';
     });
-    // 設定 content style
-    const setContentStyle = computed(() => {
-      const returnStyle = [getBgStyle()];
-
-      return returnStyle;
+    // 指定色碼的style
+    const getBgStyle = computed(() => {
+      // 若background的值不在允許清單內，則當作色碼處裡
+      if (props.background !== '' && !allowBgColor.includes(props.background)) {
+        return { 'background-color': props.background };
+      }
+      return '';
     });
+
     // 設定 item class
     const setItemClass = (fieldName: string) => {
       const itemClass = [
@@ -128,22 +132,6 @@ export default defineComponent({
       return itemStyle;
     };
 
-    // 取得背景顏色的class
-    const getBgClass = () => {
-      if (allowBgColor.includes(props.background)) {
-        return `bg-${props.background}`;
-      }
-      return 'bg-white';
-    };
-    // 指定色碼的style
-    const getBgStyle = () => {
-      // 若background的值不在允許清單內，則當作色碼處裡
-      if (props.background !== '' && !allowBgColor.includes(props.background)) {
-        return { 'background-color': props.background };
-      }
-      return '';
-    };
-
     // Checkbox
     const checkBoxAct = {
       update: (val: CheckboxValueType) => {
@@ -156,8 +144,8 @@ export default defineComponent({
 
     return {
       filterSlotNames,
-      setContentClass,
-      setContentStyle,
+      getBgClass,
+      getBgStyle,
       setItemClass,
       setItemStyle,
       checkBoxAct,

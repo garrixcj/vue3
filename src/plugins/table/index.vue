@@ -108,7 +108,7 @@ export default defineComponent({
     // 無資料的背景顏色 (none / white)
     noDataBackground: { type: String, default: 'white' },
   },
-  setup(props) {
+  setup(props, { expose }) {
     const { t } = useI18n({ useScope: 'local' });
 
     const tableHeader = ref<HTMLElement>(document.createElement('div'));
@@ -195,6 +195,16 @@ export default defineComponent({
         return {};
       },
     };
+
+    // 重置捲軸高度
+    const scrollTo = () => {
+      tableBody.value.scrollLeft = 0;
+      tableBody.value.scrollTop = 0;
+    };
+    // 封裝外部使用功能
+    expose({
+      scrollTo,
+    });
 
     return {
       t,
