@@ -1,5 +1,8 @@
 <template lang="pug">
-.og-table-row(:class="getBgClass" :style="getBgStyle")
+.og-table-row(
+  :class="[getBgClass, { 'selected-row': visible }]"
+  :style="getBgStyle"
+)
   //- row
   .og-table-row__wrap
     //- 多選欄位
@@ -218,6 +221,15 @@ $border-line: 1px solid $border-color;
     width: 50px;
     border-right: $border-line;
     transition-duration: 0.3s;
+  }
+
+  &.selected-row {
+    background-color: $focus-2;
+    :hover {
+      > div {
+        background-color: darken($focus-2, 3%);
+      }
+    }
   }
 }
 </style>
