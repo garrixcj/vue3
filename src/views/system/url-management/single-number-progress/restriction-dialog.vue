@@ -27,7 +27,7 @@
             :content="t('member_limit_info', { minimum, maximum: bbinMaximum })"
           )
             i.mdi.mdi-information
-        rd-input-number.input-width(
+        rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.bbin"
           :min="minimum"
           :max="bbinMaximum"
@@ -40,7 +40,7 @@
             :content="t('member_limit_info', { minimum, maximum: domainMaximum })"
           )
             i.mdi.mdi-information
-        rd-input-number.input-width(
+        rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.domain"
           :min="minimum"
           :max="domainMaximum"
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteRestriction } from './restriction';
 import { notify } from '@/components/utils/notification';
@@ -72,7 +72,7 @@ export default defineComponent({
   },
   emits: ['update:model-value'],
   setup(props, { emit }) {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'parent' });
     // 站別限制相關
     const { restrictionNum, getRestriction, putRestriction } =
       useSiteRestriction();
@@ -93,12 +93,19 @@ export default defineComponent({
       });
     };
 
+    watch(
+      () => props.modelValue,
+      value => {
+        if (value) {
+          // 當今天是要開啟時重新設定現在的限定筆數
+          resetRestriction();
+        }
+      },
+    );
+
     // 根據狀態進行重置並觸發上層值的更新
     const resetAndEmit = (visible: boolean) => {
-      if (visible) {
-        // 當今天是要開啟時重新設定現在的限定筆數
-        resetRestriction();
-      } else {
+      if (!visible) {
         // 當今天是要關閉時重置form
         formRef.value.resetFields();
       }

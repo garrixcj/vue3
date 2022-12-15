@@ -61,7 +61,7 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { isEmpty, intersection, omitBy, toInteger } from 'lodash';
+import { isEmpty, intersection, toInteger } from 'lodash';
 import { type Ref, defineComponent, provide, inject, ref } from 'vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
@@ -76,11 +76,7 @@ import {
   useValidationRules,
   useAdvancedConditions,
 } from '../common/search';
-import {
-  type ExportIPServiceOption,
-  setExportPermName,
-  doExportIPServiceList,
-} from '../common/export';
+import { setExportPermName, doExportIPServiceList } from '../common/export';
 import { useList } from './list';
 import type { SiteOption } from '../common/list';
 import type { IPServiceListData } from '../common/type';
@@ -134,7 +130,7 @@ export default defineComponent({
       listCondition,
       listAngleTotalData,
       getList,
-    } = useList(form);
+    } = useList();
     provide('IPService:listData', listData);
     provide('IPService:listCondition', listCondition);
     provide('IPService:listAngleTotalData', listAngleTotalData);
@@ -157,6 +153,7 @@ export default defineComponent({
           form.site = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       {
@@ -166,46 +163,56 @@ export default defineComponent({
           form.ip = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       // 進階條件
       {
-        key: 'ipType',
+        key: 'ip_type',
+        query: 'ipType',
         get: () => advancedForm.ipType,
         set: (val: number[]) => {
-          advancedForm.ipType = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.ipType = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.ipType),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'purchaseMethod',
+        key: 'purchase_method',
+        query: 'purchaseMethod',
         get: () => advancedForm.purchaseMethod,
         set: (val: number[]) => {
-          advancedForm.purchaseMethod = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.purchaseMethod = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.purchaseMethod),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'attackStatus',
+        key: 'attack_status',
+        query: 'attackStatus',
         get: () => advancedForm.attackStatus,
         set: (val: number[]) => {
-          advancedForm.attackStatus = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.attackStatus = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.attackStatus),
+        optional: true,
+        numberArray: true,
       },
       // Table條件
       {
-        key: 'angle',
+        key: 'table_filter',
+        query: 'angle',
         get: () => listCondition.formAngle,
-        set: (val: string) => {
-          listCondition.formAngle = updateApi.value ? 'all' : val;
+        set: (val: 'all' | number) => {
+          listCondition.formAngle = val === 'all' ? val : toInteger(val);
         },
+        filter: type => !(type === 'api' && listCondition.formAngle === 'all'),
+        optional: true,
         default: 'all',
       },
       {
@@ -275,8 +282,8 @@ export default defineComponent({
           // 判斷列表顯示角度
           const isTableAngle =
             listCondition.formAngle === 'all' ||
-            (listCondition.formAngle === 'oneToOne' && item.ipType === 1) ||
-            (listCondition.formAngle === 'oneToMany' && item.ipType === 2);
+            (listCondition.formAngle === 1 && item.ipType === 1) ||
+            (listCondition.formAngle === 2 && item.ipType === 2);
 
           if (isTableAngle && (isAdSearch || isNotAdvancedCondition)) {
             result = [...result, item];
@@ -317,38 +324,18 @@ export default defineComponent({
       setExportPermName('UrlIpServiceExport');
 
       const query = querySet.getQuery() as FormType;
+      const params = querySet.getParam();
 
-      // 列表角度
-      let tableFilter = 0;
-      if (listCondition.formAngle === 'oneToOne') {
-        tableFilter = 1;
-      } else if (listCondition.formAngle === 'oneToMany') {
-        tableFilter = 2;
+      // 判斷是否有備註
+      if (!isEmpty(note)) {
+        params.export_remark = note;
       }
-      const optionsTmp: ExportIPServiceOption = {
-        ip: query.ip,
-        ip_type: advancedForm.ipType,
-        purchase_method: advancedForm.purchaseMethod,
-        attack_status: advancedForm.attackStatus,
-        table_filter: tableFilter,
-        export_remark: note,
-      };
-      // 過濾為空的都不帶入
-      const options = omitBy(optionsTmp, value => {
-        if (
-          (typeof value !== 'number' && isEmpty(value)) ||
-          (typeof value === 'number' && value === 0)
-        ) {
-          return true;
-        }
-        return false;
-      });
 
       return doExportIPServiceList(
         query.type,
         query.site,
         locale.value,
-        options,
+        params,
       ).then(resp => {
         if (resp.data.result) {
           notify.success({
@@ -380,7 +367,7 @@ export default defineComponent({
       if (!searched.value || updateApi.value) {
         setLoading(true);
         searched.value = true;
-        return getList().then(resp => {
+        return getList(form, querySet.getParam()).then(resp => {
           if (resp) {
             setTableData();
           }
