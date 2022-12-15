@@ -294,7 +294,7 @@ export default defineComponent({
     // 是否有修改權限
     const { hasModify } = useModifyAccess('ApplicationProgress');
     // 取得在作廢後要動作的function
-    const updateQuery = inject('UrlManagement:updateQuery', () => ({}), false);
+    const updateQuery = inject('UrlManagement:updateQuery') as Function;
     // 顯示
     const visible = reactive({
       // 匯出dialog
