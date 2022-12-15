@@ -1338,7 +1338,7 @@ export const url = {
   },
   /**
    * 匯出工單列表
-   * @param export_remark 備註
+   * @param options.export_remark 備註
    * @param options.domain 廳主
    * @param options.site_group 站別
    * @param options.domain_name 域名
@@ -1353,28 +1353,23 @@ export const url = {
    * @param options.finish_start_date_time 完成起始日期時間
    * @param options.finish_end_date_time 完成結束日期時間
    */
-  exportTicketList(
-    export_remark: string,
-    options: {
-      domain?: number;
-      site_group?: string;
-      domain_name?: string;
-      fuzzy?: 0 | 1;
-      ticket_id?: string;
-      tickets_status?: number[];
-      progress_rates?: number[];
-      purchase_method?: number[];
-      maintenance_method?: number[];
-      start_date_time?: string;
-      end_date_time?: string;
-      finish_start_date_time?: string;
-      finish_end_date_time?: string;
-    },
-  ) {
-    return this.http.post('/domain/domain_name/tickets/export', {
-      export_remark,
-      ...options,
-    });
+  exportTicketList(options: {
+    export_remark?: string;
+    domain?: number;
+    site_group?: string;
+    domain_name?: string;
+    fuzzy?: 0 | 1;
+    ticket_id?: string;
+    tickets_status?: number[];
+    progress_rates?: number[];
+    purchase_method?: number[];
+    maintenance_method?: number[];
+    start_date_time?: string;
+    end_date_time?: string;
+    finish_start_date_time?: string;
+    finish_end_date_time?: string;
+  }) {
+    return this.http.post('/domain/domain_name/tickets/export', options);
   },
   /**
    * 取得異常地區列表
