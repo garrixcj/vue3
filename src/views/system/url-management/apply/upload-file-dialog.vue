@@ -10,7 +10,7 @@ rd-dialog(
   .content
     //- 提示
     .msg
-      div {{ t('upload_file_add_domain_name_msg1') }}
+      div {{ t('upload_file_add_domain_name_msg1', { num: maxRows }) }}
       div {{ t('upload_file_add_domain_name_msg2') }}
     el-upload.upload-demo(
       drag

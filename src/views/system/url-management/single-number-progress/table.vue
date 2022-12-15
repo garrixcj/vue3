@@ -140,7 +140,7 @@ rd-card(no-padding)
         width="180"
       )
         template(#default="{ row }")
-          rd-format-timer(date-default="--" :date-time="row.applyDate")
+          rd-format-timer(date-default="--" :date-time="row.applyAt")
       //- 完成日期
       rd-table-column(
         v-if="isDisplayedColumns('finishDate')"
@@ -152,7 +152,7 @@ rd-card(no-padding)
         width="180"
       )
         template(#default="{ row }")
-          rd-format-timer(date-default="--" :date-time="row.finishDate")
+          rd-format-timer(date-default="--" :date-time="row.finishAt")
       //- 進度
       rd-table-column(
         v-if="isDisplayedColumns('processe')"
@@ -219,11 +219,20 @@ abolish-dialog(
   v-model="visible.abolish"
   :action="abolishAction"
   :list="abolishList"
+  @updateData="updateQuery(false)"
 )
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, type PropType, computed, reactive } from 'vue';
+import {
+  defineComponent,
+  ref,
+  type PropType,
+  computed,
+  reactive,
+  watch,
+  inject,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import BatchMode from '@/components/custom/batch-mode/index.vue';
 import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
@@ -274,11 +283,18 @@ export default defineComponent({
     // 順序
     order: { type: String, required: true },
   },
-  emits: ['sortChange', 'update:current-page', 'update:page-size'],
+  emits: [
+    'sortChange',
+    'update:current-page',
+    'update:page-size',
+    'updateData',
+  ],
   setup(props) {
     const { t } = useI18n({ useScope: 'parent' });
     // 是否有修改權限
     const { hasModify } = useModifyAccess('ApplicationProgress');
+    // 取得在作廢後要動作的function
+    const updateQuery = inject('UrlManagement:updateQuery') as Function;
     // 顯示
     const visible = reactive({
       // 匯出dialog
@@ -325,6 +341,16 @@ export default defineComponent({
         selectAct.clear();
       }
     };
+
+    // 監聽搜尋條件異動，當異動時關閉批次
+    watch(
+      () => props.list,
+      () => {
+        visible.batchMode = false;
+        clickBatchMode(false);
+      },
+      { deep: true },
+    );
 
     // 站別資料 - 轉換為用站別當key的資料
     const siteList = computed(() =>
@@ -406,6 +432,7 @@ export default defineComponent({
       exportPerm,
       exportParams,
       exportData,
+      updateQuery,
     };
   },
 });

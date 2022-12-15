@@ -43,7 +43,7 @@ rd-card(
           span {{ row.message ? row.message : '--' }}
   template(#headerSuffix)
     rd-switch(
-      v-model="CanNotBindFilter"
+      v-model="unbindableFilter"
       :active="{ type: 'success', text: t('only_show_can_not_binding'), inverseText: t('only_show_can_not_binding') }"
     )
 </template>
@@ -67,10 +67,10 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'parent' });
 
     // 是否僅顯示「無法綁定的域名」
-    const CanNotBindFilter = ref(false);
+    const unbindableFilter = ref(false);
     const urlList = computed(() => {
       let list = props.data;
-      if (CanNotBindFilter.value) {
+      if (unbindableFilter.value) {
         list = list.filter(obj => obj.progress === 3);
       }
 
@@ -79,7 +79,7 @@ export default defineComponent({
 
     return {
       t,
-      CanNotBindFilter,
+      unbindableFilter,
       urlList,
       progressListMap,
       progressKeyMap,

@@ -357,8 +357,7 @@ export default defineComponent({
 
     // 返回列表
     const back = () => {
-      window.location.href =
-        '/v3/system_setting/url_management/index?tab=customerDomain';
+      window.location.href = '/system_setting/url_management/index';
     };
 
     return {

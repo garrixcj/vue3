@@ -1338,7 +1338,7 @@ export const url = {
   },
   /**
    * 匯出工單列表
-   * @param note 備註
+   * @param export_remark 備註
    * @param options.domain 廳主
    * @param options.site_group 站別
    * @param options.domain_name 域名
@@ -1354,7 +1354,7 @@ export const url = {
    * @param options.finish_end_date_time 完成結束日期時間
    */
   exportTicketList(
-    note: string,
+    export_remark: string,
     options: {
       domain?: number;
       site_group?: string;
@@ -1372,7 +1372,7 @@ export const url = {
     },
   ) {
     return this.http.post('/domain/domain_name/tickets/export', {
-      note,
+      export_remark,
       ...options,
     });
   },

@@ -50,7 +50,7 @@ type FailedDetail = {
   domain: string;
   result: string;
 };
-export type PostApplyFailedResponse = Record<FailedType, FailedDetail[]>;
+export type PostApplyFailedResp = Record<FailedType, FailedDetail[]>;
 
 // 域名設定 - 申請域名 - 送單過後的列表
 export type CallbackUrlList = {

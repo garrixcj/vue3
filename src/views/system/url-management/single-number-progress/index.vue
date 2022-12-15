@@ -39,7 +39,15 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         @change="updateFuzzy"
       )
     //- 域名
-    rd-form-item(:label="t('domain_name')" prop="domainName")
+    rd-form-item(prop="domainName")
+      template(#label)
+        span {{ t('domain_name') }}
+        rd-tooltip(placement="top")
+          template(#content)
+            div(v-if="form.condition === 'site'") {{ t('fuzzy_search_site') }}
+            div(v-else) {{ t('fuzzy_search_domain') }}
+            div {{ t('unfuzzy_search_all') }}
+          i.mdi.mdi-information
       rd-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
@@ -164,12 +172,12 @@ table-card(
   :total="listTotal"
   @update:current-page="listAction.changePage"
   @update:page-size="listAction.changePageSize"
-  @sort-change="listAction.changeSort"
+  @sortChange="listAction.changeSort"
 )
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted } from 'vue';
+import { defineComponent, reactive, ref, onMounted, provide } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteList } from '../common/list';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -331,6 +339,9 @@ export default defineComponent({
     const updateQuery = (ignoreCached: boolean) => {
       watcher.queryRoute(querySet.getQuery({ ignoreCached }));
     };
+
+    // 提供更新方法給作廢後的資料刷新
+    provide('UrlManagement:updateQuery', updateQuery);
 
     // 全部的購買方式
     const allBuy = buyOptions.map(obj => obj.value) as Buy[];
