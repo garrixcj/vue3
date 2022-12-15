@@ -396,7 +396,12 @@ export default defineComponent({
     // 匯出
     const exportData = (note: string) => {
       visible.export = false;
-      urlAPI.exportTicketList(note, props.searchOptions).then(response => {
+
+      const params = note
+        ? { export_remark: note, ...props.searchOptions }
+        : props.searchOptions;
+
+      urlAPI.exportTicketList(params).then(response => {
         if (response.data.result) {
           notify.success({
             title: t('success'),
