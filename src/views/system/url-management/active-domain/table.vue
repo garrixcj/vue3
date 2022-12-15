@@ -19,11 +19,11 @@ rd-card(no-padding)
       v-for="(item, key) in listAnglesOptions"
       :key="key"
       :type="item.type"
-      :value="listAngleTotalData[item.value]"
+      :value="listAngleTotalData[item.key]"
       :label="item.label"
       min-width="140"
       :active="item.value === listCondition.formAngle"
-      @click="setListAngle(item.value)"
+      @click="setListAngle(item.key, item.value)"
     )
     //- 匯出
     .export(v-if="hasExportPerm && listData.length > 0")
@@ -292,10 +292,12 @@ import type { ActiveDomainNameListData } from '../common/type';
 import type { ListCondition } from './list';
 
 type ListAngles = 'all' | 'normal' | 'highRisk';
+type ListAnglesValue = 'all' | 1 | 2;
 
 type ListAnglesOptions = {
   label: string;
-  value: ListAngles;
+  value: ListAnglesValue;
+  key: ListAngles;
   type: 'default' | 'danger';
 };
 
@@ -356,13 +358,13 @@ export default defineComponent({
     ) as Record<ListAngles, number>;
     // 列表角度選項
     const listAnglesOptions = ref<ListAnglesOptions[]>([
-      { label: t('all'), value: 'all', type: 'default' },
-      { label: t('normal'), value: 'normal', type: 'default' },
-      { label: t('high_risk'), value: 'highRisk', type: 'danger' },
+      { label: t('all'), value: 'all', key: 'all', type: 'default' },
+      { label: t('normal'), value: 1, key: 'normal', type: 'default' },
+      { label: t('high_risk'), value: 2, key: 'highRisk', type: 'danger' },
     ]);
     // 設定列表角度
-    const setListAngle = (value: ListAngles) => {
-      listCondition.total = listAngleTotalData[value];
+    const setListAngle = (key: ListAngles, value: ListAnglesValue) => {
+      listCondition.total = listAngleTotalData[key];
       listCondition.formAngle = value;
       emit('change');
     };

@@ -18,7 +18,7 @@ import { useLoadingStore } from '@/stores/loading';
 // I18n
 import VueI18n from '@/plugins/i18n';
 // Websocket
-import { WSCreator, WSProvider } from '@/plugins/websocket';
+import { WSCreator } from '@/plugins/websocket';
 // Firebase
 import { FirebaseCreator } from '@/plugins/firebase';
 // Cookie
@@ -49,7 +49,6 @@ const app = createApp(App)
   .use(VueI18n)
   .use(VLoading)
   .use(WSCreator)
-  .use(WSProvider)
   .use(FirebaseCreator)
   // .use(CookiePlugin)
   .mixin(defaultMixin)

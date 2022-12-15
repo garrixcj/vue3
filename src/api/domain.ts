@@ -1730,12 +1730,10 @@ export const url = {
     options: {
       domain_name?: string;
       service_error?: number[];
-      sort?: string;
-      order?: string;
       export_remark?: string;
     },
   ) {
-    const paramOptions = ['service_error', 'sort', 'order', 'export_remark'];
+    const paramOptions = ['service_error', 'export_remark'];
     const optionParams = pick(options, paramOptions);
     const params = {
       domain_name,
@@ -1762,18 +1760,10 @@ export const url = {
     options: {
       domain_name?: string;
       service_error?: number[];
-      sort?: string;
-      order?: string;
       export_remark?: string;
     },
   ) {
-    const paramOptions = [
-      'domain_name',
-      'service_error',
-      'sort',
-      'order',
-      'export_remark',
-    ];
+    const paramOptions = ['domain_name', 'service_error', 'export_remark'];
     const optionParams = pick(options, paramOptions);
     const params = {
       site_group,
@@ -1909,6 +1899,7 @@ export const url = {
     options: {
       domain?: number;
       keyword?: string;
+      service_error?: number[];
       export_remark?: string;
       lang?: string;
       sort?: string;
@@ -1919,6 +1910,7 @@ export const url = {
     const paramOptions = [
       'keyword',
       'domain',
+      'service_error',
       'export_remark',
       'lang',
       'sort',
