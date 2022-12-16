@@ -700,7 +700,7 @@ export const auth = {
    * @param  {object} options
    */
   getTotalBinding(domain: number, options = {}) {
-    const paramOptions = ['users', 'start_date_time', 'end_date_time'];
+    const paramOptions = ['usernames', 'start_date_time', 'end_date_time'];
     const params = pick(options, paramOptions);
 
     return this.http.get(
@@ -1338,7 +1338,7 @@ export const url = {
   },
   /**
    * 匯出工單列表
-   * @param note 備註
+   * @param options.export_remark 備註
    * @param options.domain 廳主
    * @param options.site_group 站別
    * @param options.domain_name 域名
@@ -1353,28 +1353,23 @@ export const url = {
    * @param options.finish_start_date_time 完成起始日期時間
    * @param options.finish_end_date_time 完成結束日期時間
    */
-  exportTicketList(
-    note: string,
-    options: {
-      domain?: number;
-      site_group?: string;
-      domain_name?: string;
-      fuzzy?: 0 | 1;
-      ticket_id?: string;
-      tickets_status?: number[];
-      progress_rates?: number[];
-      purchase_method?: number[];
-      maintenance_method?: number[];
-      start_date_time?: string;
-      end_date_time?: string;
-      finish_start_date_time?: string;
-      finish_end_date_time?: string;
-    },
-  ) {
-    return this.http.post('/domain/domain_name/tickets/export', {
-      note,
-      ...options,
-    });
+  exportTicketList(options: {
+    export_remark?: string;
+    domain?: number;
+    site_group?: string;
+    domain_name?: string;
+    fuzzy?: 0 | 1;
+    ticket_id?: string;
+    tickets_status?: number[];
+    progress_rates?: number[];
+    purchase_method?: number[];
+    maintenance_method?: number[];
+    start_date_time?: string;
+    end_date_time?: string;
+    finish_start_date_time?: string;
+    finish_end_date_time?: string;
+  }) {
+    return this.http.post('/domain/domain_name/tickets/export', options);
   },
   /**
    * 取得異常地區列表
@@ -1730,12 +1725,10 @@ export const url = {
     options: {
       domain_name?: string;
       service_error?: number[];
-      sort?: string;
-      order?: string;
       export_remark?: string;
     },
   ) {
-    const paramOptions = ['service_error', 'sort', 'order', 'export_remark'];
+    const paramOptions = ['service_error', 'export_remark'];
     const optionParams = pick(options, paramOptions);
     const params = {
       domain_name,
@@ -1762,18 +1755,10 @@ export const url = {
     options: {
       domain_name?: string;
       service_error?: number[];
-      sort?: string;
-      order?: string;
       export_remark?: string;
     },
   ) {
-    const paramOptions = [
-      'domain_name',
-      'service_error',
-      'sort',
-      'order',
-      'export_remark',
-    ];
+    const paramOptions = ['domain_name', 'service_error', 'export_remark'];
     const optionParams = pick(options, paramOptions);
     const params = {
       site_group,
@@ -1909,6 +1894,7 @@ export const url = {
     options: {
       domain?: number;
       keyword?: string;
+      service_error?: number[];
       export_remark?: string;
       lang?: string;
       sort?: string;
@@ -1919,6 +1905,7 @@ export const url = {
     const paramOptions = [
       'keyword',
       'domain',
+      'service_error',
       'export_remark',
       'lang',
       'sort',

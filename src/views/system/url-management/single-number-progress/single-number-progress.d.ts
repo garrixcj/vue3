@@ -64,10 +64,9 @@ export type ListApi = {
 };
 
 export type DomainName = {
-  domainName: string;
+  domain: string;
   message: string;
   progress: number;
-  ticketId: number;
 };
 // 列表
 export type List = {

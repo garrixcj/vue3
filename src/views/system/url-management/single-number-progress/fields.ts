@@ -1,6 +1,6 @@
 export const getFields = (t: Function) => ({
   config: {
-    operation: 'urlManagementSingleNumberProgress',
+    operation: 'urlManagementProgress',
     groupId: 0,
     groupName: '自訂欄位',
   },

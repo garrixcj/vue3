@@ -280,7 +280,7 @@ export default defineComponent({
         },
         filter: () => form.users.length > 0,
         optional: true,
-        default: [],
+        default: '',
         cached: true,
       },
       // 綁定開始時間

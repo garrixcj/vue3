@@ -277,8 +277,9 @@ export default defineComponent({
       },
       // 會員帳號
       {
-        key: 'users',
-        get: () => form.users,
+        key: 'usernames',
+        query: 'users',
+        get: () => form.users.join(','),
         filter: () => form.users.length > 0,
         optional: true,
       },
