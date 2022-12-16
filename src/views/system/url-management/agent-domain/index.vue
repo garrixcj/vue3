@@ -70,6 +70,7 @@ list(
   @change="listAct.change"
   @sortChange="listAct.sort"
   @export="exportList"
+  @update="listAct.updateApi"
 )
 </template>
 
@@ -317,6 +318,8 @@ export default defineComponent({
       }
       // 重置 Scrollbar 位置
       listRef.value?.scrollTo();
+      // 清除 Select 和關閉批次
+      listRef.value?.selectClear();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -373,6 +376,10 @@ export default defineComponent({
         watcher.queryRoute(querySet.getQuery());
       },
       change: () => {
+        watcher.queryRoute(querySet.getQuery());
+      },
+      updateApi: () => {
+        updateApi.value = true;
         watcher.queryRoute(querySet.getQuery());
       },
     };

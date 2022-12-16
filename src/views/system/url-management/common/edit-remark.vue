@@ -111,7 +111,8 @@ export default defineComponent({
       if (
         !isSingle.value &&
         form.type === 'noRemark' &&
-        props.data.domainNameList.every(item => !isEmpty(item.remark))
+        (props.data.domainNameList.every(item => !isEmpty(item.remark)) ||
+          isEmpty(form.remark))
       ) {
         notify.warning({ title: t('warning'), message: t('warning_msg') });
         emit('update:visible', false);
@@ -120,7 +121,15 @@ export default defineComponent({
       // 單一操作
       if (isSingle.value) {
         form.type = 'cover';
+
+        // 判斷未異動資料
+        if (props.data.remark === form.remark) {
+          notify.warning({ title: t('warning'), message: t('warning_msg') });
+          emit('update:visible', false);
+          return;
+        }
       }
+
       setLoading(true);
       return urlAPI
         .updateDomainNameRemark(
