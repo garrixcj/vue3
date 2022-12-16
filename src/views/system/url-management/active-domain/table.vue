@@ -42,7 +42,6 @@ rd-card(no-padding)
     )
       //- 廳主
       rd-table-column(
-        v-if="isDisplayedColumns('domain')"
         :label="t('domain')"
         header-align="center"
         align="center"
@@ -54,7 +53,6 @@ rd-card(no-padding)
           span {{ getDomainLabel(row.domain) }}
       //- 後置碼
       rd-table-column(
-        v-if="isDisplayedColumns('suffix')"
         :label="t('suffix')"
         header-align="center"
         prop="suffix"
@@ -65,7 +63,6 @@ rd-card(no-padding)
           span @{{ row.suffix }}
       //- 域名
       rd-table-column(
-        v-if="isDisplayedColumns('domainName')"
         :label="t('domain_name')"
         header-align="center"
         prop="domainName"
@@ -83,7 +80,6 @@ rd-card(no-padding)
           div(v-else) --
       //- 異常狀態
       rd-table-column(
-        v-if="isDisplayedColumns('abnormalState')"
         :label="t('abnormal_state')"
         header-align="center"
         prop="abnormalState"
@@ -107,7 +103,6 @@ rd-card(no-padding)
       )
         //- 排名
         rd-table-column(
-          v-if="isDisplayedColumns('rank')"
           :label="t('rank')"
           header-align="center"
           align="center"
@@ -144,7 +139,6 @@ rd-card(no-padding)
             span {{ groupSeparator(row.requestRatio) }}
         //- 成長％數
         rd-table-column(
-          v-if="isDisplayedColumns('requestGrow')"
           :label="t('growing_percent')"
           header-align="center"
           align="right"
@@ -191,7 +185,6 @@ rd-card(no-padding)
             span {{ groupSeparator(row.loginPassRatio) }}
         //- 成長％數
         rd-table-column(
-          v-if="isDisplayedColumns('loginPassGrow')"
           :label="t('growing_percent')"
           header-align="center"
           align="right"
@@ -238,7 +231,6 @@ rd-card(no-padding)
             span {{ groupSeparator(row.loginFailRatio) }}
         //- 成長％數
         rd-table-column(
-          v-if="isDisplayedColumns('loginFailGrow')"
           :label="t('growing_percent')"
           header-align="center"
           align="right"
@@ -253,10 +245,10 @@ rd-card(no-padding)
             ) {{ groupSeparator(row.loginFailGrow) }}
       //- 風險
       rd-table-column(
-        v-if="isDisplayedColumns('risk')"
         :label="t('risk')"
         header-align="center"
         align="center"
+        prop="risk"
         :resizable="false"
         width="100"
       )
@@ -333,13 +325,20 @@ export default defineComponent({
 
     const listRef = ref<InstanceType<typeof ElTable>>();
     const sortAct = {
+      // 預設排序
+      defaultSort: (prop: string, order: 'ascending' | 'descending') => {
+        listRef.value?.sort(prop, order);
+      },
       change: ({
         prop,
         order,
       }: {
         order: 'ascending' | 'descending' | null;
-        prop: 'domain';
+        prop: 'rank';
       }) => {
+        if (order === null) {
+          sortAct.defaultSort('rank', 'ascending');
+        }
         emit('sortChange', prop, order);
       },
       clear: () => {
@@ -386,15 +385,10 @@ export default defineComponent({
       emit('export', note);
     };
 
-    // 重置捲軸高度
-    const scrollTo = () => {
-      listRef.value?.setScrollTop(0);
-      listRef.value?.setScrollLeft(0);
-    };
     // 封裝外部使用功能
     expose({
-      scrollTo,
       sortClear: sortAct.clear,
+      defaultSort: sortAct.defaultSort,
     });
 
     return {

@@ -1,6 +1,12 @@
 <i18n src="@/languages/system_setting/url_management/active_url.json"></i18n>
 <i18n src="@/languages/system_setting/url_management/common.json"></i18n>
 <template lang="pug">
+rd-information(:is-open="false")
+  ul
+    li {{ t('url_management_active_info1') }}
+    li {{ t('url_management_active_info2') }}
+    li {{ t('url_management_active_info3') }}
+    li {{ t('url_management_active_info4') }}
 //- 基本搜尋列
 .header
   rd-form(ref="formRef" inline :model="form" :rules="rules")
@@ -52,6 +58,7 @@ advanced-conditions(
 //- 列表資料
 list(
   v-if="searched"
+  ref="listRef"
   @change="listAct.change"
   @sortChange="listAct.sort"
   @export="exportList"
@@ -100,6 +107,8 @@ export default defineComponent({
 
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
+    // 處理置頂
+    const scrollToTop = inject('UrlManagement:scrollToTop') as Function;
     // 已搜尋
     const searched = ref(false);
     // 更新API資料
@@ -309,8 +318,19 @@ export default defineComponent({
         [listCondition.sort],
         [listCondition.order],
       );
-      // 重置 Scrollbar 位置
-      listRef.value?.scrollTo();
+
+      // 排序對應表
+      const orders = {
+        asc: 'ascending',
+        desc: 'descending',
+      } as const;
+      // 預設排序
+      listRef.value?.defaultSort(
+        listCondition.sort,
+        orders[listCondition.order],
+      );
+
+      scrollToTop();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -358,7 +378,10 @@ export default defineComponent({
           });
 
           // 判斷有高風險
-          const isHighRisk = item.failTag || item.ipTag || isNegativeNumber;
+          const isHighRisk =
+            item.failTag ||
+            item.ipTag ||
+            (item.requestGrow < 0 && item.requestGrow !== -Infinity);
           // 判斷列表顯示角度
           const isTableAngle =
             listCondition.formAngle === 'all' ||
@@ -388,13 +411,17 @@ export default defineComponent({
           ascending: 'asc';
           descending: 'desc';
         } = { ascending: 'asc', descending: 'desc' };
-        listCondition.sort = 'rank';
-        listCondition.order = 'asc';
-        if (order !== null) {
+        if (
+          order !== null &&
+          (listCondition.sort !== field ||
+            listCondition.order !== orders[order])
+        ) {
+          listCondition.sort = 'rank';
+          listCondition.order = 'asc';
           listCondition.order = orders[order];
           listCondition.sort = field;
+          watcher.queryRoute(querySet.getQuery());
         }
-        watcher.queryRoute(querySet.getQuery());
       },
       change: () => {
         watcher.queryRoute(querySet.getQuery());
@@ -433,6 +460,7 @@ export default defineComponent({
         start_date: string;
         end_date: string;
         growingPercent: number[];
+        abnormalStatus: number[];
         order: 'acs' | 'desc';
         sort: string;
       };

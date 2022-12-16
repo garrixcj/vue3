@@ -1894,6 +1894,7 @@ export const url = {
     options: {
       domain?: number;
       keyword?: string;
+      growing_percent?: number[];
       service_error?: number[];
       export_remark?: string;
       lang?: string;
@@ -1906,6 +1907,7 @@ export const url = {
       'keyword',
       'domain',
       'service_error',
+      'growing_percent',
       'export_remark',
       'lang',
       'sort',
