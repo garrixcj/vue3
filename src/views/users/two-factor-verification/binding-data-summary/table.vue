@@ -276,7 +276,7 @@ export default defineComponent({
         query: 'users',
         get: () => form.users.join(','),
         set: (val: string) => {
-          form.users = val.split(',');
+          form.users = val ? val.split(',') : [];
         },
         filter: () => form.users.length > 0,
         optional: true,
