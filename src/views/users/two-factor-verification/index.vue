@@ -9,6 +9,10 @@ rd-layout(
 )
   template(#bindingDataSummary)
     binding-data-summary
+teach-guide(
+  feature-key="member_two_factor_auth"
+  :title="t('member_two_factor_auth')"
+)
 </template>
 
 <script lang="ts">
@@ -17,6 +21,7 @@ import { useI18n } from 'vue-i18n';
 import RdLayout from '@/components/common/layout/normal.vue';
 import { RouteWatch } from '@/components/utils/route-watch';
 import { useTabAccess } from '@/plugins/access/view';
+import TeachGuide from '@/plugins/teach-guide/index.vue';
 
 export default defineComponent({
   name: 'MemberTwoFactorVerification', // 會員雙重驗證
@@ -25,6 +30,7 @@ export default defineComponent({
     bindingDataSummary: defineAsyncComponent(
       () => import('./binding-data-summary/index.vue'),
     ),
+    TeachGuide,
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
