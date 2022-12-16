@@ -626,7 +626,7 @@ export const authList = {
    */
   getBindingList(domain: number, options = {}) {
     const paramOptions = [
-      'users',
+      'usernames',
       'start_date_time',
       'end_date_time',
       'mem_2fa_way',
@@ -649,7 +649,7 @@ export const authList = {
    */
   checkBinding(domain: number, options = {}) {
     const paramOptions = [
-      'users',
+      'usernames',
       'start_date_time',
       'end_date_time',
       'mem_2fa_way',
@@ -667,7 +667,7 @@ export const authList = {
    */
   exportBindingList(domain: number, options = {}) {
     const paramOptions = [
-      'users',
+      'usernames',
       'start_date_time',
       'end_date_time',
       'mem_2fa_way',
