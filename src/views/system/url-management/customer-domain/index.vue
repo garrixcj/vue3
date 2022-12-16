@@ -139,7 +139,11 @@
     //- 設定範例
     setting-example
     //- 申請域名
-    rd-button.apply-url-btn(type="primary" @click="applyDomainName") {{ t('apply_url') }}
+    rd-button.apply-url-btn(
+      v-if="hasModifyPerm"
+      type="primary"
+      @click="applyDomainName"
+    ) {{ t('apply_url') }}
 
 before-search-empty(v-show="!searched" :label="t('start_search')")
 //- 進階搜尋列
@@ -180,6 +184,7 @@ import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { notify } from '@/components/utils/notification';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
+import { useModifyAccess } from '@/plugins/access/modify';
 import {
   type FormType,
   useForm,
@@ -210,6 +215,8 @@ export default defineComponent({
     const { t, locale } = useI18n({ useScope: 'local' });
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
+    // 判斷是否客端域名修改權限
+    const { hasModify: hasModifyPerm } = useModifyAccess('CustomerUrl');
     // 已搜尋
     const searched = ref(false);
     // 更新API資料
@@ -768,6 +775,7 @@ export default defineComponent({
 
     return {
       t,
+      hasModifyPerm,
       // 站別相關
       customSearch,
       siteOptions,

@@ -5,6 +5,7 @@ rd-card(no-padding)
       v-if="showBatchMode"
       v-model:visible="batchModuleData.visible"
       :count="batchModuleData.selected.length"
+      :style="getBatchModuleWidth"
       :disabled="listData.length === 0"
       @change="clickBatchModule"
     )
@@ -21,7 +22,7 @@ rd-card(no-padding)
           | {{ t('go_to_apply_ssl_certificate') }}({{ batchApplySSLValue }})
         //- 編輯備註
         rd-button(
-          v-if="hasCustomerUrlModifyPerm"
+          v-if="hasModifyPerm"
           type="default"
           size="small"
           text
@@ -196,7 +197,10 @@ rd-card(no-padding)
             th {{ titleList.previousNode }}
           template(v-if="isDisplayedColumns('remark')" #remark)
             th {{ titleList.remark }}
-          template(v-if="isDisplayedColumns('operating')" #operating)
+          template(
+            v-if="isDisplayedColumns('operating') && hasApplySSLModifyPerm"
+            #operating
+          )
             th {{ titleList.operating }}
       //- 內容
       div(v-for="(row, index) in listData" :key="index")
@@ -329,7 +333,7 @@ rd-card(no-padding)
               span(v-else) --
               //- 單一備註
               rd-button(
-                v-if="hasCustomerUrlModifyPerm"
+                v-if="hasModifyPerm"
                 type=""
                 size="small"
                 text
@@ -337,7 +341,10 @@ rd-card(no-padding)
               )
                 i.mdi.mdi-pencil
           //- 操作
-          template(v-if="isDisplayedColumns('operating')" #operating)
+          template(
+            v-if="isDisplayedColumns('operating') && hasApplySSLModifyPerm"
+            #operating
+          )
             td
               //- 申請憑證
               rd-button(
@@ -452,8 +459,7 @@ export default defineComponent({
     const setLoading = inject('UrlManagement:setLoading') as Function;
 
     // 判斷是否客端域名修改權限
-    const { hasModify: hasCustomerUrlModifyPerm } =
-      useModifyAccess('CustomerUrl');
+    const { hasModify: hasModifyPerm } = useModifyAccess('CustomerUrl');
     // 判斷是否申請憑證修改權限
     const { hasModify: hasApplySSLModifyPerm } =
       useModifyAccess('ApplyCertificate');
@@ -723,7 +729,7 @@ export default defineComponent({
     // 顯示更新DNS資訊Btn
     const showUpdateDNS = computed(() => {
       return (
-        hasCustomerUrlModifyPerm.value &&
+        hasModifyPerm.value &&
         !isNoDomainNameAngle.value &&
         basicSearchForm.type === 'site'
       );
@@ -754,14 +760,23 @@ export default defineComponent({
     // 顯示批次模組
     const showBatchMode = computed(() => {
       return (
-        (hasCustomerUrlModifyPerm.value || hasApplySSLModifyPerm.value) &&
+        (hasModifyPerm.value || hasApplySSLModifyPerm.value) &&
         !isNoDomainNameAngle.value
       );
+    });
+    // 取得批次模組最小寬度
+    const getBatchModuleWidth = computed(() => {
+      if (batchModuleData.visible) {
+        return { 'min-width': hasApplySSLModifyPerm.value ? '440px' : '305px' };
+      }
+      return {};
     });
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(customerDomainFieldsInitial(t));
+      useInitCustomField(
+        customerDomainFieldsInitial(t, hasApplySSLModifyPerm.value),
+      );
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('CustomerUrlExport');
@@ -815,6 +830,7 @@ export default defineComponent({
       clickBatchModule,
       batchApplySSLValue,
       showBatchMode,
+      getBatchModuleWidth,
       // 自訂欄位
       customOptions,
       fieldsData,
@@ -826,7 +842,7 @@ export default defineComponent({
       hasExportPerm,
       exportFiled,
       // 權限
-      hasCustomerUrlModifyPerm,
+      hasModifyPerm,
       hasApplySSLModifyPerm,
       // Table 相關
       titleList,
