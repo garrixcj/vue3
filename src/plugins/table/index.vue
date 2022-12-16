@@ -75,7 +75,7 @@ import { useI18n } from 'vue-i18n';
 import { defineComponent, ref, computed } from 'vue';
 
 // 可接受的paddingSize參數
-const allowPaddingSize = ['small', 'medium', 'large'];
+const allowPaddingSize = ['small', 'default', 'large'];
 // 可接受背景顏色
 const allowBgColor = ['none', 'white'];
 // 可接受對齊方式

@@ -28,7 +28,7 @@ export default defineComponent({
       default: 'default',
     },
   },
-  emits: ['sort-change'],
+  emits: ['order-change'],
   setup(props, { emit }) {
     const order = ref<SortSets>(null);
 
@@ -47,7 +47,7 @@ export default defineComponent({
       } else {
         order.value = newOrder;
       }
-      emit('sort-change', order.value);
+      emit('order-change', order.value);
     };
 
     const getOrderClass = computed(() => {
@@ -63,18 +63,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$wrapper-height: (
-  'small': 24px,
-  'default': 30px,
-  'large': 34px,
-);
 $caret-top: (
-  'small': 4.3px,
+  'small': 4px,
   'default': 3px,
   'large': 5px,
 );
 $caret-bottom: (
-  'small': 5.9px,
+  'small': 6px,
   'default': 5px,
   'large': 7px,
 );
@@ -93,7 +88,7 @@ $border-color: (
   vertical-align: middle;
   cursor: pointer;
 
-  @each $type, $size in $wrapper-height {
+  @each $type, $size in $input-height {
     &.#{$type} {
       height: $size;
 
@@ -105,6 +100,21 @@ $border-color: (
           bottom: map-get($caret-bottom, $type);
         }
       }
+    }
+  }
+  .sort-caret {
+    position: absolute;
+    left: 7px;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+
+    &.ascending {
+      border-bottom-color: map-get($border-color, 'default');
+    }
+
+    &.descending {
+      border-top-color: map-get($border-color, 'default');
     }
   }
 
@@ -120,22 +130,6 @@ $border-color: (
 
   &.descending .sort-caret.descending {
     border-top-color: map-get($border-color, 'click');
-  }
-}
-
-.sort-caret {
-  position: absolute;
-  left: 7px;
-  width: 0;
-  height: 0;
-  border: 5px solid transparent;
-
-  &.ascending {
-    border-bottom-color: map-get($border-color, 'default');
-  }
-
-  &.descending {
-    border-top-color: map-get($border-color, 'default');
   }
 }
 </style>

@@ -15,7 +15,7 @@
       )
     //- 欄位
     .og-table-row__item(
-      v-for="name in filterSlotNames()"
+      v-for="name in filterSlotNames"
       :key="name"
       :class="setItemClass(name)"
       :style="setItemStyle(name)"
@@ -29,7 +29,7 @@ import { type PropType, defineComponent, computed } from 'vue';
 import { keys } from 'lodash';
 
 // 可接受字型大小
-const allowFontSize = ['mini', 'small', 'medium', 'large'];
+const allowFontSize = ['small', 'default', 'large'];
 // 可接受背景顏色
 const allowBgColor = ['none', 'white'];
 
@@ -72,9 +72,9 @@ export default defineComponent({
   emits: ['update:visible', 'selection-change'],
   setup(props, { emit, slots }) {
     // 過濾欄位
-    const filterSlotNames = () => {
+    const filterSlotNames = computed(() => {
       return props.slotNames.filter(item => keys(slots).includes(item));
-    };
+    });
 
     // 取得背景顏色的class
     const getBgClass = computed(() => {
