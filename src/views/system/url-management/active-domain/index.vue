@@ -19,7 +19,11 @@ rd-information(:is-open="false")
         span {{ t('keyword') }}
         rd-tooltip(placement="top" :content="t('keyword_msg')")
           i.mdi.mdi-information
-      rd-input(v-model="form.keyword" :placeholder="t('not_required')")
+      rd-input(
+        v-model="form.keyword"
+        :placeholder="t('not_required')"
+        clearable
+      )
     //- 時間區間
     rd-form-item(prop="date")
       template(#label)
