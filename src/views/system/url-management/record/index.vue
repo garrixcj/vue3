@@ -95,8 +95,8 @@
         rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
           span {{ t('search') }}
-  before-search(v-show="!searched" :label="t('start_search')")
-  table-list(v-if="searched" :tableData="tableData" :dataTotal="dataTotal")
+  before-search(v-if="!searched" :label="t('start_search')")
+  table-list(v-else :table-data="tableData" :data-total="dataTotal")
 </template>
 
 <script lang="ts">
@@ -133,7 +133,7 @@ export default defineComponent({
     const customSearch = inject<object>('UrlManagement:customSearch');
 
     const disabledDate = (time: Date) => {
-      return dayjs(time).diff(dayjs(), 'day', true) > 0;
+      return dayjs(time).isAfter(dayjs(), 'day');
     };
 
     // 搜尋相關
@@ -234,7 +234,6 @@ export default defineComponent({
     const search = () => {
       formRef.value.validate((validate: boolean) => {
         if (validate) {
-          searched.value = true;
           scrollToTop();
           watcher.queryRoute(querySet.getQuery());
         }
@@ -281,6 +280,7 @@ export default defineComponent({
         if (resp.data.result) {
           tableData.value = resp.data.data.list;
           dataTotal.value = resp.data.data.total;
+          searched.value = true;
         }
         loadingStore.page = false;
       });
