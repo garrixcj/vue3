@@ -248,7 +248,7 @@ export default defineComponent({
 
     const popperSetting = {
       maxHeight: 251,
-    }
+    };
 
     // Lobby清單
     const lobbyOptions = ref<Lobby[]>([]);
