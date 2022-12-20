@@ -1,11 +1,6 @@
 import { ref, reactive } from 'vue';
 import { url as urlAPI } from '@/api/domain';
-import type {
-  ListData,
-  ListDataForAPI,
-  ListForAPI,
-  UrlStatusOption,
-} from '../common/type';
+import type { ListData, ListDataForAPI, ListForAPI } from '../common/type';
 import type { FormType } from '../common/search';
 
 export type ListCondition = {
@@ -133,32 +128,32 @@ const getUrlStatusOptions = (
   domainName: string,
 ) => {
   const urlOptionTmp = [
-    { label: 'www', type: 'info', url: `http://www.${domainName}`, key: 'www' },
     { label: 'https', type: 'success', url: '', key: 'https' },
     { label: 'http', type: 'success', url: '', key: 'http' },
     { label: 'UB', type: 'success', url: '', key: 'ub' },
-  ] as UrlStatusOption[];
+  ] as {
+    label: 'https' | 'http' | 'UB';
+    type: string;
+    url: string;
+    key: 'https' | 'http' | 'ub';
+  }[];
 
   const options = urlOptionTmp.map(item => {
     const result = item;
-    if (item.key !== 'www') {
-      // 協議
-      const protocol = item.key === 'http' ? 'http://' : 'https://';
-      result.url = `${protocol}${domainName}`;
-      // 判斷不為寰宇瀏覽器且UB不顯示連結
-      if (item.key === 'ub') {
-        result.url = '';
-      }
-      // 狀態
-      result.type = urlStatus[item.key] ? 'success' : 'danger';
+    // 協議
+    const protocol = item.key === 'http' ? 'http://' : 'https://';
+    result.url = `${protocol}${domainName}`;
+    // 判斷不為寰宇瀏覽器且UB不顯示連結
+    if (item.key === 'ub') {
+      result.url = '';
     }
+    // 狀態
+    result.type = urlStatus[item.key] ? 'success' : 'danger';
     return result;
   });
 
   // 網址整體狀態
-  const status = options.every(
-    item => item.label === 'www' || item.type === 'success',
-  );
+  const status = options.every(item => item.type === 'success');
 
   return {
     status,

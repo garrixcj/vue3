@@ -138,8 +138,11 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
 };
 
 // 管端域名自訂欄位初始設定
-export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
-  return {
+export const agentDomainNameFieldsInitial = (
+  t: (key: string) => string,
+  hasModify: boolean,
+) => {
+  const result = {
     config: {
       operation: 'urlManagementAgentDomainName',
       groupId: 0,
@@ -165,7 +168,7 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('suffix'),
         visible: true,
         default: true,
-        disabled: false,
+        disabled: true,
       },
       {
         key: 'domainName',
@@ -267,6 +270,10 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
       },
     ],
   };
+  if (!hasModify) {
+    result.data = result.data.filter(item => item.key !== 'operating');
+  }
+  return result;
 };
 
 // IP服務自訂欄位初始設定
