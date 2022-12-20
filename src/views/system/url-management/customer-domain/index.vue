@@ -167,6 +167,7 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import { type FormInstance } from 'element-plus';
 import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
 import {
   type Ref,
@@ -251,13 +252,12 @@ export default defineComponent({
 
     // 批次輸入框下拉開關
     const batchInputVisible = ref(false);
-    const formRef = ref();
+    const formRef = ref<FormInstance>();
     // 表單相關
     const { form, initForm } = useForm();
     // 切換搜尋類別
-    const changeType = (value: string) => {
-      initForm();
-      form.type = value;
+    const changeType = () => {
+      clearValid();
     };
     // 表單欄位
     const { displayField, supportSingleDomainName, supportMultipleDomainName } =
@@ -271,6 +271,9 @@ export default defineComponent({
     } = useFormOptions(t);
     // 驗證相關
     const { rules } = useValidationRules(t);
+    const clearValid = () => {
+      formRef.value?.clearValidate();
+    };
 
     const listRef = ref();
     // 列表資料
@@ -704,7 +707,7 @@ export default defineComponent({
 
     // 點擊搜尋按鈕
     const search = () => {
-      formRef.value.validate((validate: boolean) => {
+      formRef.value?.validate((validate: boolean) => {
         if (validate) {
           updateApi.value = true;
           // 還原列表條件
@@ -740,6 +743,7 @@ export default defineComponent({
     };
     // route watcher
     watcher.setWatcher((query: FormType) => {
+      formRef.value?.resetFields();
       // 若有Type代表已有搜尋
       if (query.type && query.type !== '') {
         updateList();
@@ -764,6 +768,7 @@ export default defineComponent({
       form,
       batchInputVisible,
       rules,
+      clearValid,
       typeOptions,
       displayField,
       supportSingleDomainName,

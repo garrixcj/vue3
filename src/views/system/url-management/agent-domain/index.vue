@@ -6,7 +6,11 @@
   rd-form(ref="formRef" inline :model="form" :rules="rules")
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
-      rd-select(v-model:value="form.type" :options="typeOptions")
+      rd-select(
+        v-model:value="form.type"
+        :options="typeOptions"
+        @change="clearValid"
+      )
     //- 站別
     rd-form-item(v-if="displayField('site')" prop="site")
       rd-select(
@@ -76,6 +80,7 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import { type FormInstance } from 'element-plus';
 import { isEmpty, intersection, orderBy } from 'lodash';
 import {
   type Ref,
@@ -127,13 +132,16 @@ export default defineComponent({
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
 
-    const formRef = ref();
+    const formRef = ref<FormInstance>();
     // 表單相關
     const { form, initForm } = useForm();
     // 表單欄位
     const { displayField } = useFormField(form);
     // 驗證相關
     const { rules } = useValidationRules(t);
+    const clearValid = () => {
+      formRef.value?.clearValidate();
+    };
 
     // 表單下拉選項
     let { typeOptions } = useFormOptions(t);
@@ -472,7 +480,7 @@ export default defineComponent({
 
     // 點擊搜尋按鈕
     const search = () => {
-      formRef.value.validate((validate: boolean) => {
+      formRef.value?.validate((validate: boolean) => {
         if (validate) {
           updateApi.value = true;
           // 還原列表條件
@@ -504,6 +512,7 @@ export default defineComponent({
     };
     // route watcher
     watcher.setWatcher((query: FormType) => {
+      formRef.value?.resetFields();
       // 若有Type代表已有搜尋
       if (query.type && query.type !== '') {
         updateList();
@@ -526,6 +535,7 @@ export default defineComponent({
       formRef,
       form,
       rules,
+      clearValid,
       typeOptions,
       displayField,
       // 進階條件
