@@ -43,7 +43,7 @@
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-show="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"
@@ -70,7 +70,7 @@ import {
   inject,
   ref,
 } from 'vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
@@ -91,7 +91,7 @@ import type { IPServiceListData } from '../common/type';
 export default defineComponent({
   name: 'IPService', // 網址管理 - IP服務
   components: {
-    BeforeSearchEmpty,
+    BeforeSearch,
     AdvancedConditions,
     List,
   },

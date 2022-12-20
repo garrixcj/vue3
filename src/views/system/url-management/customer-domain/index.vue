@@ -147,7 +147,7 @@
       @click="applyDomainName"
     ) {{ t('apply_url') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-show="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"
@@ -180,7 +180,7 @@ import {
 } from 'vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import BatchInput from '@/components/custom/batch-input/index.vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import SettingExample from './setting-example.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
@@ -207,7 +207,7 @@ export default defineComponent({
   name: 'CustomerDomain', // 網址管理 - 客端域名
   components: {
     BatchInput, // 批次搜尋
-    BeforeSearchEmpty, // 搜尋前
+    BeforeSearch, // 搜尋前
     SettingExample, // 設定範例
     DomainSelector, // 廳主下拉
     AdvancedConditions, // 進階搜尋條件

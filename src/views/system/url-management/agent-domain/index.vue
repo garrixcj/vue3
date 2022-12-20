@@ -46,7 +46,7 @@
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-show="!searched" :label="t('start_search')")
 
 //- 子頁籤
 rd-sub-tabs(v-if="searched" v-model="subActiveTab")
@@ -87,7 +87,7 @@ import {
   inject,
   ref,
 } from 'vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
@@ -111,7 +111,7 @@ import type { ListData, AbnormalStateConditions } from '../common/type';
 export default defineComponent({
   name: 'AgentDomainName', // 網址管理 - 管端域名
   components: {
-    BeforeSearchEmpty,
+    BeforeSearch,
     AdvancedConditions,
     List,
   },
