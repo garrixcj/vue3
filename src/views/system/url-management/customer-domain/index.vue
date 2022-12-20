@@ -5,7 +5,7 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
       rd-select(
@@ -31,7 +31,7 @@
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
         template(#selected="{ current }")
-          | {{ `${current?.label} [${current?.option.code}]` }}
+          | {{ `${current?.label} [ ${current?.option.code} ]` }}
     //- 廳主
     rd-form-item(
       v-if="displayField('domain')"
@@ -57,6 +57,7 @@
       rd-input.domain-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
+        clearable
       )
         template(#append)
           rd-checkbox(disabled :model-value="true") {{ t('fuzzy') }}
@@ -100,6 +101,7 @@
       rd-input(
         v-model="form.ip"
         :placeholder="form.type === 'ip' ? t('please_enter_the_complete_ip_address') : t('not_required')"
+        clearable
       )
     //- 異常地區
     rd-form-item(v-if="displayField('area')" prop="area")
@@ -109,10 +111,10 @@
           i.mdi.mdi-information
           template(#content)
             .tooltip-content
-              div {{ t('abnormal_area_information_1') }}
-              div {{ t('abnormal_area_information_2') }}
+              div ・{{ t('abnormal_area_information_1') }}
+              div ・{{ t('abnormal_area_information_2') }}
               div {{ t('abnormal_area_information_3') }}
-      rd-select(v-model:value="form.area")
+      rd-select(v-model:value="form.area" :quick-search="customSearch")
         rd-option(
           v-for="(option, index) in abnormalAreaOptions"
           :key="index"

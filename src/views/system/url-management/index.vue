@@ -6,9 +6,8 @@ rd-layout.url-management(
   v-model:active-tab="activeTab"
   tab-type="link"
   :menu="currentTabs"
+  :title="t('url_management')"
 )
-  template(#title)
-    h2 {{ t('url_management') }}
   template(#afterTitle)
     //- 站別資訊
     site-information

@@ -51,7 +51,7 @@ export const useForm = () => {
     form.domainName = '';
     form.multipleDomains = [];
     form.ip = '';
-    form.area = '';
+    form.area = 'all';
     form.keyword = '';
     form.date = [];
   };
