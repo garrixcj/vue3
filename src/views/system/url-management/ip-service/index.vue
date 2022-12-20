@@ -3,7 +3,7 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
       rd-select(
@@ -29,7 +29,7 @@
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
         template(#selected="{ current }")
-          | {{ `${current?.label} [${current?.option.code}]` }}
+          | {{ `${current?.label} [ ${current?.option.code} ]` }}
     //- IP關鍵字
     rd-form-item(
       v-if="displayField('ip')"
@@ -40,6 +40,7 @@
       rd-input(
         v-model="form.ip"
         :placeholder="form.type === 'ip' ? t('please_enter_the_complete_ip_address') : t('not_required')"
+        clearable
       )
     //- 搜尋
     rd-form-item
