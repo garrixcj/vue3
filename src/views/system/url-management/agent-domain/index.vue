@@ -3,7 +3,7 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
       rd-select(
@@ -29,7 +29,7 @@
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
         template(#selected="{ current }")
-          | {{ `${current?.label} [${current?.option.code}]` }}
+          | {{ `${current?.label} [ ${current?.option.code} ]` }}
     //- 域名關鍵字
     rd-form-item(
       v-if="displayField('domainName')"
@@ -41,6 +41,7 @@
       rd-input.domain-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
+        clearable
       )
         template(#append)
           rd-checkbox(disabled :model-value="true") {{ t('fuzzy') }}
