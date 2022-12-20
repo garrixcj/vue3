@@ -416,7 +416,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('percent'),
         visible: true,
         default: true,
-        disabled: true,
+        disabled: false,
         group: t('domain_visited'),
       },
       {
@@ -449,7 +449,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('growing_percent'),
         visible: true,
         default: true,
-        disabled: false,
+        disabled: true,
         group: t('login_result_1'),
       },
       // 登入失敗群組
@@ -458,7 +458,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('login_num'),
         visible: true,
         default: true,
-        disabled: true,
+        disabled: false,
         group: t('login_fail'),
       },
       {
@@ -474,7 +474,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('growing_percent'),
         visible: true,
         default: true,
-        disabled: false,
+        disabled: true,
         group: t('login_fail'),
       },
     ],
