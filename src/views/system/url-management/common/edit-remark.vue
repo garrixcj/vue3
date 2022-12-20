@@ -23,7 +23,7 @@ rd-dialog(
     //- 批次操作
     .batch-option(v-else)
       .remark-illustrate {{ t('remark_illustrate', { num: data.domainNameList.length }) }}
-      rd-form-item(:label="t('overwrite')")
+      rd-form-item(:label="t('overwrite')" size="default")
         rd-radio-group(v-model="form.type")
           rd-radio(label="cover") {{ t('overwrite_remarks') }}
           rd-radio(label="noRemark") {{ t('only_modify_no_remark') }}
@@ -33,6 +33,7 @@ rd-dialog(
         type="textarea"
         :placeholder="t('please_enter_remarks')"
         show-word-limit
+        :autosize="{ minRows: 4 }"
         :model-value="form.remark"
         :maxlength="200"
         @input="form.remark = $event"
@@ -81,7 +82,7 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  emits: ['update:visible'],
+  emits: ['update:visible', 'update'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
     // Loading
@@ -111,7 +112,8 @@ export default defineComponent({
       if (
         !isSingle.value &&
         form.type === 'noRemark' &&
-        props.data.domainNameList.every(item => !isEmpty(item.remark))
+        (props.data.domainNameList.every(item => !isEmpty(item.remark)) ||
+          isEmpty(form.remark))
       ) {
         notify.warning({ title: t('warning'), message: t('warning_msg') });
         emit('update:visible', false);
@@ -120,7 +122,15 @@ export default defineComponent({
       // 單一操作
       if (isSingle.value) {
         form.type = 'cover';
+
+        // 判斷未異動資料
+        if (props.data.remark === form.remark) {
+          notify.warning({ title: t('warning'), message: t('warning_msg') });
+          emit('update:visible', false);
+          return;
+        }
       }
+
       setLoading(true);
       return urlAPI
         .updateDomainNameRemark(
@@ -134,6 +144,7 @@ export default defineComponent({
           }
           setLoading(false);
           emit('update:visible', false);
+          emit('update', true);
         });
     };
 

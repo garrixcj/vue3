@@ -1,3 +1,6 @@
+<i18n
+  src="@/languages/system_setting/url_management/single-number-progress.json"
+></i18n>
 <template lang="pug">
 rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
   .search__main
@@ -36,7 +39,15 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         @change="updateFuzzy"
       )
     //- 域名
-    rd-form-item(:label="t('domain_name')" prop="domainName")
+    rd-form-item(prop="domainName")
+      template(#label)
+        span {{ t('domain_name') }}
+        rd-tooltip(placement="top")
+          template(#content)
+            div(v-if="form.condition === 'site'") {{ t('fuzzy_search_site') }}
+            div(v-else) {{ t('fuzzy_search_domain') }}
+            div {{ t('unfuzzy_search_all') }}
+          i.mdi.mdi-information
       rd-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
@@ -148,7 +159,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
             :label="stauts"
           ) {{ t(info.dict) }}
 restriction-dialog(v-model="restrictionVisible")
-before-search(v-if="isBeforeSearch" label="開始搜尋吧")
+before-search(v-if="isBeforeSearch" :label="t('start_search')")
 table-card(
   v-else
   :search-options="exportOptions"
@@ -161,12 +172,12 @@ table-card(
   :total="listTotal"
   @update:current-page="listAction.changePage"
   @update:page-size="listAction.changePageSize"
-  @sort-change="listAction.changeSort"
+  @sortChange="listAction.changeSort"
 )
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, nextTick, onMounted } from 'vue';
+import { defineComponent, reactive, ref, onMounted, provide } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteList } from '../common/list';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -187,7 +198,7 @@ import {
 } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
-import type { Buy, Management } from '../detail/detail';
+import type { Buy, Management } from '../apply/apply';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { flatten, omit } from 'lodash';
 
@@ -253,6 +264,8 @@ export default defineComponent({
 
     // 當搜尋條件異動時，將2個條件都清空
     const resetCondition = () => {
+      form.domain = '';
+      form.site = '';
       formRef.value.resetFields('site');
       formRef.value.resetFields('domain');
     };
@@ -326,6 +339,9 @@ export default defineComponent({
     const updateQuery = (ignoreCached: boolean) => {
       watcher.queryRoute(querySet.getQuery({ ignoreCached }));
     };
+
+    // 提供更新方法給作廢後的資料刷新
+    provide('UrlManagement:updateQuery', updateQuery);
 
     // 全部的購買方式
     const allBuy = buyOptions.map(obj => obj.value) as Buy[];
@@ -451,7 +467,9 @@ export default defineComponent({
         key: 'domain',
         get: () => form.domain,
         set: (val: number | 'all') => {
-          form.domain = val === 'all' ? val : +val;
+          if (val) {
+            form.domain = val === 'all' ? val : +val;
+          }
         },
         optional: true,
         default: '',
@@ -599,7 +617,7 @@ export default defineComponent({
       {
         key: 'purchase_method',
         // 將購買方式轉換為後端的id
-        get: () => form.buy.map(value => buyMap[value]),
+        get: () => form.buy.map(value => buyMap[value as Buy]),
         filter: (type, target) =>
           type === 'api' && arrayFilter('buy', type, target?.current as string),
         default: [],
@@ -621,7 +639,8 @@ export default defineComponent({
       {
         key: 'maintenance_method',
         // 將管理權限轉換為後端的id
-        get: () => form.management.map(value => managementMap[value]),
+        get: () =>
+          form.management.map(value => managementMap[value as Management]),
         filter: (type, target) =>
           type === 'api' &&
           arrayFilter('management', type, target?.current as string),
@@ -740,10 +759,7 @@ export default defineComponent({
 
       getList(params).then(() => {
         isBeforeSearch.value = false;
-
-        nextTick(() => {
-          loading.page = false;
-        });
+        loading.page = false;
       });
     };
 

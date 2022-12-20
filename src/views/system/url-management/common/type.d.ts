@@ -19,6 +19,7 @@ export type AdvancedConditionsType =
 
 // 列表資料
 export type ListData = {
+  selected?: boolean;
   id: number;
   site: {
     group: string;
@@ -73,7 +74,7 @@ export type ListForAPI = {
     isp: string;
   }[];
   url_status: UrlStatus;
-  tip: number[];
+  tip?: number[];
 };
 
 // 列表資料 For API

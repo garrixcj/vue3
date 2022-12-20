@@ -1,12 +1,6 @@
 import { ref, reactive } from 'vue';
-import { isEmpty, omitBy } from 'lodash';
 import { url as urlAPI } from '@/api/domain';
-import type {
-  ListData,
-  ListDataForAPI,
-  ListForAPI,
-  UrlStatusOption,
-} from '../common/type';
+import type { ListData, ListDataForAPI, ListForAPI } from '../common/type';
 import type { FormType } from '../common/search';
 
 export type ListCondition = {
@@ -19,10 +13,9 @@ export type ListCondition = {
 
 /**
  * 取得列表資料
- * @param {object} form 搜尋表單
  * @return {void}
  */
-export const useList = (form: FormType) => {
+export const useList = () => {
   // 原始列表資料
   const orgListData = ref<ListData[]>([]);
   // 列表資料
@@ -35,20 +28,6 @@ export const useList = (form: FormType) => {
     sort: 'id',
     order: 'asc',
   });
-
-  // 取得選填參數
-  const getOptionalParam = () => {
-    const options = {
-      domain_name: form.domainName,
-    };
-    // 過濾為空的都不帶入
-    return omitBy(options, value => {
-      if (isEmpty(value)) {
-        return true;
-      }
-      return false;
-    });
-  };
 
   // 取得域名資料
   const getTableData = (data: ListDataForAPI) => {
@@ -94,9 +73,13 @@ export const useList = (form: FormType) => {
   // 客端域名列表API
   const updateList = {
     // By 站別
-    site: (entrance: number) => {
+    site: (
+      form: FormType,
+      entrance: number,
+      params: { domain_name?: string },
+    ) => {
       return urlAPI
-        .getAgentDomainNameBySite(form.site, entrance, getOptionalParam())
+        .getAgentDomainNameBySite(form.site, entrance, params)
         .then(resp => {
           if (resp.data.result) {
             getTableData(resp.data.data);
@@ -105,7 +88,7 @@ export const useList = (form: FormType) => {
         });
     },
     // By 全廳 - 單一域名
-    singleDomainName: (entrance: number) => {
+    singleDomainName: (form: FormType, entrance: number) => {
       return urlAPI.getAgentDomainName(form.domainName, entrance).then(resp => {
         if (resp.data.result) {
           getTableData(resp.data.data);
@@ -115,13 +98,17 @@ export const useList = (form: FormType) => {
     },
   };
   // 取得列表資料
-  const getList = (entrance: number) => {
+  const getList = (
+    form: FormType,
+    entrance: number,
+    params: { domain_name?: string },
+  ) => {
     let act: keyof typeof updateList = 'site';
     if (form.type === 'domainName' && form.domain === 0) {
       act = 'singleDomainName';
     }
     return new Promise(resolve => {
-      updateList[act](entrance).then(() => {
+      updateList[act](form, entrance, params).then(() => {
         resolve(true);
       });
     });
@@ -141,32 +128,32 @@ const getUrlStatusOptions = (
   domainName: string,
 ) => {
   const urlOptionTmp = [
-    { label: 'www', type: 'info', url: `http://www.${domainName}`, key: 'www' },
     { label: 'https', type: 'success', url: '', key: 'https' },
     { label: 'http', type: 'success', url: '', key: 'http' },
     { label: 'UB', type: 'success', url: '', key: 'ub' },
-  ] as UrlStatusOption[];
+  ] as {
+    label: 'https' | 'http' | 'UB';
+    type: string;
+    url: string;
+    key: 'https' | 'http' | 'ub';
+  }[];
 
   const options = urlOptionTmp.map(item => {
     const result = item;
-    if (item.key !== 'www') {
-      // 協議
-      const protocol = item.key === 'http' ? 'http://' : 'https://';
-      result.url = `${protocol}${domainName}`;
-      // 判斷不為寰宇瀏覽器且UB不顯示連結
-      if (item.key === 'ub') {
-        result.url = '';
-      }
-      // 狀態
-      result.type = urlStatus[item.key] ? 'success' : 'danger';
+    // 協議
+    const protocol = item.key === 'http' ? 'http://' : 'https://';
+    result.url = `${protocol}${domainName}`;
+    // 判斷不為寰宇瀏覽器且UB不顯示連結
+    if (item.key === 'ub') {
+      result.url = '';
     }
+    // 狀態
+    result.type = urlStatus[item.key] ? 'success' : 'danger';
     return result;
   });
 
   // 網址整體狀態
-  const status = options.every(
-    item => item.label === 'www' || item.type === 'success',
-  );
+  const status = options.every(item => item.type === 'success');
 
   return {
     status,

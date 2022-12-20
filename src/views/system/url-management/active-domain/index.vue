@@ -1,6 +1,12 @@
 <i18n src="@/languages/system_setting/url_management/active_url.json"></i18n>
 <i18n src="@/languages/system_setting/url_management/common.json"></i18n>
 <template lang="pug">
+rd-information(:is-open="false")
+  ul
+    li {{ t('url_management_active_info1') }}
+    li {{ t('url_management_active_info2') }}
+    li {{ t('url_management_active_info3') }}
+    li {{ t('url_management_active_info4') }}
 //- 基本搜尋列
 .header
   rd-form(ref="formRef" inline :model="form" :rules="rules")
@@ -13,7 +19,11 @@
         span {{ t('keyword') }}
         rd-tooltip(placement="top" :content="t('keyword_msg')")
           i.mdi.mdi-information
-      rd-input(v-model="form.keyword" :placeholder="t('not_required')")
+      rd-input(
+        v-model="form.keyword"
+        :placeholder="t('not_required')"
+        clearable
+      )
     //- 時間區間
     rd-form-item(prop="date")
       template(#label)
@@ -52,6 +62,7 @@ advanced-conditions(
 //- 列表資料
 list(
   v-if="searched"
+  ref="listRef"
   @change="listAct.change"
   @sortChange="listAct.sort"
   @export="exportList"
@@ -61,7 +72,7 @@ list(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import { isEmpty, intersection, omitBy, orderBy, toInteger } from 'lodash';
+import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
 import { defineComponent, provide, inject, ref } from 'vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -70,7 +81,6 @@ import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
 import { notify } from '@/components/utils/notification';
 import {
-  type FormType,
   useForm,
   useFormField,
   useFormOptions,
@@ -78,7 +88,6 @@ import {
   useAdvancedConditions,
 } from '../common/search';
 import {
-  type ExportActiveDomainNameOption,
   setExportPermName,
   doExportActiveDomainNameList,
 } from '../common/export';
@@ -102,6 +111,8 @@ export default defineComponent({
 
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
+    // 處理置頂
+    const scrollToTop = inject('UrlManagement:scrollToTop') as Function;
     // 已搜尋
     const searched = ref(false);
     // 更新API資料
@@ -143,7 +154,7 @@ export default defineComponent({
       listCondition,
       listAngleTotalData,
       getList,
-    } = useList(form);
+    } = useList();
     provide('ActiveDomainName:listData', listData);
     provide('ActiveDomainName:listCondition', listCondition);
     provide('ActiveDomainName:listAngleTotalData', listAngleTotalData);
@@ -153,11 +164,12 @@ export default defineComponent({
       {
         key: 'domain',
         get: () => form.domain,
-        set: (val: number | 'all') => {
-          form.domain = val === 'all' ? val : +val;
+        set: (val: 'all' | number) => {
+          form.domain = val === 'all' ? val : toInteger(val);
         },
         default: 'all',
-        number: true,
+        filter: type => !(type === 'api' && form.domain === 'all'),
+        optional: true,
         cached: true,
       },
       {
@@ -167,6 +179,7 @@ export default defineComponent({
           form.keyword = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       // 開始日期
@@ -176,7 +189,7 @@ export default defineComponent({
         set: (val: string) => {
           form.date[0] = val;
         },
-        filter: () => form.date.length > 0,
+        filter: () => !isEmpty(form.date[0]),
         optional: true,
         cached: true,
       },
@@ -187,66 +200,95 @@ export default defineComponent({
         set: (val: string) => {
           form.date[1] = val;
         },
-        filter: () => form.date.length > 0,
+        filter: () => !isEmpty(form.date[1]),
         optional: true,
         cached: true,
       },
+      {
+        key: 'date',
+        get: () => form.date,
+        filter: type => !(type === 'api') && !isEmpty(form.date),
+        optional: true,
+        cached: true,
+        array: true,
+      },
       // 進階條件
       {
-        key: 'growingPercent',
-        get: () => advancedForm.growingPercent,
-        set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.growingPercent = updateApi.value ? [] : value;
-        },
-        default: [],
-      },
-      {
-        key: 'failToOpen',
+        key: 'fail_to_open',
+        query: 'failToOpen',
         get: () => advancedForm.failToOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.failToOpen = updateApi.value ? [] : value;
+          advancedForm.failToOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.failToOpen),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'partiallyOpen',
+        key: 'partially_open',
+        query: 'partiallyOpen',
         get: () => advancedForm.partiallyOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.partiallyOpen = updateApi.value ? [] : value;
+          advancedForm.partiallyOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.partiallyOpen),
+        optional: true,
+        numberArray: true,
       },
       {
         key: 'openable',
         get: () => advancedForm.openable,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.openable = updateApi.value ? [] : value;
+          advancedForm.openable = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.openable),
+        optional: true,
+        numberArray: true,
+      },
+      {
+        key: 'service_error',
+        query: 'abnormalStatus',
+        get: () => [
+          ...advancedForm.failToOpen,
+          ...advancedForm.partiallyOpen,
+          ...advancedForm.openable,
+        ],
+        default: [],
+        filter: type =>
+          !(type === 'route') &&
+          !isEmpty([
+            ...advancedForm.failToOpen,
+            ...advancedForm.partiallyOpen,
+            ...advancedForm.openable,
+          ]),
+        optional: true,
+        numberArray: true,
+      },
+      {
+        key: 'growing_percent',
+        query: 'growingPercent',
+        get: () => advancedForm.growingPercent,
+        set: (val: number[]) => {
+          advancedForm.growingPercent = val;
+        },
+        default: [],
+        filter: () => !isEmpty(advancedForm.growingPercent),
+        optional: true,
+        numberArray: true,
       },
       // Table條件
       {
-        key: 'angle',
+        key: 'table_filter',
+        query: 'angle',
         get: () => listCondition.formAngle,
-        set: (val: string) => {
-          listCondition.formAngle = updateApi.value ? 'all' : val;
+        set: (val: 'all' | number) => {
+          listCondition.formAngle = val === 'all' ? val : toInteger(val);
         },
+        filter: type => !(type === 'api' && listCondition.formAngle === 'all'),
+        optional: true,
         default: 'all',
       },
       {
@@ -280,8 +322,19 @@ export default defineComponent({
         [listCondition.sort],
         [listCondition.order],
       );
-      // 重置 Scrollbar 位置
-      listRef.value?.scrollTo();
+
+      // 排序對應表
+      const orders = {
+        asc: 'ascending',
+        desc: 'descending',
+      } as const;
+      // 預設排序
+      listRef.value?.defaultSort(
+        listCondition.sort,
+        orders[listCondition.order],
+      );
+
+      scrollToTop();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -306,13 +359,15 @@ export default defineComponent({
             if (!isEmpty(clickASData)) {
               // 成長％數條件
               if (key === 'growingPercent') {
-                // 勾選負數條件
-                if (clickASData.includes(1)) {
-                  return isNegativeNumber;
-                }
-                // 勾選非負數條件
-                if (clickASData.includes(2)) {
-                  return !isNegativeNumber;
+                if (clickASData.length < 2) {
+                  // 勾選負數條件
+                  if (clickASData.includes(1)) {
+                    return isNegativeNumber;
+                  }
+                  // 勾選非負數條件
+                  if (clickASData.includes(2)) {
+                    return !isNegativeNumber;
+                  }
                 }
                 return true;
               }
@@ -327,12 +382,15 @@ export default defineComponent({
           });
 
           // 判斷有高風險
-          const isHighRisk = item.failTag || item.ipTag || isNegativeNumber;
+          const isHighRisk =
+            item.failTag ||
+            item.ipTag ||
+            (item.requestGrow < 0 && item.requestGrow !== -Infinity);
           // 判斷列表顯示角度
           const isTableAngle =
             listCondition.formAngle === 'all' ||
-            (listCondition.formAngle === 'normal' && !isHighRisk) ||
-            (listCondition.formAngle === 'highRisk' && isHighRisk);
+            (listCondition.formAngle === 1 && !isHighRisk) ||
+            (listCondition.formAngle === 2 && isHighRisk);
 
           if (isTableAngle && (isAdSearch || isNotAdvancedCondition)) {
             result = [...result, item];
@@ -357,13 +415,17 @@ export default defineComponent({
           ascending: 'asc';
           descending: 'desc';
         } = { ascending: 'asc', descending: 'desc' };
-        listCondition.sort = 'rank';
-        listCondition.order = 'asc';
-        if (order !== null) {
+        if (
+          order !== null &&
+          (listCondition.sort !== field ||
+            listCondition.order !== orders[order])
+        ) {
+          listCondition.sort = 'rank';
+          listCondition.order = 'asc';
           listCondition.order = orders[order];
           listCondition.sort = field;
+          watcher.queryRoute(querySet.getQuery());
         }
-        watcher.queryRoute(querySet.getQuery());
       },
       change: () => {
         watcher.queryRoute(querySet.getQuery());
@@ -398,41 +460,25 @@ export default defineComponent({
       setLoading(true);
       setExportPermName('ActiveUrlExport');
 
-      const query = querySet.getQuery() as FormType;
+      const query = querySet.getQuery() as {
+        start_date: string;
+        end_date: string;
+        growingPercent: number[];
+        abnormalStatus: number[];
+        order: 'acs' | 'desc';
+        sort: string;
+      };
+      const params = querySet.getParam();
 
-      // 列表角度
-      let tableFilter = 0;
-      if (listCondition.formAngle === 'normal') {
-        tableFilter = 1;
-      } else if (listCondition.formAngle === 'highRisk') {
-        tableFilter = 2;
+      // 判斷是否有備註
+      if (!isEmpty(note)) {
+        params.export_remark = note;
       }
 
-      const optionsTmp: ExportActiveDomainNameOption = {
-        domain: query.domain === 'all' ? 0 : query.domain,
-        keyword: query.keyword,
+      return doExportActiveDomainNameList(query.start_date, query.end_date, {
+        ...params,
         lang: locale.value,
-        table_filter: tableFilter,
-        sort: listCondition.sort,
-        order: listCondition.order,
-        export_remark: note,
-      };
-      // 過濾為空的都不帶入
-      const options = omitBy(optionsTmp, value => {
-        if (
-          (typeof value !== 'number' && isEmpty(value)) ||
-          (typeof value === 'number' && value === 0)
-        ) {
-          return true;
-        }
-        return false;
-      });
-
-      return doExportActiveDomainNameList(
-        query.date[0],
-        query.date[1],
-        options,
-      ).then(resp => {
+      }).then(resp => {
         if (resp.data.result) {
           notify.success({
             title: t('success'),
@@ -463,7 +509,7 @@ export default defineComponent({
       if (!searched.value || updateApi.value) {
         setLoading(true);
         searched.value = true;
-        return getList().then(resp => {
+        return getList(form, querySet.getParam()).then(resp => {
           if (resp) {
             advancedConditionAct?.init();
             setTableData();
@@ -477,19 +523,22 @@ export default defineComponent({
     // route watcher
     watcher.setWatcher(
       (query: {
-        domain: number;
+        domain?: number;
         start_date: string;
         end_date: string;
         keyword: string;
         tab: string;
         re: string;
+        growingPercent?: number[];
+        failToOpen?: number[];
+        partiallyOpen?: number[];
+        openable?: number[];
+        angle?: number;
+        sort: string;
+        order: 'asc' | 'desc';
       }) => {
         // 若有Type代表已有搜尋
-        if (
-          query.domain &&
-          !isEmpty(query.start_date) &&
-          !isEmpty(query.end_date)
-        ) {
+        if (!isEmpty(query.start_date) && !isEmpty(query.end_date)) {
           updateList();
         } else {
           searched.value = false;

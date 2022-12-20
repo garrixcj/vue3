@@ -70,12 +70,13 @@ list(
   @change="listAct.change"
   @sortChange="listAct.sort"
   @export="exportList"
+  @update="listAct.updateApi"
 )
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { isEmpty, intersection, omitBy, orderBy, toInteger } from 'lodash';
+import { isEmpty, intersection, orderBy } from 'lodash';
 import {
   type Ref,
   defineComponent,
@@ -99,7 +100,6 @@ import {
   useAdvancedConditions,
 } from '../common/search';
 import {
-  type ExportAgentDomainNameOption,
   setExportPermName,
   doExportAgentDomainNameList,
 } from '../common/export';
@@ -162,7 +162,7 @@ export default defineComponent({
 
     const listRef = ref();
     // 列表資料
-    const { listData, orgListData, listCondition, getList } = useList(form);
+    const { listData, orgListData, listCondition, getList } = useList();
     provide('AgentDomainName:listData', listData);
     provide('AgentDomainName:listCondition', listCondition);
 
@@ -196,15 +196,18 @@ export default defineComponent({
           form.site = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       {
-        key: 'domainName',
+        key: 'domain_name',
+        query: 'domainName',
         get: () => form.domainName,
         set: (val: string) => {
           form.domainName = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       // 子頁籤
@@ -219,40 +222,58 @@ export default defineComponent({
       },
       // 進階條件
       {
-        key: 'failToOpen',
+        key: 'fail_to_open',
+        query: 'failToOpen',
         get: () => advancedForm.failToOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.failToOpen = updateApi.value ? [] : value;
+          advancedForm.failToOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.failToOpen),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'partiallyOpen',
+        key: 'partially_open',
+        query: 'partiallyOpen',
         get: () => advancedForm.partiallyOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.partiallyOpen = updateApi.value ? [] : value;
+          advancedForm.partiallyOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.partiallyOpen),
+        optional: true,
+        numberArray: true,
       },
       {
         key: 'openable',
         get: () => advancedForm.openable,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.openable = updateApi.value ? [] : value;
+          advancedForm.openable = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.openable),
+        optional: true,
+        numberArray: true,
+      },
+      {
+        key: 'service_error',
+        query: 'abnormalStatus',
+        get: () => [
+          ...advancedForm.failToOpen,
+          ...advancedForm.partiallyOpen,
+          ...advancedForm.openable,
+        ],
+        default: [],
+        filter: type =>
+          !(type === 'route') &&
+          !isEmpty([
+            ...advancedForm.failToOpen,
+            ...advancedForm.partiallyOpen,
+            ...advancedForm.openable,
+          ]),
+        optional: true,
+        numberArray: true,
       },
       // Table條件
       {
@@ -317,6 +338,8 @@ export default defineComponent({
       }
       // 重置 Scrollbar 位置
       listRef.value?.scrollTo();
+      // 清除 Select 和關閉批次
+      listRef.value?.selectClear();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -375,6 +398,10 @@ export default defineComponent({
       change: () => {
         watcher.queryRoute(querySet.getQuery());
       },
+      updateApi: () => {
+        updateApi.value = true;
+        watcher.queryRoute(querySet.getQuery());
+      },
     };
     // 進階條件
     const advancedConditionAct = {
@@ -406,29 +433,19 @@ export default defineComponent({
       setExportPermName('AgentUrlExport');
 
       const query = querySet.getQuery() as FormType;
+      const params = querySet.getParam();
 
-      const optionsTmp: ExportAgentDomainNameOption = {
-        domain_name: query.domainName,
-        service_error: [
-          ...advancedForm.failToOpen,
-          ...advancedForm.partiallyOpen,
-          ...advancedForm.openable,
-        ],
-        sort: listCondition.sort,
-        order: listCondition.order,
-        export_remark: note,
-      };
-      // 過濾為空的都不帶入
-      const options = omitBy(optionsTmp, value => {
-        return isEmpty(value);
-      });
+      // 判斷是否有備註
+      if (!isEmpty(note)) {
+        params.export_remark = note;
+      }
 
       return doExportAgentDomainNameList(
         query.type,
         query.site,
         getEntranceID.value,
         locale.value,
-        options,
+        params,
       ).then(resp => {
         if (resp.data.result) {
           notify.success({
@@ -460,14 +477,16 @@ export default defineComponent({
       if (!searched.value || updateApi.value) {
         setLoading(true);
         searched.value = true;
-        return getList(getEntranceID.value).then(resp => {
-          if (resp) {
-            advancedConditionAct.init();
-            setTableData();
-          }
-          updateApi.value = false;
-          setLoading(false);
-        });
+        return getList(form, getEntranceID.value, querySet.getParam()).then(
+          resp => {
+            if (resp) {
+              advancedConditionAct.init();
+              setTableData();
+            }
+            updateApi.value = false;
+            setLoading(false);
+          },
+        );
       }
       setTableData();
     };

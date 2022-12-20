@@ -1,5 +1,4 @@
 import { ref, reactive } from 'vue';
-import { isEmpty, omitBy } from 'lodash';
 import { url as urlAPI } from '@/api/domain';
 import type {
   IPServiceListData,
@@ -9,7 +8,7 @@ import type {
 import type { FormType } from '../common/search';
 
 export type ListCondition = {
-  formAngle: string;
+  formAngle: 'all' | number;
   page: number;
   size: number;
   total: number;
@@ -17,10 +16,9 @@ export type ListCondition = {
 
 /**
  * 取得列表資料
- * @param {object} form     搜尋表單
  * @return {void}
  */
-export const useList = (form: FormType) => {
+export const useList = () => {
   // 原始列表資料
   const orgListData = ref<IPServiceListData[]>([]);
   // 列表資料
@@ -38,23 +36,6 @@ export const useList = (form: FormType) => {
     oneToOne: 0,
     oneToMany: 0,
   });
-
-  // 取得選填參數
-  const getOptionalParam = () => {
-    const options = {
-      ip: form.ip,
-    };
-    // 過濾為空的都不帶入
-    return omitBy(options, value => {
-      if (
-        (typeof value !== 'number' && isEmpty(value)) ||
-        (typeof value === 'number' && value === 0)
-      ) {
-        return true;
-      }
-      return false;
-    });
-  };
 
   // 取得域名資料
   const getTableData = (data: IPServiceListDataForAPI) => {
@@ -91,18 +72,16 @@ export const useList = (form: FormType) => {
   // 客端域名列表API
   const updateList = {
     // By 站別
-    site: () => {
-      return urlAPI
-        .getIPServiceBySite(form.site, getOptionalParam())
-        .then(resp => {
-          if (resp.data.result) {
-            getTableData(resp.data.data);
-          }
-          return true;
-        });
+    site: (form: FormType, params: { ip?: string }) => {
+      return urlAPI.getIPServiceBySite(form.site, params).then(resp => {
+        if (resp.data.result) {
+          getTableData(resp.data.data);
+        }
+        return true;
+      });
     },
     // By IP
-    ip: () => {
+    ip: (form: FormType) => {
       return urlAPI.getIPServiceByIP(form.ip).then(resp => {
         if (resp.data.result) {
           getTableData(resp.data.data);
@@ -112,13 +91,13 @@ export const useList = (form: FormType) => {
     },
   };
   // 取得列表資料
-  const getList = () => {
+  const getList = (form: FormType, params: { ip?: string }) => {
     let act: keyof typeof updateList = 'site';
     if (form.type === 'ip') {
       act = 'ip';
     }
     return new Promise(resolve => {
-      updateList[act]().then(() => {
+      updateList[act](form, params).then(() => {
         resolve(true);
       });
     });

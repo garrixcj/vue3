@@ -7,7 +7,7 @@ rd-layout-content.txt-teaching
       v-for="(item, key) in images"
       :key="key"
       status="process"
-      :title="item.title"
+      :title="item"
     )
       template(#description)
         .description-group(v-if="key === 'step5'")
@@ -17,7 +17,7 @@ rd-layout-content.txt-teaching
             template(#content)
               span.description-notice {{ t('domain_suffix') }}
           span {{ t('txt_teaching_description_4') }}
-        .image(:class="[`image-${key}`]")
+        .image(:class="[`image-${key}-${getLang}`]")
 </template>
 
 <script lang="ts">
@@ -38,46 +38,17 @@ export default defineComponent({
     const getLang = locale.value === 'zh-tw' ? 'zh-tw' : 'zh-cn';
 
     const images = {
-      step1: {
-        title: t('teaching_step_1'),
-      },
-      step2: {
-        title: t('teaching_step_2'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/txt-' +
-          getLang +
-          '-01.png)',
-        height: '280px',
-      },
-      step3: {
-        title: t('teaching_step_3'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/txt-' +
-          getLang +
-          '-02.png)',
-        height: '310px',
-      },
-      step4: {
-        title: t('txt_teaching_step_4'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/txt-' +
-          getLang +
-          '-03.png)',
-        height: getLang == 'zh-tw' ? '460px' : '425px',
-      },
-      step5: {
-        title: t('txt_teaching_step_5'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/txt-' +
-          getLang +
-          '-04.png)',
-        height: getLang == 'zh-tw' ? '720px' : '580px',
-      },
+      step1: t('teaching_step_1'),
+      step2: t('teaching_step_2'),
+      step3: t('teaching_step_3'),
+      step4: t('txt_teaching_step_4'),
+      step5: t('txt_teaching_step_5'),
     };
 
     return {
       t,
       images,
+      getLang,
     };
   },
 });
@@ -99,20 +70,44 @@ export default defineComponent({
   }
 
   .image-step2 {
-    height: v-bind('images.step2.height');
-    background-image: v-bind('images.step2.url');
+    &-zh-tw {
+      height: 280px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-tw-01.png');
+    }
+    &-zh-cn {
+      height: 280px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-cn-01.png');
+    }
   }
   .image-step3 {
-    height: v-bind('images.step3.height');
-    background-image: v-bind('images.step3.url');
+    &-zh-tw {
+      height: 310px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-tw-02.png');
+    }
+    &-zh-cn {
+      height: 310px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-cn-02.png');
+    }
   }
   .image-step4 {
-    height: v-bind('images.step4.height');
-    background-image: v-bind('images.step4.url');
+    &-zh-tw {
+      height: 460px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-tw-03.png');
+    }
+    &-zh-cn {
+      height: 425px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-cn-03.png');
+    }
   }
   .image-step5 {
-    height: v-bind('images.step5.height');
-    background-image: v-bind('images.step5.url');
+    &-zh-tw {
+      height: 720px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-tw-04.png');
+    }
+    &-zh-cn {
+      height: 580px;
+      background-image: url('@/assets/images/teaching/url-management/txt-zh-cn-04.png');
+    }
   }
 }
 </style>

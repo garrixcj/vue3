@@ -52,6 +52,7 @@ import {
   type Ref,
   type ComponentPublicInstance,
 } from 'vue';
+import { isEmpty } from 'lodash';
 import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
 import host from '@/plugins/url';
@@ -113,7 +114,7 @@ export default defineComponent({
       {
         name: 'singleNumberProgress',
         label: t('single_number_progress'),
-        perm: 'BindAlternateUrl', // todo: 待加新權限
+        perm: 'ApplicationProgress',
         to: { query: { tab: 'singleNumberProgress' } },
       },
       // SSL憑證(舊頁面)
@@ -147,6 +148,10 @@ export default defineComponent({
       const currentTab = tabs.find(item => item.name === query.tab);
       if (typeof currentTab !== 'undefined') {
         activeTab.value = currentTab.name;
+      }
+
+      if (isEmpty(query)) {
+        activeTab.value = currentTabs.value[0].name;
       }
     });
 
