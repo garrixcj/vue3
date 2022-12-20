@@ -9,7 +9,7 @@ rd-information(:is-open="false")
     li {{ t('url_management_active_info4') }}
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 廳主
     rd-form-item(:label="t('domain')" prop="domain")
       domain-selector(v-model:value="form.domain" all-opt)
