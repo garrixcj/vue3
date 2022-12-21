@@ -416,7 +416,7 @@ import { groupSeparator } from '@/components/utils/format/amount';
 import { notify } from '@/components/utils/notification';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { customerDomainFieldsInitial } from '../common/custom-fields';
+import { initialCustomerDomainFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type { FormType } from '../common/search';
 import type {
@@ -776,7 +776,7 @@ export default defineComponent({
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
       useInitCustomField(
-        customerDomainFieldsInitial(t, hasApplySSLModifyPerm.value),
+        initialCustomerDomainFields(t, hasApplySSLModifyPerm.value),
       );
 
     // 匯出相關

@@ -277,7 +277,7 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import ExportNote from '@/plugins/export-note/index.vue';
-import { activeDomainNameFieldsInitial } from '../common/custom-fields';
+import { initialActiveDomainNameFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type { DomainOption } from '@/plugins/domain-selector/domain';
 import type { ActiveDomainNameListData } from '../common/type';
@@ -370,7 +370,7 @@ export default defineComponent({
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(activeDomainNameFieldsInitial(t));
+      useInitCustomField(initialActiveDomainNameFields(t));
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('ActiveUrlExport');
