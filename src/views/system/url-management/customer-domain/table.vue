@@ -1,5 +1,4 @@
 <template lang="pug">
-div (batchModuleData): {{ batchModuleData }}
 rd-card(no-padding)
   template(#header)
     batch-mode(

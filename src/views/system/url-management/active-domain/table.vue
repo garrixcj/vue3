@@ -310,12 +310,12 @@ export default defineComponent({
     ) as Function;
 
     // 廳主列表
-    const domainList = inject('ActiveDomainName:domainList') as Ref<
-      DomainOption[]
-    >;
+    const domainList = inject<Ref<DomainOption[]>>(
+      'ActiveDomainName:domainList',
+    );
     // 取得廳主名稱
     const getDomainLabel = (id: number) => {
-      return domainList.value?.find(item => item.value === id)?.label;
+      return domainList?.value.find(item => item.value === id)?.label;
     };
 
     // 原始列表資料
