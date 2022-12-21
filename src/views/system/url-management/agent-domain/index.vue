@@ -80,6 +80,7 @@ import { isEmpty, intersection, orderBy } from 'lodash';
 import {
   type Ref,
   defineComponent,
+  onMounted,
   watch,
   computed,
   provide,
@@ -104,7 +105,7 @@ import {
   doExportAgentDomainNameList,
 } from '../common/export';
 import { useList } from './list';
-import type { SiteOption } from '../common/list';
+import { type SiteOption, useAdvancedConditionList } from '../common/list';
 import type { ListData, AbnormalStateConditions } from '../common/type';
 
 export default defineComponent({
@@ -125,8 +126,6 @@ export default defineComponent({
     const updateApi = ref(false);
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
-    // 站別列表
-    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
     const formRef = ref();
     // 表單相關
@@ -154,11 +153,17 @@ export default defineComponent({
         ?.value;
     });
 
+    // 站別列表
+    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
+
+    // 域名狀態群組的過濾選項
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
+
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
       useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
     const listRef = ref();
     // 列表資料
@@ -457,6 +462,13 @@ export default defineComponent({
         setLoading(false);
       });
     };
+
+    onMounted(() => {
+      setLoading(true);
+      Promise.all([getAdvancedConditionsList()]).then(() => {
+        setLoading(false);
+      });
+    });
 
     // 點擊搜尋按鈕
     const search = () => {

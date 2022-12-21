@@ -73,13 +73,14 @@ list(
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
-import { defineComponent, provide, inject, ref } from 'vue';
+import { defineComponent, onMounted, provide, inject, ref } from 'vue';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
 import { notify } from '@/components/utils/notification';
+import { useDomainList } from '@/plugins/domain-selector/domain';
 import {
   useForm,
   useFormField,
@@ -92,6 +93,7 @@ import {
   doExportActiveDomainNameList,
 } from '../common/export';
 import { useList } from './list';
+import { useAdvancedConditionList } from '../common/list';
 import type {
   ActiveDomainNameListData,
   AbnormalStateConditions,
@@ -139,12 +141,18 @@ export default defineComponent({
         dayjs(time).diff(dayjs(), 'day', true) < -180
       );
     };
+    // 廳主列表
+    const { domains, getDomainList } = useDomainList();
+    provide('ActiveDomainName:domainList', domains);
+
+    // 域名狀態群組的過濾選項
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
 
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
       useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
     const listRef = ref();
     // 列表相關
@@ -489,6 +497,13 @@ export default defineComponent({
         setLoading(false);
       });
     };
+
+    onMounted(() => {
+      setLoading(true);
+      Promise.all([getDomainList(), getAdvancedConditionsList()]).then(() => {
+        setLoading(false);
+      });
+    });
 
     // 點擊搜尋按鈕
     const search = () => {

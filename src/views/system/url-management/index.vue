@@ -69,8 +69,6 @@ import SiteInformation from './common/site-information.vue';
 import BetaMessage from './common/beta-message.vue';
 import { RouteWatch } from '@/components/utils/route-watch';
 import { useSiteList } from './common/list';
-import { useDomainList } from '@/plugins/domain-selector/domain';
-import { useAdvancedConditionList } from './common/list';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
@@ -86,7 +84,7 @@ export default defineComponent({
     Teach, // 教學連結
   },
   setup() {
-    const { t, locale } = useI18n({ useScope: 'local' });
+    const { t } = useI18n({ useScope: 'local' });
     const { hosts } = useHosts();
     const activeTab = ref('customerDomain');
     const tabs = [
@@ -192,50 +190,13 @@ export default defineComponent({
     };
     provide('UrlManagement:scrollToTop', scrollToTop);
 
-    // 域名狀態群組的過濾選項
-    const { advancedConditions, getAdvancedConditionsList } =
-      useAdvancedConditionList(locale.value);
-    provide('UrlManagement:advancedConditions', advancedConditions);
-
-    // 取得異常狀態 - 子項目顏色
-    const getAbnormalStateColor = (value: number) => {
-      const failToOpen = advancedConditions.failToOpen;
-      const partiallyOpen = advancedConditions.partiallyOpen;
-      const openable = advancedConditions.openable;
-
-      switch (true) {
-        // 無法開啟
-        case typeof failToOpen.find(item => item.label === value) !==
-          'undefined':
-          return 'danger';
-        // 部分開啟
-        case typeof partiallyOpen.find(item => item.label === value) !==
-          'undefined':
-          return 'warning';
-        // 可開啟
-        case typeof openable.find(item => item.label === value) !== 'undefined':
-          return 'success';
-        // 預設空的
-        default:
-          return '';
-      }
-    };
-    provide('UrlManagement:getAbnormalStateColor', getAbnormalStateColor);
-
     // 站別相關
     const { getSiteList, siteOptions } = useSiteList();
     provide('UrlManagement:siteList', siteOptions);
-    // 廳主列表
-    const { domains, getDomainList } = useDomainList();
-    provide('UrlManagement:domainList', domains);
 
     onMounted(() => {
       loadingStore.page = true;
-      Promise.all([
-        getDomainList(),
-        getSiteList(),
-        getAdvancedConditionsList(),
-      ]).then(() => {
+      Promise.all([getSiteList()]).then(() => {
         loadingStore.page = false;
       });
     });

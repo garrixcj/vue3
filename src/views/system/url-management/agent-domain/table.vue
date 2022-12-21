@@ -142,7 +142,6 @@ rd-card(no-padding)
                   v-for="(item, key) in row.urlStatus.options"
                   :key="key"
                   new-window
-                  command
                   :link="item.url"
                 )
                   rd-badge(:type="item.type" is-dot)
@@ -346,7 +345,7 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { agentDomainNameFieldsInitial } from '../common/custom-fields';
+import { initialAgentDomainNameFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type {
   ListData,
@@ -517,7 +516,7 @@ export default defineComponent({
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
       useInitCustomField(
-        agentDomainNameFieldsInitial(t, hasApplySSLModifyPerm.value),
+        initialAgentDomainNameFields(t, hasApplySSLModifyPerm.value),
       );
 
     // 匯出相關

@@ -185,7 +185,7 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import ExportNote from '@/plugins/export-note/index.vue';
-import { ipServiceFieldsInitial } from '../common/custom-fields';
+import { initialIPServiceFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type { IPServiceListData } from '../common/type';
 import type { AdvancedConditionsOptions } from '../common/list';
@@ -261,7 +261,7 @@ export default defineComponent({
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(ipServiceFieldsInitial(t));
+      useInitCustomField(initialIPServiceFields(t));
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('UrlIpServiceExport');

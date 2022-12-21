@@ -139,7 +139,11 @@
     //- 設定範例
     setting-example
     //- 申請域名
-    rd-button.apply-url-btn(type="primary" @click="applyDomainName") {{ t('apply_url') }}
+    rd-button.apply-url-btn(
+      v-if="hasModifyPerm"
+      type="primary"
+      @click="applyDomainName"
+    ) {{ t('apply_url') }}
 
 before-search-empty(v-show="!searched" :label="t('start_search')")
 //- 進階搜尋列
@@ -180,6 +184,7 @@ import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { notify } from '@/components/utils/notification';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
+import { useModifyAccess } from '@/plugins/access/modify';
 import {
   type FormType,
   useForm,
@@ -193,7 +198,7 @@ import {
   setExportPermName,
   doExportCustomerDomainNameList,
 } from '../common/export';
-import type { SiteOption } from '../common/list';
+import { type SiteOption, useAdvancedConditionList } from '../common/list';
 import type { ListData, AbnormalStateConditions } from '../common/type';
 
 export default defineComponent({
@@ -210,6 +215,8 @@ export default defineComponent({
     const { t, locale } = useI18n({ useScope: 'local' });
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
+    // 判斷是否客端域名修改權限
+    const { hasModify: hasModifyPerm } = useModifyAccess('CustomerUrl');
     // 已搜尋
     const searched = ref(false);
     // 更新API資料
@@ -231,11 +238,14 @@ export default defineComponent({
       multipleDomains: string[];
     };
 
+    // 域名狀態群組的過濾選項
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
+
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
       useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
     // 批次輸入框下拉開關
     const batchInputVisible = ref(false);
@@ -544,6 +554,8 @@ export default defineComponent({
 
       // 重置 Scrollbar 位置
       listRef.value?.scrollTo();
+      // 清除 Select 和關閉批次
+      listRef.value?.selectClear();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -681,9 +693,11 @@ export default defineComponent({
 
     onMounted(() => {
       setLoading(true);
-      Promise.all([getAbnormalAreas()]).then(() => {
-        setLoading(false);
-      });
+      Promise.all([getAdvancedConditionsList(), getAbnormalAreas()]).then(
+        () => {
+          setLoading(false);
+        },
+      );
     });
 
     // 點擊搜尋按鈕
@@ -736,6 +750,7 @@ export default defineComponent({
 
     return {
       t,
+      hasModifyPerm,
       // 站別相關
       customSearch,
       siteOptions,

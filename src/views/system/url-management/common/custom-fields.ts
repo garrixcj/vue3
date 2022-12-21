@@ -1,6 +1,9 @@
 // 客端域名自訂欄位初始設定
-export const customerDomainFieldsInitial = (t: (key: string) => string) => {
-  return {
+export const initialCustomerDomainFields = (
+  t: (key: string) => string,
+  hasModify: boolean,
+) => {
+  const result = {
     config: {
       operation: 'urlManagementCustomerDomain',
       groupId: 0,
@@ -135,10 +138,14 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
       },
     ],
   };
+  if (!hasModify) {
+    result.data = result.data.filter(item => item.key !== 'operating');
+  }
+  return result;
 };
 
 // 管端域名自訂欄位初始設定
-export const agentDomainNameFieldsInitial = (
+export const initialAgentDomainNameFields = (
   t: (key: string) => string,
   hasModify: boolean,
 ) => {
@@ -277,7 +284,7 @@ export const agentDomainNameFieldsInitial = (
 };
 
 // IP服務自訂欄位初始設定
-export const ipServiceFieldsInitial = (t: (key: string) => string) => {
+export const initialIPServiceFields = (t: (key: string) => string) => {
   return {
     config: {
       operation: 'urlManagementIPService',
@@ -353,7 +360,7 @@ export const ipServiceFieldsInitial = (t: (key: string) => string) => {
 };
 
 // 活躍域名自訂欄位初始設定
-export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
+export const initialActiveDomainNameFields = (t: (key: string) => string) => {
   return {
     config: {
       operation: 'urlManagementActiveDomainName',
