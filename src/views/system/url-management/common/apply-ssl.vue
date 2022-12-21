@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n';
 import { type PropType, defineComponent, reactive, computed } from 'vue';
 import { isEmpty } from 'lodash';
 import { randomAlphanumeric } from '@/components/utils/random/index';
-import host from '@/plugins/url';
+import { useHosts } from '@/plugins/url/index';
 import type { RemarkDomainNameForm } from './type';
 import { url as urlAPI } from '@/api/domain';
 
@@ -79,6 +79,7 @@ export default defineComponent({
   emits: ['update:visible'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
+    const { hosts } = useHosts();
 
     // 表單資料
     const form = reactive({
@@ -116,7 +117,7 @@ export default defineComponent({
         .then(resp => {
           if (resp.data.result) {
             // 前往舊版SSL憑證管理的新增憑證頁面
-            window.open(`${host.rd3}/hall/ssl?add=1&token=${token}`);
+            window.open(`${hosts.rd3}/hall/ssl?add=1&token=${token}`);
           }
         });
     };

@@ -55,7 +55,7 @@ import {
 import { isEmpty } from 'lodash';
 import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
-import host from '@/plugins/url';
+import { useHosts } from '@/plugins/url/index';
 import { useLoadingStore } from '@/stores/loading';
 import { match } from '@/components/utils/string-match/index';
 import Teach from '@/plugins/teach-guide/index.vue';
@@ -85,6 +85,7 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
+    const { hosts } = useHosts();
     const activeTab = ref('customerDomain');
     const tabs = [
       // 客端域名
@@ -120,7 +121,7 @@ export default defineComponent({
         name: 'applySSL',
         label: t('domain_ssl'),
         perm: 'DomainSSL', // 後續要改回吃新權限
-        href: `${host.rd3}/hall/ssl`,
+        href: `${hosts.rd3}/hall/ssl`,
         newWindow: true,
       },
       // 活躍域名
