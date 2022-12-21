@@ -454,6 +454,7 @@ export default defineComponent({
         listRef.value?.clearSort();
       },
       updateApi: () => {
+        batchModuleData.visible = false;
         emit('update', true);
       },
     };

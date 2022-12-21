@@ -187,7 +187,7 @@ export default defineComponent({
         if (searched.value) {
           updateApi.value = true;
           advancedConditionAct.clear();
-          watcher.queryRoute(querySet.getQuery({ ignoreCached: true }));
+          watcher.queryRoute(querySet.getQuery());
         }
       },
     );
