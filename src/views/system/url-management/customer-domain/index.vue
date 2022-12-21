@@ -239,40 +239,13 @@ export default defineComponent({
     };
 
     // 域名狀態群組的過濾選項
-    const { advancedConditions, getAdvancedConditionsList } =
-      useAdvancedConditionList(locale.value);
-    provide('UrlManagement:advancedConditions', advancedConditions);
-
-    // 取得異常狀態 - 子項目顏色
-    const getAbnormalStateColor = (value: number) => {
-      const failToOpen = advancedConditions.failToOpen;
-      const partiallyOpen = advancedConditions.partiallyOpen;
-      const openable = advancedConditions.openable;
-
-      switch (true) {
-        // 無法開啟
-        case typeof failToOpen.find(item => item.label === value) !==
-          'undefined':
-          return 'danger';
-        // 部分開啟
-        case typeof partiallyOpen.find(item => item.label === value) !==
-          'undefined':
-          return 'warning';
-        // 可開啟
-        case typeof openable.find(item => item.label === value) !== 'undefined':
-          return 'success';
-        // 預設空的
-        default:
-          return '';
-      }
-    };
-    provide('CustomerDomain:getAbnormalStateColor', getAbnormalStateColor);
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
 
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
       useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
     // 批次輸入框下拉開關
     const batchInputVisible = ref(false);

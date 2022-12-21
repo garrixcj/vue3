@@ -1,4 +1,4 @@
-import { reactive, ref, computed } from 'vue';
+import { provide, reactive, ref, computed } from 'vue';
 import { isEmpty, keys } from 'lodash';
 import dayjs from 'dayjs';
 import { formatCheck } from '@/components/utils/validator/validator';
@@ -173,11 +173,13 @@ export const useAdvancedConditions = () => {
     attackStatus: [],
     growingPercent: [],
   });
+  provide('UrlManagement:advancedForm', advancedForm);
 
   const advancedFormKeys = keys(advancedForm) as AdvancedConditionsType[];
 
   // 異常狀態
   const abnormalStateGroup = ref<AbnormalStateConditions[]>([]);
+  provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
   return {
     advancedRef,

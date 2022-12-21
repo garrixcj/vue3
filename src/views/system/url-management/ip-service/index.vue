@@ -124,15 +124,12 @@ export default defineComponent({
     });
 
     // 域名狀態群組的過濾選項
-    const { advancedConditions, getAdvancedConditionsList } =
-      useAdvancedConditionList(locale.value);
-    provide('UrlManagement:advancedConditions', advancedConditions);
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
 
     // 進階條件
-    const { advancedForm, advancedFormKeys, abnormalStateGroup } =
-      useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
+    const { advancedForm, advancedFormKeys } = useAdvancedConditions();
 
     const listRef = ref();
     // 列表相關

@@ -484,7 +484,7 @@ export default defineComponent({
 
     // 取得異常狀態色系
     const getAbnormalStateColor = inject(
-      'CustomerDomain:getAbnormalStateColor',
+      'UrlManagement:getAbnormalStateColor',
     ) as Function;
 
     // table 標題

@@ -306,7 +306,7 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'parent' });
     // 取得異常狀態色系
     const getAbnormalStateColor = inject(
-      'ActiveDomainName:getAbnormalStateColor',
+      'UrlManagement:getAbnormalStateColor',
     ) as Function;
 
     // 廳主列表
