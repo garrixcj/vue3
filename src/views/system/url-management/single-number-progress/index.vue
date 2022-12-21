@@ -198,7 +198,7 @@ import {
 } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
-import type { Buy, Management } from '../apply/apply';
+import type { Buy, Management } from '../apply-domain/apply';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { flatten, omit } from 'lodash';
 

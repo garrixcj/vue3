@@ -6,7 +6,7 @@ import type {
   SearchTable,
 } from './single-number-progress';
 import { url as urlAPI } from '@/api/domain';
-import { Buy, Management } from '../apply/apply';
+import { Buy, Management } from '../apply-domain/apply';
 
 // 購買方式前後端對照表
 export const buyMap: Record<Buy, number> = {
