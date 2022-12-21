@@ -1,4 +1,5 @@
 <template lang="pug">
+div (batchModuleData): {{ batchModuleData }}
 rd-card(no-padding)
   template(#header)
     batch-mode(
@@ -137,8 +138,8 @@ rd-card(no-padding)
           v-model:visible="listCondition.selectAll"
           background="none"
           :slot-names="Object.keys(titleList)"
-          :field-width="tableField.width()"
-          :field-min-width="tableField.minWidth()"
+          :field-width="tableField.width"
+          :field-min-width="tableField.minWidth"
           :show-selection="batchModuleData.visible"
           :indeterminate="!listCondition.selectAll && batchModuleData.selected.length > 0"
           @selection-change="selectAct.selectAll"
@@ -208,8 +209,8 @@ rd-card(no-padding)
           v-model:visible="row.selected"
           background="white"
           :slot-names="Object.keys(titleList)"
-          :field-width="tableField.width()"
-          :field-min-width="tableField.minWidth()"
+          :field-width="tableField.width"
+          :field-min-width="tableField.minWidth"
           :show-selection="batchModuleData.visible"
           @selection-change="selectAct.select"
         )
@@ -240,7 +241,6 @@ rd-card(no-padding)
                       v-for="(item, key) in row.urlStatus.options"
                       :key="key"
                       new-window
-                      command
                       :link="item.url"
                     )
                       rd-badge(:type="item.type" is-dot)
@@ -488,54 +488,48 @@ export default defineComponent({
     ) as Function;
 
     // table 標題
-    const titleList = computed(() => {
-      return {
-        id: t('increment_number'), // 序號
-        site: t('site'), // 站別名稱
-        suffix: t('suffix'), // 後置碼
-        domainName: t('domain_name'), // 域名
-        urlStatus: t('url_status'), // 網址狀態
-        abnormalState: t('abnormal_state'), // 異常狀態
-        abnormalDate: t('recent_abnormal_date'), // 最近異常日期
-        service: t('service_items'), // 服務項目
-        domainNameStatus: t('domain_name_status'), // 域名狀態
-        sslStatus: t('ssl_status'), // 憑證狀態
-        ip: 'IP', // IP
-        automaticRenewalDate: t('domain_name_expiration_date'), // 域名到期日
-        systemDetection: t('system_detection'), // 系統檢測
-        abnormalArea: t('abnormal_area'), // 異常地區
-        manage: t('manage'), // 管理
-        previousNode: t('previous_node'), // 上層指向
-        remark: t('remark'), // 備註
-        operating: t('operating'), // 操作
-      };
-    });
+    const titleList = {
+      id: t('increment_number'), // 序號
+      site: t('site'), // 站別名稱
+      suffix: t('suffix'), // 後置碼
+      domainName: t('domain_name'), // 域名
+      urlStatus: t('url_status'), // 網址狀態
+      abnormalState: t('abnormal_state'), // 異常狀態
+      abnormalDate: t('recent_abnormal_date'), // 最近異常日期
+      service: t('service_items'), // 服務項目
+      domainNameStatus: t('domain_name_status'), // 域名狀態
+      sslStatus: t('ssl_status'), // 憑證狀態
+      ip: 'IP', // IP
+      automaticRenewalDate: t('domain_name_expiration_date'), // 域名到期日
+      systemDetection: t('system_detection'), // 系統檢測
+      abnormalArea: t('abnormal_area'), // 異常地區
+      manage: t('manage'), // 管理
+      previousNode: t('previous_node'), // 上層指向
+      remark: t('remark'), // 備註
+      operating: t('operating'), // 操作
+    };
     const tableField = {
-      width: () => {
-        return {
-          id: 60, // 序號
-          suffix: 80, // 後置碼
-          urlStatus: 90, // 網址狀態
-          abnormalDate: 120, // 最近異常日期
-          service: 105, // 服務項目
-          domainNameStatus: 140, // 域名狀態
-          sslStatus: 90, // 憑證狀態
-          ip: 150, // IP
-          automaticRenewalDate: 120, // 域名到期日
-          systemDetection: 170, // 系統檢測
-          abnormalArea: 200, // 異常地區
-          manage: 95, // 管理
-          previousNode: 90, // 上層指向
-          remark: 120, // 備註
-          operating: 90, // 操作
-        };
+      width: {
+        id: 60, // 序號
+        suffix: 80, // 後置碼
+        urlStatus: 90, // 網址狀態
+        abnormalDate: 120, // 最近異常日期
+        service: 105, // 服務項目
+        domainNameStatus: 140, // 域名狀態
+        sslStatus: 90, // 憑證狀態
+        ip: 150, // IP
+        automaticRenewalDate: 120, // 域名到期日
+        systemDetection: 170, // 系統檢測
+        abnormalArea: 200, // 異常地區
+        manage: 95, // 管理
+        previousNode: 90, // 上層指向
+        remark: 120, // 備註
+        operating: 90, // 操作
       },
-      minWidth: () => {
-        return {
-          site: 140, // 站別
-          domainName: 185, // 域名
-          abnormalState: 140, // 異常狀態
-        };
+      minWidth: {
+        site: 140, // 站別
+        domainName: 185, // 域名
+        abnormalState: 140, // 異常狀態
       },
     };
     // 取得預設排序欄位
@@ -584,7 +578,7 @@ export default defineComponent({
         listCondition.selectAll = val;
         // 判斷已勾選資料(預設清空)
         batchModuleData.selected = [];
-        if (val && batchModuleData.selected.length !== listData.value.length) {
+        if (val) {
           batchModuleData.selected = listData.value;
         }
         // 更改列表單一項目被選中狀態

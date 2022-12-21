@@ -142,7 +142,6 @@ rd-card(no-padding)
                   v-for="(item, key) in row.urlStatus.options"
                   :key="key"
                   new-window
-                  command
                   :link="item.url"
                 )
                   rd-badge(:type="item.type" is-dot)
