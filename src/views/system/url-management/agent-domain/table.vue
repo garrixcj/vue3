@@ -54,7 +54,6 @@ rd-card(no-padding)
       :data="listData"
       :row-class-name="selectAct.getRowClass"
       :default-sort="{ prop: 'id', order: 'ascending' }"
-      :max-height="800"
       :min-width="1248"
       @selection-change="selectAct.change"
       @sort-change="tableAct.sort"
@@ -535,7 +534,6 @@ export default defineComponent({
 
     // 重置捲軸高度
     const scrollTo = () => {
-      listRef.value?.setScrollTop(0);
       listRef.value?.setScrollLeft(0);
     };
     // 封裝外部使用功能

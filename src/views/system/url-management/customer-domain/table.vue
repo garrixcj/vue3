@@ -126,10 +126,8 @@ rd-card(no-padding)
     og-table(
       v-else
       ref="listRef"
-      scrollBar
       header-align="center"
       :noData="listCondition.total === 0"
-      :max-height="800"
     )
       template(#header)
         //- Header

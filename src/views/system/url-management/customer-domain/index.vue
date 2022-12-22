@@ -169,7 +169,7 @@ list(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import type { FormInstance } from 'element-plus';
-import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
+import { isEmpty, intersection, orderBy, toInteger, debounce } from 'lodash';
 import {
   type Ref,
   defineComponent,
@@ -217,6 +217,8 @@ export default defineComponent({
   },
   setup() {
     const { t, locale } = useI18n({ useScope: 'local' });
+    // 處理置頂
+    const scrollToTop = inject('UrlManagement:scrollToTop') as Function;
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
     // 判斷是否客端域名修改權限
@@ -557,8 +559,8 @@ export default defineComponent({
           );
         }
       }
-
       // 重置 Scrollbar 位置
+      scrollToTop();
       listRef.value?.scrollTo();
       // 清除 Select 和關閉批次
       listRef.value?.selectClear();
@@ -642,10 +644,10 @@ export default defineComponent({
     };
     // 進階條件
     const advancedConditionAct = {
-      change: () => {
+      change: debounce(() => {
         listAct.reset();
         watcher.queryRoute(querySet.getQuery());
-      },
+      }, 1500),
       clear: () => {
         // 還原進階條件
         advancedFormKeys.forEach(key => {

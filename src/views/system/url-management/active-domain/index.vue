@@ -72,7 +72,7 @@ list(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
+import { isEmpty, intersection, orderBy, toInteger, debounce } from 'lodash';
 import { defineComponent, onMounted, provide, inject, ref } from 'vue';
 import BeforeSearch from '@/components/custom/before-search/index.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -110,7 +110,6 @@ export default defineComponent({
   },
   setup() {
     const { t, locale } = useI18n({ useScope: 'local' });
-
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
     // 處理置頂
@@ -341,8 +340,9 @@ export default defineComponent({
         listCondition.sort,
         orders[listCondition.order],
       );
-
+      // 重置 Scrollbar 位置
       scrollToTop();
+      listRef.value?.scrollTo();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -441,10 +441,10 @@ export default defineComponent({
     };
     // 進階條件
     const advancedConditionAct = {
-      change: () => {
+      change: debounce(() => {
         listAct.reset();
         watcher.queryRoute(querySet.getQuery());
-      },
+      }, 1500),
       clear: () => {
         // 還原進階條件
         advancedFormKeys.forEach(key => {

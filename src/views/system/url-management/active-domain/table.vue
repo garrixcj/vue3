@@ -386,8 +386,13 @@ export default defineComponent({
       emit('export', note);
     };
 
+    // 重置捲軸高度
+    const scrollTo = () => {
+      listRef.value?.setScrollLeft(0);
+    };
     // 封裝外部使用功能
     expose({
+      scrollTo,
       sortClear: sortAct.clear,
       defaultSort: sortAct.defaultSort,
     });
