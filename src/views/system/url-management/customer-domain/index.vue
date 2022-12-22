@@ -134,7 +134,7 @@
         )
     //- 搜尋
     rd-form-item
-      rd-button(type="search" @click="search")
+      rd-button(type="search" size="large" @click="search")
         i.mdi.mdi-magnify
         span {{ t('search') }}
   .header__footer
@@ -144,6 +144,7 @@
     rd-button.apply-url-btn(
       v-if="hasModifyPerm"
       type="primary"
+      size="large"
       @click="applyDomainName"
     ) {{ t('apply_url') }}
 

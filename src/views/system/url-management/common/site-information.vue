@@ -35,7 +35,7 @@ rd-drawer(
             | {{ `${current.label} [ ${current.option.code} ]` }}
       //- 查詢
       rd-form-item
-        rd-button(size="small" @click="search") {{ t('search') }}
+        rd-button(@click="search") {{ t('search') }}
 
   //- 主內容
   before-search-empty(v-if="beforeSearch" :label="t('start_search')")

@@ -1,6 +1,6 @@
 <i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
-rd-button(type="default" @click="visible = !visible") {{ t('setting_example') }}
+rd-button(type="default" size="large" @click="visible = !visible") {{ t('setting_example') }}
 rd-drawer(
   v-model:visible="visible"
   :title="t('setting_example')"
@@ -36,7 +36,7 @@ rd-drawer(
             | {{ `${current.label} [ ${current.option.code} ]` }}
       //- 查詢
       rd-form-item
-        rd-button(size="small" @click="search") {{ t('search') }}
+        rd-button(@click="search") {{ t('search') }}
 
   rd-card
     template(#content)
