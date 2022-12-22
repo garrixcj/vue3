@@ -412,7 +412,7 @@ export default defineComponent({
           });
         }
 
-        setExportPermName('ApplicationProgressExport');
+        setExportPermName('ApplicationProgress');
       });
     };
 
