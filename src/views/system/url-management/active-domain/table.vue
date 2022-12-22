@@ -136,7 +136,7 @@ rd-card(no-padding)
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.requestRatio) }}
+            span {{ isInteger(row.requestRatio) ? `${groupSeparator(row.requestRatio)}.00` : groupSeparator(row.requestRatio) }}
         //- 成長％數
         rd-table-column(
           :label="t('growing_percent')"
@@ -150,7 +150,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.requestGrow < 0 && row.requestGrow !== -Infinity }"
-            ) {{ groupSeparator(row.requestGrow) }}
+            ) {{ isInteger(row.requestGrow) ? `${groupSeparator(row.requestGrow)}.00` : groupSeparator(row.requestGrow) }}
       //- 登入成功群組
       rd-table-column(
         :label="t('login_result_1')"
@@ -182,7 +182,7 @@ rd-card(no-padding)
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.loginPassRatio) }}
+            span {{ isInteger(row.loginPassRatio) ? `${groupSeparator(row.loginPassRatio)}.00` : groupSeparator(row.loginPassRatio) }}
         //- 成長％數
         rd-table-column(
           :label="t('growing_percent')"
@@ -196,7 +196,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.loginPassGrow < 0 && row.loginPassGrow !== -Infinity }"
-            ) {{ groupSeparator(row.loginPassGrow) }}
+            ) {{ isInteger(row.loginPassGrow) ? `${groupSeparator(row.loginPassGrow)}.00` : groupSeparator(row.loginPassGrow) }}
       //- 登入失敗群組
       rd-table-column(
         :label="t('login_fail')"
@@ -228,7 +228,7 @@ rd-card(no-padding)
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.loginFailRatio) }}
+            span {{ isInteger(row.loginFailRatio) ? `${groupSeparator(row.loginFailRatio)}.00` : groupSeparator(row.loginFailRatio) }}
         //- 成長％數
         rd-table-column(
           :label="t('growing_percent')"
@@ -242,7 +242,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.loginFailGrow < 0 && row.loginFailGrow !== -Infinity }"
-            ) {{ groupSeparator(row.loginFailGrow) }}
+            ) {{ isInteger(row.loginFailGrow) ? `${groupSeparator(row.loginFailGrow)}.00` : groupSeparator(row.loginFailGrow) }}
       //- 風險
       rd-table-column(
         :label="t('risk')"
@@ -269,6 +269,7 @@ export-note(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import { isInteger } from 'lodash';
 import { type Ref, defineComponent, inject, ref } from 'vue';
 import RdStatusButton from '@/components/custom/status-button/index.vue';
 import RdFieldFilter from '@/components/custom/field-filter/index.vue';
@@ -401,6 +402,7 @@ export default defineComponent({
       groupSeparator,
       getAbnormalStateColor,
       getDomainLabel,
+      isInteger,
       // 切換角度
       listAngleTotalData,
       listAnglesOptions,
