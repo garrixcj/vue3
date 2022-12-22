@@ -51,7 +51,7 @@ rd-information(:is-open="false")
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"

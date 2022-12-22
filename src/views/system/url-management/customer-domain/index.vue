@@ -147,7 +147,7 @@
       @click="applyDomainName"
     ) {{ t('apply_url') }}
 
-before-search(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"
@@ -167,7 +167,7 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { type FormInstance } from 'element-plus';
+import type { FormInstance } from 'element-plus';
 import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
 import {
   type Ref,

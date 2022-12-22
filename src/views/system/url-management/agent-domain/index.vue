@@ -51,7 +51,7 @@
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 
 //- 子頁籤
 rd-sub-tabs(v-if="searched" v-model="subActiveTab")
@@ -81,7 +81,7 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { type FormInstance } from 'element-plus';
+import type { FormInstance } from 'element-plus';
 import { isEmpty, intersection, orderBy } from 'lodash';
 import {
   type Ref,
