@@ -21,6 +21,7 @@ rd-dialog(
           :placeholder="textreaPlaceholder"
           resize="none"
           :rows="9"
+          :autosize="{ minRows: 9, maxRows: 15 }"
         )
     //- 顯示列數
     .amount
@@ -80,7 +81,7 @@ export default defineComponent({
             });
           },
         },
-        { trigger: 'change', required: true, message: t('not_null') },
+        { trigger: 'change', required: true, message: t('error_no_domain') },
       ],
     };
 

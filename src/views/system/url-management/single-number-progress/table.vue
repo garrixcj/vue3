@@ -255,6 +255,7 @@ import { useModifyAccess } from '@/plugins/access/modify';
 import { useAccesses } from '@/plugins/access/view';
 import { url as urlAPI } from '@/api/domain';
 import { notify } from '@/components/utils/notification';
+import { setExportPermName } from '../common/export';
 
 export default defineComponent({
   name: 'UrlManagementProgressList',
@@ -401,6 +402,8 @@ export default defineComponent({
         ? { export_remark: note, ...props.searchOptions }
         : props.searchOptions;
 
+      setExportPermName('ApplicationProgressExport');
+
       urlAPI.exportTicketList(params).then(response => {
         if (response.data.result) {
           notify.success({
@@ -408,6 +411,8 @@ export default defineComponent({
             message: t('generation_success'),
           });
         }
+
+        setExportPermName('ApplicationProgressExport');
       });
     };
 
