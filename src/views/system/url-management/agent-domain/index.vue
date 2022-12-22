@@ -42,7 +42,7 @@
           rd-checkbox(disabled :model-value="true") {{ t('fuzzy') }}
     //- 搜尋
     rd-form-item
-      rd-button(type="search" @click="search")
+      rd-button(type="search" size="large" @click="search")
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
@@ -218,7 +218,6 @@ export default defineComponent({
           subActiveTab.value = val;
         },
         default: '',
-        cached: true,
       },
       // 進階條件
       {
