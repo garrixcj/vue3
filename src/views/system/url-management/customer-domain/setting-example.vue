@@ -1,6 +1,6 @@
 <i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
-rd-button(type="default" @click="visible = !visible") {{ t('setting_example') }}
+rd-button(type="default" size="large" @click="visible = !visible") {{ t('setting_example') }}
 rd-drawer(
   v-model:visible="visible"
   :title="t('setting_example')"
@@ -16,7 +16,7 @@ rd-drawer(
       :rules="drawerRules"
     )
       //- 站別
-      rd-form-item(:label="t('site')" prop="site" inline size="small")
+      rd-form-item.label-color(:label="t('site')" prop="site" inline)
         rd-select(
           v-model:value="drawerForm.site"
           :quick-search="customSearch"
@@ -33,10 +33,10 @@ rd-drawer(
             template(#suffix)
               | {{ `[ ${option.code} ]` }}
           template(#selected="{ current }")
-            | {{ `${current.label} [${current.option.code}]` }}
+            | {{ `${current.label} [ ${current.option.code} ]` }}
       //- 查詢
       rd-form-item
-        rd-button(size="small" @click="search") {{ t('search') }}
+        rd-button(@click="search") {{ t('search') }}
 
   rd-card
     template(#content)
@@ -63,7 +63,7 @@ rd-drawer(
             //- 複製
             rd-button(
               type="default"
-              size="default"
+              size="small"
               @click="notifyCopy(row.content)"
             )
               i.mdi.mdi-content-copy
@@ -310,6 +310,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .site-search {
   @include space-vertical(15px);
+}
+
+.label-color {
+  @include form-label-color($text-3);
 }
 
 .rd-card {

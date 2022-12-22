@@ -3,10 +3,14 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
-      rd-select(v-model:value="form.type" :options="typeOptions")
+      rd-select(
+        v-model:value="form.type"
+        :options="typeOptions"
+        @change="clearValid"
+      )
     //- 站別
     rd-form-item(v-if="displayField('site')" prop="site")
       rd-select(
@@ -25,7 +29,7 @@
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
         template(#selected="{ current }")
-          | {{ `${current?.label} [${current?.option.code}]` }}
+          | {{ `${current?.label} [ ${current?.option.code} ]` }}
     //- 域名關鍵字
     rd-form-item(
       v-if="displayField('domainName')"
@@ -37,6 +41,7 @@
       rd-input.domain-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
+        clearable
       )
         template(#append)
           rd-checkbox(disabled :model-value="true") {{ t('fuzzy') }}
@@ -46,7 +51,7 @@
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 
 //- 子頁籤
 rd-sub-tabs(v-if="searched" v-model="subActiveTab")
@@ -76,6 +81,7 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import type { FormInstance } from 'element-plus';
 import { isEmpty, intersection, orderBy } from 'lodash';
 import {
   type Ref,
@@ -87,7 +93,7 @@ import {
   inject,
   ref,
 } from 'vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
@@ -111,7 +117,7 @@ import type { ListData, AbnormalStateConditions } from '../common/type';
 export default defineComponent({
   name: 'AgentDomainName', // 網址管理 - 管端域名
   components: {
-    BeforeSearchEmpty,
+    BeforeSearch,
     AdvancedConditions,
     List,
   },
@@ -127,13 +133,16 @@ export default defineComponent({
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
 
-    const formRef = ref();
+    const formRef = ref<FormInstance>();
     // 表單相關
     const { form, initForm } = useForm();
     // 表單欄位
     const { displayField } = useFormField(form);
     // 驗證相關
     const { rules } = useValidationRules(t);
+    const clearValid = () => {
+      formRef.value?.clearValidate();
+    };
 
     // 表單下拉選項
     let { typeOptions } = useFormOptions(t);
@@ -178,7 +187,7 @@ export default defineComponent({
         if (searched.value) {
           updateApi.value = true;
           advancedConditionAct.clear();
-          watcher.queryRoute(querySet.getQuery({ ignoreCached: true }));
+          watcher.queryRoute(querySet.getQuery());
         }
       },
     );
@@ -472,7 +481,7 @@ export default defineComponent({
 
     // 點擊搜尋按鈕
     const search = () => {
-      formRef.value.validate((validate: boolean) => {
+      formRef.value?.validate((validate: boolean) => {
         if (validate) {
           updateApi.value = true;
           // 還原列表條件
@@ -504,6 +513,7 @@ export default defineComponent({
     };
     // route watcher
     watcher.setWatcher((query: FormType) => {
+      formRef.value?.resetFields();
       // 若有Type代表已有搜尋
       if (query.type && query.type !== '') {
         updateList();
@@ -526,6 +536,7 @@ export default defineComponent({
       formRef,
       form,
       rules,
+      clearValid,
       typeOptions,
       displayField,
       // 進階條件

@@ -157,7 +157,7 @@ rd-card(no-padding)
               target="_blank"
             ) {{ item }}
           div(v-else) --
-  template(#footer)
+  template(v-if="listCondition.total > 0" #footer)
     rd-pagination(
       v-model:current-page="listCondition.page"
       background

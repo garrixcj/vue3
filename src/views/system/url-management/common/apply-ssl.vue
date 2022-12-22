@@ -23,7 +23,7 @@ rd-dialog(
       )
         rd-link(:href="`http://${domainName}`" target="_blank") {{ domainName }}
         span(v-if="index !== domainNameData.length - 1") 、
-    rd-form-item
+    rd-form-item(size="default")
       template(#label)
         span {{ t('automatic_renewal') }}
         rd-tooltip(
@@ -34,8 +34,8 @@ rd-dialog(
           i.mdi.mdi-information
       rd-switch(v-model="form.automaticExtension" :active="applySSLActive")
     //- 備註
-    rd-form-item(:label="t('remark')")
-      rd-input(v-model="form.remark" show-word-limit :maxlength="30")
+    rd-form-item(:label="t('remark')" size="default")
+      rd-input(v-model="form.remark" show-word-limit clearable :maxlength="30")
     rd-form-item
       span {{ t('go_to_old_ssl_msg', { function_name: t('domain_ssl') }) }}
   template(#footer)

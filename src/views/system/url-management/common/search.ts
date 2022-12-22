@@ -51,7 +51,7 @@ export const useForm = () => {
     form.domainName = '';
     form.multipleDomains = [];
     form.ip = '';
-    form.area = '';
+    form.area = 'all';
     form.keyword = '';
     form.date = [];
   };
@@ -208,14 +208,15 @@ export const useFormField = (form: FormType) => {
 
   // 支援單一域名的搜尋條件
   const supportSingleDomainName = computed(() => {
-    const typeOfSupport = ['site', 'domainName'];
-    return typeOfSupport.includes(form.type) && form.domain === 'all';
+    return (
+      form.type === 'site' ||
+      (form.type === 'domainName' && form.domain === 'all')
+    );
   });
 
   // 支援多域名的搜尋條件
   const supportMultipleDomainName = computed(() => {
-    const typeOfSupport = ['domainName'];
-    return typeOfSupport.includes(form.type) && form.domain !== 'all';
+    return form.type === 'domainName' && form.domain !== 'all';
   });
 
   return {

@@ -9,7 +9,7 @@ rd-information(:is-open="false")
     li {{ t('url_management_active_info4') }}
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 廳主
     rd-form-item(:label="t('domain')" prop="domain")
       domain-selector(v-model:value="form.domain" all-opt)
@@ -51,7 +51,7 @@ rd-information(:is-open="false")
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"
@@ -74,7 +74,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
 import { defineComponent, onMounted, provide, inject, ref } from 'vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
@@ -103,7 +103,7 @@ export default defineComponent({
   name: 'ActiveDomain', // 網址管理 - 活躍域名
 
   components: {
-    BeforeSearchEmpty,
+    BeforeSearch,
     DomainSelector,
     AdvancedConditions,
     List,

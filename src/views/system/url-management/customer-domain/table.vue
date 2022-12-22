@@ -295,9 +295,7 @@ rd-card(no-padding)
           )
             td
               rd-format-timer(
-                wrap
-                date-default="--"
-                :date-time="row.automaticRenewalDate"
+                :date-default="row.automaticRenewalDate !== '' ? row.automaticRenewalDate : '--'"
               )
           //- 系統檢測
           template(
@@ -352,7 +350,7 @@ rd-card(no-padding)
                 :disabled="!row.applySSLEnable"
                 @click="openDialog([row], 'applySSL')"
               ) {{ t('apply_certificate') }}
-  template(#footer)
+  template(v-if="listCondition.total > 0" #footer)
     rd-pagination(
       v-model:current-page="listCondition.page"
       background

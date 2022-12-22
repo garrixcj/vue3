@@ -48,7 +48,7 @@ rd-card(no-padding)
 
   template(#content)
     //- 列表資料
-    rd-table(
+    rd-table.selection-table(
       ref="listRef"
       border
       :data="listData"
@@ -305,7 +305,7 @@ rd-card(no-padding)
             :disabled="!row.applySSLEnable"
             @click="openDialog([row], 'applySSL')"
           ) {{ t('apply_certificate') }}
-  template(#footer)
+  template(v-if="listCondition.total > 0" #footer)
     rd-pagination(
       v-model:current-page="listCondition.page"
       background
@@ -454,6 +454,7 @@ export default defineComponent({
         listRef.value?.clearSort();
       },
       updateApi: () => {
+        batchModuleData.visible = false;
         emit('update', true);
       },
     };
@@ -604,5 +605,8 @@ export default defineComponent({
 }
 .url-color {
   color: $primary-2;
+}
+.selection-table {
+  @include table-selected-row;
 }
 </style>
