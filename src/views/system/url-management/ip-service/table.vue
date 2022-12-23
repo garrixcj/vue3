@@ -17,11 +17,11 @@ rd-card(no-padding)
       v-for="(item, key) in listAnglesOptions"
       :key="key"
       :type="item.type"
-      :value="listAngleTotalData[item.value]"
+      :value="listAngleTotalData[item.key]"
       :label="item.label"
       min-width="140"
       :active="item.value === listCondition.formAngle"
-      @click="setListAngle(item.value)"
+      @click="setListAngle(item.key, item.value)"
     )
     //- 匯出
     .export(v-if="hasExportPerm && listData.length > 0")
@@ -157,7 +157,7 @@ rd-card(no-padding)
               target="_blank"
             ) {{ item }}
           div(v-else) --
-  template(#footer)
+  template(v-if="listCondition.total > 0" #footer)
     rd-pagination(
       v-model:current-page="listCondition.page"
       background
@@ -185,17 +185,19 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import ExportNote from '@/plugins/export-note/index.vue';
-import { ipServiceFieldsInitial } from '../common/custom-fields';
+import { initialIPServiceFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type { IPServiceListData } from '../common/type';
 import type { AdvancedConditionsOptions } from '../common/list';
 import type { ListCondition } from './list';
 
 type ListAngles = 'all' | 'oneToOne' | 'oneToMany';
+type ListAnglesValue = 'all' | 1 | 2;
 
 type ListAnglesOptions = {
   label: string;
-  value: ListAngles;
+  key: ListAngles;
+  value: ListAnglesValue;
   type: 'default';
 };
 
@@ -227,14 +229,19 @@ export default defineComponent({
     >;
     // 列表角度選項
     const listAnglesOptions = ref<ListAnglesOptions[]>([
-      { label: t('all_ip'), value: 'all', type: 'default' },
-      { label: t('one_to_one_ip'), value: 'oneToOne', type: 'default' },
-      { label: t('one_to_many_ip'), value: 'oneToMany', type: 'default' },
+      { label: t('all_ip'), value: 'all', key: 'all', type: 'default' },
+      { label: t('one_to_one_ip'), value: 1, key: 'oneToOne', type: 'default' },
+      {
+        label: t('one_to_many_ip'),
+        value: 2,
+        key: 'oneToMany',
+        type: 'default',
+      },
     ]);
     // 設定列表角度
-    const setListAngle = (value: ListAngles) => {
+    const setListAngle = (key: ListAngles, value: ListAnglesValue) => {
       listCondition.page = 1;
-      listCondition.total = listAngleTotalData[value];
+      listCondition.total = listAngleTotalData[key];
       listCondition.formAngle = value;
       emit('change');
     };
@@ -254,7 +261,7 @@ export default defineComponent({
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(ipServiceFieldsInitial(t));
+      useInitCustomField(initialIPServiceFields(t));
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('UrlIpServiceExport');

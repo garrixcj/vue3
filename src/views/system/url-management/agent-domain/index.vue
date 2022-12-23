@@ -3,10 +3,14 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
-      rd-select(v-model:value="form.type" :options="typeOptions")
+      rd-select(
+        v-model:value="form.type"
+        :options="typeOptions"
+        @change="clearValid"
+      )
     //- 站別
     rd-form-item(v-if="displayField('site')" prop="site")
       rd-select(
@@ -25,7 +29,7 @@
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
         template(#selected="{ current }")
-          | {{ `${current?.label} [${current?.option.code}]` }}
+          | {{ `${current?.label} [ ${current?.option.code} ]` }}
     //- 域名關鍵字
     rd-form-item(
       v-if="displayField('domainName')"
@@ -37,16 +41,17 @@
       rd-input.domain-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
+        clearable
       )
         template(#append)
           rd-checkbox(disabled :model-value="true") {{ t('fuzzy') }}
     //- 搜尋
     rd-form-item
-      rd-button(type="search" @click="search")
+      rd-button(type="search" size="large" @click="search")
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 
 //- 子頁籤
 rd-sub-tabs(v-if="searched" v-model="subActiveTab")
@@ -70,22 +75,25 @@ list(
   @change="listAct.change"
   @sortChange="listAct.sort"
   @export="exportList"
+  @update="listAct.updateApi"
 )
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { isEmpty, intersection, omitBy, orderBy, toInteger } from 'lodash';
+import type { FormInstance } from 'element-plus';
+import { isEmpty, intersection, orderBy } from 'lodash';
 import {
   type Ref,
   defineComponent,
+  onMounted,
   watch,
   computed,
   provide,
   inject,
   ref,
 } from 'vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
@@ -99,18 +107,17 @@ import {
   useAdvancedConditions,
 } from '../common/search';
 import {
-  type ExportAgentDomainNameOption,
   setExportPermName,
   doExportAgentDomainNameList,
 } from '../common/export';
 import { useList } from './list';
-import type { SiteOption } from '../common/list';
+import { type SiteOption, useAdvancedConditionList } from '../common/list';
 import type { ListData, AbnormalStateConditions } from '../common/type';
 
 export default defineComponent({
   name: 'AgentDomainName', // 網址管理 - 管端域名
   components: {
-    BeforeSearchEmpty,
+    BeforeSearch,
     AdvancedConditions,
     List,
   },
@@ -125,16 +132,17 @@ export default defineComponent({
     const updateApi = ref(false);
     // 自定義快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
-    // 站別列表
-    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
-    const formRef = ref();
+    const formRef = ref<FormInstance>();
     // 表單相關
     const { form, initForm } = useForm();
     // 表單欄位
     const { displayField } = useFormField(form);
     // 驗證相關
     const { rules } = useValidationRules(t);
+    const clearValid = () => {
+      formRef.value?.clearValidate();
+    };
 
     // 表單下拉選項
     let { typeOptions } = useFormOptions(t);
@@ -154,15 +162,21 @@ export default defineComponent({
         ?.value;
     });
 
+    // 站別列表
+    const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
+
+    // 域名狀態群組的過濾選項
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
+
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
       useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
     const listRef = ref();
     // 列表資料
-    const { listData, orgListData, listCondition, getList } = useList(form);
+    const { listData, orgListData, listCondition, getList } = useList();
     provide('AgentDomainName:listData', listData);
     provide('AgentDomainName:listCondition', listCondition);
 
@@ -173,7 +187,7 @@ export default defineComponent({
         if (searched.value) {
           updateApi.value = true;
           advancedConditionAct.clear();
-          watcher.queryRoute(querySet.getQuery({ ignoreCached: true }));
+          watcher.queryRoute(querySet.getQuery());
         }
       },
     );
@@ -196,15 +210,18 @@ export default defineComponent({
           form.site = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       {
-        key: 'domainName',
+        key: 'domain_name',
+        query: 'domainName',
         get: () => form.domainName,
         set: (val: string) => {
           form.domainName = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       // 子頁籤
@@ -215,44 +232,61 @@ export default defineComponent({
           subActiveTab.value = val;
         },
         default: '',
-        cached: true,
       },
       // 進階條件
       {
-        key: 'failToOpen',
+        key: 'fail_to_open',
+        query: 'failToOpen',
         get: () => advancedForm.failToOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.failToOpen = updateApi.value ? [] : value;
+          advancedForm.failToOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.failToOpen),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'partiallyOpen',
+        key: 'partially_open',
+        query: 'partiallyOpen',
         get: () => advancedForm.partiallyOpen,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.partiallyOpen = updateApi.value ? [] : value;
+          advancedForm.partiallyOpen = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.partiallyOpen),
+        optional: true,
+        numberArray: true,
       },
       {
         key: 'openable',
         get: () => advancedForm.openable,
         set: (val: number[]) => {
-          const value =
-            typeof val === 'string'
-              ? [toInteger(val)]
-              : val.map(item => toInteger(item));
-          advancedForm.openable = updateApi.value ? [] : value;
+          advancedForm.openable = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.openable),
+        optional: true,
+        numberArray: true,
+      },
+      {
+        key: 'service_error',
+        query: 'abnormalStatus',
+        get: () => [
+          ...advancedForm.failToOpen,
+          ...advancedForm.partiallyOpen,
+          ...advancedForm.openable,
+        ],
+        default: [],
+        filter: type =>
+          !(type === 'route') &&
+          !isEmpty([
+            ...advancedForm.failToOpen,
+            ...advancedForm.partiallyOpen,
+            ...advancedForm.openable,
+          ]),
+        optional: true,
+        numberArray: true,
       },
       // Table條件
       {
@@ -317,6 +351,8 @@ export default defineComponent({
       }
       // 重置 Scrollbar 位置
       listRef.value?.scrollTo();
+      // 清除 Select 和關閉批次
+      listRef.value?.selectClear();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -375,6 +411,10 @@ export default defineComponent({
       change: () => {
         watcher.queryRoute(querySet.getQuery());
       },
+      updateApi: () => {
+        updateApi.value = true;
+        watcher.queryRoute(querySet.getQuery());
+      },
     };
     // 進階條件
     const advancedConditionAct = {
@@ -406,29 +446,19 @@ export default defineComponent({
       setExportPermName('AgentUrlExport');
 
       const query = querySet.getQuery() as FormType;
+      const params = querySet.getParam();
 
-      const optionsTmp: ExportAgentDomainNameOption = {
-        domain_name: query.domainName,
-        service_error: [
-          ...advancedForm.failToOpen,
-          ...advancedForm.partiallyOpen,
-          ...advancedForm.openable,
-        ],
-        sort: listCondition.sort,
-        order: listCondition.order,
-        export_remark: note,
-      };
-      // 過濾為空的都不帶入
-      const options = omitBy(optionsTmp, value => {
-        return isEmpty(value);
-      });
+      // 判斷是否有備註
+      if (!isEmpty(note)) {
+        params.export_remark = note;
+      }
 
       return doExportAgentDomainNameList(
         query.type,
         query.site,
         getEntranceID.value,
         locale.value,
-        options,
+        params,
       ).then(resp => {
         if (resp.data.result) {
           notify.success({
@@ -441,9 +471,16 @@ export default defineComponent({
       });
     };
 
+    onMounted(() => {
+      setLoading(true);
+      Promise.all([getAdvancedConditionsList()]).then(() => {
+        setLoading(false);
+      });
+    });
+
     // 點擊搜尋按鈕
     const search = () => {
-      formRef.value.validate((validate: boolean) => {
+      formRef.value?.validate((validate: boolean) => {
         if (validate) {
           updateApi.value = true;
           // 還原列表條件
@@ -460,19 +497,22 @@ export default defineComponent({
       if (!searched.value || updateApi.value) {
         setLoading(true);
         searched.value = true;
-        return getList(getEntranceID.value).then(resp => {
-          if (resp) {
-            advancedConditionAct.init();
-            setTableData();
-          }
-          updateApi.value = false;
-          setLoading(false);
-        });
+        return getList(form, getEntranceID.value, querySet.getParam()).then(
+          resp => {
+            if (resp) {
+              advancedConditionAct.init();
+              setTableData();
+            }
+            updateApi.value = false;
+            setLoading(false);
+          },
+        );
       }
       setTableData();
     };
     // route watcher
     watcher.setWatcher((query: FormType) => {
+      formRef.value?.resetFields();
       // 若有Type代表已有搜尋
       if (query.type && query.type !== '') {
         updateList();
@@ -495,6 +535,7 @@ export default defineComponent({
       formRef,
       form,
       rules,
+      clearValid,
       typeOptions,
       displayField,
       // 進階條件

@@ -6,7 +6,7 @@ rd-information(v-show="isApplySite")
     li {{ t('apply_domain_information1') }}
     li {{ t('apply_domain_information2', { num: restrictionNum.bbin, money: 200 }) }}
     li {{ t('apply_domain_information3', { num: restrictionNum.domain }) }}
-rd-navbar-layout(:title="t('apply_url')")
+rd-navbar-layout(no-pre-page :title="t('apply_url')")
   template(#afterTitle)
     //- 站別form
     .after-title
@@ -100,7 +100,12 @@ rd-dialog(
     rd-button(type="secondary" @click="visible.submit = false") {{ t('cancel') }}
     rd-button(type="primary" @click="submit") {{ t('confirm') }}
 //- 尚未儲存的 Dialog
-rd-dialog(v-model="visible.leave" :title="t('not_saved')" width="430px")
+rd-dialog(
+  v-model="visible.leave"
+  :close-on-click-modal="false"
+  :title="t('not_saved')"
+  width="300px"
+)
   span {{ t('not_saved_check_info') }}
   template(#footer)
     rd-button(type="secondary" @click="visible.leave = false") {{ t('cancel') }}
@@ -357,8 +362,7 @@ export default defineComponent({
 
     // 返回列表
     const back = () => {
-      window.location.href =
-        '/v3/system_setting/url_management/index?tab=customerDomain';
+      window.location.href = '/system_setting/url_management/index';
     };
 
     return {

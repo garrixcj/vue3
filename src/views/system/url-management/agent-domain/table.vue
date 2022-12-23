@@ -5,6 +5,7 @@ rd-card(no-padding)
       v-if="showBatchMode"
       v-model:visible="batchModuleData.visible"
       :count="batchModuleData.selected.length"
+      :style="getBatchModuleWidth"
       :disabled="listData.length === 0"
       @change="clickBatchModule"
     )
@@ -47,7 +48,7 @@ rd-card(no-padding)
 
   template(#content)
     //- 列表資料
-    rd-table(
+    rd-table.selection-table(
       ref="listRef"
       border
       :data="listData"
@@ -141,7 +142,6 @@ rd-card(no-padding)
                   v-for="(item, key) in row.urlStatus.options"
                   :key="key"
                   new-window
-                  command
                   :link="item.url"
                 )
                   rd-badge(:type="item.type" is-dot)
@@ -305,7 +305,7 @@ rd-card(no-padding)
             :disabled="!row.applySSLEnable"
             @click="openDialog([row], 'applySSL')"
           ) {{ t('apply_certificate') }}
-  template(#footer)
+  template(v-if="listCondition.total > 0" #footer)
     rd-pagination(
       v-model:current-page="listCondition.page"
       background
@@ -313,8 +313,8 @@ rd-card(no-padding)
       :page-size="listCondition.size"
       :page-sizes="[1000, 1500, 2000]"
       :total="listCondition.total"
-      @update:page-size="tableAct.page"
-      @current-change="tableAct.size"
+      @update:page-size="tableAct.size"
+      @current-change="tableAct.page"
     )
 //- 匯出
 export-note(
@@ -323,7 +323,11 @@ export-note(
   @confirm="exportFiled"
 )
 //- 編輯備註(含批次操作)
-edit-remark(v-model:visible="dialogSwitch.remark" :data="dialogForm")
+edit-remark(
+  v-model:visible="dialogSwitch.remark"
+  :data="dialogForm"
+  @update="tableAct.updateApi()"
+)
 //- 申請憑證
 apply-ssl(v-model:visible="dialogSwitch.applySSL" :data="dialogForm")
 </template>
@@ -341,7 +345,7 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { agentDomainNameFieldsInitial } from '../common/custom-fields';
+import { initialAgentDomainNameFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type {
   ListData,
@@ -360,7 +364,7 @@ export default defineComponent({
     EditRemark,
     ApplySsl,
   },
-  emits: ['openDialog', 'change', 'export', 'sortChange'],
+  emits: ['openDialog', 'change', 'export', 'sortChange', 'update'],
   setup(props, { emit, expose }) {
     const { t } = useI18n({ useScope: 'parent' });
 
@@ -395,12 +399,22 @@ export default defineComponent({
     const showBatchMode = computed(() => {
       return hasModifyPerm.value || hasApplySSLModifyPerm.value;
     });
+    // 取得批次模組最小寬度
+    const getBatchModuleWidth = computed(() => {
+      if (batchModuleData.visible) {
+        return { 'min-width': hasApplySSLModifyPerm.value ? '440px' : '305px' };
+      }
+      return {};
+    });
+
     const selectAct = {
       change: (val: ListData[]) => {
         batchModuleData.selected = val;
       },
       clear: () => {
         listRef.value?.clearSelection();
+        batchModuleData.visible = false;
+        batchModuleData.selected = [];
       },
       getRowClass: ({ row }: { row: ListData }) =>
         batchModuleData.selected.find(selectedRow => selectedRow.id === row.id)
@@ -438,6 +452,10 @@ export default defineComponent({
         listCondition.sort = 'id';
         listCondition.order = 'asc';
         listRef.value?.clearSort();
+      },
+      updateApi: () => {
+        batchModuleData.visible = false;
+        emit('update', true);
       },
     };
 
@@ -498,7 +516,9 @@ export default defineComponent({
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(agentDomainNameFieldsInitial(t));
+      useInitCustomField(
+        initialAgentDomainNameFields(t, hasApplySSLModifyPerm.value),
+      );
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('AgentUrlExport');
@@ -522,6 +542,7 @@ export default defineComponent({
     expose({
       scrollTo,
       sortClear: tableAct.clear,
+      selectClear: selectAct.clear,
     });
 
     return {
@@ -543,6 +564,7 @@ export default defineComponent({
       clickBatchModule,
       batchApplySSLValue,
       showBatchMode,
+      getBatchModuleWidth,
       // 自訂欄位
       customOptions,
       fieldsData,
@@ -580,5 +602,11 @@ export default defineComponent({
 }
 .dropdown-span {
   margin-left: 5px;
+}
+.url-color {
+  color: $primary-2;
+}
+.selection-table {
+  @include table-selected-row;
 }
 </style>

@@ -272,14 +272,15 @@ export default defineComponent({
       },
       // 會員帳號
       {
-        key: 'users',
-        get: () => form.users,
-        set: (val: string[] | string) => {
-          form.users = typeof val == 'string' ? [val] : [...val];
+        key: 'usernames',
+        query: 'users',
+        get: () => form.users.join(','),
+        set: (val: string) => {
+          form.users = val ? val.split(',') : [];
         },
         filter: () => form.users.length > 0,
         optional: true,
-        default: [],
+        default: '',
         cached: true,
       },
       // 綁定開始時間

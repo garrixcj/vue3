@@ -1,5 +1,5 @@
 import commonDict from '@/languages/system_setting/url_management/common.json';
-import { ref, reactive } from 'vue';
+import { provide, ref, reactive } from 'vue';
 import { useTrans } from '@/plugins/i18n/replace';
 import { url as urlAPI } from '@/api/domain';
 import type { AdvancedConditionsType } from './type';
@@ -77,6 +77,7 @@ export const useAdvancedConditionList = (lang: string) => {
     attackStatus: [],
     growingPercent: [],
   });
+  provide('UrlManagement:advancedConditions', advancedConditions);
 
   // 建構進階條件群組資料
   const buildGroupOptions = (
@@ -136,6 +137,34 @@ export const useAdvancedConditionList = (lang: string) => {
       }
     });
   };
+
+  // 取得異常狀態 - 子項目顏色
+  const getAbnormalStateColor = (value: number) => {
+    const isFailToOpen = advancedConditions.failToOpen.find(
+      item => item.label === value,
+    );
+    const isPartiallyOpen = advancedConditions.partiallyOpen.find(
+      item => item.label === value,
+    );
+    const isOpenable = advancedConditions.openable.find(
+      item => item.label === value,
+    );
+
+    // 無法開啟
+    if (isFailToOpen !== undefined) {
+      return 'danger';
+
+      // 部分開啟
+    } else if (isPartiallyOpen !== undefined) {
+      return 'warning';
+
+      // 可開啟
+    } else if (typeof isOpenable !== undefined) {
+      return 'success';
+    }
+    return '';
+  };
+  provide('UrlManagement:getAbnormalStateColor', getAbnormalStateColor);
 
   return {
     advancedConditions,

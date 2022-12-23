@@ -3,10 +3,14 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
-      rd-select(v-model:value="form.type" :options="typeOptions")
+      rd-select(
+        v-model:value="form.type"
+        :options="typeOptions"
+        @chang="clearValid"
+      )
     //- 站別
     rd-form-item(v-if="displayField('site')" prop="site")
       rd-select(
@@ -25,7 +29,7 @@
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
         template(#selected="{ current }")
-          | {{ `${current?.label} [${current?.option.code}]` }}
+          | {{ `${current?.label} [ ${current?.option.code} ]` }}
     //- IP關鍵字
     rd-form-item(
       v-if="displayField('ip')"
@@ -36,14 +40,15 @@
       rd-input(
         v-model="form.ip"
         :placeholder="form.type === 'ip' ? t('please_enter_the_complete_ip_address') : t('not_required')"
+        clearable
       )
     //- 搜尋
     rd-form-item
-      rd-button(type="search" @click="search")
+      rd-button(type="search" size="large" @click="search")
         i.mdi.mdi-magnify
         span {{ t('search') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"
@@ -61,9 +66,17 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { isEmpty, intersection, omitBy, toInteger } from 'lodash';
-import { type Ref, defineComponent, provide, inject, ref } from 'vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import type { FormInstance } from 'element-plus';
+import { isEmpty, intersection, toInteger } from 'lodash';
+import {
+  type Ref,
+  defineComponent,
+  onMounted,
+  provide,
+  inject,
+  ref,
+} from 'vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
@@ -76,19 +89,15 @@ import {
   useValidationRules,
   useAdvancedConditions,
 } from '../common/search';
-import {
-  type ExportIPServiceOption,
-  setExportPermName,
-  doExportIPServiceList,
-} from '../common/export';
+import { setExportPermName, doExportIPServiceList } from '../common/export';
 import { useList } from './list';
-import type { SiteOption } from '../common/list';
+import { type SiteOption, useAdvancedConditionList } from '../common/list';
 import type { IPServiceListData } from '../common/type';
 
 export default defineComponent({
   name: 'IPService', // 網址管理 - IP服務
   components: {
-    BeforeSearchEmpty,
+    BeforeSearch,
     AdvancedConditions,
     List,
   },
@@ -106,13 +115,16 @@ export default defineComponent({
     // 站別列表
     const siteOptions = inject('UrlManagement:siteList') as Ref<SiteOption[]>;
 
-    const formRef = ref();
+    const formRef = ref<FormInstance>();
     // 表單相關
     const { form, initForm } = useForm();
     // 表單欄位
     const { displayField } = useFormField(form);
     // 驗證相關
     const { rules } = useValidationRules(t);
+    const clearValid = () => {
+      formRef.value?.clearValidate();
+    };
 
     // 表單下拉選項
     let { typeOptions } = useFormOptions(t);
@@ -120,11 +132,13 @@ export default defineComponent({
       return item.value !== 'domainName';
     });
 
+    // 域名狀態群組的過濾選項
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
+
     // 進階條件
-    const { advancedForm, advancedFormKeys, abnormalStateGroup } =
-      useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
+    const { advancedForm, advancedFormKeys } = useAdvancedConditions();
 
     const listRef = ref();
     // 列表相關
@@ -134,7 +148,7 @@ export default defineComponent({
       listCondition,
       listAngleTotalData,
       getList,
-    } = useList(form);
+    } = useList();
     provide('IPService:listData', listData);
     provide('IPService:listCondition', listCondition);
     provide('IPService:listAngleTotalData', listAngleTotalData);
@@ -157,6 +171,7 @@ export default defineComponent({
           form.site = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       {
@@ -166,46 +181,56 @@ export default defineComponent({
           form.ip = val;
         },
         default: '',
+        optional: true,
         cached: true,
       },
       // 進階條件
       {
-        key: 'ipType',
+        key: 'ip_type',
+        query: 'ipType',
         get: () => advancedForm.ipType,
         set: (val: number[]) => {
-          advancedForm.ipType = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.ipType = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.ipType),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'purchaseMethod',
+        key: 'purchase_method',
+        query: 'purchaseMethod',
         get: () => advancedForm.purchaseMethod,
         set: (val: number[]) => {
-          advancedForm.purchaseMethod = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.purchaseMethod = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.purchaseMethod),
+        optional: true,
+        numberArray: true,
       },
       {
-        key: 'attackStatus',
+        key: 'attack_status',
+        query: 'attackStatus',
         get: () => advancedForm.attackStatus,
         set: (val: number[]) => {
-          advancedForm.attackStatus = updateApi.value
-            ? []
-            : val.map(item => toInteger(item));
+          advancedForm.attackStatus = val;
         },
         default: [],
+        filter: () => !isEmpty(advancedForm.attackStatus),
+        optional: true,
+        numberArray: true,
       },
       // Table條件
       {
-        key: 'angle',
+        key: 'table_filter',
+        query: 'angle',
         get: () => listCondition.formAngle,
-        set: (val: string) => {
-          listCondition.formAngle = updateApi.value ? 'all' : val;
+        set: (val: 'all' | number) => {
+          listCondition.formAngle = val === 'all' ? val : toInteger(val);
         },
+        filter: type => !(type === 'api' && listCondition.formAngle === 'all'),
+        optional: true,
         default: 'all',
       },
       {
@@ -275,8 +300,8 @@ export default defineComponent({
           // 判斷列表顯示角度
           const isTableAngle =
             listCondition.formAngle === 'all' ||
-            (listCondition.formAngle === 'oneToOne' && item.ipType === 1) ||
-            (listCondition.formAngle === 'oneToMany' && item.ipType === 2);
+            (listCondition.formAngle === 1 && item.ipType === 1) ||
+            (listCondition.formAngle === 2 && item.ipType === 2);
 
           if (isTableAngle && (isAdSearch || isNotAdvancedCondition)) {
             result = [...result, item];
@@ -317,38 +342,18 @@ export default defineComponent({
       setExportPermName('UrlIpServiceExport');
 
       const query = querySet.getQuery() as FormType;
+      const params = querySet.getParam();
 
-      // 列表角度
-      let tableFilter = 0;
-      if (listCondition.formAngle === 'oneToOne') {
-        tableFilter = 1;
-      } else if (listCondition.formAngle === 'oneToMany') {
-        tableFilter = 2;
+      // 判斷是否有備註
+      if (!isEmpty(note)) {
+        params.export_remark = note;
       }
-      const optionsTmp: ExportIPServiceOption = {
-        ip: query.ip,
-        ip_type: advancedForm.ipType,
-        purchase_method: advancedForm.purchaseMethod,
-        attack_status: advancedForm.attackStatus,
-        table_filter: tableFilter,
-        export_remark: note,
-      };
-      // 過濾為空的都不帶入
-      const options = omitBy(optionsTmp, value => {
-        if (
-          (typeof value !== 'number' && isEmpty(value)) ||
-          (typeof value === 'number' && value === 0)
-        ) {
-          return true;
-        }
-        return false;
-      });
 
       return doExportIPServiceList(
         query.type,
         query.site,
         locale.value,
-        options,
+        params,
       ).then(resp => {
         if (resp.data.result) {
           notify.success({
@@ -361,9 +366,16 @@ export default defineComponent({
       });
     };
 
+    onMounted(() => {
+      setLoading(true);
+      Promise.all([getAdvancedConditionsList()]).then(() => {
+        setLoading(false);
+      });
+    });
+
     // 點擊搜尋按鈕
     const search = () => {
-      formRef.value.validate((validate: boolean) => {
+      formRef.value?.validate((validate: boolean) => {
         if (validate) {
           updateApi.value = true;
           // 還原列表條件
@@ -380,7 +392,7 @@ export default defineComponent({
       if (!searched.value || updateApi.value) {
         setLoading(true);
         searched.value = true;
-        return getList().then(resp => {
+        return getList(form, querySet.getParam()).then(resp => {
           if (resp) {
             setTableData();
           }
@@ -392,6 +404,7 @@ export default defineComponent({
     };
     // route watcher
     watcher.setWatcher((query: FormType) => {
+      formRef.value?.resetFields();
       // 若有Type代表已有搜尋
       if (query.type && query.type !== '') {
         updateList();
@@ -414,6 +427,7 @@ export default defineComponent({
       formRef,
       form,
       rules,
+      clearValid,
       typeOptions,
       displayField,
       // 進階條件

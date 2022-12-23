@@ -1,6 +1,9 @@
 // 客端域名自訂欄位初始設定
-export const customerDomainFieldsInitial = (t: (key: string) => string) => {
-  return {
+export const initialCustomerDomainFields = (
+  t: (key: string) => string,
+  hasModify: boolean,
+) => {
+  const result = {
     config: {
       operation: 'urlManagementCustomerDomain',
       groupId: 0,
@@ -18,7 +21,7 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
         key: 'site',
         name: t('site'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -26,7 +29,7 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
         name: t('suffix'),
         visible: true,
         default: true,
-        disabled: false,
+        disabled: true,
       },
       {
         key: 'domainName',
@@ -53,28 +56,28 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
         key: 'abnormalDate',
         name: t('recent_abnormal_date'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'service',
         name: t('service_items'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'domainNameStatus',
         name: t('domain_name_status'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'sslStatus',
         name: t('ssl_status'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -88,14 +91,14 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
         key: 'automaticRenewalDate',
         name: t('domain_name_expiration_date'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'systemDetection',
         name: t('system_detection'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -109,21 +112,21 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
         key: 'manage',
         name: t('manage'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'previousNode',
         name: t('previous_node'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'remark',
         name: t('remark'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -135,11 +138,18 @@ export const customerDomainFieldsInitial = (t: (key: string) => string) => {
       },
     ],
   };
+  if (!hasModify) {
+    result.data = result.data.filter(item => item.key !== 'operating');
+  }
+  return result;
 };
 
 // 管端域名自訂欄位初始設定
-export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
-  return {
+export const initialAgentDomainNameFields = (
+  t: (key: string) => string,
+  hasModify: boolean,
+) => {
+  const result = {
     config: {
       operation: 'urlManagementAgentDomainName',
       groupId: 0,
@@ -157,7 +167,7 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
         key: 'site',
         name: t('site'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -165,7 +175,7 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('suffix'),
         visible: true,
         default: true,
-        disabled: false,
+        disabled: true,
       },
       {
         key: 'domainName',
@@ -178,7 +188,7 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
         key: 'url',
         name: 'URL',
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -199,21 +209,21 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
         key: 'service',
         name: t('service_items'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'domainNameStatus',
         name: t('domain_name_status'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'sslStatus',
         name: t('ssl_status'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -227,35 +237,35 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
         key: 'automaticRenewalDate',
         name: t('domain_name_expiration_date'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'systemDetection',
         name: t('system_detection'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'manage',
         name: t('manage'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'previousNode',
         name: t('previous_node'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
         key: 'remark',
         name: t('remark'),
         visible: true,
-        default: false,
+        default: true,
         disabled: false,
       },
       {
@@ -267,10 +277,14 @@ export const agentDomainNameFieldsInitial = (t: (key: string) => string) => {
       },
     ],
   };
+  if (!hasModify) {
+    result.data = result.data.filter(item => item.key !== 'operating');
+  }
+  return result;
 };
 
 // IP服務自訂欄位初始設定
-export const ipServiceFieldsInitial = (t: (key: string) => string) => {
+export const initialIPServiceFields = (t: (key: string) => string) => {
   return {
     config: {
       operation: 'urlManagementIPService',
@@ -346,7 +360,7 @@ export const ipServiceFieldsInitial = (t: (key: string) => string) => {
 };
 
 // 活躍域名自訂欄位初始設定
-export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
+export const initialActiveDomainNameFields = (t: (key: string) => string) => {
   return {
     config: {
       operation: 'urlManagementActiveDomainName',
@@ -416,7 +430,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('percent'),
         visible: true,
         default: true,
-        disabled: true,
+        disabled: false,
         group: t('domain_visited'),
       },
       {
@@ -449,7 +463,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('growing_percent'),
         visible: true,
         default: true,
-        disabled: false,
+        disabled: true,
         group: t('login_result_1'),
       },
       // 登入失敗群組
@@ -458,7 +472,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('login_num'),
         visible: true,
         default: true,
-        disabled: true,
+        disabled: false,
         group: t('login_fail'),
       },
       {
@@ -474,7 +488,7 @@ export const activeDomainNameFieldsInitial = (t: (key: string) => string) => {
         name: t('growing_percent'),
         visible: true,
         default: true,
-        disabled: false,
+        disabled: true,
         group: t('login_fail'),
       },
     ],

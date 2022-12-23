@@ -39,7 +39,15 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         @change="updateFuzzy"
       )
     //- 域名
-    rd-form-item(:label="t('domain_name')" prop="domainName")
+    rd-form-item(prop="domainName")
+      template(#label)
+        span {{ t('domain_name') }}
+        rd-tooltip(placement="top")
+          template(#content)
+            div(v-if="form.condition === 'site'") {{ t('fuzzy_search_site') }}
+            div(v-else) {{ t('fuzzy_search_domain') }}
+            div {{ t('unfuzzy_search_all') }}
+          i.mdi.mdi-information
       rd-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
@@ -80,7 +88,12 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         span {{ t('search') }}
     //- 限制設定
     rd-form-item
-      rd-button(type="primary" size="large" @click="restrictionVisible = true") {{ t('setting_limit') }}
+      rd-button(
+        v-if="hasModify"
+        type="primary"
+        size="large"
+        @click="restrictionVisible = true"
+      ) {{ t('restriction') }}
   .search__secondary(v-if="!isBeforeSearch")
     //- 購買方式
     rd-form-item(:label="t('ways_to_purchase')" prop="buy")
@@ -164,12 +177,12 @@ table-card(
   :total="listTotal"
   @update:current-page="listAction.changePage"
   @update:page-size="listAction.changePageSize"
-  @sort-change="listAction.changeSort"
+  @sortChange="listAction.changeSort"
 )
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted } from 'vue';
+import { defineComponent, reactive, ref, onMounted, provide } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteList } from '../common/list';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -190,7 +203,7 @@ import {
 } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
-import type { Buy, Management } from '../apply/apply';
+import type { Buy, Management } from '../apply-domain/apply';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { flatten, omit } from 'lodash';
 
@@ -211,7 +224,7 @@ export default defineComponent({
     // 是否顯示限制設定的dialog
     const restrictionVisible = ref(false);
     // 是否有修改權限
-    const { hasModify } = useModifyAccess('ApplicationProgress');
+    const { hasModify } = useModifyAccess('ApplicationProgressRestriction');
 
     // 搜尋條件
     const form = reactive<SearchForm>({
@@ -332,6 +345,9 @@ export default defineComponent({
       watcher.queryRoute(querySet.getQuery({ ignoreCached }));
     };
 
+    // 提供更新方法給作廢後的資料刷新
+    provide('UrlManagement:updateQuery', updateQuery);
+
     // 全部的購買方式
     const allBuy = buyOptions.map(obj => obj.value) as Buy[];
     // 全部的管理方式
@@ -360,7 +376,7 @@ export default defineComponent({
       site: [
         {
           trigger: 'change',
-          asyncValidator: (rule: object, site: string) => {
+          asyncValidator: (rule: never, site: string) => {
             return new Promise<void>((resolve, reject) => {
               if (form.condition === 'site' && !site) {
                 reject(t('not_null'));
@@ -373,7 +389,7 @@ export default defineComponent({
       domain: [
         {
           trigger: 'change',
-          asyncValidator: (rule: object, domain: number) => {
+          asyncValidator: (rule: never, domain: number) => {
             return new Promise<void>((resolve, reject) => {
               if (form.condition === 'domain' && !domain) {
                 reject(t('not_null'));
@@ -386,14 +402,14 @@ export default defineComponent({
       domainName: [
         {
           trigger: 'change',
-          asyncValidator: (rule: object, domain: string) => {
+          asyncValidator: (rule: never, domain: string) => {
             return new Promise<void>((resolve, reject) => {
               // 當今天只有1~5字(空的不判斷) || 有域名但是卻不符合規則(只能輸入大小寫英文、數字、標點符號的「杠或點」)時錯誤
               if (
                 (domain.length >= 1 && domain.length < 6) ||
                 (domain && !/^[a-zA-Z\d-/.]+$/.test(domain))
               ) {
-                reject(t('format_error'));
+                reject(t('input_keyword_at_least', { num: 6 }));
               }
               resolve();
             });

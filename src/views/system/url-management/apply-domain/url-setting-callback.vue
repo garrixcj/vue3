@@ -42,7 +42,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
               i.mdi.mdi-information
         template(#default="scope")
           //- 因api特殊所以直接使用文字轉成字典檔的key
-          span {{ scope.row.format ? t('format_msg_success') : t(snakeCase(scope.row.formatMsg)) }}
+          span(:class="{ 'error-text': !scope.row.format }") {{ scope.row.format ? t('format_msg_success') : t(snakeCase(scope.row.formatMsg)) }}
       //- dns檢查
       rd-table-column(
         prop="dns"
@@ -59,7 +59,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
               i.mdi.mdi-information
         template(#default="scope")
           //- 因api特殊所以直接使用文字轉成字典檔的key
-          span {{ scope.row.dns ? t('pass') : t(snakeCase(scope.row.dnsMsg)) }}
+          span(:class="{ 'error-text': !scope.row.dns }") {{ scope.row.dns ? t('pass') : t(snakeCase(scope.row.dnsMsg)) }}
       //- 驗證狀態
       //- TODO: 排序按鈕跑版問題
       rd-table-column(
@@ -149,5 +149,8 @@ export default defineComponent({
 }
 .tag-pill {
   @include tag-border(true, true);
+}
+.error-text {
+  color: $danger;
 }
 </style>

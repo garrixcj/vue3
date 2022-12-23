@@ -2,7 +2,7 @@ import { reactive, ref } from 'vue';
 import { url as urlAPI } from '@/api/domain';
 import type {
   CallbackUrlList,
-  PostApplyFailedResponse,
+  PostApplyFailedResp,
   BasicSetting,
 } from './apply';
 import type {
@@ -10,7 +10,7 @@ import type {
   TicketDetailUrl,
   TicketDetailUrlFromApi,
 } from '../detail/detail';
-import keyBy from 'lodash/keyBy';
+import { keyBy } from 'lodash';
 
 // 取得工單相關
 export const useTicket = () => {
@@ -95,7 +95,7 @@ export const useTicket = () => {
   // 整理post的回傳
   const arrangePostCallback = (
     id: number,
-    failedData: PostApplyFailedResponse,
+    failedData: PostApplyFailedResp,
     applyUrlList: string[],
   ) => {
     ticketId.value = id;

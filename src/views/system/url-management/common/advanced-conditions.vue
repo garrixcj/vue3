@@ -9,7 +9,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="checkSelectAll('service')"
-      :indeterminate="advancedForm.service.length > 0 && !checkSelectAll('service')"
       @change="selectAll('service', $event)"
     )
     rd-checkbox-group(
@@ -32,7 +31,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="checkSelectAll('domainNameStatus')"
-      :indeterminate="advancedForm.domainNameStatus.length > 0 && !checkSelectAll('domainNameStatus')"
       @change="selectAll('domainNameStatus', $event)"
     )
     rd-checkbox-group(
@@ -55,7 +53,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="checkSelectAll('sslStatus')"
-      :indeterminate="advancedForm.sslStatus.length > 0 && !checkSelectAll('sslStatus')"
       @change="selectAll('sslStatus', $event)"
     )
     rd-checkbox-group(
@@ -78,7 +75,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="abnormalStateSelectAll"
-      :indeterminate="abnormalStateGroup.length > 0 && !abnormalStateSelectAll"
       @change="abnormalStatusAct.selectAll"
     )
     rd-checkbox-group(
@@ -166,7 +162,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="checkSelectAll('ipType')"
-      :indeterminate="advancedForm.ipType.length > 0 && !checkSelectAll('ipType')"
       @change="selectAll('ipType', $event)"
     )
     rd-checkbox-group(
@@ -189,7 +184,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="checkSelectAll('purchaseMethod')"
-      :indeterminate="advancedForm.purchaseMethod.length > 0 && !checkSelectAll('purchaseMethod')"
       @change="selectAll('purchaseMethod', $event)"
     )
     rd-checkbox-group(
@@ -212,7 +206,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="checkSelectAll('attackStatus')"
-      :indeterminate="advancedForm.attackStatus.length > 0 && !checkSelectAll('attackStatus')"
       @change="selectAll('attackStatus', $event)"
     )
     rd-checkbox-group(
@@ -235,7 +228,6 @@ rd-form(inline)
   )
     rd-checkbox.basic-item__space(
       :model-value="checkSelectAll('growingPercent')"
-      :indeterminate="advancedForm.growingPercent.length > 0 && !checkSelectAll('growingPercent')"
       @change="selectAll('growingPercent', $event)"
     )
     rd-checkbox-group(
@@ -463,7 +455,7 @@ export default defineComponent({
 }
 
 .button-width {
-  min-width: 100px;
+  min-width: 90px;
 }
 
 .detail {

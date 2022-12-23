@@ -10,6 +10,7 @@
           type="daterange"
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
+          :disabled-date="disabledDate"
           :range-separator="t('to')"
           :start-placeholder="t('start_date')"
           :end-placeholder="t('end_date')"
@@ -66,11 +67,22 @@
       rd-form-item(:label="t('trans_number')" prop="ticketID")
         rd-input(
           v-model="form.ticketID"
-          :placeholder="t('please_enter_trans_number')"
+          :placeholder="t('please_enter_complete_trans_number')"
           clearable
         )
       //- 關鍵字
       rd-form-item(:label="t('keyword')" prop="keyword")
+        template(#label)
+          label {{ t('keyword') }}
+          rd-tooltip(placement="top" :offset="0")
+            i.mdi.mdi-information
+            template(#content)
+              div IP{{ t('enter_example') }}
+              div ※ IPv4：111.222.3.4
+              div ※ IPv6：2401:e180:8821:909e:abc1:abc2:abc3:abc4
+              div ※ {{ t('ipv6_hint') }}
+              div 【2401:e180:8821:909e】:abc1:abc2:abc3:abc4
+              div 【2401:e180:8821:909e】:abc5:abc6:abc7:abc8
         rd-input(
           v-model="form.keyword"
           :placeholder="t('not_required')"
@@ -83,15 +95,18 @@
         rd-button(type="search" size="large" @click="search")
           i.mdi.mdi-magnify
           span {{ t('search') }}
-  table-list(:tableData="tableData" :dataTotal="dataTotal")
+  before-search(v-if="!searched" :label="t('start_search')")
+  table-list(v-else :table-data="tableData" :data-total="dataTotal")
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref, inject, provide } from 'vue';
 import { useI18n } from 'vue-i18n';
+import dayjs from 'dayjs';
 import { useLoadingStore } from '@/stores/loading';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
 import { formatCheck } from '@/components/utils/validator/validator';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import { url } from '@/api/domain';
 import { useSiteList } from '../common/list';
 import type { ParamsType, RecordsType, FormType, OperatorType } from './type';
@@ -102,6 +117,7 @@ export default defineComponent({
   name: 'UrlManagementRecord', // 網址管理 - 操作紀錄
   components: {
     TableList,
+    BeforeSearch,
   },
   setup() {
     const { t } = useI18n({ useScope: 'local' });
@@ -115,6 +131,10 @@ export default defineComponent({
     provide('UrlManagementRecord:siteOptions', siteOptions);
     // 自定義站別快搜
     const customSearch = inject<object>('UrlManagement:customSearch');
+
+    const disabledDate = (time: Date) => {
+      return dayjs(time).isAfter(dayjs(), 'day');
+    };
 
     // 搜尋相關
     const formRef = ref();
@@ -208,6 +228,7 @@ export default defineComponent({
 
     // 處理置頂
     const scrollToTop = inject('UrlManagement:scrollToTop') as Function;
+    const searched = ref(false);
 
     // 點擊搜尋
     const search = () => {
@@ -259,6 +280,7 @@ export default defineComponent({
         if (resp.data.result) {
           tableData.value = resp.data.data.list;
           dataTotal.value = resp.data.data.total;
+          searched.value = true;
         }
         loadingStore.page = false;
       });
@@ -275,6 +297,7 @@ export default defineComponent({
           form.date[0] = val;
         },
         default: '',
+        optional: true,
       },
       {
         key: 'end_date',
@@ -285,6 +308,7 @@ export default defineComponent({
           form.date[1] = val;
         },
         default: '',
+        optional: true,
       },
       {
         key: 'site_group',
@@ -310,6 +334,7 @@ export default defineComponent({
           form.domainName = val;
         },
         default: '',
+        optional: true,
       },
       {
         key: 'ticket_id',
@@ -319,6 +344,7 @@ export default defineComponent({
         },
         default: '',
         number: true,
+        optional: true,
       },
       {
         key: 'operator',
@@ -332,6 +358,7 @@ export default defineComponent({
           }
         },
         default: '',
+        optional: true,
       },
       {
         key: 'ip',
@@ -345,6 +372,7 @@ export default defineComponent({
           }
         },
         default: '',
+        optional: true,
       },
       {
         key: 'page',
@@ -386,10 +414,16 @@ export default defineComponent({
 
     // 監聽路由異動觸發搜尋
     const watcher = useTabWatcher('record');
-    watcher.setWatcher(() => {
+    watcher.setWatcher((query: { re: number }) => {
       formRef.value?.resetFields();
       querySet.setField();
-      searchData();
+      if (typeof query.re !== 'undefined') {
+        searchData();
+      } else {
+        tableData.value = [];
+        dataTotal.value = 0;
+        searched.value = false;
+      }
     });
 
     return {
@@ -407,6 +441,8 @@ export default defineComponent({
       tableData,
       dataTotal,
       sortCondition,
+      searched,
+      disabledDate,
     };
   },
 });

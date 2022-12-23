@@ -19,11 +19,11 @@ rd-card(no-padding)
       v-for="(item, key) in listAnglesOptions"
       :key="key"
       :type="item.type"
-      :value="listAngleTotalData[item.value]"
+      :value="listAngleTotalData[item.key]"
       :label="item.label"
       min-width="140"
       :active="item.value === listCondition.formAngle"
-      @click="setListAngle(item.value)"
+      @click="setListAngle(item.key, item.value)"
     )
     //- 匯出
     .export(v-if="hasExportPerm && listData.length > 0")
@@ -42,7 +42,6 @@ rd-card(no-padding)
     )
       //- 廳主
       rd-table-column(
-        v-if="isDisplayedColumns('domain')"
         :label="t('domain')"
         header-align="center"
         align="center"
@@ -54,7 +53,6 @@ rd-card(no-padding)
           span {{ getDomainLabel(row.domain) }}
       //- 後置碼
       rd-table-column(
-        v-if="isDisplayedColumns('suffix')"
         :label="t('suffix')"
         header-align="center"
         prop="suffix"
@@ -65,7 +63,6 @@ rd-card(no-padding)
           span @{{ row.suffix }}
       //- 域名
       rd-table-column(
-        v-if="isDisplayedColumns('domainName')"
         :label="t('domain_name')"
         header-align="center"
         prop="domainName"
@@ -83,7 +80,6 @@ rd-card(no-padding)
           div(v-else) --
       //- 異常狀態
       rd-table-column(
-        v-if="isDisplayedColumns('abnormalState')"
         :label="t('abnormal_state')"
         header-align="center"
         prop="abnormalState"
@@ -107,7 +103,6 @@ rd-card(no-padding)
       )
         //- 排名
         rd-table-column(
-          v-if="isDisplayedColumns('rank')"
           :label="t('rank')"
           header-align="center"
           align="center"
@@ -141,10 +136,9 @@ rd-card(no-padding)
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.requestRatio) }}
+            span {{ isInteger(row.requestRatio) ? `${groupSeparator(row.requestRatio)}.00` : groupSeparator(row.requestRatio) }}
         //- 成長％數
         rd-table-column(
-          v-if="isDisplayedColumns('requestGrow')"
           :label="t('growing_percent')"
           header-align="center"
           align="right"
@@ -156,7 +150,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.requestGrow < 0 && row.requestGrow !== -Infinity }"
-            ) {{ groupSeparator(row.requestGrow) }}
+            ) {{ isInteger(row.requestGrow) ? `${groupSeparator(row.requestGrow)}.00` : groupSeparator(row.requestGrow) }}
       //- 登入成功群組
       rd-table-column(
         :label="t('login_result_1')"
@@ -188,10 +182,9 @@ rd-card(no-padding)
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.loginPassRatio) }}
+            span {{ isInteger(row.loginPassRatio) ? `${groupSeparator(row.loginPassRatio)}.00` : groupSeparator(row.loginPassRatio) }}
         //- 成長％數
         rd-table-column(
-          v-if="isDisplayedColumns('loginPassGrow')"
           :label="t('growing_percent')"
           header-align="center"
           align="right"
@@ -203,7 +196,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.loginPassGrow < 0 && row.loginPassGrow !== -Infinity }"
-            ) {{ groupSeparator(row.loginPassGrow) }}
+            ) {{ isInteger(row.loginPassGrow) ? `${groupSeparator(row.loginPassGrow)}.00` : groupSeparator(row.loginPassGrow) }}
       //- 登入失敗群組
       rd-table-column(
         :label="t('login_fail')"
@@ -235,10 +228,9 @@ rd-card(no-padding)
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.loginFailRatio) }}
+            span {{ isInteger(row.loginFailRatio) ? `${groupSeparator(row.loginFailRatio)}.00` : groupSeparator(row.loginFailRatio) }}
         //- 成長％數
         rd-table-column(
-          v-if="isDisplayedColumns('loginFailGrow')"
           :label="t('growing_percent')"
           header-align="center"
           align="right"
@@ -250,13 +242,13 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.loginFailGrow < 0 && row.loginFailGrow !== -Infinity }"
-            ) {{ groupSeparator(row.loginFailGrow) }}
+            ) {{ isInteger(row.loginFailGrow) ? `${groupSeparator(row.loginFailGrow)}.00` : groupSeparator(row.loginFailGrow) }}
       //- 風險
       rd-table-column(
-        v-if="isDisplayedColumns('risk')"
         :label="t('risk')"
         header-align="center"
         align="center"
+        prop="risk"
         :resizable="false"
         width="100"
       )
@@ -277,6 +269,7 @@ export-note(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import { isInteger } from 'lodash';
 import { type Ref, defineComponent, inject, ref } from 'vue';
 import RdStatusButton from '@/components/custom/status-button/index.vue';
 import RdFieldFilter from '@/components/custom/field-filter/index.vue';
@@ -285,17 +278,19 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import ExportNote from '@/plugins/export-note/index.vue';
-import { activeDomainNameFieldsInitial } from '../common/custom-fields';
+import { initialActiveDomainNameFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type { DomainOption } from '@/plugins/domain-selector/domain';
 import type { ActiveDomainNameListData } from '../common/type';
 import type { ListCondition } from './list';
 
 type ListAngles = 'all' | 'normal' | 'highRisk';
+type ListAnglesValue = 'all' | 1 | 2;
 
 type ListAnglesOptions = {
   label: string;
-  value: ListAngles;
+  value: ListAnglesValue;
+  key: ListAngles;
   type: 'default' | 'danger';
 };
 
@@ -316,12 +311,12 @@ export default defineComponent({
     ) as Function;
 
     // 廳主列表
-    const domainList = inject('UrlManagement:domainList') as Ref<
-      DomainOption[]
-    >;
+    const domainList = inject<Ref<DomainOption[]>>(
+      'ActiveDomainName:domainList',
+    );
     // 取得廳主名稱
     const getDomainLabel = (id: number) => {
-      return domainList.value?.find(item => item.value === id)?.label;
+      return domainList?.value.find(item => item.value === id)?.label;
     };
 
     // 原始列表資料
@@ -331,13 +326,20 @@ export default defineComponent({
 
     const listRef = ref<InstanceType<typeof ElTable>>();
     const sortAct = {
+      // 預設排序
+      defaultSort: (prop: string, order: 'ascending' | 'descending') => {
+        listRef.value?.sort(prop, order);
+      },
       change: ({
         prop,
         order,
       }: {
         order: 'ascending' | 'descending' | null;
-        prop: 'domain';
+        prop: 'rank';
       }) => {
+        if (order === null) {
+          sortAct.defaultSort('rank', 'ascending');
+        }
         emit('sortChange', prop, order);
       },
       clear: () => {
@@ -356,20 +358,20 @@ export default defineComponent({
     ) as Record<ListAngles, number>;
     // 列表角度選項
     const listAnglesOptions = ref<ListAnglesOptions[]>([
-      { label: t('all'), value: 'all', type: 'default' },
-      { label: t('normal'), value: 'normal', type: 'default' },
-      { label: t('high_risk'), value: 'highRisk', type: 'danger' },
+      { label: t('all'), value: 'all', key: 'all', type: 'default' },
+      { label: t('normal'), value: 1, key: 'normal', type: 'default' },
+      { label: t('high_risk'), value: 2, key: 'highRisk', type: 'danger' },
     ]);
     // 設定列表角度
-    const setListAngle = (value: ListAngles) => {
-      listCondition.total = listAngleTotalData[value];
+    const setListAngle = (key: ListAngles, value: ListAnglesValue) => {
+      listCondition.total = listAngleTotalData[key];
       listCondition.formAngle = value;
       emit('change');
     };
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(activeDomainNameFieldsInitial(t));
+      useInitCustomField(initialActiveDomainNameFields(t));
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('ActiveUrlExport');
@@ -384,15 +386,10 @@ export default defineComponent({
       emit('export', note);
     };
 
-    // 重置捲軸高度
-    const scrollTo = () => {
-      listRef.value?.setScrollTop(0);
-      listRef.value?.setScrollLeft(0);
-    };
     // 封裝外部使用功能
     expose({
-      scrollTo,
       sortClear: sortAct.clear,
+      defaultSort: sortAct.defaultSort,
     });
 
     return {
@@ -405,6 +402,7 @@ export default defineComponent({
       groupSeparator,
       getAbnormalStateColor,
       getDomainLabel,
+      isInteger,
       // 切換角度
       listAngleTotalData,
       listAnglesOptions,

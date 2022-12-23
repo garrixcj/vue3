@@ -7,10 +7,10 @@ rd-layout-content.name-server-teaching
       v-for="(item, key) in images"
       :key="key"
       status="process"
-      :title="item.title"
+      :title="item"
     )
       template(#description)
-        .image(:class="[`image-${key}`]")
+        .image(:class="[`image-${key}-${getLang}`]")
 </template>
 
 <script lang="ts">
@@ -31,62 +31,19 @@ export default defineComponent({
     const getLang = locale.value === 'zh-tw' ? 'zh-tw' : 'zh-cn';
 
     const images = {
-      step1: {
-        title: t('teaching_step_1'),
-      },
-      step2: {
-        title: t('teaching_step_2'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
-          getLang +
-          '-01.png)',
-        height: '280px',
-      },
-      step3: {
-        title: t('teaching_step_3'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
-          getLang +
-          '-02.png)',
-        height: '310px',
-      },
-      step4: {
-        title: t('name_server_teaching_step_4'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
-          getLang +
-          '-03.png)',
-        height: getLang == 'zh-tw' ? '270px' : '220px',
-      },
-      step5: {
-        title: t('name_server_teaching_step_5'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
-          getLang +
-          '-04.png)',
-        height: getLang == 'zh-tw' ? '270px' : '220px',
-      },
-      step6: {
-        title: t('name_server_teaching_step_6'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
-          getLang +
-          '-05.png)',
-        height: getLang == 'zh-tw' ? '570px' : '450px',
-      },
-      step7: {
-        title: t('name_server_teaching_step_7'),
-        url:
-          'url(/v3/src/assets/images/teaching/url-management/nameserver-' +
-          getLang +
-          '-06.png)',
-        height: getLang == 'zh-tw' ? '470px' : '400px',
-      },
+      step1: t('teaching_step_1'),
+      step2: t('teaching_step_2'),
+      step3: t('teaching_step_3'),
+      step4: t('name_server_teaching_step_4'),
+      step5: t('name_server_teaching_step_5'),
+      step6: t('name_server_teaching_step_6'),
+      step7: t('name_server_teaching_step_7'),
     };
 
     return {
       t,
       images,
+      getLang,
     };
   },
 });
@@ -100,28 +57,64 @@ export default defineComponent({
   }
 
   .image-step2 {
-    height: v-bind('images.step2.height');
-    background-image: v-bind('images.step2.url');
+    &-zh-tw {
+      height: 280px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-tw-01.png');
+    }
+    &-zh-cn {
+      height: 280px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-cn-01.png');
+    }
   }
   .image-step3 {
-    height: v-bind('images.step3.height');
-    background-image: v-bind('images.step3.url');
+    &-zh-tw {
+      height: 310px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-tw-02.png');
+    }
+    &-zh-cn {
+      height: 310px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-cn-02.png');
+    }
   }
   .image-step4 {
-    height: v-bind('images.step4.height');
-    background-image: v-bind('images.step4.url');
+    &-zh-tw {
+      height: 270px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-tw-03.png');
+    }
+    &-zh-cn {
+      height: 220px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-cn-03.png');
+    }
   }
   .image-step5 {
-    height: v-bind('images.step5.height');
-    background-image: v-bind('images.step5.url');
+    &-zh-tw {
+      height: 270px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-tw-04.png');
+    }
+    &-zh-cn {
+      height: 220px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-cn-04.png');
+    }
   }
   .image-step6 {
-    height: v-bind('images.step6.height');
-    background-image: v-bind('images.step6.url');
+    &-zh-tw {
+      height: 570px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-tw-05.png');
+    }
+    &-zh-cn {
+      height: 450px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-cn-05.png');
+    }
   }
   .image-step7 {
-    height: v-bind('images.step7.height');
-    background-image: v-bind('images.step7.url');
+    &-zh-tw {
+      height: 470px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-tw-06.png');
+    }
+    &-zh-cn {
+      height: 400px;
+      background-image: url('@/assets/images/teaching/url-management/nameserver-zh-cn-06.png');
+    }
   }
 }
 </style>

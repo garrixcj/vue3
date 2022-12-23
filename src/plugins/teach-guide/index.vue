@@ -44,7 +44,7 @@ export default defineComponent({
 
     // 完整URL
     const fullUrl = computed(() => {
-      if (['zh-cn', 'zh-tw'].indexOf(`${locale.value}`) === -1) {
+      if (['zh-cn', 'zh-tw'].indexOf(`${locale.value}`) !== -1) {
         return `${host[props.hostKey]}lang_cn/${urlRoute[props.featureKey]}`;
       }
       return `${host[props.hostKey]}lang_en/${urlRoute[props.featureKey]}`;

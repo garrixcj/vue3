@@ -1,7 +1,7 @@
 import { ref, reactive } from 'vue';
 import { url as urlAPI } from '@/api/domain';
-import type { RestrictionNumApi } from '../apply/apply';
-import { Buy } from '../apply/apply';
+import type { RestrictionNumApi } from '../apply-domain/apply';
+import { Buy } from '../apply-domain/apply';
 
 // 取得站別限制相關
 export const useSiteRestriction = () => {

@@ -2,15 +2,15 @@
 <template lang="pug">
 rd-dialog(
   :model-value="modelValue"
-  :title="t('batch_add_domain_name')"
+  :title="t('upload_domain')"
   :close-on-click-modal="false"
-  width="750px"
+  width="420px"
   @update:model-value="open($event)"
 )
   .content
     //- 提示
     .msg
-      div {{ t('upload_file_add_domain_name_msg1') }}
+      div {{ t('upload_file_add_domain_name_msg1', { num: maxRows }) }}
       div {{ t('upload_file_add_domain_name_msg2') }}
     el-upload.upload-demo(
       drag

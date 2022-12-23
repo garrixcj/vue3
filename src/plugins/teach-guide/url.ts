@@ -19,4 +19,6 @@ export const urlRoute = {
   app_signature: 'web_management/app_signature_management/index.html',
   domain_management: 'web_management/domain_management/index.html',
   lost_balance: 'cash_system/missing_amount_of_transfer/index.html',
+  member_two_factor_auth:
+    'account_managment/member_2-step_verification/index.html',
 };
