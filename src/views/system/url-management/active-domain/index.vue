@@ -133,10 +133,15 @@ export default defineComponent({
       return item.value !== 'ip';
     });
 
-    // 只能搜前 180 天
+    // 只能搜前 180 天，當天需超過 AM 3:00 才能搜尋前一天
     const disabledDate = (time: Date) => {
+      // 當前時間往前推三小時的日期
+      const beforeDate = dayjs()
+        .utcOffset(-4)
+        .subtract(3, 'hour')
+        .format('YYYY-MM-DD');
       return (
-        dayjs(time).diff(dayjs(), 'day', true) > 0 ||
+        !dayjs(dayjs(time).format('YYYY-MM-DD')).isBefore(beforeDate, 'day') ||
         dayjs(time).diff(dayjs(), 'day', true) < -180
       );
     };

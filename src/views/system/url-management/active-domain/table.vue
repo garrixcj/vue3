@@ -25,6 +25,16 @@ rd-card(no-padding)
       :active="item.value === listCondition.formAngle"
       @click="setListAngle(item.key, item.value)"
     )
+      //- 高風險
+      template(v-if="item.key === 'highRisk'" #label)
+        span {{ t('high_risk') }}
+        rd-tooltip(effect="dark" placement="top")
+          template(#content)
+            div {{ t('high_risk_tooltip') }}
+            div 1. {{ t('negative_growth_of_accessed_domain_name') }}
+            div 2. {{ t('much_login_fail') }}
+            div 3. {{ t('much_ip_repeat') }}
+          i.mdi.mdi-information.tooltip-info
     //- 匯出
     .export(v-if="hasExportPerm && listData.length > 0")
       rd-divider(direction="vertical")
