@@ -6,7 +6,6 @@ rd-card(no-padding)
       v-model:visible="batchModuleData.visible"
       :count="batchModuleData.selected.length"
       :style="getBatchModuleWidth"
-      :disabled="listData.length === 0"
       @change="clickBatchModule"
     )
       template(#operate)

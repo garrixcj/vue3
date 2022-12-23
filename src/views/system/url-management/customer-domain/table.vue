@@ -6,7 +6,6 @@ rd-card(no-padding)
       v-model:visible="batchModuleData.visible"
       :count="batchModuleData.selected.length"
       :style="getBatchModuleWidth"
-      :disabled="listData.length === 0"
       @change="clickBatchModule"
     )
       template(#operate)
@@ -134,6 +133,7 @@ rd-card(no-padding)
         og-table-column(
           v-model:visible="listCondition.selectAll"
           background="none"
+          :disabled-selection="listCondition.total === 0"
           :slot-names="Object.keys(titleList)"
           :field-width="tableField.width"
           :field-min-width="tableField.minWidth"

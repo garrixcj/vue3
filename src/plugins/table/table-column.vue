@@ -10,6 +10,7 @@
       rd-checkbox(
         :model-value="visible"
         :indeterminate="indeterminate"
+        :disabled="disabledSelection"
         @update:model-value="checkBoxAct.update($event)"
         @change="checkBoxAct.click($event)"
       )
@@ -42,6 +43,8 @@ export default defineComponent({
     indeterminate: { type: Boolean, default: false },
     // Checkbox 顯示
     showSelection: { type: Boolean, default: false },
+    // Checkbox 禁能
+    disabledSelection: { type: Boolean, default: false },
     // 資料
     data: {
       type: Object as PropType<{ [key: string]: unknown }>,
