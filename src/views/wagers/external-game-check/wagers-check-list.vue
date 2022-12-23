@@ -31,7 +31,7 @@ rd-form.search-form(
       @change="lobbyChange"
     )
   //- 核對時間
-  rd-form-item.time-group.date(prop="date")
+  rd-form-item.time-group(prop="date")
     template(#label)
       span {{ t('check_time') }}
       rd-tooltip(
@@ -41,7 +41,7 @@ rd-form.search-form(
       )
         i.mdi.mdi-information
     //- 核對區間 - 日期選擇
-    rd-date-picker(
+    rd-date-picker.datetime-width(
       v-model="form.date"
       type="date"
       placeholder="選擇日期"
@@ -88,7 +88,7 @@ rd-form.search-form(
 rd-alert.alert-size(
   v-if="showLobbyInfo"
   type="warning"
-  :description="t(`wagers_check_lobby${form.lobby}_info`)"
+  :description="t(lobbyInfo[form.lobby])"
   :closable="false"
 )
 //- 搜尋結果
@@ -125,7 +125,7 @@ rd-table(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed } from 'vue';
+import { defineComponent, reactive, ref, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
@@ -187,7 +187,20 @@ export default defineComponent({
     dayjs.extend(isSameOrAfter);
 
     // 有提示訊息的Lobby
-    const hasLobbyInfo = [19, 37, 46, 49, 52, 135, 143];
+    const lobbyInfo: { [key: string]: string } = {
+      '19': 'wagers_check_lobby19_info',
+      '37': 'wagers_check_lobby37_info',
+      '46': 'wagers_check_lobby46_info',
+      '49': 'wagers_check_lobby49_info',
+      '52': 'wagers_check_lobby52_info',
+      '135': 'wagers_check_lobby135_info',
+      '143': 'wagers_check_lobby143_info',
+    };
+
+    const scrollToTop = inject(
+      'ExternalGameWagersCheck:scrollToTop',
+    ) as Function;
+
 
     // 查詢表單
     const form = reactive<SearchForm>({
@@ -220,24 +233,24 @@ export default defineComponent({
         {
           required: true,
           message: t('please_select_date'),
-          trigger: 'summit',
+          trigger: 'change',
         },
       ],
       startHour: [
         {
           required: true,
           message: t('please_select_start_time'),
-          trigger: 'summit',
+          trigger: 'change',
         },
-        { validator: validHour, trigger: 'summit' },
+        { validator: validHour, trigger: 'change' },
       ],
       endHour: [
         {
           required: true,
           message: t('please_select_end_time'),
-          trigger: 'summit',
+          trigger: 'change',
         },
-        { validator: validHour, trigger: 'summit' },
+        { validator: validHour, trigger: 'change' },
       ],
     });
 
@@ -247,7 +260,7 @@ export default defineComponent({
     };
 
     const popperSetting = {
-      maxHeight: 251,
+      maxHeight: 205,
     };
 
     // Lobby清單
@@ -269,7 +282,7 @@ export default defineComponent({
 
     // 特定Lobby顯示對應提示
     const showLobbyInfo = computed(() => {
-      return hasLobbyInfo.includes(+form.lobby);
+      return Object.keys(lobbyInfo).includes(form.lobby);
     });
 
     // Lobby改變時，如果時間不合法，清空不合法的核對時間
@@ -285,7 +298,7 @@ export default defineComponent({
     const searchableDateTime = () => {
       let datetime = dayjs(new Date()).utcOffset(-4).subtract(1.5, 'day');
       if (form.lobby === '49' || form.lobby === '135') {
-        datetime = dayjs(new Date()).utcOffset(-4).subtract(27, 'hour');
+        datetime = dayjs(new Date()).utcOffset(-4).subtract(12, 'hour');
       }
       return datetime;
     };
@@ -307,7 +320,7 @@ export default defineComponent({
       return result;
     };
 
-    // 日期變動時重置開始及結束時間
+    // 日期變動時重置不可選的開始及結束時間
     const checkDateTime = () => {
       // date-picker清空時會把值設成null
       if (form.date === null) {
@@ -430,8 +443,19 @@ export default defineComponent({
 
     // 搜尋
     const searchData = () => {
+      if (
+        !form.lobby ||
+        !form.date ||
+        !form.startHour ||
+        !form.endHour ||
+        !compareHour(form.startHour, form.endHour)
+      ) {
+        checkList.value = [];
+        searched.value = false;
+        return;
+      }
       loadingStore.page = true;
-
+      scrollToTop();
       const lobby = form.lobby;
       // 取得總小時數
       const startDateTime = dayjs(`${form.date} ${form.startHour}`);
@@ -460,18 +484,8 @@ export default defineComponent({
     // 設定監聽及觸發搜尋
     const watcher = new TabRouteWatch('wagersCheckList');
     watcher.setWatcher(() => {
+      formRef.value?.resetFields();
       querySet.setField();
-      if (
-        !form.lobby ||
-        !form.date ||
-        !form.startHour ||
-        !form.endHour ||
-        !compareHour(form.startHour, form.endHour)
-      ) {
-        checkList.value = [];
-        searched.value = false;
-        return;
-      }
       searchData();
     });
 
@@ -485,6 +499,7 @@ export default defineComponent({
       popperSetting,
       lobbyOptions,
       showLobbyInfo,
+      lobbyInfo,
       lobbyChange,
       disabledDate,
       checkDateTime,
@@ -502,17 +517,14 @@ export default defineComponent({
 .search-form {
   @include flex-basic(flex-start, flex-start);
   flex-wrap: wrap;
-  .date {
-    width: 252px;
-  }
   .hour {
     width: 140px;
   }
   .time-group {
-    margin-right: 10px;
-    &__item {
-      width: 130px;
+    :deep(.datetime-width) {
+      width: 140px;
     }
+    margin-right: 10px;
     &__sperator {
       margin-right: 10px;
       line-height: 34px;
