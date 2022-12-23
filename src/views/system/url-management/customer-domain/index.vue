@@ -679,6 +679,14 @@ export default defineComponent({
         params.export_remark = note;
       }
 
+      // 轉換 Sort 的 key
+      const sortField = [
+        { key: 'id', value: 'id' },
+        { key: 'abnormalDate', value: 'abnormal_date' },
+        { key: 'automaticRenewalDate', value: 'renew_date' },
+      ];
+      params.sort = sortField.find(item => item.key === params.sort)?.value;
+
       return doExportCustomerDomainNameList(
         query.type,
         query.site,

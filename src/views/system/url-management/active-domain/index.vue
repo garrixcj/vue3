@@ -483,6 +483,21 @@ export default defineComponent({
         params.export_remark = note;
       }
 
+      // 轉換 Sort 的 key
+      const sortField = [
+        { key: 'rank', value: 'rank' },
+        { key: 'requestGrow', value: 'request_grow' },
+        { key: 'requestRatio', value: 'request_ratio' },
+        { key: 'requestTotal', value: 'request_total' },
+        { key: 'loginPassGrow', value: 'login_pass_grow' },
+        { key: 'loginPassRatio', value: 'login_pass_ratio' },
+        { key: 'loginPassTotal', value: 'login_pass_total' },
+        { key: 'loginFailGrow', value: 'login_fail_grow' },
+        { key: 'loginFailRatio', value: 'login_fail_ratio' },
+        { key: 'loginFailTotal', value: 'login_fail_total' },
+      ];
+      params.sort = sortField.find(item => item.key === params.sort)?.value;
+
       return doExportActiveDomainNameList(query.start_date, query.end_date, {
         ...params,
         lang: locale.value,
