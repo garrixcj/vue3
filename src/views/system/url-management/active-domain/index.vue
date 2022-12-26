@@ -135,6 +135,8 @@ export default defineComponent({
 
     // 只能搜前 180 天，當天需超過 AM 3:00 才能搜尋前一天
     const disabledDate = (time: Date) => {
+      // 日期選擇器的日期
+      const date = dayjs(dayjs(time).format('YYYY-MM-DD')).utcOffset(-4);
       // 當前日期
       const current = dayjs().utcOffset(-4).format('YYYY-MM-DD');
       // 當前時間往前推三小時之後的日期
@@ -142,11 +144,12 @@ export default defineComponent({
         .utcOffset(-4)
         .subtract(3, 'hour')
         .format('YYYY-MM-DD');
-      // 區間
-      const interval = current === afterDate ? -181 : -182;
+      // 區間(AM0~3點，需再往前推一天)
+      const interval = current === afterDate ? -180 : -181;
       return (
-        dayjs(dayjs(time).format('YYYY-MM-DD')).isAfter(afterDate, 'day') ||
-        dayjs(time).diff(dayjs(), 'day', true) < interval
+        date.isSame(afterDate, 'day') ||
+        date.isAfter(afterDate, 'day') ||
+        dayjs(time).diff(current, 'day', true) < interval
       );
     };
     // 廳主列表
