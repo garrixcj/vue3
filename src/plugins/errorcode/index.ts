@@ -47,7 +47,9 @@ export const useCodeTrans = (lang: string) => {
     let msg = '';
 
     // 通用錯誤訊息
-    if (response.code && t(`${response.code}`)) {
+    if (/^6690/.test(`${response.code}`)) {
+      msg = `${response.message}\n`;
+    } else if (response.code && t(`${response.code}`)) {
       msg = `${t(`${response.code}`)}`;
     } else if (type === 'warning') {
       // warning預設'無效的操作'
