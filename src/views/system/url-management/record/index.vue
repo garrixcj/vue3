@@ -133,7 +133,7 @@ export default defineComponent({
     const customSearch = inject<object>('UrlManagement:customSearch');
 
     const disabledDate = (time: Date) => {
-      return dayjs(time).isAfter(dayjs(), 'day');
+      return dayjs(time).diff(dayjs().utcOffset(-4), 'day', true) > 0;
     };
 
     // 搜尋相關
