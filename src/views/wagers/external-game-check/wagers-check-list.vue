@@ -295,7 +295,7 @@ export default defineComponent({
 
     // 取得目前可搜尋時間(轉美東時間後再往前1.5小時) 開元棋牌及KX棋牌為往前12小時
     const searchableDateTime = () => {
-      let datetime = dayjs(new Date()).utcOffset(-4).subtract(1.5, 'day');
+      let datetime = dayjs(new Date()).utcOffset(-4).subtract(1.5, 'hour');
       if (form.lobby === '49' || form.lobby === '135') {
         datetime = dayjs(new Date()).utcOffset(-4).subtract(12, 'hour');
       }
