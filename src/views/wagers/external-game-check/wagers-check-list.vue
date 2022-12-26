@@ -23,7 +23,7 @@ rd-form.search-form(
   rd-form-item(:label="t('lobby')" prop="lobby")
     rd-select(
       v-model:value="form.lobby"
-      quickSearch
+      quick-search
       size="default"
       :options="lobbyOptions"
       :selected-setting="selectSetting"
@@ -200,7 +200,6 @@ export default defineComponent({
     const scrollToTop = inject(
       'ExternalGameWagersCheck:scrollToTop',
     ) as Function;
-
 
     // 查詢表單
     const form = reactive<SearchForm>({
