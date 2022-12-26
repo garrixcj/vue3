@@ -23,8 +23,11 @@ rd-form.search-form(
   rd-form-item(:label="t('lobby')" prop="lobby")
     rd-select(
       v-model:value="form.lobby"
+      quick-search
+      size="default"
       :options="lobbyOptions"
       :selected-setting="selectSetting"
+      :popper-setting="popperSetting"
       @change="lobbyChange"
     )
   //- 核對時間
@@ -33,20 +36,21 @@ rd-form.search-form(
       span {{ t('check_time') }}
       rd-tooltip(
         placement="top"
+        :offset=0
         :content="t('wagers_check_list_information_5')"
       )
         i.mdi.mdi-information
     //- 核對區間 - 日期選擇
-    rd-date-picker(
+    rd-date-picker.datetime-width(
       v-model="form.date"
       type="date"
       placeholder="選擇日期"
       format="YYYY-MM-DD"
       value-format="YYYY-MM-DD"
       :disabled-date="disabledDate"
-      @change="dateChange"
+      @change="checkDateTime"
     )
-  rd-form-item.time-group(prop="startHour")
+  rd-form-item.time-group.hour(prop="startHour")
     //- 核對區間 - 開始時間選擇
     rd-time-select(
       v-model="form.startHour"
@@ -59,7 +63,7 @@ rd-form.search-form(
       @change="startHourChange"
     )
   span.time-group__sperator ~
-  rd-form-item.time-group(prop="endHour")
+  rd-form-item.hour(prop="endHour")
     //- 核對區間 - 結束時間選擇
     rd-time-select(
       v-model="form.endHour"
@@ -78,12 +82,13 @@ rd-form.search-form(
       i.mdi.mdi-magnify
       @click="startSearch()"
     )
+      i.mdi.mdi-magnify
       span {{ t('search') }}
 //- 特定Lobby會有提示訊息
 rd-alert.alert-size(
   v-if="showLobbyInfo"
   type="warning"
-  :description="t(`wagers_check_lobby${form.lobby}_info`)"
+  :description="t(lobbyInfo[form.lobby])"
   :closable="false"
 )
 //- 搜尋結果
@@ -91,7 +96,7 @@ rd-alert.alert-size(
 rd-table(
   border
   :data="checkList"
-  :default-sort="{ prop: 'checkInterval', order: 'ascending' }"
+  :default-sort="{ prop: 'time', order: 'ascending' }"
 )
   //- 核對時間
   rd-table-column(
@@ -120,7 +125,7 @@ rd-table(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed } from 'vue';
+import { defineComponent, reactive, ref, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
@@ -182,7 +187,19 @@ export default defineComponent({
     dayjs.extend(isSameOrAfter);
 
     // 有提示訊息的Lobby
-    const hasLobbyInfo = [19, 37, 46, 49, 52, 135, 143];
+    const lobbyInfo: { [key: string]: string } = {
+      '19': 'wagers_check_lobby19_info',
+      '37': 'wagers_check_lobby37_info',
+      '46': 'wagers_check_lobby46_info',
+      '49': 'wagers_check_lobby49_info',
+      '52': 'wagers_check_lobby52_info',
+      '135': 'wagers_check_lobby135_info',
+      '143': 'wagers_check_lobby143_info',
+    };
+
+    const scrollToTop = inject(
+      'ExternalGameWagersCheck:scrollToTop',
+    ) as Function;
 
     // 查詢表單
     const form = reactive<SearchForm>({
@@ -208,31 +225,31 @@ export default defineComponent({
         {
           required: true,
           message: t('please_select_game_lobby'),
-          trigger: 'summit',
+          trigger: 'change',
         },
       ],
       date: [
         {
           required: true,
           message: t('please_select_date'),
-          trigger: 'summit',
+          trigger: 'change',
         },
       ],
       startHour: [
         {
           required: true,
           message: t('please_select_start_time'),
-          trigger: 'summit',
+          trigger: 'change',
         },
-        { validator: validHour, trigger: 'summit' },
+        { validator: validHour, trigger: 'change' },
       ],
       endHour: [
         {
           required: true,
           message: t('please_select_end_time'),
-          trigger: 'summit',
+          trigger: 'change',
         },
-        { validator: validHour, trigger: 'summit' },
+        { validator: validHour, trigger: 'change' },
       ],
     });
 
@@ -241,41 +258,48 @@ export default defineComponent({
       minWidth: 200,
     };
 
+    const popperSetting = {
+      maxHeight: 205,
+    };
+
     // Lobby清單
     const lobbyOptions = ref<Lobby[]>([]);
 
     // 取得目前可提供核對的Lobby清單
-    const getWagersLobby = () => {
-      gameAPI.getWagersCheckLobby().then(resp => {
-        if (resp.data.result) {
-          const lobbyData = resp.data.data;
-          lobbyOptions.value = lobbyData.map((lobby: string) => {
-            let option = {
-              value: `${lobby}`,
-              label: t(`lobby${lobby}`),
-            };
-            return option;
-          });
-        }
-      });
-    };
-    getWagersLobby();
+    gameAPI.getWagersCheckLobby().then(resp => {
+      if (resp.data.result) {
+        const lobbyData = resp.data.data;
+        lobbyOptions.value = lobbyData.map((lobby: string) => {
+          let option = {
+            value: `${lobby}`,
+            label: t(`lobby${lobby}`),
+          };
+          return option;
+        });
+      }
+    });
 
     // 特定Lobby顯示對應提示
     const showLobbyInfo = computed(() => {
-      return hasLobbyInfo.includes(+form.lobby);
+      return Object.keys(lobbyInfo).includes(form.lobby);
     });
 
-    // Lobby改變時清空核對時間
+    // Lobby改變時，如果時間不合法，清空不合法的核對時間
     const lobbyChange = () => {
-      form.date = '';
-      form.startHour = '';
-      form.endHour = '';
+      //確認日期是否有超過可選範圍
+      if (disabledDate(new Date(form.date))) {
+        form.date = '';
+      }
+      checkDateTime();
     };
 
-    // 取得目前可搜尋時間(轉美東時間後再往前1.5小時)
+    // 取得目前可搜尋時間(轉美東時間後再往前1.5小時) 開元棋牌及KX棋牌為往前12小時
     const searchableDateTime = () => {
-      return dayjs(new Date()).utcOffset(-4).subtract(1.5, 'hour');
+      let datetime = dayjs(new Date()).utcOffset(-4).subtract(1.5, 'day');
+      if (form.lobby === '49' || form.lobby === '135') {
+        datetime = dayjs(new Date()).utcOffset(-4).subtract(12, 'hour');
+      }
+      return datetime;
     };
 
     // 設定核對區間可選日期;
@@ -284,21 +308,31 @@ export default defineComponent({
       return dayjs(time.getTime()) > date;
     };
 
-    // 比較小時
+    // 比較結束小時是否等於或大於開始小時
     const compareHour = (start: string, end: string) => {
-      const startTime = dayjs().format(`YYYY-MM-DD ${start}`);
-      const endTime = dayjs().format(`YYYY-MM-DD ${end}`);
-      return dayjs(endTime).isSameOrAfter(startTime, 'h');
+      let result = true;
+      if (start !== '' && end !== '') {
+        const startTime = dayjs().format(`YYYY-MM-DD ${start}`);
+        const endTime = dayjs().format(`YYYY-MM-DD ${end}`);
+        result = dayjs(endTime).isSameOrAfter(startTime, 'h');
+      }
+      return result;
     };
 
-    // 日期變動時重置開始及結束時間
-    const dateChange = () => {
+    // 日期變動時重置不可選的開始及結束時間
+    const checkDateTime = () => {
       // date-picker清空時會把值設成null
       if (form.date === null) {
         form.date = '';
       }
-      form.startHour = '';
-      form.endHour = '';
+      // 判斷開始時間是否有超過可選時間限制
+      if (!compareHour(form.startHour, endHourLimit.value)) {
+        form.startHour = '';
+      }
+      // 判斷結束時間是否有超過可選時間限制
+      if (!compareHour(form.endHour, endHourLimit.value)) {
+        form.endHour = '';
+      }
     };
 
     // 計算結束時間的起始小時
@@ -306,19 +340,19 @@ export default defineComponent({
       return form.startHour === '' ? '00:00:00' : form.startHour;
     });
 
-    // 開始時間變動時重置結束時間
+    // 開始時間變動時，如果結束時間不合法，重置結束時間
     const startHourChange = () => {
-      form.endHour = '';
+      if (!compareHour(form.startHour, form.endHour)) {
+        form.endHour = '';
+      }
     };
 
     // 計算開始與結束時間的結束小時
-    let endHourLimit = computed(() => {
-      let limit = '00:00:00';
+    const endHourLimit = computed(() => {
+      let limit = '23:00:00';
       const today = searchableDateTime().startOf('date');
-      if (dayjs(form.date).isValid()) {
-        limit = dayjs(form.date).isSame(today, 'day')
-          ? searchableDateTime().format('HH:mm:ss')
-          : '23:00:00';
+      if (dayjs(form.date).isValid() && dayjs(form.date).isSame(today, 'day')) {
+        limit = searchableDateTime().format('HH:mm:ss');
       }
       return limit;
     });
@@ -408,8 +442,19 @@ export default defineComponent({
 
     // 搜尋
     const searchData = () => {
+      if (
+        !form.lobby ||
+        !form.date ||
+        !form.startHour ||
+        !form.endHour ||
+        !compareHour(form.startHour, form.endHour)
+      ) {
+        checkList.value = [];
+        searched.value = false;
+        return;
+      }
       loadingStore.page = true;
-
+      scrollToTop();
       const lobby = form.lobby;
       // 取得總小時數
       const startDateTime = dayjs(`${form.date} ${form.startHour}`);
@@ -438,18 +483,8 @@ export default defineComponent({
     // 設定監聽及觸發搜尋
     const watcher = new TabRouteWatch('wagersCheckList');
     watcher.setWatcher(() => {
+      formRef.value?.resetFields();
       querySet.setField();
-      if (
-        !form.lobby ||
-        !form.date ||
-        !form.startHour ||
-        !form.endHour ||
-        !compareHour(form.startHour, form.endHour)
-      ) {
-        checkList.value = [];
-        searched.value = false;
-        return;
-      }
       searchData();
     });
 
@@ -460,12 +495,13 @@ export default defineComponent({
       form,
       rules,
       selectSetting,
+      popperSetting,
       lobbyOptions,
-      getWagersLobby,
       showLobbyInfo,
+      lobbyInfo,
       lobbyChange,
       disabledDate,
-      dateChange,
+      checkDateTime,
       startHourLimit,
       startHourChange,
       endHourLimit,
@@ -479,7 +515,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 .search-form {
   @include flex-basic(flex-start, flex-start);
+  flex-wrap: wrap;
+  .hour {
+    width: 140px;
+  }
   .time-group {
+    :deep(.datetime-width) {
+      width: 140px;
+    }
     margin-right: 10px;
     &__sperator {
       margin-right: 10px;
