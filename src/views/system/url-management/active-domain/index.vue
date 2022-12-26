@@ -135,14 +135,18 @@ export default defineComponent({
 
     // 只能搜前 180 天，當天需超過 AM 3:00 才能搜尋前一天
     const disabledDate = (time: Date) => {
-      // 當前時間往前推三小時的日期
-      const beforeDate = dayjs()
+      // 當前日期
+      const current = dayjs().utcOffset(-4).format('YYYY-MM-DD');
+      // 當前時間往前推三小時之後的日期
+      const afterDate = dayjs()
         .utcOffset(-4)
         .subtract(3, 'hour')
         .format('YYYY-MM-DD');
+      // 區間
+      const interval = current === afterDate ? -181 : -182;
       return (
-        !dayjs(dayjs(time).format('YYYY-MM-DD')).isBefore(beforeDate, 'day') ||
-        dayjs(time).diff(dayjs(), 'day', true) < -180
+        dayjs(dayjs(time).format('YYYY-MM-DD')).isAfter(afterDate, 'day') ||
+        dayjs(time).diff(dayjs(), 'day', true) < interval
       );
     };
     // 廳主列表
