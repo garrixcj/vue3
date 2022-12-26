@@ -9,7 +9,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
     rd-table(
       border
       :data="result.list"
-      :default-sort="{ prop: 'result', order: 'descending' }"
+      :default-sort="{ prop: 'result', order: 'ascending' }"
     )
       //- 序號
       rd-table-column(
