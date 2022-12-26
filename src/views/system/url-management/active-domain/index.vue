@@ -72,7 +72,7 @@ list(
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
+import { isEmpty, intersection, orderBy, toInteger, debounce } from 'lodash';
 import { defineComponent, onMounted, provide, inject, ref } from 'vue';
 import BeforeSearch from '@/components/custom/before-search/index.vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -110,7 +110,6 @@ export default defineComponent({
   },
   setup() {
     const { t, locale } = useI18n({ useScope: 'local' });
-
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
     // 處理置頂
@@ -134,11 +133,20 @@ export default defineComponent({
       return item.value !== 'ip';
     });
 
-    // 只能搜前 180 天
+    // 只能搜前 180 天，當天需超過 AM 3:00 才能搜尋前一天
     const disabledDate = (time: Date) => {
+      // 當前日期
+      const current = dayjs().utcOffset(-4).format('YYYY-MM-DD');
+      // 當前時間往前推三小時之後的日期
+      const afterDate = dayjs()
+        .utcOffset(-4)
+        .subtract(3, 'hour')
+        .format('YYYY-MM-DD');
+      // 區間
+      const interval = current === afterDate ? -181 : -182;
       return (
-        dayjs(time).diff(dayjs(), 'day', true) > 0 ||
-        dayjs(time).diff(dayjs(), 'day', true) < -180
+        dayjs(dayjs(time).format('YYYY-MM-DD')).isAfter(afterDate, 'day') ||
+        dayjs(time).diff(dayjs(), 'day', true) < interval
       );
     };
     // 廳主列表
@@ -341,8 +349,9 @@ export default defineComponent({
         listCondition.sort,
         orders[listCondition.order],
       );
-
+      // 重置 Scrollbar 位置
       scrollToTop();
+      listRef.value?.scrollTo();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -441,10 +450,10 @@ export default defineComponent({
     };
     // 進階條件
     const advancedConditionAct = {
-      change: () => {
+      change: debounce(() => {
         listAct.reset();
         watcher.queryRoute(querySet.getQuery());
-      },
+      }, 1500),
       clear: () => {
         // 還原進階條件
         advancedFormKeys.forEach(key => {
@@ -482,6 +491,21 @@ export default defineComponent({
       if (!isEmpty(note)) {
         params.export_remark = note;
       }
+
+      // 轉換 Sort 的 key
+      const sortField = [
+        { key: 'rank', value: 'rank' },
+        { key: 'requestGrow', value: 'request_grow' },
+        { key: 'requestRatio', value: 'request_ratio' },
+        { key: 'requestTotal', value: 'request_total' },
+        { key: 'loginPassGrow', value: 'login_pass_grow' },
+        { key: 'loginPassRatio', value: 'login_pass_ratio' },
+        { key: 'loginPassTotal', value: 'login_pass_total' },
+        { key: 'loginFailGrow', value: 'login_fail_grow' },
+        { key: 'loginFailRatio', value: 'login_fail_ratio' },
+        { key: 'loginFailTotal', value: 'login_fail_total' },
+      ];
+      params.sort = sortField.find(item => item.key === params.sort)?.value;
 
       return doExportActiveDomainNameList(query.start_date, query.end_date, {
         ...params,
