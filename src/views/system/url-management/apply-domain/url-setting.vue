@@ -5,8 +5,6 @@ rd-card(:title="t('domain_name_setting')")
     template(v-if="!canApplyNum")
       .is-error
         i18n-t(keypath="apply_domain_info_error" tag="span")
-          template(#listNum) {{ urlList.length }}
-          template(#listTotal) {{ listLimit }}
           template(#buyMethod) {{ t(priceListDict[basicData.buy]) }}
           template(#already) {{ requestionNum }}
     //- 申請未達上限
@@ -308,7 +306,7 @@ export default defineComponent({
 
     // url input 驗證
     const urlValidatePass = (
-      rule: object,
+      rule: never,
       domain: string,
       callback: Function,
       source: string,
@@ -395,9 +393,9 @@ export default defineComponent({
   .header-space {
     @include space(3px);
   }
-  .mdi {
-    color: $text-3;
-  }
+}
+.mdi-information {
+  color: $text-3;
 }
 .format-class {
   .format {

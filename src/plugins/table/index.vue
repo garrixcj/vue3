@@ -43,7 +43,7 @@
 
     //- body區塊
     .og-table__body(
-      v-if="!noData"
+      v-show="!noData"
       ref="tableBody"
       :noresize="false"
       :class="[{ 'has-scrollbar': scrollBar }]"
@@ -58,7 +58,7 @@
 
     //- 無資料
     .og-table__no-data(
-      v-else
+      v-show="noData"
       ref="tableNoData"
       :class="background.noDataClass()"
       :style="background.noDataStyle()"
@@ -327,6 +327,7 @@ $shadow-color: #ecedf0;
     }
   }
   &__body {
+    overflow-x: auto;
     &__content {
       @include display-table;
       @include justifyContent();
