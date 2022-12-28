@@ -125,7 +125,7 @@ rd-table(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed, inject } from 'vue';
+import { defineComponent, reactive, ref, computed, inject, h } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
@@ -133,6 +133,7 @@ import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import gameAPI from '@/api/game';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { notify } from '@/components/utils/notification';
 
 // Type定義
 // 搜尋欄位
@@ -156,9 +157,11 @@ type ListItem = {
   type: string;
 };
 
-type TimeSet = {
-  start_date_time: string;
-  end_date_time: string;
+type Resp = {
+  time: string;
+  check: boolean;
+  error_code: number;
+  error_message: string;
 };
 
 export default defineComponent({
@@ -286,7 +289,7 @@ export default defineComponent({
 
     // Lobby改變時，如果時間不合法，清空不合法的核對時間
     const lobbyChange = () => {
-      //確認日期是否有超過可選範圍
+      // 確認日期是否有超過可選範圍
       if (disabledDate(new Date(form.date))) {
         form.date = '';
       }
@@ -404,38 +407,54 @@ export default defineComponent({
     ]);
 
     //取得核對資料
-    const getCheckList = (lobby: string, timeSet: TimeSet) => {
-      const listItem = gameAPI
-        .getWagersCheckReport(lobby, timeSet)
-        .then(resp => {
-          const result = resp.data.result;
+    const getCheckList = (lobby: string, start: string, end: string) => {
+      return gameAPI.getWagersCheckReport(lobby, start, end).then(resp => {
+        const result: boolean = resp.data.result;
+        const data: Resp[] = resp.data.data.data;
+        const error_data: Resp[] = resp.data.data.error_data;
+        const response_code: string = resp.data.response_code;
 
-          const time = `${dayjs(timeSet.start_date_time).format('HH:mm:ss')}`;
-
+        const resultData = data.map(data => {
           let message = '';
-          let showTag = false;
           let type = '';
 
-          // 核對動作成功 結果為符合或不符合
-          if (result) {
-            showTag = true;
-            type = resp.data.data.data.check ? 'success' : 'danger';
-            message = resp.data.data.data.check ? 'match' : 'not_match';
-            // 核對動作失敗
-          } else if (resp.data.code === codeMap.matchFail) {
-            showTag = true;
-            type = 'info';
+          if (data.error_code === 0) {
+            message = data.check ? 'match' : 'not_match';
+            type = data.check ? 'success' : 'danger';
+          } else if (data.error_code === codeMap.matchFail) {
             message = 'match_fail';
-            // 核對動作失敗 請稍後嘗試
-          } else if (resp.data.code === codeMap.invalidResponse) {
+            type = 'info';
+          } else if (data.error_code === codeMap.invalidResponse) {
             message = 'try_again_later_hour';
-            // 其餘錯誤情況歸類為系統錯誤
           } else {
             message = 'system_error';
           }
-          return { time, showTag, type, message };
+
+          return {
+            time: dayjs(data.time).format('HH:mm:ss'),
+            showTag:
+              data.error_code === 0 || data.error_code === codeMap.matchFail,
+            type,
+            message,
+          };
         });
-      return listItem;
+
+        if (!result) {
+          const hErrorMsg = h('div', null, t('system_error'));
+          const hErrorCode = h(
+            'div',
+            null,
+            `(${error_data[0].error_code})#${response_code}`,
+          );
+
+          notify.error({
+            title: t('error'),
+            message: h('div', null, [hErrorMsg, hErrorCode]),
+          });
+        }
+
+        return resultData;
+      });
     };
 
     const checkList = ref<ListItem[]>([]);
@@ -456,28 +475,18 @@ export default defineComponent({
       loadingStore.page = true;
       scrollToTop();
       const lobby = form.lobby;
-      // 取得總小時數
-      const startDateTime = dayjs(`${form.date} ${form.startHour}`);
-      const endDateTime = dayjs(`${form.date} ${form.endHour}`);
-      const totalHours = endDateTime.diff(startDateTime, 'h');
-
-      // 將要查詢的時間以每小時做區間整理
-      const searchSet: TimeSet[] = [];
-      for (let i = 0; i <= totalHours; i++) {
-        const dateTime = startDateTime.add(i, 'hour');
-        searchSet[i] = {
-          start_date_time: dateTime.format('YYYY-MM-DD HH:00:00'),
-          end_date_time: dateTime.format('YYYY-MM-DD HH:59:59'),
-        };
-      }
-
-      Promise.all(searchSet.map(value => getCheckList(lobby, value))).then(
-        resp => {
-          checkList.value = resp;
-          searched.value = true;
-          loadingStore.page = false;
-        },
+      const start = dayjs(`${form.date} ${form.startHour}`).format(
+        'YYYY-MM-DD HH:00:00',
       );
+      const end = dayjs(`${form.date} ${form.endHour}`).format(
+        'YYYY-MM-DD HH:59:59',
+      );
+
+      getCheckList(lobby, start, end).then(resp => {
+        checkList.value = resp;
+        searched.value = true;
+        loadingStore.page = false;
+      });
     };
 
     // 設定監聽及觸發搜尋
