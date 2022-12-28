@@ -1,4 +1,3 @@
-<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-button(type="default" size="large" @click="visible = !visible") {{ t('setting_example') }}
 rd-drawer(
@@ -79,7 +78,8 @@ rd-drawer(
 </template>
 
 <script lang="ts">
-import { useI18n } from 'vue-i18n';
+import dict from '@/languages/system_setting/url_management/index.json';
+import { useI18nTrans } from '@/plugins/i18n/replace';
 import { replace } from 'lodash';
 import { type Ref, defineComponent, inject, ref, reactive } from 'vue';
 import RdDrawer from '@/components/custom/drawer/index.vue';
@@ -98,7 +98,7 @@ export default defineComponent({
     RdCollapseCard,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18nTrans(dict, { useScope: 'local' });
     const loading = ref(false);
     // 站別資訊開關
     const visible = ref(false);
