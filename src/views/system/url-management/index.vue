@@ -41,8 +41,9 @@ rd-layout.url-management(
 </template>
 
 <script lang="ts">
+import { useI18n } from 'vue-i18n';
 import dict from '@/languages/system_setting/url_management/index.json';
-import { useI18nTrans } from '@/plugins/i18n/replace';
+import { useTrans } from '@/plugins/i18n/replace';
 import {
   defineComponent,
   onMounted,
@@ -82,7 +83,8 @@ export default defineComponent({
     Teach, // 教學連結
   },
   setup() {
-    const { t } = useI18nTrans(dict, { useScope: 'local' });
+    const { locale } = useI18n({ useScope: 'local' });
+    const { t } = useTrans(dict, locale.value);
     const { hosts } = useHosts();
     const activeTab = ref('customerDomain');
     const tabs = [
