@@ -1,5 +1,3 @@
-<i18n src="@/languages/system_setting/url_management/common.json"></i18n>
-<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-layout.url-management(
   ref="layoutRef"
@@ -43,6 +41,8 @@ rd-layout.url-management(
 </template>
 
 <script lang="ts">
+import dict from '@/languages/system_setting/url_management/index.json';
+import { useI18nTrans } from '@/plugins/i18n/replace';
 import {
   defineComponent,
   onMounted,
@@ -52,7 +52,6 @@ import {
   type ComponentPublicInstance,
 } from 'vue';
 import { isEmpty } from 'lodash';
-import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
 import { useHosts } from '@/plugins/url/index';
 import { useLoadingStore } from '@/stores/loading';
@@ -83,7 +82,7 @@ export default defineComponent({
     Teach, // 教學連結
   },
   setup() {
-    const { t } = useI18n({ useScope: 'local' });
+    const { t } = useI18nTrans(dict, { useScope: 'local' });
     const { hosts } = useHosts();
     const activeTab = ref('customerDomain');
     const tabs = [
