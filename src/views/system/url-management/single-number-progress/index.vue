@@ -105,7 +105,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.buy"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, progress) in buyOptions"
@@ -122,7 +122,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.management"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, progress) in managementOptions"
@@ -139,7 +139,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.progress"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, progress) in progressListMap"
@@ -156,7 +156,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.status"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, stauts) in statusListMap"
@@ -205,7 +205,7 @@ import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
 import type { Buy, Management } from '../apply-domain/apply';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { flatten, omit } from 'lodash';
+import { flatten, omit, debounce } from 'lodash';
 
 export default defineComponent({
   name: 'SingleNumberProgress', // 網址管理 - 單號進度
@@ -345,6 +345,11 @@ export default defineComponent({
       watcher.queryRoute(querySet.getQuery({ ignoreCached }));
     };
 
+    // 更新Query(延遲一定時間才送出)
+    const delayUpdateQuery = debounce((ignoreCached: boolean) => {
+      watcher.queryRoute(querySet.getQuery({ ignoreCached }));
+    }, 1500);
+
     // 提供更新方法給作廢後的資料刷新
     provide('UrlManagement:updateQuery', updateQuery);
 
@@ -368,7 +373,7 @@ export default defineComponent({
       form[formKey] = value ? allOptions : [];
 
       // 觸發搜尋
-      updateQuery(false);
+      delayUpdateQuery(false);
     };
 
     // 驗證規則
@@ -869,6 +874,8 @@ export default defineComponent({
       updateQuery,
       exportOptions,
       tableForm,
+      debounce,
+      delayUpdateQuery,
     };
   },
 });

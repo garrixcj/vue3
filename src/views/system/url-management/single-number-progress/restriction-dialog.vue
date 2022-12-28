@@ -2,7 +2,7 @@
 .restriction-dialog(v-loading="loading")
   rd-dialog(
     :model-value="modelValue"
-    :title="t('setting_limit')"
+    :title="t('restriction')"
     :close-on-click-modal="false"
     width="500px"
     @update:model-value="resetAndEmit($event)"
@@ -105,13 +105,13 @@ export default defineComponent({
 
     // 根據狀態進行重置並觸發上層值的更新
     const resetAndEmit = (visible: boolean) => {
-      if (!visible) {
-        // 當今天是要關閉時重置form
-        formRef.value.resetFields();
-      }
-
       // 觸發上層更新
       emit('update:model-value', visible);
+
+      if (!visible) {
+        // 當今天是要關閉時清除驗證
+        formRef.value.clearValidate();
+      }
     };
 
     // 驗證規則
@@ -152,7 +152,6 @@ export default defineComponent({
                 });
                 resetAndEmit(false);
               }
-              loading.value = false;
             },
           );
         }

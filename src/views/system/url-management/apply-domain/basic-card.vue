@@ -150,7 +150,7 @@ import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
 
 // expose出去的func type
 export type BasicDataExpose = {
-  validForm: () => boolean;
+  validForm: () => { result: boolean; msg: string };
 };
 
 export default defineComponent({
@@ -292,7 +292,12 @@ export default defineComponent({
     // 封裝驗證，供外部使用
     const basicFormRef = ref();
     const validForm = () => {
-      return basicFormRef.value.validate((valid: boolean) => valid);
+      return basicFormRef.value
+        .validate((valid: boolean) => valid)
+        .then((valid: boolean) => ({
+          result: valid,
+          msg: valid ? '' : t('domain_provider_perm_error'),
+        }));
     };
     expose({ validForm } as BasicDataExpose);
 

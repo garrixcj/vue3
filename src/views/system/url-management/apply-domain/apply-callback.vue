@@ -17,7 +17,7 @@ rd-navbar-layout(
   template(#body)
     rd-layout-content
       //- 結果Alert
-      rd-alert(:type="type" :title="t(type)")
+      rd-alert(:type="type" :closable="false" :title="t(type)")
         div(v-for="(msg, index) in typeInfo" :key="index") {{ msg }}
       //- 基本設定
       basic-card(mode="apply")
