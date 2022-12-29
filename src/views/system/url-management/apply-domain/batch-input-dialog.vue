@@ -26,7 +26,8 @@ rd-dialog(
     //- 顯示列數
     .amount
       span(:class="{ 'is-error': batchForm.content.length > maxRows }") {{ batchForm.content.length }}
-      span {{ ` / ${maxRows}` }}
+      span ／
+      span {{ maxRows }}
       span {{ t('result') }}
   template(#footer)
     //- 取消
