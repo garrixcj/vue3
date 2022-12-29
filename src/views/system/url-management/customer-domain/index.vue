@@ -5,7 +5,14 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
+  rd-form(
+    ref="formRef"
+    inline
+    size="large"
+    :model="form"
+    :rules="rules"
+    @submit.prevent
+  )
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
       rd-select(

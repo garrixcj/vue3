@@ -164,8 +164,8 @@ rd-card(no-padding)
       :page-size="listCondition.size"
       :page-sizes="[30, 50, 100]"
       :total="listCondition.total"
-      @update:page-size="tableAct.page"
-      @current-change="tableAct.size"
+      @update:page-size="tableAct.size"
+      @current-change="tableAct.page"
     )
 export-note(
   v-model:visible="exportVisible"
