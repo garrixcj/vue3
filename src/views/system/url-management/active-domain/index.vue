@@ -201,32 +201,14 @@ export default defineComponent({
         optional: true,
         cached: true,
       },
-      // 開始日期
-      {
-        key: 'start_date',
-        get: () => form.date[0],
-        set: (val: string) => {
-          form.date[0] = val;
-        },
-        filter: () => !isEmpty(form.date[0]),
-        optional: true,
-        cached: true,
-      },
-      // 結束日期
-      {
-        key: 'end_date',
-        get: () => form.date[1],
-        set: (val: string) => {
-          form.date[1] = val;
-        },
-        filter: () => !isEmpty(form.date[1]),
-        optional: true,
-        cached: true,
-      },
+      // 日期區間
       {
         key: 'date',
         get: () => form.date,
-        filter: type => !(type === 'api') && !isEmpty(form.date),
+        set: (val: string[]) => {
+          form.date = val;
+        },
+        default: [],
         optional: true,
         cached: true,
         array: true,
@@ -481,8 +463,7 @@ export default defineComponent({
       setExportPermName('ActiveUrlExport');
 
       const query = querySet.getQuery() as {
-        start_date: string;
-        end_date: string;
+        date: string[];
         growingPercent: number[];
         abnormalStatus: number[];
         order: 'acs' | 'desc';
@@ -510,7 +491,7 @@ export default defineComponent({
       ];
       params.sort = sortField.find(item => item.key === params.sort)?.value;
 
-      return doExportActiveDomainNameList(query.start_date, query.end_date, {
+      return doExportActiveDomainNameList(query.date[0], query.date[1], {
         ...params,
         lang: locale.value,
       }).then(resp => {
@@ -566,8 +547,7 @@ export default defineComponent({
     watcher.setWatcher(
       (query: {
         domain?: number;
-        start_date: string;
-        end_date: string;
+        date: string[];
         keyword: string;
         tab: string;
         re: string;
@@ -580,7 +560,7 @@ export default defineComponent({
         order: 'asc' | 'desc';
       }) => {
         // 若有Type代表已有搜尋
-        if (!isEmpty(query.start_date) && !isEmpty(query.end_date)) {
+        if (!isEmpty(query.date)) {
           updateList();
         } else {
           searched.value = false;
