@@ -70,7 +70,6 @@ sync:submodule:
   stage: sync
   tags:
     - gce-gitlab-runner-ssd
-  needs: []
   only:
     - triggers
     - pipelines
@@ -83,3 +82,5 @@ sync:submodule:
     - git submodule update --remote
   variables:
     UPDATE_BRANCH: master_pending
+  dependencies:
+    - test:sync-build
