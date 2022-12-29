@@ -46,6 +46,7 @@ import dict from '@/languages/system_setting/url_management/index.json';
 import { useTrans } from '@/plugins/i18n/replace';
 import {
   defineComponent,
+  defineAsyncComponent,
   onMounted,
   ref,
   provide,
@@ -57,30 +58,42 @@ import { useTabAccess } from '@/plugins/access/view';
 import { useHosts } from '@/plugins/url/index';
 import { useLoadingStore } from '@/stores/loading';
 import { match } from '@/components/utils/string-match/index';
-import Teach from '@/plugins/teach-guide/index.vue';
-import CustomerDomain from './customer-domain/index.vue';
-import AgentDomain from './agent-domain/index.vue';
-import IpService from './ip-service/index.vue';
-import SingleNumberProgress from './single-number-progress/index.vue';
-import ActiveDomain from './active-domain/index.vue';
-import Record from './record/index.vue';
-import SiteInformation from './common/site-information.vue';
-import BetaMessage from './common/beta-message.vue';
 import { RouteWatch } from '@/components/utils/route-watch';
 import { useSiteList } from './common/list';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
   components: {
-    CustomerDomain, // 客端域名
-    AgentDomain, // 管端域名
-    IpService, // IP服務
-    SingleNumberProgress, //單號進度
-    ActiveDomain, // 活躍域名
-    Record, // 操作紀錄
-    SiteInformation, // 站別資訊
-    BetaMessage, // Beta警示訊息
-    Teach, // 教學連結
+    // 客端域名
+    CustomerDomain: defineAsyncComponent(
+      () => import('./customer-domain/index.vue'),
+    ),
+    // 管端域名
+    AgentDomain: defineAsyncComponent(() => import('./agent-domain/index.vue')),
+    // IP服務
+    IpService: defineAsyncComponent(() => import('./ip-service/index.vue')),
+    // 單號進度
+    SingleNumberProgress: defineAsyncComponent(
+      () => import('./single-number-progress/index.vue'),
+    ),
+    // 活躍域名
+    ActiveDomain: defineAsyncComponent(
+      () => import('./active-domain/index.vue'),
+    ),
+    // 操作紀錄
+    Record: defineAsyncComponent(() => import('./record/index.vue')),
+    // 站別資訊
+    SiteInformation: defineAsyncComponent(
+      () => import('./common/site-information.vue'),
+    ),
+    // Beta警示訊息
+    BetaMessage: defineAsyncComponent(
+      () => import('./common/beta-message.vue'),
+    ),
+    // 教學連結
+    Teach: defineAsyncComponent(
+      () => import('@/plugins/teach-guide/index.vue'),
+    ),
   },
   setup() {
     const { locale } = useI18n({ useScope: 'local' });
