@@ -117,6 +117,7 @@ rd-card(no-padding)
           header-align="center"
           align="center"
           prop="rank"
+          column-key="rank"
           sortable
           :resizable="false"
           width="85"
@@ -128,6 +129,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="requestTotal"
+          column-key="requestTotal"
           sortable
           :resizable="false"
           width="120"
@@ -141,6 +143,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="requestRatio"
+          column-key="requestRatio"
           sortable
           :resizable="false"
           width="120"
@@ -153,6 +156,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="requestGrow"
+          column-key="requestGrow"
           sortable
           :resizable="false"
           width="120"
@@ -174,6 +178,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginPassTotal"
+          column-key="loginPassTotal"
           sortable
           :resizable="false"
           width="120"
@@ -187,6 +192,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginPassRatio"
+          column-key="loginPassRatio"
           sortable
           :resizable="false"
           width="120"
@@ -199,6 +205,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginPassGrow"
+          column-key="loginPassGrow"
           sortable
           :resizable="false"
           width="120"
@@ -220,6 +227,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginFailTotal"
+          column-key="loginFailTotal"
           sortable
           :resizable="false"
           width="120"
@@ -233,6 +241,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginFailRatio"
+          column-key="loginFailRatio"
           sortable
           :resizable="false"
           width="120"
@@ -245,6 +254,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginFailGrow"
+          column-key="loginFailGrow"
           sortable
           :resizable="false"
           width="120"
