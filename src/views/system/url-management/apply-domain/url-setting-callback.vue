@@ -79,7 +79,7 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
               i.mdi.mdi-information
         template(#default="scope")
           rd-tag.tag-pill(v-if="scope.row.result" type="success" size="small") {{ t('success') }}
-          rd-tag.tag-pill(v-else type="danger" size="small") {{ t('fail2') }}
+          rd-tag.tag-pill(v-else type="danger" size="small") {{ t('fail') }}
 </template>
 
 <script lang="ts">

@@ -2,7 +2,7 @@
 <template lang="pug">
 rd-dialog(
   :model-value="modelValue"
-  :title="t('batch_add_domain_name')"
+  :title="t('upload_domain')"
   :close-on-click-modal="false"
   width="480px"
   @update:model-value="open($event)"

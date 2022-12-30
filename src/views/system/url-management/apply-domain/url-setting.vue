@@ -2,7 +2,7 @@
 rd-card(:title="t('domain_name_setting')")
   template(#subTitle)
     //- 申請已達上限
-    template(v-if="!canApplyNum")
+    template(v-if="canApplyNum <= 0")
       .is-error
         i18n-t(keypath="apply_domain_info_error" tag="span")
           template(#buyMethod) {{ t(priceListDict[basicData.buy]) }}

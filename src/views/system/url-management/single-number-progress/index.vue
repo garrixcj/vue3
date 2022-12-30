@@ -435,12 +435,14 @@ export default defineComponent({
           trigger: 'change',
           asyncValidator: (rule: never, domain: string) => {
             return new Promise<void>((resolve, reject) => {
-              // 當今天只有1~5字(空的不判斷) || 有域名但是卻不符合規則(只能輸入大小寫英文、數字、標點符號的「杠或點」)時錯誤
-              if (
-                (domain.length >= 1 && domain.length < 6) ||
-                (domain && !/^[a-zA-Z\d-/.]+$/.test(domain))
-              ) {
+              // 當今天只有1~5字(空的不判斷)
+              if (domain.length >= 1 && domain.length < 6) {
                 reject(t('input_keyword_at_least', { num: 6 }));
+              }
+
+              // 有域名但是卻不符合規則(只能輸入大小寫英文、數字、標點符號的「杠或點」)時錯誤
+              if (domain && !/^[a-zA-Z\d-/.]+$/.test(domain)) {
+                reject(t('format_error'));
               }
               resolve();
             });
