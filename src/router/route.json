@@ -48,6 +48,18 @@
         "component": ""
     },
     {
+        "id": 891,
+        "name": "GameMenuSorting",
+        "note": "遊戲選單排序(PID)",
+        "dict": "game_menu_sorting",
+        "route": "/game/game-menu-sorting/index",
+        "perm": "GameMenuSorting",
+        "host": "VUE3_HOST",
+        "file": "/game/game-menu-sorting/index",
+        "qstr": "",
+        "component": ""
+    },
+    {
         "id": 855,
         "route": "/members/not_logged_in/structure_grouping/detail",
         "note": "帳號結構分群-未登入會員名單列表",
