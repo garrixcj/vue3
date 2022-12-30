@@ -44,7 +44,7 @@ rd-form.search-form(
     rd-date-picker.datetime-width(
       v-model="form.date"
       type="date"
-      placeholder="選擇日期"
+      :placeholder="t('please_select_date')"
       format="YYYY-MM-DD"
       value-format="YYYY-MM-DD"
       :disabled-date="disabledDate"
@@ -54,7 +54,7 @@ rd-form.search-form(
     //- 核對區間 - 開始時間選擇
     rd-time-select(
       v-model="form.startHour"
-      placeholder="開始時間"
+      :placeholder="t('start_time')"
       format="HH:mm:ss"
       start="00:00"
       step="01:00"
@@ -67,7 +67,7 @@ rd-form.search-form(
     //- 核對區間 - 結束時間選擇
     rd-time-select(
       v-model="form.endHour"
-      placeholder="結束時間"
+      :placeholder="t('end_time')"
       step="01:00"
       format="HH:mm:ss"
       :start="startHourLimit"
@@ -121,7 +121,7 @@ rd-table(
       span.error-msg(v-else) {{ t(message) }}
   //- 開始搜尋吧
   template(v-if="!searched" #empty)
-    before-search-empty(label="開始搜尋吧")
+    before-search-empty(:label="t('start_search')")
 </template>
 
 <script lang="ts">
