@@ -782,7 +782,7 @@ export default defineComponent({
           tableForm.sort = val;
         },
         optional: false,
-        default: 'finished_at',
+        default: 'created_at',
       },
       // 前端 － 排序
       {
@@ -853,7 +853,7 @@ export default defineComponent({
           form.status = [];
           tableForm.page = 1;
           tableForm.limit = 30;
-          tableForm.sort = 'finished_at';
+          tableForm.sort = 'created_at';
           tableForm.order = 'descending';
 
           updateQuery(true);
@@ -883,7 +883,7 @@ export default defineComponent({
         updateQuery(false);
       },
       // 切換排序
-      changeSort: (event = { prop: 'finished_at', order: 'descending' }) => {
+      changeSort: (event = { prop: 'created_at', order: 'descending' }) => {
         listAction.changePage();
         tableForm.sort = sort[event.prop as keyof typeof sort];
         tableForm.order = event.order;

@@ -38,7 +38,7 @@ rd-card(no-padding)
       ref="tableRef"
       border
       :data="list"
-      :default-sort="sortCondition"
+      :default-sort="{ prop: 'applyAt', order: 'ascending' }"
       :row-class-name="selectAct.getRowClass"
       @selection-change="selectAct.change"
       @sort-change="$emit('sortChange', $event)"
@@ -71,7 +71,7 @@ rd-card(no-padding)
         :resizable="false"
       )
         template(#default="{ row }")
-          span {{ siteList[row.site].label }}
+          span {{ siteList[row.site]?.label }}
       //- 後置碼
       rd-table-column(
         v-if="isDisplayedColumns('suffix')"
@@ -82,7 +82,7 @@ rd-card(no-padding)
         width="100"
       )
         template(#default="{ row }")
-          span {{ `@${siteList[row.site].code}` }}
+          span {{ `@${siteList[row.site]?.code}` }}
       //- 單號
       rd-table-column(
         v-if="isDisplayedColumns('ticketId')"
@@ -312,17 +312,6 @@ export default defineComponent({
     });
     // table的ref
     const tableRef = ref();
-    // 排序欄位的的對照表
-    const sortMap: Record<string, string> = {
-      siteName: 'site_group',
-      applyAt: 'created_at',
-      finishAt: 'finished_at',
-    };
-    // 預設排序
-    const sortCondition = computed(() => ({
-      prop: sortMap[props.sort] || '',
-      order: props.order === 'asc' ? 'ascending' : 'descending',
-    }));
     // 被選的列
     const selected = ref<List[]>([]);
     // 作廢的動作
@@ -459,7 +448,6 @@ export default defineComponent({
       exportParams,
       exportData,
       updateQuery,
-      sortCondition,
     };
   },
 });
