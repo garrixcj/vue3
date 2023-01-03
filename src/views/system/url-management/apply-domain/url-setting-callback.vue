@@ -34,12 +34,11 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
         :resizable="false"
       )
         template(#header)
-          .header-space
-            span {{ t('check_format') }}
-            rd-tooltip(placement="top")
-              template(#content)
-                div(v-for="n in 7" :key="n") {{ t(`check_format_msg${n}`) }}
-              i.mdi.mdi-information
+          span {{ t('check_format') }}
+          rd-tooltip(placement="top")
+            template(#content)
+              div(v-for="n in 7" :key="n") {{ t(`check_format_msg${n}`) }}
+            i.mdi.mdi-information
         template(#default="scope")
           //- 因api特殊所以直接使用文字轉成字典檔的key
           span(:class="{ 'error-text': !scope.row.format }") {{ scope.row.format ? t('format_msg_success') : t(snakeCase(scope.row.formatMsg)) }}
@@ -51,17 +50,15 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
         :resizable="false"
       )
         template(#header)
-          .header-space
-            span {{ t('dns_check') }}
-            rd-tooltip(placement="top")
-              template(#content)
-                div(v-for="n in 4" :key="n") {{ t(`dns_title_info${n}`) }}
-              i.mdi.mdi-information
+          span {{ t('dns_check') }}
+          rd-tooltip(placement="top")
+            template(#content)
+              div(v-for="n in 4" :key="n") {{ t(`dns_title_info${n}`) }}
+            i.mdi.mdi-information
         template(#default="scope")
           //- 因api特殊所以直接使用文字轉成字典檔的key
           span(:class="{ 'error-text': !scope.row.dns }") {{ scope.row.dns ? t('pass') : t(snakeCase(scope.row.dnsMsg)) }}
       //- 驗證狀態
-      //- TODO: 排序按鈕跑版問題
       rd-table-column(
         :label="t('check_format')"
         prop="result"
@@ -71,15 +68,14 @@ rd-card(v-loading="loading" :title="t('domain_name_setting')")
         :resizable="false"
       )
         template(#header)
-          .header-space
-            span {{ t('validator_status') }}
-            rd-tooltip(placement="top")
-              template(#content)
-                div {{ t('validator_status_info') }}
-              i.mdi.mdi-information
+          span {{ t('validator_status') }}
+          rd-tooltip(placement="top")
+            template(#content)
+              div {{ t('validator_status_info') }}
+            i.mdi.mdi-information
         template(#default="scope")
           rd-tag.tag-pill(v-if="scope.row.result" type="success" size="small") {{ t('success') }}
-          rd-tag.tag-pill(v-else type="danger" size="small") {{ t('fail2') }}
+          rd-tag.tag-pill(v-else type="danger" size="small") {{ t('fail') }}
 </template>
 
 <script lang="ts">
@@ -140,10 +136,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .format-class-label {
-  .header-space {
-    @include space(3px);
-  }
   .mdi {
+    margin-left: 3px;
     color: $text-3;
   }
 }

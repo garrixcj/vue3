@@ -29,8 +29,10 @@
             i.mdi.mdi-information
         rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.bbin"
+          step-strictly
           :min="minimum"
           :max="bbinMaximum"
+          :value-on-clear="1"
         )
       rd-form-item(prop="domain")
         template(#label)
@@ -42,8 +44,10 @@
             i.mdi.mdi-information
         rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.domain"
+          step-strictly
           :min="minimum"
           :max="domainMaximum"
+          :value-on-clear="1"
         )
     rd-divider.divider-text(content-position="left") {{ t('preview_results') }}
     rd-alert.size-small(type="success" :closable="false")
@@ -150,8 +154,8 @@ export default defineComponent({
                   title: t('success'),
                   message: t('save_success_setting_limit'),
                 });
-                resetAndEmit(false);
               }
+              resetAndEmit(false);
             },
           );
         }

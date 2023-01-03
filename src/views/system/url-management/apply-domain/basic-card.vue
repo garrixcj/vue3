@@ -103,9 +103,8 @@ rd-card(:title="t('basic_setting')")
           )
           template(#view)
             password-text(
-              :visible="passwordVisible"
+              v-model:visible="passwordVisible"
               :password="form.password"
-              @click="passwordVisible = !passwordVisible"
             )
       //- 檢查項目
       rd-form-item(
@@ -174,7 +173,7 @@ export default defineComponent({
       simple: 'simple_type',
       over: 'over_binding',
       binding: 'mandatory_binding',
-      nameserver: 'Nameserser',
+      nameserver: 'Nameserver',
       txt: 'TXT',
     };
 

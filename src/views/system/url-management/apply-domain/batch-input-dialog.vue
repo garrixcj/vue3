@@ -2,7 +2,7 @@
 <template lang="pug">
 rd-dialog(
   :model-value="modelValue"
-  :title="t('batch_add_domain_name')"
+  :title="t('upload_domain')"
   :close-on-click-modal="false"
   width="480px"
   @update:model-value="open($event)"
@@ -26,7 +26,7 @@ rd-dialog(
     //- 顯示列數
     .amount
       span(:class="{ 'is-error': batchForm.content.length > maxRows }") {{ batchForm.content.length }}
-      span {{ ` / ${maxRows}` }}
+      span {{ `／${maxRows}` }}
       span {{ t('result') }}
   template(#footer)
     //- 取消
