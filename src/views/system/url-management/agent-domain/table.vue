@@ -6,7 +6,6 @@ rd-card(no-padding)
       v-model:visible="batchModuleData.visible"
       :count="batchModuleData.selected.length"
       :style="getBatchModuleWidth"
-      :disabled="listData.length === 0"
       @change="clickBatchModule"
     )
       template(#operate)
@@ -48,13 +47,12 @@ rd-card(no-padding)
 
   template(#content)
     //- 列表資料
-    rd-table(
+    rd-table.selection-table(
       ref="listRef"
       border
       :data="listData"
       :row-class-name="selectAct.getRowClass"
       :default-sort="{ prop: 'id', order: 'ascending' }"
-      :max-height="800"
       :min-width="1248"
       @selection-change="selectAct.change"
       @sort-change="tableAct.sort"
@@ -142,7 +140,6 @@ rd-card(no-padding)
                   v-for="(item, key) in row.urlStatus.options"
                   :key="key"
                   new-window
-                  command
                   :link="item.url"
                 )
                   rd-badge(:type="item.type" is-dot)
@@ -306,7 +303,7 @@ rd-card(no-padding)
             :disabled="!row.applySSLEnable"
             @click="openDialog([row], 'applySSL')"
           ) {{ t('apply_certificate') }}
-  template(#footer)
+  template(v-if="listCondition.total > 0" #footer)
     rd-pagination(
       v-model:current-page="listCondition.page"
       background
@@ -346,7 +343,7 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { agentDomainNameFieldsInitial } from '../common/custom-fields';
+import { initialAgentDomainNameFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type {
   ListData,
@@ -455,6 +452,7 @@ export default defineComponent({
         listRef.value?.clearSort();
       },
       updateApi: () => {
+        batchModuleData.visible = false;
         emit('update', true);
       },
     };
@@ -517,7 +515,7 @@ export default defineComponent({
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
       useInitCustomField(
-        agentDomainNameFieldsInitial(t, hasApplySSLModifyPerm.value),
+        initialAgentDomainNameFields(t, hasApplySSLModifyPerm.value),
       );
 
     // 匯出相關
@@ -535,7 +533,6 @@ export default defineComponent({
 
     // 重置捲軸高度
     const scrollTo = () => {
-      listRef.value?.setScrollTop(0);
       listRef.value?.setScrollLeft(0);
     };
     // 封裝外部使用功能
@@ -605,5 +602,8 @@ export default defineComponent({
 }
 .url-color {
   color: $primary-2;
+}
+.selection-table {
+  @include table-selected-row;
 }
 </style>

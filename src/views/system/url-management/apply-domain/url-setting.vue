@@ -2,11 +2,9 @@
 rd-card(:title="t('domain_name_setting')")
   template(#subTitle)
     //- 申請已達上限
-    template(v-if="!canApplyNum")
+    template(v-if="canApplyNum <= 0")
       .is-error
         i18n-t(keypath="apply_domain_info_error" tag="span")
-          template(#listNum) {{ urlList.length }}
-          template(#listTotal) {{ listLimit }}
           template(#buyMethod) {{ t(priceListDict[basicData.buy]) }}
           template(#already) {{ requestionNum }}
     //- 申請未達上限
@@ -57,7 +55,7 @@ rd-card(:title="t('domain_name_setting')")
         rd-table-column(
           type="index"
           :label="t('increment_number')"
-          header-align="center"
+          align="center"
           :resizable="false"
           width="60"
         )
@@ -166,12 +164,12 @@ import {
   inject,
   computed,
   reactive,
+  nextTick,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { ApplyDomain, BasicSetting } from './apply';
 import { snakeCase } from 'lodash';
 import RdTextCounter from '@/components/custom/text-counter/index.vue';
-import { notify } from '@/components/utils/notification';
 import BatchInputDialog from './batch-input-dialog.vue';
 import UploadFileDialog from './upload-file-dialog.vue';
 import { priceListDict } from '../common/estimate';
@@ -180,7 +178,7 @@ import { useRow } from './row';
 
 // expose出去的func type
 export type UrlSettingExpose = {
-  validForm: () => boolean;
+  validForm: () => { result: boolean; msg: string };
   validAllFormat: () => void;
 };
 
@@ -253,14 +251,17 @@ export default defineComponent({
     };
 
     // 批次新增域名
-    const batchAdd = (batchUrl: string[]) => {
-      // 清空原本全部的資料
+    const batchAdd = async (batchUrl: string[]) => {
+      // 清空原本全部的資料;
       urlList.value = [];
+
       // 批次塞入
       batchUrl.forEach(url => {
         // 新增一筆
         row.addNew(url);
       });
+
+      await nextTick();
       // 格式檢查
       validAllFormat();
     };
@@ -273,42 +274,31 @@ export default defineComponent({
     const validForm = () => {
       // 超過今日可申請上限 || 列表的數量大於今日可申請上限(已超過可申請域名數量)
       if (!props.canApplyNum || urlList.value.length > props.canApplyNum) {
-        notify.error({
-          title: t('error'),
-          message: t('over_apply_limit'),
-        });
-
-        return false;
+        return { result: false, msg: t('over_apply_limit') };
       }
 
       // 空單時(未輸入域名)
       if (!urlCount.value) {
-        notify.error({
-          title: t('error'),
-          message: t('format_msg_empty'),
-        });
-
-        return false;
+        return { result: false, msg: t('format_msg_empty') };
       }
 
       // 網址本身驗證有誤(請先修改N筆格式錯誤域名)
-      return urlFormRef.value.validate((valid: boolean) => {
-        if (!valid) {
-          notify.error({
-            title: t('error'),
-            message: t('please_edit_error_domain', {
-              num: urlList.value.filter(obj => !obj.legal && obj.domain).length,
-            }),
-          });
-        }
-
-        return valid;
-      });
+      return urlFormRef.value
+        .validate((valid: boolean) => valid)
+        .then((valid: boolean) => ({
+          result: valid,
+          msg: valid
+            ? ''
+            : t('please_edit_error_domain', {
+                num: urlList.value.filter(obj => !obj.legal && obj.domain)
+                  .length,
+              }),
+        }));
     };
 
     // url input 驗證
     const urlValidatePass = (
-      rule: object,
+      rule: never,
       domain: string,
       callback: Function,
       source: string,
@@ -395,9 +385,9 @@ export default defineComponent({
   .header-space {
     @include space(3px);
   }
-  .mdi {
-    color: $text-3;
-  }
+}
+.mdi-information {
+  color: $text-3;
 }
 .format-class {
   .format {

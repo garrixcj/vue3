@@ -16,7 +16,7 @@
           rd-form-item(:label="t('site')") {{ list[0].siteName }}
           rd-form-item(:label="t('suffix')") {{ list[0].suffix }}
       template(v-else)
-        .msg {{ t('domain_abolish_check_multi') }}
+        .msg {{ t('domain_abolish_check_multi', { num: list.length }) }}
         rd-collapse-card(v-model:collapse="collapse" type="small-card")
           template(#title)
             span {{ t('change_trans_number') }}

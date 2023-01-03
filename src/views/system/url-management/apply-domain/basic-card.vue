@@ -70,7 +70,7 @@ rd-card(:title="t('basic_setting')")
         prop="websiteProvider"
       )
         view-mode(:label="form.websiteProvider" :has-modify="hasModify")
-          rd-input(
+          rd-input.input-width(
             v-model="form.websiteProvider"
             :placeholder="t('domain_provider_placeholder')"
             clearable
@@ -82,7 +82,7 @@ rd-card(:title="t('basic_setting')")
         prop="username"
       )
         view-mode(:label="form.username" :has-modify="hasModify")
-          rd-input(
+          rd-input.input-width(
             v-model="form.username"
             :placeholder="t('please_enter_account')"
             clearable
@@ -94,7 +94,7 @@ rd-card(:title="t('basic_setting')")
         prop="password"
       )
         view-mode(:has-modify="hasModify")
-          rd-input(
+          rd-input.input-width(
             v-model="form.password"
             type="password"
             :placeholder="t('please_enter_password')"
@@ -103,9 +103,8 @@ rd-card(:title="t('basic_setting')")
           )
           template(#view)
             password-text(
-              :visible="passwordVisible"
+              v-model:visible="passwordVisible"
               :password="form.password"
-              @click="passwordVisible = !passwordVisible"
             )
       //- 檢查項目
       rd-form-item(
@@ -120,6 +119,15 @@ rd-card(:title="t('basic_setting')")
               :key="index"
               :label="value"
             ) {{ t(dictKey[value]) }}
+        //- 教學連結
+        rd-button.teach-link(
+          v-if="hasModify"
+          size="icon"
+          text
+          @click="openTeaching"
+        )
+          i.mdi.mdi-open-in-new
+          span {{ form.checkItem === 'txt' ? t('txt_teaching') : t('name_server_teaching') }}
       //- 細項模式時才出現
       template(v-if="mode === 'detail' && !hasModify")
         //- 申請日期
@@ -141,7 +149,7 @@ import RdFormatTimer from '@/components/custom/format-timer/date-time.vue';
 
 // expose出去的func type
 export type BasicDataExpose = {
-  validForm: () => boolean;
+  validForm: () => { result: boolean; msg: string };
 };
 
 export default defineComponent({
@@ -165,7 +173,7 @@ export default defineComponent({
       simple: 'simple_type',
       over: 'over_binding',
       binding: 'mandatory_binding',
-      nameserver: 'Nameserser',
+      nameserver: 'Nameserver',
       txt: 'TXT',
     };
 
@@ -251,7 +259,7 @@ export default defineComponent({
         {
           // 當網址商權限為有時，為必填
           required: true,
-          message: t('format_error'),
+          message: t('domain_provider_placeholder'),
           trigger: 'blur',
         },
       ],
@@ -261,14 +269,17 @@ export default defineComponent({
           required: true,
           // 有漢字時錯誤
           pattern: new RegExp(/^[^\u4E00-\u9FFF]+$/),
-          message: t('format_error'),
+          message: t('please_enter_account'),
           trigger: 'blur',
         },
       ],
       password: [
         {
-          // 當網址商權限為有時，為必填
           required: true,
+          message: t('please_enter_password'),
+          trigger: 'blur',
+        },
+        {
           // 有漢字時錯誤
           pattern: new RegExp(/^[^\u4E00-\u9FFF]+$/),
           message: t('format_error'),
@@ -280,12 +291,32 @@ export default defineComponent({
     // 封裝驗證，供外部使用
     const basicFormRef = ref();
     const validForm = () => {
-      return basicFormRef.value.validate((valid: boolean) => valid);
+      return basicFormRef.value
+        .validate((valid: boolean) => valid)
+        .then((valid: boolean) => ({
+          result: valid,
+          msg: valid ? '' : t('domain_provider_perm_error'),
+        }));
     };
     expose({ validForm } as BasicDataExpose);
 
     // 密碼的影藏顯示
     const passwordVisible = ref(false);
+
+    // 檢查項目對應教學連結
+    const teachMap = {
+      txt: 'txt',
+      nameserver: 'name-server',
+    };
+
+    // 另開教學視窗
+    const openTeaching = () => {
+      if (form.checkItem !== '') {
+        window.open(
+          `/v3/system/url-management/teaching/${teachMap[form.checkItem]}`,
+        );
+      }
+    };
 
     return {
       t,
@@ -305,7 +336,18 @@ export default defineComponent({
       changeManagement,
       changeWebsitePerm,
       passwordVisible,
+      openTeaching,
     };
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.teach-link {
+  @include btn-underline;
+  margin-left: 30px;
+}
+.input-width {
+  width: 200px;
+}
+</style>

@@ -25,7 +25,7 @@ rd-card(no-padding)
         @confirm="confirm"
       )
       rd-divider(direction="vertical")
-      span {{ t('search_result_common', { num: list.length }) }}
+      span {{ t('search_result_common', { num: total }) }}
       //- 匯出
       rd-button.push(
         v-if="exportPerm"
@@ -38,7 +38,7 @@ rd-card(no-padding)
       ref="tableRef"
       border
       :data="list"
-      :default-sort="{ prop: 'finished_at', order: 'descending' }"
+      :default-sort="{ prop: 'applyAt', order: 'ascending' }"
       :row-class-name="selectAct.getRowClass"
       @selection-change="selectAct.change"
       @sort-change="$emit('sortChange', $event)"
@@ -54,23 +54,24 @@ rd-card(no-padding)
       //- 序號
       rd-table-column(
         v-if="isDisplayedColumns('index')"
-        type="index"
         :label="t('increment_number')"
         align="center"
         :resizable="false"
         width="100"
       )
+        template(#default="scope")
+          div {{ scope.$index + 1 + (currentPage - 1) * pageSize }}
       //- 站別
       rd-table-column(
         v-if="isDisplayedColumns('site')"
         :label="t('site')"
         prop="siteName"
         header-align="center"
-        sortable="custom"
+        sortable
         :resizable="false"
       )
         template(#default="{ row }")
-          span {{ siteList[row.site].label }}
+          span {{ siteList[row.site]?.label }}
       //- 後置碼
       rd-table-column(
         v-if="isDisplayedColumns('suffix')"
@@ -81,7 +82,7 @@ rd-card(no-padding)
         width="100"
       )
         template(#default="{ row }")
-          span {{ `@${siteList[row.site].code}` }}
+          span {{ `@${siteList[row.site]?.code}` }}
       //- 單號
       rd-table-column(
         v-if="isDisplayedColumns('ticketId')"
@@ -106,7 +107,9 @@ rd-card(no-padding)
         width="200"
       )
         template(#default="{ row }")
-          span {{ `${row.finishCount} / ${row.domainList.length}` }}
+          span {{ row.finishCount }}
+          span.slash ／
+          span {{ row.domainList.length }}
       //- 購買方式
       rd-table-column(
         v-if="isDisplayedColumns('buy')"
@@ -135,7 +138,7 @@ rd-card(no-padding)
         :label="t('application_date')"
         prop="applyAt"
         header-align="center"
-        sortable="custom"
+        sortable
         :resizable="false"
         width="180"
       )
@@ -147,7 +150,7 @@ rd-card(no-padding)
         :label="t('finished_date')"
         prop="finishAt"
         header-align="center"
-        sortable="custom"
+        sortable
         :resizable="false"
         width="180"
       )
@@ -159,12 +162,13 @@ rd-card(no-padding)
         :label="t('processe')"
         prop="processe"
         header-align="center"
+        min-width="100"
         :resizable="false"
       )
         template(#default="{ row }")
           .processe-column
             template(v-for="(processe, countKey) in progressCountKey")
-              rd-tag(
+              rd-tag.tag-margin(
                 v-if="row[countKey] > 0"
                 :type="progressListMap[processe].type"
                 size="small"
@@ -199,9 +203,10 @@ rd-card(no-padding)
             :disabled="!abolishable(row.status, row.buy, row.domainList)"
             @click="initAbolish('single', [row])"
           ) {{ t('void') }}
-  template(#footer)
+  template(v-if="total" #footer)
     rd-pagination(
       background
+      no-total
       :current-page="currentPage"
       :page-size="pageSize"
       :total="total"
@@ -255,6 +260,7 @@ import { useModifyAccess } from '@/plugins/access/modify';
 import { useAccesses } from '@/plugins/access/view';
 import { url as urlAPI } from '@/api/domain';
 import { notify } from '@/components/utils/notification';
+import { setExportPermName } from '../common/export';
 
 export default defineComponent({
   name: 'UrlManagementProgressList',
@@ -401,6 +407,8 @@ export default defineComponent({
         ? { export_remark: note, ...props.searchOptions }
         : props.searchOptions;
 
+      setExportPermName('ApplicationProgressExport');
+
       urlAPI.exportTicketList(params).then(response => {
         if (response.data.result) {
           notify.success({
@@ -408,6 +416,8 @@ export default defineComponent({
             message: t('generation_success'),
           });
         }
+
+        setExportPermName('ApplicationProgress');
       });
     };
 
@@ -443,7 +453,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   @include flex-basic;
   width: 100%;
@@ -456,9 +466,16 @@ export default defineComponent({
   .tag-pill {
     @include tag-border(true, true);
   }
+  .slash {
+    color: $text-4;
+  }
   .processe-column {
     @include flex-basic;
-    @include space;
+    flex-wrap: wrap;
+    gap: 5px;
+    .tag-margin {
+      @include space-multiline;
+    }
   }
 }
 </style>
