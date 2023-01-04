@@ -125,7 +125,7 @@ rd-table(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed, inject, h } from 'vue';
+import { defineComponent, reactive, ref, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
@@ -133,7 +133,6 @@ import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import gameAPI from '@/api/game';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { notify } from '@/components/utils/notification';
 
 // Type定義
 // 搜尋欄位
@@ -179,12 +178,10 @@ export default defineComponent({
 
     const formRef = ref();
 
-    // 需對應的外接api錯誤情況
+    // 有特定對應的外接api錯誤情況
     const codeMap = {
-      // 核對失敗
-      matchFail: 68010004,
-      // 核對失敗，請稍後嘗試
-      invalidResponse: 68010025,
+      // 稍後請針對此小時重新搜尋
+      tryAgainLater: 68010025,
     };
 
     dayjs.extend(isSameOrAfter);
@@ -409,10 +406,7 @@ export default defineComponent({
     //取得核對資料
     const getCheckList = (lobby: string, start: string, end: string) => {
       return gameAPI.getWagersCheckReport(lobby, start, end).then(resp => {
-        const result: boolean = resp.data.result;
-        const data: Resp[] = resp.data.data.data;
-        const error_data: Resp[] = resp.data.data.error_data;
-        const response_code: string = resp.data.response_code;
+        const data: Resp[] = resp.data.data;
 
         const resultData = data.map(data => {
           let message = '';
@@ -421,37 +415,19 @@ export default defineComponent({
           if (data.error_code === 0) {
             message = data.check ? 'match' : 'not_match';
             type = data.check ? 'success' : 'danger';
-          } else if (data.error_code === codeMap.matchFail) {
-            message = 'match_fail';
-            type = 'info';
-          } else if (data.error_code === codeMap.invalidResponse) {
+          } else if (data.error_code === codeMap.tryAgainLater) {
             message = 'try_again_later_hour';
           } else {
-            message = 'system_error';
+            message = data.error_message;
           }
 
           return {
             time: dayjs(data.time).format('HH:mm:ss'),
-            showTag:
-              data.error_code === 0 || data.error_code === codeMap.matchFail,
+            showTag: data.error_code === 0,
             type,
             message,
           };
         });
-
-        if (!result) {
-          const hErrorMsg = h('div', null, t('system_error'));
-          const hErrorCode = h(
-            'div',
-            null,
-            `(${error_data[0].error_code})#${response_code}`,
-          );
-
-          notify.error({
-            title: t('error'),
-            message: h('div', null, [hErrorMsg, hErrorCode]),
-          });
-        }
 
         return resultData;
       });
