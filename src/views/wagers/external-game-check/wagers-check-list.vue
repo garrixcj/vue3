@@ -125,7 +125,7 @@ rd-table(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed, inject, h } from 'vue';
+import { defineComponent, reactive, ref, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabRouteWatch, QuerySetting } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
@@ -133,7 +133,6 @@ import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import gameAPI from '@/api/game';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { notify } from '@/components/utils/notification';
 
 // Type定義
 // 搜尋欄位
