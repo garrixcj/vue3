@@ -11,7 +11,6 @@ import type { FormType } from '../common/search';
 
 export type ListCondition = {
   formAngle: 'all' | number;
-  selectAll: boolean;
   page: number;
   size: number;
   total: number;
@@ -43,7 +42,6 @@ export const useList = () => {
   // 列表條件
   const listCondition: ListCondition = reactive({
     formAngle: 'all',
-    selectAll: false,
     page: 1,
     size: 1000,
     total: 0,
