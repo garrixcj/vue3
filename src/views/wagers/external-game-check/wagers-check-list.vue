@@ -189,12 +189,12 @@ export default defineComponent({
     // 有提示訊息的Lobby
     const lobbyInfo: { [key: string]: string } = {
       '19': 'wagers_check_lobby19_info',
-      '37': 'wagers_check_lobby37_info',
+      '37': 'wagers_check_pp_info',
       '46': 'wagers_check_lobby46_info',
       '49': 'wagers_check_lobby49_info',
       '52': 'wagers_check_lobby52_info',
       '135': 'wagers_check_lobby135_info',
-      '143': 'wagers_check_lobby143_info',
+      '143': 'wagers_check_pp_info',
     };
 
     const scrollToTop = inject(
