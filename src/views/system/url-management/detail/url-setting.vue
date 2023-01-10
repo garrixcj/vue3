@@ -60,7 +60,7 @@ import {
 export default defineComponent({
   name: 'UrlManagementUrlSettingCard',
   props: {
-    data: { type: Object as PropType<TicketDetailUrl[]>, required: true },
+    data: { type: Array as PropType<TicketDetailUrl[]>, required: true },
   },
   setup(props) {
     // 字典

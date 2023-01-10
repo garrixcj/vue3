@@ -2,7 +2,7 @@
 <template lang="pug">
 rd-dialog(
   :model-value="modelValue"
-  :title="t('batch_add_domain_name')"
+  :title="t('upload_domain')"
   :close-on-click-modal="false"
   width="480px"
   @update:model-value="open($event)"
@@ -21,11 +21,12 @@ rd-dialog(
           :placeholder="textreaPlaceholder"
           resize="none"
           :rows="9"
+          :autosize="{ minRows: 9, maxRows: 15 }"
         )
     //- 顯示列數
     .amount
       span(:class="{ 'is-error': batchForm.content.length > maxRows }") {{ batchForm.content.length }}
-      span {{ ` / ${maxRows}` }}
+      span {{ `／${maxRows}` }}
       span {{ t('result') }}
   template(#footer)
     //- 取消
@@ -80,7 +81,7 @@ export default defineComponent({
             });
           },
         },
-        { trigger: 'change', required: true, message: t('not_null') },
+        { trigger: 'change', required: true, message: t('error_no_domain') },
       ],
     };
 

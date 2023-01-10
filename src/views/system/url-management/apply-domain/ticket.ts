@@ -10,7 +10,7 @@ import type {
   TicketDetailUrl,
   TicketDetailUrlFromApi,
 } from '../detail/detail';
-import keyBy from 'lodash/keyBy';
+import { keyBy } from 'lodash';
 
 // 取得工單相關
 export const useTicket = () => {

@@ -19,7 +19,7 @@ export const getFields = (t: Function) => ({
       name: t('site'),
       visible: true,
       default: true,
-      disabled: true,
+      disabled: false,
     },
     // 後置碼
     {
@@ -27,7 +27,7 @@ export const getFields = (t: Function) => ({
       name: t('suffix'),
       visible: true,
       default: true,
-      disabled: false,
+      disabled: true,
     },
     // 單號
     {

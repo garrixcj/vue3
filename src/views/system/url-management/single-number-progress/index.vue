@@ -15,7 +15,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
     rd-form-item(v-show="form.condition === 'site'" prop="site")
       rd-select(
         v-model:value="form.site"
-        quick-search
+        :quick-search="customSearch"
         :popper-setting="{ width: 'auto' }"
         @change="updateFuzzy"
       )
@@ -29,8 +29,9 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         )
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
-          template(#selected="{ current }")
-            | {{ `${current.label} [${current.option.code}]` }}
+        template(#selected="{ current }")
+          span {{ current?.label || '' }}
+          span(v-if="!!current?.option?.code") {{ `[${current.option.code}]` }}
     //- 廳主
     rd-form-item(v-show="form.condition === 'domain'" prop="domain")
       domain-selector(
@@ -77,9 +78,11 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         type="datetimerange"
         format="YYYY-MM-DD HH:mm:ss"
         value-format="YYYY-MM-DD HH:mm:ss"
+        :disabled-date="disabledDates"
         :range-separator="t('to')"
         :start-placeholder="t('start_date')"
         :end-placeholder="t('end_date')"
+        :default-time="defaultTime"
       )
     //- 搜尋
     rd-form-item
@@ -88,7 +91,12 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         span {{ t('search') }}
     //- 限制設定
     rd-form-item
-      rd-button(type="primary" size="large" @click="restrictionVisible = true") {{ t('setting_limit') }}
+      rd-button(
+        v-if="hasModify"
+        type="primary"
+        size="large"
+        @click="restrictionVisible = true"
+      ) {{ t('restriction') }}
   .search__secondary(v-if="!isBeforeSearch")
     //- 購買方式
     rd-form-item(:label="t('ways_to_purchase')" prop="buy")
@@ -100,7 +108,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.buy"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, progress) in buyOptions"
@@ -117,7 +125,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.management"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, progress) in managementOptions"
@@ -134,7 +142,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.progress"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, progress) in progressListMap"
@@ -151,7 +159,7 @@ rd-form(ref="formRef" inline size="large" :model="form" :rules="rules")
         rd-checkbox-group(
           v-model="form.status"
           size="small"
-          @change="updateQuery(false)"
+          @change="delayUpdateQuery(false)"
         )
           rd-checkbox-button.primary-convert(
             v-for="(info, stauts) in statusListMap"
@@ -177,7 +185,14 @@ table-card(
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted, provide } from 'vue';
+import {
+  defineComponent,
+  reactive,
+  ref,
+  onMounted,
+  provide,
+  inject,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteList } from '../common/list';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
@@ -198,9 +213,10 @@ import {
 } from '@/components/utils/route-watch';
 import { useLoadingStore } from '@/stores/loading';
 import RestrictionDialog from './restriction-dialog.vue';
-import type { Buy, Management } from '../apply/apply';
+import type { Buy, Management } from '../apply-domain/apply';
 import { useModifyAccess } from '@/plugins/access/modify';
-import { flatten, omit } from 'lodash';
+import { flatten, omit, debounce } from 'lodash';
+import dayjs from 'dayjs';
 
 export default defineComponent({
   name: 'SingleNumberProgress', // 網址管理 - 單號進度
@@ -219,7 +235,11 @@ export default defineComponent({
     // 是否顯示限制設定的dialog
     const restrictionVisible = ref(false);
     // 是否有修改權限
-    const { hasModify } = useModifyAccess('ApplicationProgress');
+    const { hasModify } = useModifyAccess('ApplicationProgressRestriction');
+    // 自定義快搜
+    const customSearch = inject<object>('UrlManagement:customSearch');
+    // 處理置頂
+    const scrollToTop = inject('UrlManagement:scrollToTop') as Function;
 
     // 搜尋條件
     const form = reactive<SearchForm>({
@@ -302,6 +322,17 @@ export default defineComponent({
       },
     ];
 
+    // 預設時間
+    const defaultTime = [
+      dayjs().utcOffset(-4).format('YYYY-MM-DD 00:00:00'),
+      dayjs().utcOffset(-4).format('YYYY-MM-DD 23:59:59'),
+    ];
+
+    // 不能設未來時間
+    const disabledDates = (time: Date) => {
+      return dayjs(time.getTime()) > dayjs().utcOffset(-4).startOf('date');
+    };
+
     // 清除form 的 日期條件
     const clearDate = () => {
       form.rangeDate = [];
@@ -340,6 +371,11 @@ export default defineComponent({
       watcher.queryRoute(querySet.getQuery({ ignoreCached }));
     };
 
+    // 更新Query(延遲一定時間才送出)
+    const delayUpdateQuery = debounce((ignoreCached: boolean) => {
+      watcher.queryRoute(querySet.getQuery({ ignoreCached }));
+    }, 1500);
+
     // 提供更新方法給作廢後的資料刷新
     provide('UrlManagement:updateQuery', updateQuery);
 
@@ -363,7 +399,7 @@ export default defineComponent({
       form[formKey] = value ? allOptions : [];
 
       // 觸發搜尋
-      updateQuery(false);
+      delayUpdateQuery(false);
     };
 
     // 驗證規則
@@ -371,7 +407,7 @@ export default defineComponent({
       site: [
         {
           trigger: 'change',
-          asyncValidator: (rule: object, site: string) => {
+          asyncValidator: (rule: never, site: string) => {
             return new Promise<void>((resolve, reject) => {
               if (form.condition === 'site' && !site) {
                 reject(t('not_null'));
@@ -384,7 +420,7 @@ export default defineComponent({
       domain: [
         {
           trigger: 'change',
-          asyncValidator: (rule: object, domain: number) => {
+          asyncValidator: (rule: never, domain: number) => {
             return new Promise<void>((resolve, reject) => {
               if (form.condition === 'domain' && !domain) {
                 reject(t('not_null'));
@@ -397,13 +433,15 @@ export default defineComponent({
       domainName: [
         {
           trigger: 'change',
-          asyncValidator: (rule: object, domain: string) => {
+          asyncValidator: (rule: never, domain: string) => {
             return new Promise<void>((resolve, reject) => {
-              // 當今天只有1~5字(空的不判斷) || 有域名但是卻不符合規則(只能輸入大小寫英文、數字、標點符號的「杠或點」)時錯誤
-              if (
-                (domain.length >= 1 && domain.length < 6) ||
-                (domain && !/^[a-zA-Z\d-/.]+$/.test(domain))
-              ) {
+              // 當今天只有1~5字(空的不判斷)
+              if (domain.length >= 1 && domain.length < 6) {
+                reject(t('input_keyword_at_least', { num: 6 }));
+              }
+
+              // 有域名但是卻不符合規則(只能輸入大小寫英文、數字、標點符號的「杠或點」)時錯誤
+              if (domain && !/^[a-zA-Z\d-/.]+$/.test(domain)) {
                 reject(t('format_error'));
               }
               resolve();
@@ -538,80 +576,102 @@ export default defineComponent({
         cached: true,
         filter: type => type === 'route',
       },
-      // 前端 － 日期的範圍
-      {
-        key: 'rangeDate',
-        get: () => form.rangeDate,
-        set: (val: string[]) => {
-          // 過度期寫法，url在只有單一個值得時候會變成string而非array
-          form.rangeDate = Array.isArray(val) ? val : [val];
-        },
-        filter: (type, target) =>
-          type === 'route' &&
-          arrayFilter('rangeDate', type, target?.current as string),
-        default: [],
-        cached: true,
-      },
-      // 後端 － 申請日期的開始
+      // 前後端 － 申請日期的開始
       {
         key: 'start_date_time',
-        get: () => form.rangeDate[0],
-        // 當今天是getParam且日期類型是申請日期且不為空
-        filter: (type, target) =>
-          type === 'api' &&
-          form.dateType === 'apply' &&
-          arrayFilter('rangeDate', type, target?.current as string),
-        default: [],
+        query: 'applyStart',
+        get: () => (form.rangeDate !== null ? form.rangeDate[0] : ''),
+        set: (val: string) => {
+          // 避免clearable導致null
+          if (form.rangeDate === null) {
+            form.rangeDate = [];
+          }
+
+          if (form.dateType === 'apply') {
+            form.rangeDate[0] = val;
+          }
+        },
+        optional: true,
+        default: '',
         cached: true,
+        // 當日期類型是申請日期
+        filter: () => form.dateType === 'apply',
       },
-      // 後端 － 申請日期的結束
+      // 前後端 － 申請日期的結束
       {
         key: 'end_date_time',
-        get: () => form.rangeDate[1],
-        // 當今天是getParam且日期類型是申請日期且不為空
-        filter: (type, target) =>
-          type === 'api' &&
-          form.dateType === 'apply' &&
-          arrayFilter('rangeDate', type, target?.current as string),
-        default: [],
+        query: 'applyEnd',
+        get: () => (form.rangeDate !== null ? form.rangeDate[1] : ''),
+        set: (val: string) => {
+          // 避免clearable導致null
+          if (form.rangeDate === null) {
+            form.rangeDate = [];
+          }
+
+          if (form.dateType === 'apply') {
+            form.rangeDate[1] = val;
+          }
+        },
+        optional: true,
+        default: '',
         cached: true,
+        // 當日期類型是申請日期
+        filter: () => form.dateType === 'apply',
       },
-      // 後端 － 完成日期的開始
+      // 前後端 － 完成日期的開始
       {
         key: 'finish_start_date_time',
-        get: () => form.rangeDate[0],
-        // 當今天是getParam且日期類型是完成日期且不為空
-        filter: (type, target) =>
-          type === 'api' &&
-          form.dateType === 'finish' &&
-          arrayFilter('rangeDate', type, target?.current as string),
-        default: [],
+        query: 'finishStart',
+        get: () => (form.rangeDate !== null ? form.rangeDate[0] : ''),
+        set: (val: string) => {
+          // 避免clearable導致null
+          if (form.rangeDate === null) {
+            form.rangeDate = [];
+          }
+
+          if (form.dateType === 'finish') {
+            form.rangeDate[0] = val;
+          }
+        },
+        // 當日期類型是完成日期
+        optional: true,
+        default: '',
         cached: true,
+        filter: () => form.dateType === 'finish',
       },
-      // 後端 － 完成日期的結束
+      // 前後端 － 完成日期的結束
       {
         key: 'finish_end_date_time',
-        get: () => form.rangeDate[1],
-        // 當今天是getParam且日期類型是完成日期且不為空
-        filter: (type, target) =>
-          type === 'api' &&
-          form.dateType === 'finish' &&
-          arrayFilter('rangeDate', type, target?.current as string),
-        default: [],
+        query: 'finishEnd',
+        get: () => (form.rangeDate !== null ? form.rangeDate[1] : ''),
+        set: (val: string) => {
+          // 避免clearable導致null
+          if (form.rangeDate === null) {
+            form.rangeDate = [];
+          }
+
+          if (form.dateType === 'finish') {
+            form.rangeDate[1] = val;
+          }
+        },
+        optional: true,
+        default: '',
         cached: true,
+        // 當日期類型是完成日期
+        filter: () => form.dateType === 'finish',
       },
       // 前端 － 購買方式
       {
         key: 'buy',
         get: () => form.buy,
         set: (val: string[]) => {
-          // 過度期寫法，url在只有單一個值得時候會變成string而非array
-          form.buy = Array.isArray(val) ? val : [val];
+          form.buy = val;
         },
         filter: (type, target) =>
           type === 'route' &&
           arrayFilter('buy', type, target?.current as string),
         default: [],
+        array: true,
       },
       // 後端 － 購買方式
       {
@@ -627,13 +687,13 @@ export default defineComponent({
         key: 'management',
         get: () => form.management,
         set: (val: string[]) => {
-          // 過度期寫法，url在只有單一個值得時候會變成string而非array
-          form.management = Array.isArray(val) ? val : [val];
+          form.management = val;
         },
         filter: (type, target) =>
           type === 'route' &&
           arrayFilter('management', type, target?.current as string),
         default: [],
+        array: true,
       },
       // 後端 － 管理權限
       {
@@ -651,13 +711,13 @@ export default defineComponent({
         key: 'progress',
         get: () => form.progress,
         set: (val: string[]) => {
-          // 過度期寫法，url在只有單一個值得時候會變成string而非array
-          form.progress = Array.isArray(val) ? val : [val];
+          form.progress = val;
         },
         filter: (type, target) =>
           type === 'route' &&
           arrayFilter('progress', type, target?.current as string),
         default: [],
+        array: true,
       },
       // 後端 － 域名進度
       {
@@ -674,13 +734,13 @@ export default defineComponent({
         key: 'status',
         get: () => form.status,
         set: (val: string[]) => {
-          // 過度期寫法，url在只有單一個值得時候會變成string而非array
-          form.status = Array.isArray(val) ? val : [val];
+          form.status = val;
         },
         filter: (type, target) =>
           type === 'route' &&
           arrayFilter('status', type, target?.current as string),
         default: [],
+        array: true,
       },
       // 後端 － 單據狀態
       {
@@ -724,7 +784,7 @@ export default defineComponent({
           tableForm.sort = val;
         },
         optional: false,
-        default: 'finished_at',
+        default: 'created_at',
       },
       // 前端 － 排序
       {
@@ -759,6 +819,7 @@ export default defineComponent({
 
       getList(params).then(() => {
         isBeforeSearch.value = false;
+        scrollToTop();
         loading.page = false;
       });
     };
@@ -794,7 +855,7 @@ export default defineComponent({
           form.status = [];
           tableForm.page = 1;
           tableForm.limit = 30;
-          tableForm.sort = 'finished_at';
+          tableForm.sort = 'created_at';
           tableForm.order = 'descending';
 
           updateQuery(true);
@@ -824,7 +885,7 @@ export default defineComponent({
         updateQuery(false);
       },
       // 切換排序
-      changeSort: (event = { prop: 'finished_at', order: 'descending' }) => {
+      changeSort: (event = { prop: 'created_at', order: 'descending' }) => {
         listAction.changePage();
         tableForm.sort = sort[event.prop as keyof typeof sort];
         tableForm.order = event.order;
@@ -864,6 +925,11 @@ export default defineComponent({
       updateQuery,
       exportOptions,
       tableForm,
+      debounce,
+      delayUpdateQuery,
+      customSearch,
+      defaultTime,
+      disabledDates,
     };
   },
 });
@@ -879,5 +945,6 @@ export default defineComponent({
 .checkbox-group {
   @include flex-basic;
   @include space;
+  @include button-group-min-width(90px);
 }
 </style>

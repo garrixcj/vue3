@@ -93,7 +93,7 @@
           type="datetimerange"
           format="YYYY-MM-DD HH:mm:ss"
           value-format="YYYY-MM-DD HH:mm:ss"
-          size="default"
+          size="large"
           :disabled-date="disabledDates"
           :default-time="defaultTime"
           :model-value="form.date"

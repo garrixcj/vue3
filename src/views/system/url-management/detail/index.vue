@@ -48,9 +48,9 @@ rd-navbar-layout(v-loading="loading" no-pre-page :title="t('ticket_detail')")
 import { defineComponent, ref, provide, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { useTicket } from '../apply/ticket';
-import EstimateCard from '../apply/estimate-card.vue';
-import BasicCard from '../apply/basic-card.vue';
+import { useTicket } from '../apply-domain/ticket';
+import EstimateCard from '../apply-domain/estimate-card.vue';
+import BasicCard from '../apply-domain/basic-card.vue';
 import UrlSettingCard from './url-setting.vue';
 import { useSiteList } from '../common/list';
 import {

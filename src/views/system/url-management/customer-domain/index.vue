@@ -5,7 +5,14 @@
 <template lang="pug">
 //- 基本搜尋列
 .header
-  rd-form(ref="formRef" inline :model="form" :rules="rules")
+  rd-form(
+    ref="formRef"
+    inline
+    size="large"
+    :model="form"
+    :rules="rules"
+    @submit.prevent
+  )
     //- 搜尋條件
     rd-form-item(:label="t('search_condition')" prop="type")
       rd-select(
@@ -31,7 +38,7 @@
           template(#suffix)
             | {{ `[ ${option.code} ]` }}
         template(#selected="{ current }")
-          | {{ `${current?.label} [${current?.option.code}]` }}
+          | {{ `${current?.label} [ ${current?.option.code} ]` }}
     //- 廳主
     rd-form-item(
       v-if="displayField('domain')"
@@ -57,6 +64,7 @@
       rd-input.domain-input(
         v-model="form.domainName"
         :placeholder="t('input_keyword_at_least', { num: 6 })"
+        clearable
       )
         template(#append)
           rd-checkbox(disabled :model-value="true") {{ t('fuzzy') }}
@@ -100,6 +108,7 @@
       rd-input(
         v-model="form.ip"
         :placeholder="form.type === 'ip' ? t('please_enter_the_complete_ip_address') : t('not_required')"
+        clearable
       )
     //- 異常地區
     rd-form-item(v-if="displayField('area')" prop="area")
@@ -109,10 +118,10 @@
           i.mdi.mdi-information
           template(#content)
             .tooltip-content
-              div {{ t('abnormal_area_information_1') }}
-              div {{ t('abnormal_area_information_2') }}
+              div ・{{ t('abnormal_area_information_1') }}
+              div ・{{ t('abnormal_area_information_2') }}
               div {{ t('abnormal_area_information_3') }}
-      rd-select(v-model:value="form.area")
+      rd-select(v-model:value="form.area" :quick-search="customSearch")
         rd-option(
           v-for="(option, index) in abnormalAreaOptions"
           :key="index"
@@ -132,16 +141,21 @@
         )
     //- 搜尋
     rd-form-item
-      rd-button(type="search" @click="search")
+      rd-button(type="search" size="large" @click="search")
         i.mdi.mdi-magnify
         span {{ t('search') }}
   .header__footer
     //- 設定範例
     setting-example
     //- 申請域名
-    rd-button.apply-url-btn(type="primary" @click="applyDomainName") {{ t('apply_url') }}
+    rd-button.apply-url-btn(
+      v-if="hasModifyPerm"
+      type="primary"
+      size="large"
+      @click="applyDomainName"
+    ) {{ t('apply_url') }}
 
-before-search-empty(v-show="!searched" :label="t('start_search')")
+before-search(v-if="!searched" :label="t('start_search')")
 //- 進階搜尋列
 advanced-conditions(
   v-if="searched"
@@ -161,7 +175,8 @@ list(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { isEmpty, intersection, orderBy, toInteger } from 'lodash';
+import type { FormInstance } from 'element-plus';
+import { isEmpty, intersection, orderBy, toInteger, debounce } from 'lodash';
 import {
   type Ref,
   defineComponent,
@@ -174,12 +189,13 @@ import {
 } from 'vue';
 import DomainSelector from '@/plugins/domain-selector/index.vue';
 import BatchInput from '@/components/custom/batch-input/index.vue';
-import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
+import BeforeSearch from '@/components/custom/before-search/index.vue';
 import SettingExample from './setting-example.vue';
 import AdvancedConditions from '../common/advanced-conditions.vue';
 import List from './table.vue';
 import { notify } from '@/components/utils/notification';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
+import { useModifyAccess } from '@/plugins/access/modify';
 import {
   type FormType,
   useForm,
@@ -193,14 +209,14 @@ import {
   setExportPermName,
   doExportCustomerDomainNameList,
 } from '../common/export';
-import type { SiteOption } from '../common/list';
+import { type SiteOption, useAdvancedConditionList } from '../common/list';
 import type { ListData, AbnormalStateConditions } from '../common/type';
 
 export default defineComponent({
   name: 'CustomerDomain', // 網址管理 - 客端域名
   components: {
     BatchInput, // 批次搜尋
-    BeforeSearchEmpty, // 搜尋前
+    BeforeSearch, // 搜尋前
     SettingExample, // 設定範例
     DomainSelector, // 廳主下拉
     AdvancedConditions, // 進階搜尋條件
@@ -208,8 +224,12 @@ export default defineComponent({
   },
   setup() {
     const { t, locale } = useI18n({ useScope: 'local' });
+    // 處理置頂
+    const scrollToTop = inject('UrlManagement:scrollToTop') as Function;
     // Loading
     const setLoading = inject('UrlManagement:setLoading') as Function;
+    // 判斷是否客端域名修改權限
+    const { hasModify: hasModifyPerm } = useModifyAccess('CustomerUrl');
     // 已搜尋
     const searched = ref(false);
     // 更新API資料
@@ -231,21 +251,23 @@ export default defineComponent({
       multipleDomains: string[];
     };
 
+    // 域名狀態群組的過濾選項
+    const { getAdvancedConditionsList } = useAdvancedConditionList(
+      locale.value,
+    );
+
     // 進階條件
     const { advancedForm, advancedFormKeys, abnormalStateGroup } =
       useAdvancedConditions();
-    provide('UrlManagement:advancedForm', advancedForm);
-    provide('UrlManagement:abnormalStateGroup', abnormalStateGroup);
 
     // 批次輸入框下拉開關
     const batchInputVisible = ref(false);
-    const formRef = ref();
+    const formRef = ref<FormInstance>();
     // 表單相關
     const { form, initForm } = useForm();
     // 切換搜尋類別
-    const changeType = (value: string) => {
-      initForm();
-      form.type = value;
+    const changeType = () => {
+      clearValid();
     };
     // 表單欄位
     const { displayField, supportSingleDomainName, supportMultipleDomainName } =
@@ -259,6 +281,9 @@ export default defineComponent({
     } = useFormOptions(t);
     // 驗證相關
     const { rules } = useValidationRules(t);
+    const clearValid = () => {
+      formRef.value?.clearValidate();
+    };
 
     const listRef = ref();
     // 列表資料
@@ -541,9 +566,11 @@ export default defineComponent({
           );
         }
       }
-
       // 重置 Scrollbar 位置
+      scrollToTop();
       listRef.value?.scrollTo();
+      // 清除 Select 和關閉批次
+      listRef.value?.selectClear();
     };
     // 過濾列表資料
     const filterData = () => {
@@ -624,10 +651,10 @@ export default defineComponent({
     };
     // 進階條件
     const advancedConditionAct = {
-      change: () => {
+      change: debounce(() => {
         listAct.reset();
         watcher.queryRoute(querySet.getQuery());
-      },
+      }, 1500),
       clear: () => {
         // 還原進階條件
         advancedFormKeys.forEach(key => {
@@ -659,6 +686,14 @@ export default defineComponent({
         params.export_remark = note;
       }
 
+      // 轉換 Sort 的 key
+      const sortField = [
+        { key: 'id', value: 'id' },
+        { key: 'abnormalDate', value: 'abnormal_date' },
+        { key: 'automaticRenewalDate', value: 'renew_date' },
+      ];
+      params.sort = sortField.find(item => item.key === params.sort)?.value;
+
       return doExportCustomerDomainNameList(
         query.type,
         query.site,
@@ -681,14 +716,16 @@ export default defineComponent({
 
     onMounted(() => {
       setLoading(true);
-      Promise.all([getAbnormalAreas()]).then(() => {
-        setLoading(false);
-      });
+      Promise.all([getAdvancedConditionsList(), getAbnormalAreas()]).then(
+        () => {
+          setLoading(false);
+        },
+      );
     });
 
     // 點擊搜尋按鈕
     const search = () => {
-      formRef.value.validate((validate: boolean) => {
+      formRef.value?.validate((validate: boolean) => {
         if (validate) {
           updateApi.value = true;
           // 還原列表條件
@@ -724,6 +761,7 @@ export default defineComponent({
     };
     // route watcher
     watcher.setWatcher((query: FormType) => {
+      formRef.value?.resetFields();
       // 若有Type代表已有搜尋
       if (query.type && query.type !== '') {
         updateList();
@@ -736,6 +774,7 @@ export default defineComponent({
 
     return {
       t,
+      hasModifyPerm,
       // 站別相關
       customSearch,
       siteOptions,
@@ -747,6 +786,7 @@ export default defineComponent({
       form,
       batchInputVisible,
       rules,
+      clearValid,
       typeOptions,
       displayField,
       supportSingleDomainName,

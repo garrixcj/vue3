@@ -1,14 +1,11 @@
-<i18n src="@/languages/system_setting/url_management/common.json"></i18n>
-<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-layout.url-management(
   ref="layoutRef"
   v-model:active-tab="activeTab"
   tab-type="link"
   :menu="currentTabs"
+  :title="t('url_management')"
 )
-  template(#title)
-    h2 {{ t('url_management') }}
   template(#afterTitle)
     //- 站別資訊
     site-information
@@ -44,6 +41,9 @@ rd-layout.url-management(
 </template>
 
 <script lang="ts">
+import { useI18n } from 'vue-i18n';
+import dict from '@/languages/system_setting/url_management/index.json';
+import { useTrans } from '@/plugins/i18n/replace';
 import {
   defineComponent,
   onMounted,
@@ -53,9 +53,8 @@ import {
   type ComponentPublicInstance,
 } from 'vue';
 import { isEmpty } from 'lodash';
-import { useI18n } from 'vue-i18n';
 import { useTabAccess } from '@/plugins/access/view';
-import host from '@/plugins/url';
+import { useHosts } from '@/plugins/url/index';
 import { useLoadingStore } from '@/stores/loading';
 import { match } from '@/components/utils/string-match/index';
 import Teach from '@/plugins/teach-guide/index.vue';
@@ -69,8 +68,6 @@ import SiteInformation from './common/site-information.vue';
 import BetaMessage from './common/beta-message.vue';
 import { RouteWatch } from '@/components/utils/route-watch';
 import { useSiteList } from './common/list';
-import { useDomainList } from '@/plugins/domain-selector/domain';
-import { useAdvancedConditionList } from './common/list';
 
 export default defineComponent({
   name: 'UrlManagement', // 網址管理
@@ -86,7 +83,9 @@ export default defineComponent({
     Teach, // 教學連結
   },
   setup() {
-    const { t, locale } = useI18n({ useScope: 'local' });
+    const { locale } = useI18n({ useScope: 'local' });
+    const { t } = useTrans(dict, locale.value);
+    const { hosts } = useHosts();
     const activeTab = ref('customerDomain');
     const tabs = [
       // 客端域名
@@ -122,7 +121,7 @@ export default defineComponent({
         name: 'applySSL',
         label: t('domain_ssl'),
         perm: 'DomainSSL', // 後續要改回吃新權限
-        href: `${host.rd3}/hall/ssl`,
+        href: `${hosts.rd3}/hall/ssl`,
         newWindow: true,
       },
       // 活躍域名
@@ -191,50 +190,13 @@ export default defineComponent({
     };
     provide('UrlManagement:scrollToTop', scrollToTop);
 
-    // 域名狀態群組的過濾選項
-    const { advancedConditions, getAdvancedConditionsList } =
-      useAdvancedConditionList(locale.value);
-    provide('UrlManagement:advancedConditions', advancedConditions);
-
-    // 取得異常狀態 - 子項目顏色
-    const getAbnormalStateColor = (value: number) => {
-      const failToOpen = advancedConditions.failToOpen;
-      const partiallyOpen = advancedConditions.partiallyOpen;
-      const openable = advancedConditions.openable;
-
-      switch (true) {
-        // 無法開啟
-        case typeof failToOpen.find(item => item.label === value) !==
-          'undefined':
-          return 'danger';
-        // 部分開啟
-        case typeof partiallyOpen.find(item => item.label === value) !==
-          'undefined':
-          return 'warning';
-        // 可開啟
-        case typeof openable.find(item => item.label === value) !== 'undefined':
-          return 'success';
-        // 預設空的
-        default:
-          return '';
-      }
-    };
-    provide('UrlManagement:getAbnormalStateColor', getAbnormalStateColor);
-
     // 站別相關
     const { getSiteList, siteOptions } = useSiteList();
     provide('UrlManagement:siteList', siteOptions);
-    // 廳主列表
-    const { domains, getDomainList } = useDomainList();
-    provide('UrlManagement:domainList', domains);
 
     onMounted(() => {
       loadingStore.page = true;
-      Promise.all([
-        getDomainList(),
-        getSiteList(),
-        getAdvancedConditionsList(),
-      ]).then(() => {
+      Promise.all([getSiteList()]).then(() => {
         loadingStore.page = false;
       });
     });

@@ -1,4 +1,14 @@
 # Build front-end static sources
+# 編譯前腳本 (link等執行腳本)
+.before_build:
+  script:
+    - ln -fs ${APP_ENV}/env.ts src/env/index.ts
+    - ln -fs ${GAMEDICT_STATION}/game/index.js src/languages/gamedict/game.js
+    - ln -fs ${GAMEDICT_STATION}/report/index.js src/languages/gamedict/report.js
+    - ln -fs ${GAMEDICT_STATION}/relate/index.js src/languages/gamedict/relate.js
+    - ln -fs ${GAMEDICT_STATION}/playtype/index.js src/languages/gamedict/playtype.js
+    - ln -fs ${GAMEDICT_STATION}/round_result/index.js src/languages/gamedict/round_result.js
+
 # 編譯前端 dist
 .build_dist:
   image:
@@ -17,7 +27,7 @@
   script:
     - pwd
     - ls -l node_modules/ | wc -l
-    - ln -fs ${APP_ENV}/env.ts src/env/index.ts
+    - !reference [.before_build, script]
     - yarn build 2>&1 | tee build_result.tmp
     - |
       if [[ `grep -w -E "failed" build_result.tmp` ]]

@@ -1,4 +1,3 @@
-<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-layout-content.name-server-teaching
   h2 {{ t('name_server_teaching_title') }}
@@ -15,6 +14,8 @@ rd-layout-content.name-server-teaching
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import dict from '@/languages/system_setting/url_management/index.json';
+import { useTrans } from '@/plugins/i18n/replace';
 import { defineComponent } from 'vue';
 import { ElSteps, ElStep } from 'element-plus';
 
@@ -25,7 +26,8 @@ export default defineComponent({
     ElStep,
   },
   setup() {
-    const { t, locale } = useI18n({ useScope: 'local' });
+    const { locale } = useI18n({ useScope: 'local' });
+    const { t } = useTrans(dict, locale.value);
 
     // 取得語系
     const getLang = locale.value === 'zh-tw' ? 'zh-tw' : 'zh-cn';
