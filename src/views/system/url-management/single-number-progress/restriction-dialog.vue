@@ -2,7 +2,7 @@
 .restriction-dialog(v-loading="loading")
   rd-dialog(
     :model-value="modelValue"
-    :title="t('setting_limit')"
+    :title="t('restriction')"
     :close-on-click-modal="false"
     width="500px"
     @update:model-value="resetAndEmit($event)"
@@ -29,8 +29,10 @@
             i.mdi.mdi-information
         rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.bbin"
+          step-strictly
           :min="minimum"
           :max="bbinMaximum"
+          :value-on-clear="1"
         )
       rd-form-item(prop="domain")
         template(#label)
@@ -42,8 +44,10 @@
             i.mdi.mdi-information
         rd-input-number.default-theme.input-width(
           v-model.number="restrictionNum.domain"
+          step-strictly
           :min="minimum"
           :max="domainMaximum"
+          :value-on-clear="1"
         )
     rd-divider.divider-text(content-position="left") {{ t('preview_results') }}
     rd-alert.size-small(type="success" :closable="false")
@@ -105,13 +109,13 @@ export default defineComponent({
 
     // 根據狀態進行重置並觸發上層值的更新
     const resetAndEmit = (visible: boolean) => {
-      if (!visible) {
-        // 當今天是要關閉時重置form
-        formRef.value.resetFields();
-      }
-
       // 觸發上層更新
       emit('update:model-value', visible);
+
+      if (!visible) {
+        // 當今天是要關閉時清除驗證
+        formRef.value.clearValidate();
+      }
     };
 
     // 驗證規則
@@ -150,9 +154,8 @@ export default defineComponent({
                   title: t('success'),
                   message: t('save_success_setting_limit'),
                 });
-                resetAndEmit(false);
               }
-              loading.value = false;
+              resetAndEmit(false);
             },
           );
         }

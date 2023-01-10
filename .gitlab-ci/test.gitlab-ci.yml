@@ -1,4 +1,14 @@
 # Test front-end before merge to main branch
+# 編譯前腳本 (link等執行腳本)
+.before_test_build:
+  script:
+    - ln -fs dev/env.ts src/env/index.ts
+    - ln -fs qa/game/index.js src/languages/gamedict/game.js
+    - ln -fs qa/report/index.js src/languages/gamedict/report.js
+    - ln -fs qa/relate/index.js src/languages/gamedict/relate.js
+    - ln -fs qa/playtype/index.js src/languages/gamedict/playtype.js
+    - ln -fs qa/round_result/index.js src/languages/gamedict/round_result.js
+
 # 測試前置動作
 .test:
   image:
@@ -7,7 +17,7 @@
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   tags:
-    - local-docker
+    - gce-gitlab-runner-ssd
   only:
     - merge_requests
   cache:
@@ -22,7 +32,7 @@
     - echo 'yarn-offline-mirror ".yarn-cache/"' >> .yarnrc
     - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
     - yarn install --frozen-lockfile --no-progress
-    - ln -fs dev/env.ts src/env/index.ts
+    - !reference [.before_test_build, script]
     - |
       if [[ `test -d node_modules && echo "" || echo "error"` ]]
       then
@@ -52,7 +62,6 @@ test:lint:
   artifacts:
     paths:
       - lint_result.tmp
-  allow_failure: true
 
 # 測試編譯
 test:build:
@@ -70,15 +79,62 @@ test:build:
   artifacts:
     paths:
       - build_result.tmp
-  allow_failure: true
 
 # 測試 console.log 語法是否無刪除
 test:console:
   stage: test
   tags:
-    - local-docker
+    - gce-gitlab-runner-ssd
+  only:
+    - merge_requests
   script:
     - pwd
     - ls -Al
     - if grep -rn --include \*.vue --include \*.js console.log src; then echo "src contains console.log"; exit 1; fi;
-  allow_failure: true
+
+# sync test
+.sync-test:
+  image:
+    name: gcr.io/rd6-project/platform/front/node:v16
+  stage: test
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  tags:
+    - gce-gitlab-runner-ssd
+  only:
+    - triggers
+    - pipelines
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - .yarn-cache/
+      - node_modules/
+  before_script:
+    # check node_modules exist
+    - echo 'yarn-offline-mirror ".yarn-cache/"' >> .yarnrc
+    - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
+    - yarn install --frozen-lockfile --no-progress
+    - !reference [.before_test_build, script]
+    - |
+      if [[ `test -d node_modules && echo "" || echo "error"` ]]
+      then
+          echo "node_modules not found"
+          exit 1
+      fi
+    - pwd
+
+# 合併前測試編譯
+test:sync-build:
+  extends: .sync-test
+  script:
+    - yarn build 2>&1 | tee build_result.tmp
+    - |
+      if [[ `grep -w -E "failed" build_result.tmp` ]]
+      then
+        echo "Build failed"
+        exit 1
+      fi
+    - ls -al
+    - du -sh dist/

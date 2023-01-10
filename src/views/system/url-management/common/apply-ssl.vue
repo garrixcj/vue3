@@ -23,7 +23,7 @@ rd-dialog(
       )
         rd-link(:href="`http://${domainName}`" target="_blank") {{ domainName }}
         span(v-if="index !== domainNameData.length - 1") 、
-    rd-form-item
+    rd-form-item(size="default")
       template(#label)
         span {{ t('automatic_renewal') }}
         rd-tooltip(
@@ -34,8 +34,8 @@ rd-dialog(
           i.mdi.mdi-information
       rd-switch(v-model="form.automaticExtension" :active="applySSLActive")
     //- 備註
-    rd-form-item(:label="t('remark')")
-      rd-input(v-model="form.remark" show-word-limit :maxlength="30")
+    rd-form-item(:label="t('remark')" size="default")
+      rd-input(v-model="form.remark" show-word-limit clearable :maxlength="30")
     rd-form-item
       span {{ t('go_to_old_ssl_msg', { function_name: t('domain_ssl') }) }}
   template(#footer)
@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n';
 import { type PropType, defineComponent, reactive, computed } from 'vue';
 import { isEmpty } from 'lodash';
 import { randomAlphanumeric } from '@/components/utils/random/index';
-import host from '@/plugins/url';
+import { useHosts } from '@/plugins/url/index';
 import type { RemarkDomainNameForm } from './type';
 import { url as urlAPI } from '@/api/domain';
 
@@ -79,6 +79,7 @@ export default defineComponent({
   emits: ['update:visible'],
   setup(props, { emit }) {
     const { t } = useI18n({ useScope: 'local' });
+    const { hosts } = useHosts();
 
     // 表單資料
     const form = reactive({
@@ -116,7 +117,7 @@ export default defineComponent({
         .then(resp => {
           if (resp.data.result) {
             // 前往舊版SSL憑證管理的新增憑證頁面
-            window.open(`${host.rd3}/hall/ssl?add=1&token=${token}`);
+            window.open(`${hosts.rd3}/hall/ssl?add=1&token=${token}`);
           }
         });
     };

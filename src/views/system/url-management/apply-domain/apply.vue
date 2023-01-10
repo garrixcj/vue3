@@ -6,7 +6,7 @@ rd-information(v-show="isApplySite")
     li {{ t('apply_domain_information1') }}
     li {{ t('apply_domain_information2', { num: restrictionNum.bbin, money: 200 }) }}
     li {{ t('apply_domain_information3', { num: restrictionNum.domain }) }}
-rd-navbar-layout(:title="t('apply_url')")
+rd-navbar-layout(ref="layoutRef" no-pre-page :title="t('apply_url')")
   template(#afterTitle)
     //- 站別form
     .after-title
@@ -83,6 +83,7 @@ rd-navbar-layout(:title="t('apply_url')")
 //- 送出前確定的dialog
 rd-dialog(
   v-model="visible.submit"
+  :close-on-click-modal="false"
   :title="t('validation_and_submit')"
   width="430px"
 )
@@ -100,7 +101,12 @@ rd-dialog(
     rd-button(type="secondary" @click="visible.submit = false") {{ t('cancel') }}
     rd-button(type="primary" @click="submit") {{ t('confirm') }}
 //- 尚未儲存的 Dialog
-rd-dialog(v-model="visible.leave" :title="t('not_saved')" width="430px")
+rd-dialog(
+  v-model="visible.leave"
+  :close-on-click-modal="false"
+  :title="t('not_saved')"
+  width="300px"
+)
   span {{ t('not_saved_check_info') }}
   template(#footer)
     rd-button(type="secondary" @click="visible.leave = false") {{ t('cancel') }}
@@ -116,6 +122,7 @@ import {
   inject,
   reactive,
   type PropType,
+  h,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import EstimateCard from './estimate-card.vue';
@@ -128,6 +135,7 @@ import { match } from '@/components/utils/string-match/index';
 import BeforeSearchEmpty from '@/components/custom/before-search/empty.vue';
 import { priceListDict } from '../common/estimate';
 import { useSiteRestriction } from '../single-number-progress/restriction';
+import { notify } from '@/components/utils/notification';
 
 export default defineComponent({
   name: 'UrlManagementDetailApply',
@@ -151,6 +159,8 @@ export default defineComponent({
     const site = inject('UrlManagement:applySite') as Ref<string>;
     // 按鈕是否disable
     const disabledBtn = ref(true);
+    // layout的ref
+    const layoutRef = ref();
     // 基本設定的ref
     const basicFormRef = ref();
     // 編輯狀態的域名設定ref
@@ -263,8 +273,18 @@ export default defineComponent({
         urlFormRef.value.validForm(),
       ]).then(results => {
         // 當全部驗證成功時出現確定的dialog
-        if (results.every(result => result)) {
+        if (results.every(obj => obj.result)) {
           visible.submit = true;
+        } else {
+          notify.error({
+            title: t('error'),
+            message: h('div', {}, [
+              h('div', t('please_fix_error')),
+              ...results
+                .filter((obj: { result: boolean; msg: string }) => obj.msg)
+                .map(obj => h('div', obj.msg)),
+            ]),
+          });
         }
       });
     };
@@ -286,6 +306,9 @@ export default defineComponent({
 
       // 改成已送出
       beforePost.value = false;
+
+      // 將畫面回歸最上方
+      layoutRef.value.scrollTo();
 
       // 降loading
       loading.value = false;
@@ -313,6 +336,8 @@ export default defineComponent({
         ).then(result => {
           if (result) {
             submitCallback();
+          } else {
+            loading.value = false;
           }
         });
       } else {
@@ -333,6 +358,8 @@ export default defineComponent({
         ).then(result => {
           if (result) {
             submitCallback();
+          } else {
+            loading.value = false;
           }
         });
       }
@@ -384,6 +411,7 @@ export default defineComponent({
       visible,
       back,
       urlLoading,
+      layoutRef,
     };
   },
 });

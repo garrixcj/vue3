@@ -85,9 +85,7 @@ export const useI18nTrans = (
   dict: {
     [key: string]: Record<string, string>;
   },
-  options: { [key: string]: unknown },
+  options = {},
 ) => {
-  const { t } = useI18n({ messages: replaceDict(dict), ...options });
-
-  return { t };
+  return useI18n({ messages: replaceDict(dict), ...options });
 };

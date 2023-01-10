@@ -28,7 +28,7 @@ rd-dialog(
           rd-radio(label="cover") {{ t('overwrite_remarks') }}
           rd-radio(label="noRemark") {{ t('only_modify_no_remark') }}
     //- 備註
-    rd-form-item(:label="t('remark')")
+    rd-form-item(:label="t('remark')" size="default")
       rd-input(
         type="textarea"
         :placeholder="t('please_enter_remarks')"
