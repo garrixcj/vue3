@@ -38,7 +38,7 @@ rd-card(no-padding)
       ref="tableRef"
       border
       :data="list"
-      :default-sort="{ prop: 'applyAt', order: 'ascending' }"
+      :default-sort="{ prop: sortProp, order }"
       :row-class-name="selectAct.getRowClass"
       @selection-change="selectAct.change"
       @sort-change="$emit('sortChange', $event)"
@@ -67,7 +67,7 @@ rd-card(no-padding)
         :label="t('site')"
         prop="siteName"
         header-align="center"
-        sortable
+        sortable="custom"
         :resizable="false"
       )
         template(#default="{ row }")
@@ -138,7 +138,7 @@ rd-card(no-padding)
         :label="t('application_date')"
         prop="applyAt"
         header-align="center"
-        sortable
+        sortable="custom"
         :resizable="false"
         width="180"
       )
@@ -150,7 +150,7 @@ rd-card(no-padding)
         :label="t('finished_date')"
         prop="finishAt"
         header-align="center"
-        sortable
+        sortable="custom"
         :resizable="false"
         width="180"
       )
@@ -324,6 +324,14 @@ export default defineComponent({
         abolishable(obj.status, obj.buy, obj.domainList),
       );
     });
+    // 排序key與table prop對照表
+    const sort: Record<string, string> = {
+      site_group: 'siteName',
+      created_at: 'applyAt',
+      finished_at: 'finishAt',
+    };
+    // 以防重整時url與排序對不上，因此將實際的排序設定到default-sort
+    const sortProp = computed(() => sort[props.sort] || '');
     // 表格被選取或是異動時相關動作
     const selectAct = {
       // 當有被選取時觸發
@@ -448,6 +456,7 @@ export default defineComponent({
       exportParams,
       exportData,
       updateQuery,
+      sortProp,
     };
   },
 });
