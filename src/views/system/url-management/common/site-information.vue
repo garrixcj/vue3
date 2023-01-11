@@ -1,4 +1,3 @@
-<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-button(type="default" size="small" @click="visible = !visible") {{ t('site_info') }}
 rd-drawer(
@@ -15,7 +14,7 @@ rd-drawer(
       :rules="drawerRules"
     )
       //- 站別
-      rd-form-item(:label="t('site')" prop="site" inline size="small")
+      rd-form-item.label-color(:label="t('site')" prop="site" inline)
         rd-select(
           v-model:value="drawerForm.site"
           :quick-search="customSearch"
@@ -32,10 +31,10 @@ rd-drawer(
             template(#suffix)
               | {{ `[ ${option.code} ]` }}
           template(#selected="{ current }")
-            | {{ `${current.label} [${current.option.code}]` }}
+            | {{ `${current.label} [ ${current.option.code} ]` }}
       //- 查詢
       rd-form-item
-        rd-button(size="small" @click="search") {{ t('search') }}
+        rd-button(@click="search") {{ t('search') }}
 
   //- 主內容
   before-search-empty(v-if="beforeSearch" :label="t('start_search')")
@@ -47,13 +46,16 @@ rd-drawer(
     rd-grid-table(
       no-header
       :columns="basicInformationColumns"
-      :row="{ size: 'small' }"
+      :row="{ size: 'small', hover: true, separateLine: true }"
+      :grid="{ line: 1, rowGap: 5 }"
       :data-source="basicInformationData"
     )
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import dict from '@/languages/system_setting/url_management/index.json';
+import { useTrans } from '@/plugins/i18n/replace';
 import { isEmpty, keys } from 'lodash';
 import { type Ref, defineComponent, inject, ref, reactive } from 'vue';
 import RdDrawer from '@/components/custom/drawer/index.vue';
@@ -70,7 +72,8 @@ export default defineComponent({
     RdGridTable,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'local' });
+    const { locale } = useI18n({ useScope: 'local' });
+    const { t } = useTrans(dict, locale.value);
     const loading = ref(false);
     // 站別資訊開關
     const visible = ref(false);
@@ -158,18 +161,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.site-information {
-  .site-search {
-    @include space-vertical(15px);
-  }
+.site-search {
+  @include space-vertical(15px);
+}
+.label-color {
+  @include form-label-color($text-3);
+}
+.drawer-body {
+  @include divider-margin(10px, 10px);
 
-  .drawer-body {
-    @include divider-margin(10px, 10px);
-
-    &__category {
-      font-size: 16px;
-      color: $text-3;
-    }
+  &__category {
+    font-size: 16px;
+    color: $text-3;
   }
 }
 </style>

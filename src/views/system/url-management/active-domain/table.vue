@@ -25,6 +25,16 @@ rd-card(no-padding)
       :active="item.value === listCondition.formAngle"
       @click="setListAngle(item.key, item.value)"
     )
+      //- 高風險
+      template(v-if="item.key === 'highRisk'" #label)
+        span {{ t('high_risk') }}
+        rd-tooltip(effect="dark" placement="top")
+          template(#content)
+            div {{ t('high_risk_tooltip') }}
+            div 1. {{ t('negative_growth_of_accessed_domain_name') }}
+            div 2. {{ t('much_login_fail') }}
+            div 3. {{ t('much_ip_repeat') }}
+          i.mdi.mdi-information.tooltip-info
     //- 匯出
     .export(v-if="hasExportPerm && listData.length > 0")
       rd-divider(direction="vertical")
@@ -107,6 +117,7 @@ rd-card(no-padding)
           header-align="center"
           align="center"
           prop="rank"
+          column-key="rank"
           sortable
           :resizable="false"
           width="85"
@@ -118,6 +129,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="requestTotal"
+          column-key="requestTotal"
           sortable
           :resizable="false"
           width="120"
@@ -131,18 +143,20 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="requestRatio"
+          column-key="requestRatio"
           sortable
           :resizable="false"
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.requestRatio) }}
+            span {{ isInteger(row.requestRatio) ? `${groupSeparator(row.requestRatio)}.00` : groupSeparator(row.requestRatio) }}
         //- 成長％數
         rd-table-column(
           :label="t('growing_percent')"
           header-align="center"
           align="right"
           prop="requestGrow"
+          column-key="requestGrow"
           sortable
           :resizable="false"
           width="120"
@@ -150,7 +164,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.requestGrow < 0 && row.requestGrow !== -Infinity }"
-            ) {{ groupSeparator(row.requestGrow) }}
+            ) {{ isInteger(row.requestGrow) ? `${groupSeparator(row.requestGrow)}.00` : groupSeparator(row.requestGrow) }}
       //- 登入成功群組
       rd-table-column(
         :label="t('login_result_1')"
@@ -164,6 +178,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginPassTotal"
+          column-key="loginPassTotal"
           sortable
           :resizable="false"
           width="120"
@@ -177,18 +192,20 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginPassRatio"
+          column-key="loginPassRatio"
           sortable
           :resizable="false"
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.loginPassRatio) }}
+            span {{ isInteger(row.loginPassRatio) ? `${groupSeparator(row.loginPassRatio)}.00` : groupSeparator(row.loginPassRatio) }}
         //- 成長％數
         rd-table-column(
           :label="t('growing_percent')"
           header-align="center"
           align="right"
           prop="loginPassGrow"
+          column-key="loginPassGrow"
           sortable
           :resizable="false"
           width="120"
@@ -196,7 +213,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.loginPassGrow < 0 && row.loginPassGrow !== -Infinity }"
-            ) {{ groupSeparator(row.loginPassGrow) }}
+            ) {{ isInteger(row.loginPassGrow) ? `${groupSeparator(row.loginPassGrow)}.00` : groupSeparator(row.loginPassGrow) }}
       //- 登入失敗群組
       rd-table-column(
         :label="t('login_fail')"
@@ -210,6 +227,7 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginFailTotal"
+          column-key="loginFailTotal"
           sortable
           :resizable="false"
           width="120"
@@ -223,18 +241,20 @@ rd-card(no-padding)
           header-align="center"
           align="right"
           prop="loginFailRatio"
+          column-key="loginFailRatio"
           sortable
           :resizable="false"
           width="120"
         )
           template(#default="{ row }")
-            span {{ groupSeparator(row.loginFailRatio) }}
+            span {{ isInteger(row.loginFailRatio) ? `${groupSeparator(row.loginFailRatio)}.00` : groupSeparator(row.loginFailRatio) }}
         //- 成長％數
         rd-table-column(
           :label="t('growing_percent')"
           header-align="center"
           align="right"
           prop="loginFailGrow"
+          column-key="loginFailGrow"
           sortable
           :resizable="false"
           width="120"
@@ -242,7 +262,7 @@ rd-card(no-padding)
           template(#default="{ row }")
             span(
               :class="{ 'red-font': row.loginFailGrow < 0 && row.loginFailGrow !== -Infinity }"
-            ) {{ groupSeparator(row.loginFailGrow) }}
+            ) {{ isInteger(row.loginFailGrow) ? `${groupSeparator(row.loginFailGrow)}.00` : groupSeparator(row.loginFailGrow) }}
       //- 風險
       rd-table-column(
         :label="t('risk')"
@@ -269,6 +289,7 @@ export-note(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
+import { isInteger } from 'lodash';
 import { type Ref, defineComponent, inject, ref } from 'vue';
 import RdStatusButton from '@/components/custom/status-button/index.vue';
 import RdFieldFilter from '@/components/custom/field-filter/index.vue';
@@ -277,7 +298,7 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import ExportNote from '@/plugins/export-note/index.vue';
-import { activeDomainNameFieldsInitial } from '../common/custom-fields';
+import { initialActiveDomainNameFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type { DomainOption } from '@/plugins/domain-selector/domain';
 import type { ActiveDomainNameListData } from '../common/type';
@@ -310,12 +331,12 @@ export default defineComponent({
     ) as Function;
 
     // 廳主列表
-    const domainList = inject('UrlManagement:domainList') as Ref<
-      DomainOption[]
-    >;
+    const domainList = inject<Ref<DomainOption[]>>(
+      'ActiveDomainName:domainList',
+    );
     // 取得廳主名稱
     const getDomainLabel = (id: number) => {
-      return domainList.value?.find(item => item.value === id)?.label;
+      return domainList?.value.find(item => item.value === id)?.label;
     };
 
     // 原始列表資料
@@ -370,7 +391,7 @@ export default defineComponent({
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(activeDomainNameFieldsInitial(t));
+      useInitCustomField(initialActiveDomainNameFields(t));
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('ActiveUrlExport');
@@ -385,8 +406,13 @@ export default defineComponent({
       emit('export', note);
     };
 
+    // 重置捲軸高度
+    const scrollTo = () => {
+      listRef.value?.setScrollLeft(0);
+    };
     // 封裝外部使用功能
     expose({
+      scrollTo,
       sortClear: sortAct.clear,
       defaultSort: sortAct.defaultSort,
     });
@@ -401,6 +427,7 @@ export default defineComponent({
       groupSeparator,
       getAbnormalStateColor,
       getDomainLabel,
+      isInteger,
       // 切換角度
       listAngleTotalData,
       listAnglesOptions,

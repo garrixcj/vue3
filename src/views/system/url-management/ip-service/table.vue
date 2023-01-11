@@ -35,7 +35,6 @@ rd-card(no-padding)
       border
       :data="listData"
       :default-sort="{ prop: 'id', order: 'ascending' }"
-      :max-height="800"
       :min-width="1248"
     )
       //- 序號
@@ -157,7 +156,7 @@ rd-card(no-padding)
               target="_blank"
             ) {{ item }}
           div(v-else) --
-  template(#footer)
+  template(v-if="listCondition.total > 0" #footer)
     rd-pagination(
       v-model:current-page="listCondition.page"
       background
@@ -165,8 +164,8 @@ rd-card(no-padding)
       :page-size="listCondition.size"
       :page-sizes="[30, 50, 100]"
       :total="listCondition.total"
-      @update:page-size="tableAct.page"
-      @current-change="tableAct.size"
+      @update:page-size="tableAct.size"
+      @current-change="tableAct.page"
     )
 export-note(
   v-model:visible="exportVisible"
@@ -185,7 +184,7 @@ import { ElTable } from 'element-plus';
 import { groupSeparator } from '@/components/utils/format/amount';
 import { useInitCustomField } from '@/plugins/custom-field/custom-field';
 import ExportNote from '@/plugins/export-note/index.vue';
-import { ipServiceFieldsInitial } from '../common/custom-fields';
+import { initialIPServiceFields } from '../common/custom-fields';
 import { useExportAccesses } from '../common/export';
 import type { IPServiceListData } from '../common/type';
 import type { AdvancedConditionsOptions } from '../common/list';
@@ -261,7 +260,7 @@ export default defineComponent({
 
     // 自訂欄位
     const { customOptions, fieldsData, isDisplayedColumns, confirm } =
-      useInitCustomField(ipServiceFieldsInitial(t));
+      useInitCustomField(initialIPServiceFields(t));
 
     // 匯出相關
     const hasExportPerm = useExportAccesses('UrlIpServiceExport');
@@ -292,7 +291,6 @@ export default defineComponent({
 
     // 重置捲軸高度
     const scrollTo = () => {
-      listRef.value?.setScrollTop(0);
       listRef.value?.setScrollLeft(0);
     };
     // 封裝外部使用功能

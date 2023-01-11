@@ -11,6 +11,7 @@ import type { FormType } from '../common/search';
 
 export type ListCondition = {
   formAngle: 'all' | number;
+  selectAll: boolean;
   page: number;
   size: number;
   total: number;
@@ -42,6 +43,7 @@ export const useList = () => {
   // 列表條件
   const listCondition: ListCondition = reactive({
     formAngle: 'all',
+    selectAll: false,
     page: 1,
     size: 1000,
     total: 0,
@@ -161,6 +163,7 @@ export const useList = () => {
   // 建構資料
   const buildData = (item: ListForAPI, key: number) => {
     const result = {
+      selected: false, // 被選中
       id: key, // 流水號
       site: {
         group: item.site_group, // 站別
