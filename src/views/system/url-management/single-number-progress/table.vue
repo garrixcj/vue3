@@ -38,7 +38,7 @@ rd-card(no-padding)
       ref="tableRef"
       border
       :data="list"
-      :default-sort="{ prop: sortProp, order }"
+      :default-sort="{ prop: sort, order }"
       :row-class-name="selectAct.getRowClass"
       @selection-change="selectAct.change"
       @sort-change="$emit('sortChange', $event)"
@@ -65,7 +65,7 @@ rd-card(no-padding)
       rd-table-column(
         v-if="isDisplayedColumns('site')"
         :label="t('site')"
-        prop="siteName"
+        prop="site_group"
         header-align="center"
         sortable="custom"
         :resizable="false"
@@ -136,7 +136,7 @@ rd-card(no-padding)
       rd-table-column(
         v-if="isDisplayedColumns('applyDate')"
         :label="t('application_date')"
-        prop="applyAt"
+        prop="created_at"
         header-align="center"
         sortable="custom"
         :resizable="false"
@@ -148,7 +148,7 @@ rd-card(no-padding)
       rd-table-column(
         v-if="isDisplayedColumns('finishDate')"
         :label="t('finished_date')"
-        prop="finishAt"
+        prop="finished_at"
         header-align="center"
         sortable="custom"
         :resizable="false"
@@ -324,14 +324,6 @@ export default defineComponent({
         abolishable(obj.status, obj.buy, obj.domainList),
       );
     });
-    // 排序key與table prop對照表
-    const sort: Record<string, string> = {
-      site_group: 'siteName',
-      created_at: 'applyAt',
-      finished_at: 'finishAt',
-    };
-    // 以防重整時url與排序對不上，因此將實際的排序設定到default-sort
-    const sortProp = sort[props.sort as keyof typeof sort] || '';
     // 表格被選取或是異動時相關動作
     const selectAct = {
       // 當有被選取時觸發
@@ -456,7 +448,6 @@ export default defineComponent({
       exportParams,
       exportData,
       updateQuery,
-      sortProp,
     };
   },
 });
