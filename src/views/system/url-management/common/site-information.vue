@@ -1,3 +1,4 @@
+<i18n src="@/languages/system_setting/url_management/common.json"></i18n>
 <template lang="pug">
 rd-button(type="default" size="small" @click="visible = !visible") {{ t('site_info') }}
 rd-drawer(
@@ -54,8 +55,6 @@ rd-drawer(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import dict from '@/languages/system_setting/url_management/index.json';
-import { useTrans } from '@/plugins/i18n/replace';
 import { isEmpty, keys } from 'lodash';
 import { type Ref, defineComponent, inject, ref, reactive } from 'vue';
 import RdDrawer from '@/components/custom/drawer/index.vue';
@@ -72,8 +71,7 @@ export default defineComponent({
     RdGridTable,
   },
   setup() {
-    const { locale } = useI18n({ useScope: 'local' });
-    const { t } = useTrans(dict, locale.value);
+    const { t } = useI18n({ useScope: 'local' });
     const loading = ref(false);
     // 站別資訊開關
     const visible = ref(false);

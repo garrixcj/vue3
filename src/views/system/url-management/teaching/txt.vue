@@ -21,7 +21,7 @@ rd-layout-content.txt-teaching
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import dict from '@/languages/system_setting/url_management/index.json';
+import dict from '@/languages/system_setting/url_management/teaching.json';
 import { useTrans } from '@/plugins/i18n/replace';
 import { defineComponent } from 'vue';
 import { ElSteps, ElStep } from 'element-plus';

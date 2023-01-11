@@ -41,7 +41,11 @@ export const useInitCustomField = (fieldsInfo: FieldsInfoType) => {
         const groups = respData.groups[0];
         columnID.value = groups.column_id;
         customOptions.value = fieldsInfo.data
-          .filter(item => Object.values(groups.columns).includes(item.key))
+          .filter(
+            item =>
+              Object.values(groups.columns).includes(item.key) ||
+              (item.disabled && item.visible),
+          )
           .map(item => item.key);
       } else {
         customOptions.value = fieldsInfo.data
