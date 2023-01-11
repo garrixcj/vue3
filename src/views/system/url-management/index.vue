@@ -1,3 +1,4 @@
+<i18n src="@/languages/system_setting/url_management/index.json"></i18n>
 <template lang="pug">
 rd-layout.url-management(
   ref="layoutRef"
@@ -42,8 +43,6 @@ rd-layout.url-management(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import dict from '@/languages/system_setting/url_management/index.json';
-import { useTrans } from '@/plugins/i18n/replace';
 import {
   defineComponent,
   defineAsyncComponent,
@@ -96,8 +95,7 @@ export default defineComponent({
     ),
   },
   setup() {
-    const { locale } = useI18n({ useScope: 'local' });
-    const { t } = useTrans(dict, locale.value);
+    const { t } = useI18n({ useScope: 'local' });
     const { hosts } = useHosts();
     const activeTab = ref('customerDomain');
     const tabs = [

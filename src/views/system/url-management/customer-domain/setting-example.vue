@@ -79,8 +79,6 @@ rd-drawer(
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import dict from '@/languages/system_setting/url_management/index.json';
-import { useTrans } from '@/plugins/i18n/replace';
 import { replace } from 'lodash';
 import { type Ref, defineComponent, inject, ref, reactive } from 'vue';
 import RdDrawer from '@/components/custom/drawer/index.vue';
@@ -99,8 +97,7 @@ export default defineComponent({
     RdCollapseCard,
   },
   setup() {
-    const { locale } = useI18n({ useScope: 'local' });
-    const { t } = useTrans(dict, locale.value);
+    const { t } = useI18n({ useScope: 'parent' });
     const loading = ref(false);
     // 站別資訊開關
     const visible = ref(false);
