@@ -331,7 +331,7 @@ export default defineComponent({
       finished_at: 'finishAt',
     };
     // 以防重整時url與排序對不上，因此將實際的排序設定到default-sort
-    const sortProp = computed(() => sort[props.sort] || '');
+    const sortProp = sort[props.sort as keyof typeof sort] || '';
     // 表格被選取或是異動時相關動作
     const selectAct = {
       // 當有被選取時觸發
