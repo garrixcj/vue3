@@ -209,7 +209,6 @@ export default defineComponent({
           form.date = val;
         },
         default: [],
-        optional: true,
         cached: true,
         array: true,
       },
