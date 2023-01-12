@@ -32,6 +32,10 @@ export const useInitCustomField = (fieldsInfo: FieldsInfoType) => {
   const customOptions = ref([] as string[]);
   const columnID = ref(0);
   const fieldsData = fieldsInfo.data;
+  // 先塞入預設開的欄位，用於解決table v-if導致default-sort無用
+  customOptions.value = fieldsData
+    .filter(item => item.default)
+    .map(item => item.key);
 
   // 取目前自訂欄位設定
   const getOperateCustomFields = () => {
@@ -41,7 +45,11 @@ export const useInitCustomField = (fieldsInfo: FieldsInfoType) => {
         const groups = respData.groups[0];
         columnID.value = groups.column_id;
         customOptions.value = fieldsInfo.data
-          .filter(item => Object.values(groups.columns).includes(item.key))
+          .filter(
+            item =>
+              Object.values(groups.columns).includes(item.key) ||
+              (item.disabled && item.visible),
+          )
           .map(item => item.key);
       } else {
         customOptions.value = fieldsInfo.data
