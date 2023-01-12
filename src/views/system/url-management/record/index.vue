@@ -106,6 +106,7 @@ import dayjs from 'dayjs';
 import { useLoadingStore } from '@/stores/loading';
 import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
 import { formatCheck } from '@/components/utils/validator/validator';
+import { normalize } from '@/components/utils/format/ip';
 import BeforeSearch from '@/components/custom/before-search/index.vue';
 import { url } from '@/api/domain';
 import { useSiteList } from '../common/list';
@@ -133,7 +134,7 @@ export default defineComponent({
     const customSearch = inject<object>('UrlManagement:customSearch');
 
     const disabledDate = (time: Date) => {
-      return dayjs(time).isAfter(dayjs(), 'day');
+      return dayjs(time).diff(dayjs().utcOffset(-4), 'day', true) > 0;
     };
 
     // 搜尋相關
@@ -164,6 +165,8 @@ export default defineComponent({
         return new Promise<void>((resolve, reject) => {
           if (value !== '' && value.length < 6) {
             reject(t('input_keyword_at_least', { num: 6 }));
+          } else if (!/^([A-Za-z0-9.-]*)$/.test(value)) {
+            reject(t('format_error'));
           } else {
             resolve();
           }
@@ -172,7 +175,7 @@ export default defineComponent({
       ticketID(rule: unknown, value: string) {
         return new Promise<void>((resolve, reject) => {
           if (value !== '' && !/^([1-9][0-9]*)$/.test(value)) {
-            reject(t('please_enter_trans_number'));
+            reject(t('format_error'));
           } else {
             resolve();
           }
@@ -186,7 +189,13 @@ export default defineComponent({
             !formatCheck(value, 'ipv4') &&
             !formatCheck(value, 'ipv6')
           ) {
-            reject(t('please_enter_the_complete_ip_address'));
+            reject(t('format_error'));
+          } else if (
+            value !== '' &&
+            keywordType.value === 'operator' &&
+            !/^([a-z0-9_]*)$/.test(value)
+          ) {
+            reject(t('format_error'));
           } else {
             resolve();
           }
@@ -265,7 +274,7 @@ export default defineComponent({
         options.operator = form.keyword;
       }
       if (form.keyword !== '' && keywordType.value === 'ip') {
-        options.ip = form.keyword;
+        options.ip = normalize(form.keyword);
       }
       if (form.page > 0 && form.limit > 0) {
         options.page = form.page;
