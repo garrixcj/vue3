@@ -422,6 +422,7 @@ export default defineComponent({
       // 狀態搜尋
       status(status = 'binding') {
         form.type = status;
+        tableSearch.page(1);
         search();
       },
       // 頁數搜尋
