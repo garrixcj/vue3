@@ -162,6 +162,7 @@ export const useList = () => {
   const buildData = (item: ListForAPI, key: number) => {
     const result = {
       selected: false, // 被選中
+      disabled: false, // 禁能
       id: key, // 流水號
       site: {
         group: item.site_group, // 站別

@@ -20,6 +20,7 @@ export type AdvancedConditionsType =
 // 列表資料
 export type ListData = {
   selected?: boolean;
+  disabled?: boolean;
   id: number;
   site: {
     group: string;
