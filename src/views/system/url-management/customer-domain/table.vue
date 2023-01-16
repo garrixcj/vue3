@@ -3,8 +3,8 @@ rd-card(no-padding)
   template(#header)
     batch-mode(
       v-if="showBatchMode"
-      v-model:visible="batchModuleData.visible"
-      :count="batchModuleData.selected.length"
+      v-model:visible="batchModuleData.selected"
+      :count="batchModuleData.selectedRow.length"
       :style="getBatchModuleWidth"
       @change="clickBatchModule"
     )
@@ -16,7 +16,7 @@ rd-card(no-padding)
           size="small"
           text
           :disabled="batchApplySSLValue === 0"
-          @click="openDialog(batchModuleData.selected, 'batchApplySSL')"
+          @click="openDialog(batchModuleData.selectedRow, 'batchApplySSL')"
         )
           | {{ t('go_to_apply_ssl_certificate') }}({{ batchApplySSLValue }})
         //- 編輯備註
@@ -25,10 +25,10 @@ rd-card(no-padding)
           type="default"
           size="small"
           text
-          :disabled="batchModuleData.selected.length === 0"
-          @click="openDialog(batchModuleData.selected, 'batchRemark')"
+          :disabled="batchModuleData.selectedRow.length === 0"
+          @click="openDialog(batchModuleData.selectedRow, 'batchRemark')"
         )
-          div {{ t('edit_remark') }}({{ batchModuleData.selected.length }})
+          div {{ t('edit_remark') }}({{ batchModuleData.selectedRow.length }})
     rd-divider(v-if="showUpdateDNS" direction="vertical")
     //- 更新DNS資訊
     rd-button(
@@ -126,28 +126,28 @@ rd-card(no-padding)
       v-else
       ref="listRef"
       :columns="tableColumns"
-      :selection="batchModuleData.visible"
-      :noData="{ show: listCondition.total === 0 }"
+      :selection="batchModuleData.selected"
       :default-sort="defaultSort"
+      :filter-column="isDisplayedColumns"
       :disabled="listCondition.total === 0"
       :data-source="listData"
       @selection-change="selectAct.change"
       @sort-change="tableAct.sort"
     )
       //- 序號
-      template(v-if="isDisplayedColumns('id')" #id="{ row }")
+      template(#id="{ row }")
         span {{ row.id + 1 }}
       //- 站別
-      template(v-if="isDisplayedColumns('site')" #site="{ row }")
+      template(#site="{ row }")
         span {{ row.site.name }}
       //- 後置碼
-      template(v-if="isDisplayedColumns('suffix')" #suffix="{ row }")
+      template(#suffix="{ row }")
         span @{{ row.suffix }}
       //- 域名
-      template(v-if="isDisplayedColumns('domainName')" #domainName="{ row }")
+      template(#domainName="{ row }")
         rd-link(:href="`http://${row.domainName}`" target="_blank") {{ row.domainName }}
       //- 網址狀態
-      template(v-if="isDisplayedColumns('urlStatus')" #urlStatus="{ row }")
+      template(#urlStatus="{ row }")
         rd-dropdown(
           :label="row.urlStatus.status ? t('normal') : t('abnormal')"
           size="small"
@@ -165,10 +165,7 @@ rd-card(no-padding)
                 rd-badge(:type="item.type" is-dot)
                 span.dropdown-span(:class="{ 'url-color': item.url !== '' }") {{ item.label }}
       //- 異常狀態
-      template(
-        v-if="isDisplayedColumns('abnormalState')"
-        #abnormalState="{ row }"
-      )
+      template(#abnormalState="{ row }")
         span(v-if="row.abnormalState.length > 0")
           rd-tag.tag-container(
             v-for="(item, index) in row.abnormalState"
@@ -178,72 +175,54 @@ rd-card(no-padding)
           ) {{ t(`url_abnormal_state_tag_${item}`) }}
         span(v-else) --
       //- 最近異常日
-      template(
-        v-if="isDisplayedColumns('abnormalDate')"
-        #abnormalDate="{ row }"
-      )
+      template(#abnormalDate="{ row }")
         rd-format-timer(
           :date-default="row.abnormalDate !== '' ? row.abnormalDate : '--'"
         )
       //- 服務項目
-      template(v-if="isDisplayedColumns('service')" #service="{ row }")
+      template(#service="{ row }")
         span(v-if="row.service.length > 0")
           div(v-for="(item, index) in row.service" :key="index") {{ t(`url_service_items_tag_${item}`) }}
         span(v-else) --
       //- 域名狀態
-      template(
-        v-if="isDisplayedColumns('domainNameStatus')"
-        #domainNameStatus="{ row }"
-      )
+      template(#domainNameStatus="{ row }")
         span(v-if="row.domainNameStatus.length > 0")
           div(v-for="(item, index) in row.domainNameStatus" :key="index") {{ t(`domain_name_status_tag_${item}`) }}
         span(v-else) --
       //- 憑證狀態
-      template(v-if="isDisplayedColumns('sslStatus')" #sslStatus="{ row }")
+      template(#sslStatus="{ row }")
         span(v-if="row.sslStatus > 0") {{ t(`ssl_status_tag_${row.sslStatus}`) }}
         span(v-else) --
       //- IP
-      template(v-if="isDisplayedColumns('ip')" #ip="{ row }")
+      template(#ip="{ row }")
         span(v-if="row.ip !== ''") {{ row.ip }}
         span(v-else) --
       //- 域名到期日
-      template(
-        v-if="isDisplayedColumns('automaticRenewalDate')"
-        #automaticRenewalDate="{ row }"
-      )
+      template(#automaticRenewalDate="{ row }")
         rd-format-timer(
           :date-default="row.automaticRenewalDate !== '' ? row.automaticRenewalDate : '--'"
         )
       //- 系統檢測
-      template(
-        v-if="isDisplayedColumns('systemDetection')"
-        #systemDetection="{ row }"
-      )
+      template(#systemDetection="{ row }")
         span(v-if="row.systemDetection !== ''") {{ row.systemDetection }}
         span(v-else) --
       //- 異常地區
-      template(
-        v-if="isDisplayedColumns('abnormalArea')"
-        #abnormalArea="{ row }"
-      )
+      template(#abnormalArea="{ row }")
         span(
           v-if="typeof row.abnormalArea !== 'undefined' && row.abnormalArea.length > 0"
         )
           div(v-for="(item, index) in row.abnormalArea" :key="index") {{ item }}
         span(v-else) --
       //- 管理
-      template(v-if="isDisplayedColumns('manage')" #manage="{ row }")
+      template(#manage="{ row }")
         span(v-if="row.manage !== null") {{ t(`manage_tag_${row.manage}`) }}
         span(v-else) --
       //- 上層指向
-      template(
-        v-if="isDisplayedColumns('previousNode')"
-        #previousNode="{ row }"
-      )
+      template(#previousNode="{ row }")
         span(v-if="row.previousNode") {{ t(`url_service_items_tag_${row.previousNode}`) }}
         span(v-else) --
       //- 備註
-      template(v-if="isDisplayedColumns('remark')" #remark="{ row }")
+      template(#remark="{ row }")
         .remark-content
           span(v-if="row.remark !== ''") {{ row.remark }}
           span(v-else) --
@@ -257,7 +236,7 @@ rd-card(no-padding)
           )
             i.mdi.mdi-pencil
       //- 操作
-      template(v-if="isDisplayedColumns('operating')" #operating="{ row }")
+      template(#operating="{ row }")
         //- 申請憑證
         rd-button(
           type="default"
@@ -460,37 +439,41 @@ export default defineComponent({
 
     // 批次模組資料
     const batchModuleData: BatchModule = reactive({
-      visible: false,
-      selected: [],
+      selected: false,
+      selectedRow: [],
     });
 
     const selectAct = {
       change: (val: ListData[]) => {
-        batchModuleData.selected = val;
+        batchModuleData.selectedRow = val;
       },
       clear: () => {
         listRef.value?.clear();
-        batchModuleData.visible = false;
-        batchModuleData.selected = [];
+        batchModuleData.selected = false;
+        batchModuleData.selectedRow = [];
         listData.value.forEach(item => {
           const result = item;
           result.selected = false;
         });
       },
       getRowClass: ({ row }: { row: ListData }) =>
-        batchModuleData.selected.find(selectedRow => selectedRow.id === row.id)
+        batchModuleData.selectedRow.find(
+          selectedRow => selectedRow.id === row.id,
+        )
           ? 'selected-row'
           : '',
       // 單選
       select: () => {
-        batchModuleData.selected = listData.value.filter(item => item.selected);
+        batchModuleData.selectedRow = listData.value.filter(
+          item => item.selected,
+        );
       },
       // 全選
       selectAll: (val: boolean) => {
         // 判斷已勾選資料(預設清空)
-        batchModuleData.selected = [];
+        batchModuleData.selectedRow = [];
         if (val) {
-          batchModuleData.selected = listData.value;
+          batchModuleData.selectedRow = listData.value;
         }
         // 更改列表單一項目被選中狀態
         listData.value.forEach(item => {
@@ -660,7 +643,7 @@ export default defineComponent({
     };
     // 批次可申請憑證數量
     const batchApplySSLValue = computed(() => {
-      return batchModuleData.selected.filter(item => item.applySSLEnable)
+      return batchModuleData.selectedRow.filter(item => item.applySSLEnable)
         .length;
     });
     // 顯示批次模組
@@ -672,7 +655,7 @@ export default defineComponent({
     });
     // 取得批次模組最小寬度
     const getBatchModuleWidth = computed(() => {
-      if (batchModuleData.visible) {
+      if (batchModuleData.selected) {
         return { 'min-width': hasApplySSLModifyPerm.value ? '440px' : '305px' };
       }
       return {};

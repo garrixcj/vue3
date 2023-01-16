@@ -103,8 +103,8 @@ export type UrlStatusOption = {
 
 // 批次模式
 type BatchModule = {
-  visible: boolean;
-  selected: ListData[];
+  selected: boolean;
+  selectedRow: ListData[];
 };
 
 // IP服務 - 列表資料

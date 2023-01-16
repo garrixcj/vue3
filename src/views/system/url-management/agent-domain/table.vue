@@ -3,8 +3,8 @@ rd-card(no-padding)
   template(#header)
     batch-mode(
       v-if="showBatchMode"
-      v-model:visible="batchModuleData.visible"
-      :count="batchModuleData.selected.length"
+      v-model:visible="batchModuleData.selected"
+      :count="batchModuleData.selectedRow.length"
       :style="getBatchModuleWidth"
       @change="clickBatchModule"
     )
@@ -16,7 +16,7 @@ rd-card(no-padding)
           size="small"
           text
           :disabled="batchApplySSLValue === 0"
-          @click="openDialog(batchModuleData.selected, 'batchApplySSL')"
+          @click="openDialog(batchModuleData.selectedRow, 'batchApplySSL')"
         )
           | {{ t('go_to_apply_ssl_certificate') }}({{ batchApplySSLValue }})
         //- 編輯備註
@@ -25,10 +25,10 @@ rd-card(no-padding)
           type="default"
           size="small"
           text
-          :disabled="batchModuleData.selected.length === 0"
-          @click="openDialog(batchModuleData.selected, 'batchRemark')"
+          :disabled="batchModuleData.selectedRow.length === 0"
+          @click="openDialog(batchModuleData.selectedRow, 'batchRemark')"
         )
-          div {{ t('edit_remark') }}({{ batchModuleData.selected.length }})
+          div {{ t('edit_remark') }}({{ batchModuleData.selectedRow.length }})
     rd-divider(v-if="showBatchMode" direction="vertical")
     //- 自訂欄位
     rd-field-filter(
@@ -58,7 +58,7 @@ rd-card(no-padding)
       @sort-change="tableAct.sort"
     )
       rd-table-column(
-        v-if="batchModuleData.visible"
+        v-if="batchModuleData.selected"
         type="selection"
         align="center"
         :resizable="false"
@@ -385,12 +385,12 @@ export default defineComponent({
 
     // 批次模組資料
     const batchModuleData: BatchModule = reactive({
-      visible: false,
-      selected: [],
+      selected: false,
+      selectedRow: [],
     });
     // 批次可申請憑證數量
     const batchApplySSLValue = computed(() => {
-      return batchModuleData.selected.filter(item => item.applySSLEnable)
+      return batchModuleData.selectedRow.filter(item => item.applySSLEnable)
         .length;
     });
     // 顯示批次模組
@@ -399,7 +399,7 @@ export default defineComponent({
     });
     // 取得批次模組最小寬度
     const getBatchModuleWidth = computed(() => {
-      if (batchModuleData.visible) {
+      if (batchModuleData.selected) {
         return { 'min-width': hasApplySSLModifyPerm.value ? '440px' : '305px' };
       }
       return {};
@@ -407,15 +407,17 @@ export default defineComponent({
 
     const selectAct = {
       change: (val: ListData[]) => {
-        batchModuleData.selected = val;
+        batchModuleData.selectedRow = val;
       },
       clear: () => {
         listRef.value?.clearSelection();
-        batchModuleData.visible = false;
-        batchModuleData.selected = [];
+        batchModuleData.selected = false;
+        batchModuleData.selectedRow = [];
       },
       getRowClass: ({ row }: { row: ListData }) =>
-        batchModuleData.selected.find(selectedRow => selectedRow.id === row.id)
+        batchModuleData.selectedRow.find(
+          selectedRow => selectedRow.id === row.id,
+        )
           ? 'selected-row'
           : '',
     };
@@ -452,7 +454,7 @@ export default defineComponent({
         listRef.value?.clearSort();
       },
       updateApi: () => {
-        batchModuleData.visible = false;
+        batchModuleData.selected = false;
         emit('update', true);
       },
     };
