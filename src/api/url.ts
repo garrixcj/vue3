@@ -366,7 +366,7 @@ export const ssl = {
   },
 };
 // 匯出系列
-export const toExport = {
+export const download = {
   http,
   /**
    * 匯出工單列表
@@ -819,7 +819,7 @@ const url = {
   ...list,
   ...ticket,
   ...ssl,
-  ...toExport,
+  ...download,
   ...setting,
 };
 export default url;
