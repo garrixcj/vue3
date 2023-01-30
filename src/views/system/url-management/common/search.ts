@@ -3,7 +3,7 @@ import { isEmpty, keys } from 'lodash';
 import dayjs from 'dayjs';
 import { formatCheck } from '@/components/utils/validator/validator';
 import type { AdvancedConditionsType, AbnormalStateConditions } from './type';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 
 export type FormType = {
   type: string;

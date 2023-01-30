@@ -1,7 +1,7 @@
 import commonDict from '@/languages/system_setting/url_management/common.json';
 import { provide, ref, reactive } from 'vue';
 import { useTrans } from '@/plugins/i18n/replace';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 import type { AdvancedConditionsType } from './type';
 
 // 站別資訊

@@ -50,7 +50,7 @@ import { isEmpty } from 'lodash';
 import { randomAlphanumeric } from '@/components/utils/random/index';
 import { useHosts } from '@/plugins/url/index';
 import type { RemarkDomainNameForm } from './type';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 
 type Data = {
   action: string;
