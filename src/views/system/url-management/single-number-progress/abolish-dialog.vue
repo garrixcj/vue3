@@ -35,7 +35,7 @@ import { useI18n } from 'vue-i18n';
 import { notify } from '@/components/utils/notification';
 import type { AbolishAction, AbolishList } from './single-number-progress';
 import RdCollapseCard from '@/components/custom/collapse-card/index.vue';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 
 export default defineComponent({
   name: 'UrlManagementAbolishDialog',

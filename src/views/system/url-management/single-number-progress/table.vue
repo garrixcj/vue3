@@ -258,7 +258,7 @@ import AbolishDialog from './abolish-dialog.vue';
 import type { SiteOption } from '../common/list';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { useAccesses } from '@/plugins/access/view';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 import { notify } from '@/components/utils/notification';
 import { setExportPermName } from '../common/export';
 

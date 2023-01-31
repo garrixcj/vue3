@@ -5,7 +5,7 @@ import type {
   SearchOptions,
   SearchTable,
 } from './single-number-progress';
-import { url as urlAPI } from '@/api/domain';
+import { ticket as urlAPI } from '@/api/url';
 import { Buy, Management } from '../apply-domain/apply';
 
 // 購買方式前後端對照表
