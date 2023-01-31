@@ -76,7 +76,9 @@
               ) {{ t('domain') }}
               span(v-else) {{ t('domain_sub_account') }}
             .column__operator
-              span(v-if="row.operator_site !== 3") {{ row.operator }}
+              span(v-if="row.operator_site !== 3")
+                span(v-if="row.is_exist") {{ row.operator }}
+                rd-tag.tag-advanced(v-else size="small") {{ t('account_not_exist') }}
         rd-table-column(
           :label="t('operator_ip')"
           header-align="center"
@@ -229,3 +231,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.tag-advanced {
+  @include tag-color($text-4);
+}
+</style>

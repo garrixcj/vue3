@@ -380,7 +380,6 @@ export default defineComponent({
           form.ip = val;
         },
         default: '',
-        filter: () => !isEmpty(form.ip),
         optional: true,
         cached: true,
       },

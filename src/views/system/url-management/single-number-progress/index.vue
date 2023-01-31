@@ -261,7 +261,7 @@ export default defineComponent({
     const tableForm = reactive<SearchTable>({
       page: 1,
       limit: 30,
-      sort: 'finished_at',
+      sort: 'created_at',
       order: 'descending',
     });
 
@@ -779,6 +779,7 @@ export default defineComponent({
       // 前後端 － 排序欄位
       {
         key: 'sort',
+        query: 'sort',
         get: () => tableForm.sort,
         set: (val: string) => {
           tableForm.sort = val;
@@ -863,12 +864,6 @@ export default defineComponent({
       });
     };
 
-    // 欄位與排序key對照表
-    const sort = {
-      siteName: 'site_group',
-      applyAt: 'created_at',
-      finishAt: 'finished_at',
-    };
     // 列表相關動作
     const listAction = {
       // 切換頁數
@@ -887,8 +882,8 @@ export default defineComponent({
       // 切換排序
       changeSort: (event = { prop: 'created_at', order: 'descending' }) => {
         listAction.changePage();
-        tableForm.sort = sort[event.prop as keyof typeof sort];
-        tableForm.order = event.order;
+        tableForm.sort = event.prop;
+        tableForm.order = event.order || 'descending';
 
         updateQuery(false);
       },

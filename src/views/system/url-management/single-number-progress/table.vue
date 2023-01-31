@@ -38,7 +38,7 @@ rd-card(no-padding)
       ref="tableRef"
       border
       :data="list"
-      :default-sort="{ prop: 'applyAt', order: 'ascending' }"
+      :default-sort="{ prop: sort, order }"
       :row-class-name="selectAct.getRowClass"
       @selection-change="selectAct.change"
       @sort-change="$emit('sortChange', $event)"
@@ -65,9 +65,9 @@ rd-card(no-padding)
       rd-table-column(
         v-if="isDisplayedColumns('site')"
         :label="t('site')"
-        prop="siteName"
+        prop="site_group"
         header-align="center"
-        sortable
+        sortable="custom"
         :resizable="false"
       )
         template(#default="{ row }")
@@ -136,9 +136,9 @@ rd-card(no-padding)
       rd-table-column(
         v-if="isDisplayedColumns('applyDate')"
         :label="t('application_date')"
-        prop="applyAt"
+        prop="created_at"
         header-align="center"
-        sortable
+        sortable="custom"
         :resizable="false"
         width="180"
       )
@@ -148,9 +148,9 @@ rd-card(no-padding)
       rd-table-column(
         v-if="isDisplayedColumns('finishDate')"
         :label="t('finished_date')"
-        prop="finishAt"
+        prop="finished_at"
         header-align="center"
-        sortable
+        sortable="custom"
         :resizable="false"
         width="180"
       )
@@ -258,7 +258,7 @@ import AbolishDialog from './abolish-dialog.vue';
 import type { SiteOption } from '../common/list';
 import { useModifyAccess } from '@/plugins/access/modify';
 import { useAccesses } from '@/plugins/access/view';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 import { notify } from '@/components/utils/notification';
 import { setExportPermName } from '../common/export';
 

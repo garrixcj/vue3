@@ -420,7 +420,7 @@ import type {
   RemarkDomainNameForm,
 } from '../common/type';
 import type { ListCondition } from './list';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 
 type ListAngles = 'all' | 'normal' | 'abnormal' | 'noDomainName';
 type ListAnglesValue = 'all' | 1 | 2 | 3;

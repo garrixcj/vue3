@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 import type {
   IPServiceListData,
   IPServiceListDataForAPI,

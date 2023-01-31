@@ -68,6 +68,7 @@ import { defineComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSiteRestriction } from './restriction';
 import { notify } from '@/components/utils/notification';
+import http from '@/http';
 
 export default defineComponent({
   name: 'UrlManagementLimitDialog',
@@ -147,6 +148,7 @@ export default defineComponent({
       formRef.value.validate((valid: boolean) => {
         if (valid) {
           loading.value = true;
+          http.setHeadersPermName('ApplicationProgressRestriction');
           putRestriction(restrictionNum.bbin, restrictionNum.domain).then(
             result => {
               if (result) {
@@ -156,6 +158,7 @@ export default defineComponent({
                 });
               }
               resetAndEmit(false);
+              http.setHeadersPermName('ApplicationProgress');
             },
           );
         }

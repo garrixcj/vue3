@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 
 // 站別詳細資料
 export type SiteDetail =

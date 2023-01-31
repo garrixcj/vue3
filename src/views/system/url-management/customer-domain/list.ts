@@ -1,6 +1,6 @@
 import { ref, reactive } from 'vue';
 import { values, isEmpty, groupBy, forIn, trimEnd } from 'lodash';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 import type {
   ListData,
   ListDataForAPI,
