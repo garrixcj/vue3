@@ -56,7 +56,7 @@ import {
 } from 'vue';
 import { notify } from '@/components/utils/notification';
 import type { RemarkDomainNameForm } from './type';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 
 type Data = {
   action: string;

@@ -1,5 +1,5 @@
 import { reactive, ref } from 'vue';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 import type {
   CallbackUrlList,
   PostApplyFailedResp,

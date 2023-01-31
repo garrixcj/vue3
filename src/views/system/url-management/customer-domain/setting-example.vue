@@ -87,7 +87,7 @@ import RdCollapseCard from '@/components/custom/collapse-card/index.vue';
 import { useCopy } from '@/components/utils/copy';
 import { notify } from '@/components/utils/notification';
 import type { SiteOption } from '../common/list';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 
 export default defineComponent({
   name: 'SettingExample', // 網址管理 - 設定範例

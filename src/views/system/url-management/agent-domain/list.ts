@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue';
-import { url as urlAPI } from '@/api/domain';
+import urlAPI from '@/api/url';
 import type { ListData, ListDataForAPI, ListForAPI } from '../common/type';
 import type { FormType } from '../common/search';
 

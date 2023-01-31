@@ -108,7 +108,7 @@ import { useTabWatcher, useQuery } from '@/components/utils/route-watch';
 import { formatCheck } from '@/components/utils/validator/validator';
 import { normalize } from '@/components/utils/format/ip';
 import BeforeSearch from '@/components/custom/before-search/index.vue';
-import { url } from '@/api/domain';
+import url from '@/api/url';
 import { useSiteList } from '../common/list';
 import type { ParamsType, RecordsType, FormType, OperatorType } from './type';
 import TableList from './table.vue';

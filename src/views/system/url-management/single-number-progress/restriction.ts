@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue';
-import { url as urlAPI } from '@/api/domain';
+import { setting as urlAPI } from '@/api/url';
 import type { RestrictionNumApi } from '../apply-domain/apply';
 import { Buy } from '../apply-domain/apply';
 

@@ -1,5 +1,5 @@
 import { chunk } from 'lodash';
-import { url as urlAPI } from '@/api/domain';
+import { download as urlAPI } from '@/api/url';
 import { randomAlphanumeric } from '@/components/utils/random/index';
 import { useAccesses } from '@/plugins/access/view';
 import http from '@/http';
