@@ -31,6 +31,19 @@ rollback:qa:
     - job: deploy:qa
       artifacts: true
 
+# 發布正式站後預留回溯機制(等待移除)
+rollback:prod-old:
+  extends: .rollback
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^Prod_/'
+      when: manual
+  variables:
+    PROJECT_ID: gcp-20220425-012
+    CLUSTER: platform-prod
+  needs:
+    - job: deploy:prod-old
+      artifacts: true
+
 # 發布正式站後預留回溯機制
 rollback:prod:
   extends: .rollback
@@ -38,8 +51,8 @@ rollback:prod:
     - if: '$CI_COMMIT_TAG =~ /^Prod_/'
       when: manual
   variables:
-    PROJECT_ID: gcp-20220425-011
-    CLUSTER: platform-prod
+    PROJECT_ID: gcp-20220425-012
+    CLUSTER: bbin-platform-prod
   needs:
     - job: deploy:prod
       artifacts: true

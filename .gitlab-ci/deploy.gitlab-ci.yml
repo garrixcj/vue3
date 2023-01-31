@@ -59,6 +59,16 @@ deploy:qa:
     CLUSTER: platform-test
     APP_ENV: QA
 
+# 發布到正式站(等待移除)
+deploy:prod-old:
+  extends: .deploy_template
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^Prod_/'
+  variables:
+    PROJECT_ID: gcp-20220425-012
+    CLUSTER: platform-prod
+    APP_ENV: Prod
+
 # 發布到正式站
 deploy:prod:
   extends: .deploy_template
@@ -66,5 +76,5 @@ deploy:prod:
     - if: '$CI_COMMIT_TAG =~ /^Prod_/'
   variables:
     PROJECT_ID: gcp-20220425-012
-    CLUSTER: platform-prod
+    CLUSTER: bbin-platform-prod
     APP_ENV: Prod
