@@ -12,7 +12,7 @@
     - echo ${SERVICE_ACCOUNT_KEY} > $HOME/.config/key.json
     - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
     - gcloud config set project ${PROJECT_ID}
-    - gcloud container clusters get-credentials ${CLUSTER} --region asia-east1-b
+    - gcloud container clusters get-credentials ${CLUSTER} --region ${REGION}
     - kubectl config set-context --current --namespace=hex
   script:
     - source ./rollback_command
@@ -27,6 +27,7 @@ rollback:qa:
   variables:
     PROJECT_ID: gcp-20220425-011
     CLUSTER: platform-test
+    REGION: asia-east1-b
   needs:
     - job: deploy:qa
       artifacts: true
@@ -40,6 +41,7 @@ rollback:prod-old:
   variables:
     PROJECT_ID: gcp-20220425-012
     CLUSTER: platform-prod
+    REGION: asia-east1-b
   needs:
     - job: deploy:prod-old
       artifacts: true
@@ -53,6 +55,7 @@ rollback:prod:
   variables:
     PROJECT_ID: gcp-20220425-012
     CLUSTER: bbin-platform-prod
+    REGION: asia-east1
   needs:
     - job: deploy:prod
       artifacts: true

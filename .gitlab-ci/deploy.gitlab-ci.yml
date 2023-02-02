@@ -15,7 +15,7 @@
     - gcloud auth activate-service-account ${SERVICE_ACCOUNT} --key-file=$HOME/.config/key.json
     - gcloud config set project ${PROJECT_ID}
     - echo ${CLUSTER}
-    - gcloud container clusters get-credentials ${CLUSTER} --region asia-east1-b
+    - gcloud container clusters get-credentials ${CLUSTER} --region ${REGION}
     - gcloud auth configure-docker asia-east1-docker.pkg.dev
     - kubectl config set-context --current --namespace=hex
   script:
@@ -48,6 +48,7 @@ deploy:dev:
     PROJECT_ID: gcp-20220425-010
     CLUSTER: platform-dev
     APP_ENV: DEV
+    REGION: asia-east1-b
 
 # 發布到測試站
 deploy:qa:
@@ -58,6 +59,7 @@ deploy:qa:
     PROJECT_ID: gcp-20220425-011
     CLUSTER: platform-test
     APP_ENV: QA
+    REGION: asia-east1-b
 
 # 發布到正式站(等待移除)
 deploy:prod-old:
@@ -68,6 +70,7 @@ deploy:prod-old:
     PROJECT_ID: gcp-20220425-012
     CLUSTER: platform-prod
     APP_ENV: Prod
+    REGION: asia-east1-b
 
 # 發布到正式站
 deploy:prod:
@@ -78,3 +81,4 @@ deploy:prod:
     PROJECT_ID: gcp-20220425-012
     CLUSTER: bbin-platform-prod
     APP_ENV: Prod
+    REGION: asia-east1
