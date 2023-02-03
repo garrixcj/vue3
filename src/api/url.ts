@@ -1,5 +1,6 @@
 import pick from 'lodash/pick';
 import http from '@/http/http';
+import inf from '@/http/inf';
 
 // 站別系列
 export const site = {
@@ -825,6 +826,18 @@ export const setting = {
   },
 };
 
+// 測試
+export const testSync = {
+  inf,
+  http,
+  /**
+   * 同步客端域名資料
+   */
+  syncDomainNamesByCustomers() {
+    return this.http.put('/domain/domain_names/sync_customers');
+  },
+};
+
 // 網址相關
 const url = {
   ...site,
@@ -833,5 +846,6 @@ const url = {
   ...ssl,
   ...download,
   ...setting,
+  ...testSync,
 };
 export default url;
