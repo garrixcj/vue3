@@ -364,6 +364,18 @@ export const ssl = {
   updateDNS(site_group: string) {
     return this.http.put('/domain/dns', { site_group });
   },
+  /**
+   * 申請SSL憑證
+   * @param  {array}   urls       域名
+   * @param  {string}  hash_token Token
+   */
+  cacheApplySSL(urls: string[], hash_token: string) {
+    const params = {
+      urls,
+      hash_token,
+    };
+    return this.http.post('/ssl/apply/cache', params);
+  },
 };
 // 匯出系列
 export const download = {
