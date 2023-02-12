@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "report_lobby89_89001": "百家樂B",
+        "report_lobby89_89002": "百家樂EB",
+        "report_lobby89_89999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby89_89001": "百家乐B",
+        "report_lobby89_89002": "百家乐EB",
+        "report_lobby89_89999": "未開放游戏"
+    },
+    "en": {
+        "report_lobby89_89001": "Baccarat B",
+        "report_lobby89_89002": "Baccarat EB",
+        "report_lobby89_89999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby89_89001": "Baccarat B",
+        "report_lobby89_89002": "Baccarat EB",
+        "report_lobby89_89999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby89_89001": "Baccarat B",
+        "report_lobby89_89002": "Baccarat EB",
+        "report_lobby89_89999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby89_89001": "Baccarat B",
+        "report_lobby89_89002": "Baccarat EB",
+        "report_lobby89_89999": "Game is not open"
+    },
+    "th": {
+        "report_lobby89_89001": "Baccarat B",
+        "report_lobby89_89002": "Baccarat EB",
+        "report_lobby89_89999": "Game is not open"
+    }
+}
+

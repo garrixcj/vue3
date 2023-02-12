@@ -1,0 +1,176 @@
+/**
+ * scss library
+ *
+ * 偏向功能類的 scss mixin library
+ * 目的是為了統一常見的 css 效果與寫法
+ */
+
+// flex layout
+@mixin flex-basic($justify: flex-start, $align: center) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  @content;
+}
+// inline flex layout
+@mixin inline-flex-basic($justify: flex-start, $align: center) {
+  display: inline-flex;
+  align-items: $align;
+  justify-content: $justify;
+  @content;
+}
+
+// 取得輸入框高度的尺寸
+@function get-input-height($size) {
+  @return map-get($input-height, $size);
+}
+
+// 取得輸入框文字大小的尺寸
+@function get-input-font($size) {
+  @return map-get($input-font, $size);
+}
+
+// 取得顏色的禁用混合色
+@function get-color-disabled($color) {
+  // 約等於 opacity 0.6
+  @return mix($white, $color, 40%);
+}
+
+// 排除用多層 not
+// :not(.a, .b) 尚未全面支援
+// 必須使用 :not(.a):not(.b)
+@mixin multi-not($class, $other...) {
+  @if length($other) > 0 {
+    &:not(#{$class}) {
+      @include multi-not($other...) {
+        @content;
+      }
+    }
+  } @else {
+    &:not(#{$class}) {
+      @content;
+    }
+  }
+}
+
+// 設定下層間距
+@mixin space($margin: 10px) {
+  > :not(:first-child) {
+    margin-left: $margin;
+    @content;
+  }
+}
+
+// 設定下層間距 (垂直方向)
+@mixin space-vertical($margin: 10px) {
+  > :not(:first-child) {
+    margin-top: $margin;
+    @content;
+  }
+}
+
+// 設定自身同物件多行時間距 (不是最後一個，給予右邊間距，用於多行不能設定左邊推移)
+@mixin space-multiline($margin: 10px) {
+  &:not(:nth-last-of-type(1)) {
+    margin-right: $margin;
+    @content;
+  }
+}
+
+// icon rotate
+@mixin rotate-icon-animation(
+  $basic: 0deg,
+  $rotate-to: -180deg,
+  $rotate-class: 'is-reverse'
+) {
+  // 預設逆時鐘轉 180 度
+  transition: 0.3s;
+  transform: rotate($basic);
+  &.#{$rotate-class} {
+    transform: rotate($rotate-to);
+  }
+}
+
+// RWD 配置
+@mixin media-xl {
+  @media (min-width: 1920px) {
+    @content;
+  }
+}
+@mixin media-lg {
+  @media (min-width: 1200px) and (max-width: 1919px) {
+    @content;
+  }
+}
+@mixin media-md {
+  @media (min-width: 992px) and (max-width: 1199px) {
+    @content;
+  }
+}
+@mixin media-sm {
+  @media (min-width: 768px) and (max-width: 991px) {
+    @content;
+  }
+}
+@mixin media-xs {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+// scrollbar
+@mixin scrollbar {
+  @content;
+  overflow: auto;
+  // 整體
+  &::-webkit-scrollbar {
+    position: absolute;
+    right: 0;
+    width: 10px;
+    height: 1px;
+  }
+  // scrollbar 樣式
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    background-clip: padding-box;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 6px;
+  }
+  // scrollbar 軌道
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 6px;
+  }
+  &:hover {
+    // scrollbar 樣式
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(144, 147, 153, 0.3);
+      &:hover {
+        background-color: rgba(144, 147, 153, 0.5);
+      }
+    }
+  }
+}
+
+// 表單元件邊框驗證樣式邏輯
+@mixin form-item-border($status: 'default') {
+  @if $status == 'error' {
+    // 表單驗證錯誤樣式紅
+    &,
+    &:hover,
+    &:focus {
+      border-color: $input-border-color-error !important;
+    }
+  } @else {
+    // 預設樣式
+    border-color: $input-border-color;
+    // focus 狀態 > hover 狀態; 禁用時不觸發 hover
+    &:hover:not(:disabled):not(:focus):not(.disabled) {
+      border-color: $input-border-color-hover;
+    }
+    // readonly 物件不應該套用 focus 樣式 (el-select input)
+    &:focus:not([readonly='readonly']):not(.disabled) {
+      border-color: $input-border-color-focus;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@import '../../common/button-group/theme';
+
+.el-radio-button {
+  @include group-main-theme('radio', 'active');
+  &:first-child {
+    .el-radio-button__inner {
+      border-radius: 2px 0 0 2px;
+    }
+  }
+  &:last-child {
+    .el-radio-button__inner {
+      border-radius: 0 2px 2px 0;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "change_password": "修改密碼",
+        "confirm_pwd_error": "確認密碼錯誤",
+        "save": "儲存",
+        "cancel": "取消",
+        "new_password": "新密碼",
+        "confirm_password": "確認密碼",
+        "reset_password_after_login": "登錄後修改密碼",
+        "caps_lock_enable": "Caps lock 大寫已啟用",
+        "pwd_acc_same": "密碼不能與帳號相同"
+    },
+    "zh-cn": {
+        "change_password": "修改密码",
+        "confirm_pwd_error": "确认密码错误",
+        "save": "储存",
+        "cancel": "取消",
+        "new_password": "新密码",
+        "confirm_password": "确认密码",
+        "reset_password_after_login": "登录后修改密码",
+        "caps_lock_enable": "Caps lock 大写已启用",
+        "pwd_acc_same": "密码不能与帐号相同"
+    },
+    "en": {
+        "change_password": "Change Password",
+        "confirm_pwd_error": "Confirm password error",
+        "save": "Save",
+        "cancel": "Cancel",
+        "new_password": "New password",
+        "confirm_password": "Password Confirm",
+        "reset_password_after_login": "Reset password after login",
+        "caps_lock_enable": "Caps Lock is on.",
+        "pwd_acc_same": "Username and Password cannot be the same"
+    },
+    "ja": {
+        "change_password": "パスワードの変更",
+        "confirm_pwd_error": "パスワードが間違っています",
+        "save": "保存",
+        "cancel": "キャンセル",
+        "new_password": "新パスワード",
+        "confirm_password": "パスワードの確認",
+        "reset_password_after_login": "Reset password after login",
+        "caps_lock_enable": "Capslockキーがオンになっています",
+        "pwd_acc_same": "アカウントとパスワードは同じにしてはいけません。"
+    },
+    "ko": {
+        "change_password": "비밀번호 수정하기",
+        "confirm_pwd_error": "패스워드 에러 확인",
+        "save": "저장",
+        "cancel": "취소",
+        "new_password": "새 비밀번호",
+        "confirm_password": "비밀번호 확인",
+        "reset_password_after_login": "Reset password after login",
+        "caps_lock_enable": "Caps lock 대문자 ON",
+        "pwd_acc_same": "아이디와 동일한 비밀번호는 등록되지 않습니다."
+    },
+    "vi": {
+        "change_password": "Sửa mật khẩu",
+        "confirm_pwd_error": "Xác nhận mật khẩu sai.",
+        "save": "Lưu",
+        "cancel": "Hủy",
+        "new_password": "Mật khẩu mới",
+        "confirm_password": "Xác nhận mật khẩu",
+        "reset_password_after_login": "Reset password after login",
+        "caps_lock_enable": "Đã bật Caps Look viết hoa",
+        "pwd_acc_same": "Tài khoản và mật khẩu không được giống nhau"
+    },
+    "th": {
+        "change_password": "แก้ไขรหัสผ่าน",
+        "confirm_pwd_error": "ยืนยันรหัสผ่านไม่ถูกต้อง",
+        "save": "จัดเก็บ",
+        "cancel": "ยกเลิก",
+        "new_password": "รหัสผ่านใหม่",
+        "confirm_password": "ยืนยันรหัสผ่าน",
+        "reset_password_after_login": "Reset password after login",
+        "caps_lock_enable": "กดปุ่มCaps lookพิมพ์ใหญ่เเล้ว",
+        "pwd_acc_same": "บัญชีกับรหัสผ่านจะเหมือนกันไม่ได้"
+    }
+}
+

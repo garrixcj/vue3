@@ -1,0 +1,16 @@
+$game-colors: (
+  'casino': #fe00a5,
+  'live': #ffb200,
+  'sport': #005aff,
+  'lottery': #fb5300,
+  'card': #087b05,
+  'product': #bb16eb,
+);
+
+// 遊戲分類顏色
+$casino: map-get($game-colors, 'casino'); // 電子遊戲
+$live: map-get($game-colors, 'live'); // 視訊遊戲
+$sport: map-get($game-colors, 'sport'); // 體育遊戲
+$lottery: map-get($game-colors, 'lottery'); // 彩票遊戲
+$card: map-get($game-colors, 'card'); // 棋牌遊戲
+$product: map-get($game-colors, 'product'); // BB產品

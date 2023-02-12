@@ -1,0 +1,52 @@
+{
+    "zh-tw": {
+        "enable": "啟用",
+        "disable": "停用",
+        "freeze": "凍結",
+        "cancel": "取消",
+        "confirm": "確定"
+    },
+    "zh-cn": {
+        "enable": "启用",
+        "disable": "停用",
+        "freeze": "冻结",
+        "cancel": "取消",
+        "confirm": "确定"
+    },
+    "en": {
+        "enable": "Enable",
+        "disable": "Disable",
+        "freeze": "Suspend",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+    },
+    "ja": {
+        "enable": "有効",
+        "disable": "無効",
+        "freeze": "凍結",
+        "cancel": "キャンセル",
+        "confirm": "確定"
+    },
+    "ko": {
+        "enable": "사용",
+        "disable": "정지",
+        "freeze": "동결",
+        "cancel": "취소",
+        "confirm": "확인"
+    },
+    "vi": {
+        "enable": "Sử dụng",
+        "disable": "Ngừng sử dụng",
+        "freeze": "Đóng băng",
+        "cancel": "Hủy",
+        "confirm": "Xác nhận"
+    },
+    "th": {
+        "enable": "เปิดใช้งาน",
+        "disable": "ปิดใช้งาน",
+        "freeze": "บล็อก",
+        "cancel": "ยกเลิก",
+        "confirm": "ยืนยัน"
+    }
+}
+

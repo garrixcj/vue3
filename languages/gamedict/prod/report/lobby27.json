@@ -1,0 +1,52 @@
+{
+    "zh-tw": {
+        "report_lobby27_27001": "百家樂",
+        "report_lobby27_27002": "輪盤",
+        "report_lobby27_27003": "骰寶",
+        "report_lobby27_27004": "牛牛",
+        "report_lobby27_27999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby27_27001": "百家乐",
+        "report_lobby27_27002": "轮盘",
+        "report_lobby27_27003": "骰宝",
+        "report_lobby27_27004": "牛牛",
+        "report_lobby27_27999": "未开放游戏"
+    },
+    "en": {
+        "report_lobby27_27001": "Baccarat",
+        "report_lobby27_27002": "Roulette",
+        "report_lobby27_27003": "Sic bo",
+        "report_lobby27_27004": "Bull Bull",
+        "report_lobby27_27999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby27_27001": "Baccarat",
+        "report_lobby27_27002": "Roulette",
+        "report_lobby27_27003": "Sic bo",
+        "report_lobby27_27004": "Bull Bull",
+        "report_lobby27_27999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby27_27001": "Baccarat",
+        "report_lobby27_27002": "Roulette",
+        "report_lobby27_27003": "Sic bo",
+        "report_lobby27_27004": "Bull Bull",
+        "report_lobby27_27999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby27_27001": "Baccarat",
+        "report_lobby27_27002": "Roulette",
+        "report_lobby27_27003": "Sic bo",
+        "report_lobby27_27004": "Bull Bull",
+        "report_lobby27_27999": "Game is not open"
+    },
+    "th": {
+        "report_lobby27_27001": "Baccarat",
+        "report_lobby27_27002": "Roulette",
+        "report_lobby27_27003": "Sic bo",
+        "report_lobby27_27004": "Bull Bull",
+        "report_lobby27_27999": "Game is not open"
+    }
+}
+

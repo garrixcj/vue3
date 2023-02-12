@@ -1,0 +1,41 @@
+.el-checkbox {
+  margin-right: 10px;
+  &__input {
+    &.is-disabled {
+      & + span.el-checkbox__label {
+        color: mix($white, $text-3, 40%);
+      }
+      &.is-checked {
+        & + span.el-checkbox__label {
+          color: mix($white, $text-1, 40%);
+        }
+      }
+    }
+  }
+  &__label {
+    padding-left: 5px;
+    line-height: 20px;
+  }
+  &.el-checkbox--small {
+    .el-checkbox__inner {
+      width: 14px;
+      height: 14px;
+      &::after {
+        width: 3px;
+        height: 7px;
+      }
+    }
+    .el-checkbox__input {
+      &.is-indeterminate {
+        .el-checkbox__inner {
+          &::before {
+            top: 5px;
+          }
+        }
+      }
+    }
+  }
+}
+.el-checkbox-group {
+  display: flex;
+}

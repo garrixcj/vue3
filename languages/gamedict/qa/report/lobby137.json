@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "report_lobby137_137001": "賓果",
+        "report_lobby137_137002": "百家樂",
+        "report_lobby137_137003": "骰寶",
+        "report_lobby137_137004": "輪盤",
+        "report_lobby137_137005": "單挑",
+        "report_lobby137_137006": "妞妞",
+        "report_lobby137_137007": "推筒子",
+        "report_lobby137_137999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby137_137001": "宾果",
+        "report_lobby137_137002": "百家乐",
+        "report_lobby137_137003": "骰宝",
+        "report_lobby137_137004": "轮盘",
+        "report_lobby137_137005": "单挑",
+        "report_lobby137_137006": "妞妞",
+        "report_lobby137_137007": "推筒子",
+        "report_lobby137_137999": "未开放游戏"
+    },
+    "en": {
+        "report_lobby137_137001": "Bingo",
+        "report_lobby137_137002": "Baccarat",
+        "report_lobby137_137003": "Sic Bo",
+        "report_lobby137_137004": "Roulette",
+        "report_lobby137_137005": "PK",
+        "report_lobby137_137006": "NU",
+        "report_lobby137_137007": "UT",
+        "report_lobby137_137999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby137_137001": "Bingo",
+        "report_lobby137_137002": "Baccarat",
+        "report_lobby137_137003": "Sic Bo",
+        "report_lobby137_137004": "Roulette",
+        "report_lobby137_137005": "PK",
+        "report_lobby137_137006": "NU",
+        "report_lobby137_137007": "UT",
+        "report_lobby137_137999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby137_137001": "Bingo",
+        "report_lobby137_137002": "Baccarat",
+        "report_lobby137_137003": "Sic Bo",
+        "report_lobby137_137004": "Roulette",
+        "report_lobby137_137005": "PK",
+        "report_lobby137_137006": "NU",
+        "report_lobby137_137007": "UT",
+        "report_lobby137_137999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby137_137001": "Bingo",
+        "report_lobby137_137002": "Baccarat",
+        "report_lobby137_137003": "Sic Bo",
+        "report_lobby137_137004": "Roulette",
+        "report_lobby137_137005": "PK",
+        "report_lobby137_137006": "NU",
+        "report_lobby137_137007": "UT",
+        "report_lobby137_137999": "Game is not open"
+    },
+    "th": {
+        "report_lobby137_137001": "Bingo",
+        "report_lobby137_137002": "Baccarat",
+        "report_lobby137_137003": "Sic Bo",
+        "report_lobby137_137004": "Roulette",
+        "report_lobby137_137005": "PK",
+        "report_lobby137_137006": "NU",
+        "report_lobby137_137007": "UT",
+        "report_lobby137_137999": "Game is not open"
+    }
+}
+

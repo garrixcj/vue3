@@ -1,0 +1,19 @@
+@use '../../style/scss/variables' as RdVar;
+
+$input: (
+  'border-radius': 2px,
+  'border-color': RdVar.$input-border-color,
+  'hover-border-color': RdVar.$input-border-color-hover,
+  'icon-color': RdVar.$text-4,
+  'placeholder-color': RdVar.$input-placeholder,
+);
+$input-font-size: (
+  'small': 12px,
+  'default': 14px,
+  'large': 14px,
+);
+$input-height: (
+  'small': 24px,
+  'default': 30px,
+  'large': 34px,
+);

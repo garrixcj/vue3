@@ -1,0 +1,66 @@
+{
+    "zh-tw": {
+        "lobby3_0": "BB視訊",
+        "lobby3_7": "國際視訊",
+        "lobby10000": "BB產品",
+        "conditions_set_information_1": "報表營利應收 + 包底金額",
+        "conditions_set_information_2": "報表營利應收 (只取正數，負數視同0) + 包底金額",
+        "conditions_set_information_3": "報表營利應收 (只取正數，負數視同0) 與包底金額比值，取金額大者",
+        "conditions_set_information_4": "報表營利應收，為正數，與包底金額比值，取金額大者。報表營利應收，為負數，負數金額 + 包底金額 = 實際應收"
+    },
+    "zh-cn": {
+        "lobby3_0": "BB视讯",
+        "lobby3_7": "国际视讯",
+        "lobby10000": "BB产品",
+        "conditions_set_information_1": "报表营利应收 + 包底金额",
+        "conditions_set_information_2": "报表营利应收 (只取正数，负数视同0) + 包底金额",
+        "conditions_set_information_3": "报表营利应收 (只取正数，负数视同0) 与包底金额比值，取金额大者",
+        "conditions_set_information_4": "报表营利应收，为正数，与包底金额比值，取金额大者。报表营利应收，为负数，负数金额 + 包底金额 = 实际应收"
+    },
+    "en": {
+        "lobby3_0": "BB Live Dealer",
+        "lobby3_7": "International Live",
+        "lobby10000": "BB Products",
+        "conditions_set_information_1": "Profit receivable + Guaranteed minimum amount",
+        "conditions_set_information_2": "Profit receivable (positive number, negative number equals 0) + Guaranteed minimum amount",
+        "conditions_set_information_3": "Compare the profit receivable (positive number, negative number equals 0) with the guaranteed minimum amount. Take the large one.",
+        "conditions_set_information_4": "When the profit receivable is a positive number, compare with the guaranteed minimum amount, then, take the large one. When the profit receivable is a negative number, negative number + guaranteed minimum amount = actual receivable."
+    },
+    "ja": {
+        "lobby3_0": "BB Live Dealer",
+        "lobby3_7": "International Live",
+        "lobby10000": "BB Products",
+        "conditions_set_information_1": "Profit receivable + Guaranteed minimum amount",
+        "conditions_set_information_2": "Profit receivable (positive number, negative number equals 0) + Guaranteed minimum amount",
+        "conditions_set_information_3": "Compare the profit receivable (positive number, negative number equals 0) with the guaranteed minimum amount. Take the large one.",
+        "conditions_set_information_4": "When the profit receivable is a positive number, compare with the guaranteed minimum amount, then, take the large one. When the profit receivable is a negative number, negative number + guaranteed minimum amount = actual receivable."
+    },
+    "ko": {
+        "lobby3_0": "BB Live Dealer",
+        "lobby3_7": "국제 라이브",
+        "lobby10000": "BB상품",
+        "conditions_set_information_1": "재무제표 미수금 + 고정 매출금",
+        "conditions_set_information_2": "재무제표 미수금(정수만 취하며 마이너스가 0과 같음)+ 고정 매출금",
+        "conditions_set_information_3": "재무제표 미수금(정수만 취하며 마이너스가 1과 같음)과 고정 매출금 중에 큰 금액을 취합니다.",
+        "conditions_set_information_4": "재무제표 미수금이 정수로 하며 고정 매출금과 비교하여 큰 금액을 취합니다. 재무제표 미수금이 마이너스로 하며 마이너스 금액+고정 매출금= 실제 수금입니다."
+    },
+    "vi": {
+        "lobby3_0": "BB Live Dealer",
+        "lobby3_7": "Live Quốc Tế",
+        "lobby10000": "Trò chơi BB",
+        "conditions_set_information_1": "Báo biểu lợi nhuận phải thu + tiền đảm bảo doanh thu",
+        "conditions_set_information_2": "Báo biểu lợi nhuận phải thu (chỉ lấy số dương, số âm được coi là 0) + tiền đảm bảo doanh thu",
+        "conditions_set_information_3": "Báo biểu lợi nhuận phải thu (chỉ lấy số dương, số âm được coi là 0) và tỉ số tiền đảm bảo doanh thu lấy số tiền lớn nhất",
+        "conditions_set_information_4": "Báo biểu lợi nhuận phải thu là một số dương, và tỉ số tiền đảm bảo doanh thu, lấy số tiền lớn nhất. Báo biểu lợi nhuận phải thu là số âm, số âm + tiền đảm bảo doanh thu = phải thu thực tế"
+    },
+    "th": {
+        "lobby3_0": "BB Live Dealer",
+        "lobby3_7": "International Live",
+        "lobby10000": "BB Products",
+        "conditions_set_information_1": "Profit receivable + Guaranteed minimum amount",
+        "conditions_set_information_2": "Profit receivable (positive number, negative number equals 0) + Guaranteed minimum amount",
+        "conditions_set_information_3": "Compare the profit receivable (positive number, negative number equals 0) with the guaranteed minimum amount. Take the large one.",
+        "conditions_set_information_4": "When the profit receivable is a positive number, compare with the guaranteed minimum amount, then, take the large one. When the profit receivable is a negative number, negative number + guaranteed minimum amount = actual receivable."
+    }
+}
+

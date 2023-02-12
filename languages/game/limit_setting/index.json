@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "bb_game_limit_setting": "BB遊戲限額設定",
+        "bb_lottery_limit_search": "BB彩票限額查詢",
+        "bb_lottery_limit_group_management": "BB彩票限額群組管理"
+    },
+    "zh-cn": {
+        "bb_game_limit_setting": "BB游戏限额设定",
+        "bb_lottery_limit_search": "BB彩票限额查询",
+        "bb_lottery_limit_group_management": "BB彩票限额群组管理"
+    },
+    "en": {
+        "bb_game_limit_setting": "BB Game Limit Setting",
+        "bb_lottery_limit_search": "BB Lottery Limit Search",
+        "bb_lottery_limit_group_management": "BB Lottery Limit Group Management"
+    },
+    "ja": {
+        "bb_game_limit_setting": "BB Game Limit Setting",
+        "bb_lottery_limit_search": "BB Lottery Limit Search",
+        "bb_lottery_limit_group_management": "BB Lottery Limit Group Management"
+    },
+    "ko": {
+        "bb_game_limit_setting": "BB Game Limit Setting",
+        "bb_lottery_limit_search": "BB Lottery Limit Search",
+        "bb_lottery_limit_group_management": "BB Lottery Limit Group Management"
+    },
+    "vi": {
+        "bb_game_limit_setting": "BB Game Limit Setting",
+        "bb_lottery_limit_search": "BB Lottery Limit Search",
+        "bb_lottery_limit_group_management": "BB Lottery Limit Group Management"
+    },
+    "th": {
+        "bb_game_limit_setting": "BB Game Limit Setting",
+        "bb_lottery_limit_search": "BB Lottery Limit Search",
+        "bb_lottery_limit_group_management": "BB Lottery Limit Group Management"
+    }
+}
+

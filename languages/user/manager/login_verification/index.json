@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "account_list": "帳號列表",
+        "device_list": "裝置列表",
+        "verification_setting": "驗證設定",
+        "verification_switch_msg": "驗證設定➜驗證開關：至少一個帳號綁定UB Auth成功 (廳主自身或子帳號)，才可開啟【驗證開關➜UB Auth】",
+        "verification_switch_msg_2": "【廳主帳號】與【子帳號\/管理者帳號】，不可綁定在同一裝置",
+        "ubauth_precautions": "UB Auth注意事項"
+    },
+    "zh-cn": {
+        "account_list": "帐号列表",
+        "device_list": "装置列表",
+        "verification_setting": "验证设定",
+        "verification_switch_msg": "验证设定➜验证开关：至少一个帐号绑定UB Auth成功 (厅主自身或子帐号)，才可开启【验证开关➜UB Auth】",
+        "verification_switch_msg_2": "【厅主帐号】与【子帐号\/管理者帐号】，不可绑定在同一装置",
+        "ubauth_precautions": "UB Auth注意事项"
+    },
+    "en": {
+        "account_list": "Account List",
+        "device_list": "Device List",
+        "verification_setting": "Verification Settings",
+        "verification_switch_msg": "Verification Settings → Verification Switch: At least successfully bind an account (Owner Account or Sub-Account) with UB Auth so “Verification Switch → UB Auth” can be turned on.",
+        "verification_switch_msg_2": "【Owner Account】 and 【Sub-Account\/Manager Account】 cannot bind to the same device.",
+        "ubauth_precautions": "UB Auth Notes"
+    },
+    "ja": {
+        "account_list": "Account List",
+        "device_list": "Device List",
+        "verification_setting": "Verification Settings",
+        "verification_switch_msg": "Verification Settings → Verification Switch: At least successfully bind an account (Owner Account or Sub-Account) with UB Auth so “Verification Switch → UB Auth” can be turned on.",
+        "verification_switch_msg_2": "【マスターアカウント子アカウント】と【\/管理者アカウント】は同じデバイスで登録できません。",
+        "ubauth_precautions": "UB Auth 注意項目"
+    },
+    "ko": {
+        "account_list": "계정리스트",
+        "device_list": "디바이스 리스트",
+        "verification_setting": "인증 설정",
+        "verification_switch_msg": "인증설정➜인증 스위치：최소 한개 아이디로 (홀 오너 아이디 혹은 서브 아이디 ) UB Auth연동을 성공해야 적용가능합니다. 【인증 스위치➜UB Auth】",
+        "verification_switch_msg_2": "【홀 관리자 아이디】및【서브 아이디\/관리자 아이지】가 동일한 디바이스와 연동할 수 없습니다.",
+        "ubauth_precautions": "UB Auth 주의사항"
+    },
+    "vi": {
+        "account_list": "Danh sách tài khoản",
+        "device_list": "Danh sách thiết bị",
+        "verification_setting": "Cài đặt xác minh",
+        "verification_switch_msg": "Thiết lập xác thực➜Đóng mở xác thực: ít nhất một tài khoản liên kết thành công với UB Auth (Tài khoản sảnh chính hoặc Tài khoản con), mới có thể bật 【Tắt mở xác thực➜UB Auth】",
+        "verification_switch_msg_2": "【Owner Account】 and 【Sub-Account\/Manager Account】 cannot bind to the same device.",
+        "ubauth_precautions": "UB Auth Notes"
+    },
+    "th": {
+        "account_list": "รายการบัญชี",
+        "device_list": "รายการอุปกรณ์",
+        "verification_setting": "ตั้งค่ายืนยัน",
+        "verification_switch_msg": "ตั้งค่าการยืนยัน➜เปิดปิดยืนยัน：ต้องผูกเข้ากับUB Authสำเร็จอย่างน้อยหนึ่งบัญชี (หัวหน้าโถงหรือบัญชีลูก) จึงจะเปิด【เปิดปิดยืนยัน➜UB Auth】",
+        "verification_switch_msg_2": "【Owner Account】 and 【Sub-Account\/Manager Account】 cannot bind to the same device.",
+        "ubauth_precautions": "UB Auth Notes"
+    }
+}
+

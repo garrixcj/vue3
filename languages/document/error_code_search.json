@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "search": "搜尋",
+        "success": "成功",
+        "export": "匯出",
+        "start_search": "開始搜尋吧",
+        "generation_success": "檔案開始生成，稍後請至右上角「下載專區」下載檔案",
+        "error_code": "錯誤代碼",
+        "detail": "詳細內容",
+        "please_enter_error_code": "請輸入錯誤代碼",
+        "unknown_error": "未知的錯誤",
+        "error_info": "呼叫api失敗時，可用回傳的code代碼，查詢詳細的失敗原因",
+        "error_validate_msg": "僅可輸入大小寫英文字母及數字"
+    },
+    "zh-cn": {
+        "search": "搜寻",
+        "success": "成功",
+        "export": "汇出",
+        "start_search": "开始搜寻吧",
+        "generation_success": "档案开始生成，稍后请至右上角「下载专区」下载档案",
+        "error_code": "错误代码",
+        "detail": "详细内容",
+        "please_enter_error_code": "请输入错误代码",
+        "unknown_error": "未知的错误",
+        "error_info": "呼叫api失败时，可用回传的code代码，查询详细的失败原因",
+        "error_validate_msg": "仅可输入大小写英文字母及数字"
+    },
+    "en": {
+        "search": "search",
+        "success": "Success",
+        "export": "Export to",
+        "start_search": "Start to search.",
+        "generation_success": "The file starts to generate. Please go to “Download” on the top right corner to download the file.",
+        "error_code": "Error code",
+        "detail": "Detail",
+        "please_enter_error_code": "Please enter the error code.",
+        "unknown_error": "Unknown Error",
+        "error_info": "When the API call failed, the response code can be used to find the reason for the failure.",
+        "error_validate_msg": "Only allow capital and small English letters and numbers."
+    },
+    "ja": {
+        "search": "検索",
+        "success": "成功",
+        "export": "にエクスポート",
+        "start_search": "今すぐ検索",
+        "generation_success": "The file starts to generate. Please go to “Download” on the top right corner to download the file.",
+        "error_code": "エラーコード",
+        "detail": "Detail",
+        "please_enter_error_code": "Please enter the error code.",
+        "unknown_error": "Unknown Error",
+        "error_info": "When the API call failed, the response code can be used to find the reason for the failure.",
+        "error_validate_msg": "Only allow capital and small English letters and numbers."
+    },
+    "ko": {
+        "search": "검색하기",
+        "success": "성공",
+        "export": "로 다운로드",
+        "start_search": "검색 시작",
+        "generation_success": "파일 생성 시작하며 잠시 후 오른쪽 위에 있는 「다운로드 코너」에 파일을 다운로드하세요.",
+        "error_code": "에러 코드",
+        "detail": "세부 내용",
+        "please_enter_error_code": "오류 코드를 입력하세요",
+        "unknown_error": "알 수 없는 오류입니다.",
+        "error_info": "API 호출에 실패 시 코드 번호로 상세한 실패 원인을 확인할 수 있습니다.",
+        "error_validate_msg": "대소영문자 및 숫자만 입력 가능합니다."
+    },
+    "vi": {
+        "search": "Tìm kiếm",
+        "success": "Thành công",
+        "export": "Xuất ra ",
+        "start_search": "Bắt đầu tìm kiếm",
+        "generation_success": "Tệp bắt đầu được tạo, vui lòng chuyển đến góc trên bên phải \"Khu vực tải xuống\" để tải tệp xuống",
+        "error_code": "Mã sai",
+        "detail": "Nội dung cụ thể",
+        "please_enter_error_code": "Vui lòng nhập mã đại lí không hợp lệ",
+        "unknown_error": "Lỗi không xác định",
+        "error_info": "Khi kêu gọi API thất bại, có thể dùng mã Code để kiểm tra lý chi tiết lý do thất bại",
+        "error_validate_msg": "Chỉ có thể nhập các chữ in hoa, chữ thường và số"
+    },
+    "th": {
+        "search": "ค้นหา",
+        "success": "สำเร็จ",
+        "export": "โอนเข้า",
+        "start_search": "เริ่มค้นหากันเถอะ",
+        "generation_success": "The file starts to generate. Please go to “Download” on the top right corner to download the file.",
+        "error_code": "รหัสความผิดพลาด",
+        "detail": "เนื้อหารายละเอียด",
+        "please_enter_error_code": "กรุณาป้อนรหัสเเทนที่ผิดพลาด",
+        "unknown_error": "ความผิดพลาดที่ไม่ทราบ",
+        "error_info": "เมื่อเรียกหา api ล้มเหลว สามารถส่ง code ที่ส่งกลับคืนเพื่อตรวจสอบสาเหตุที่เกิดการล้มเหลวได้",
+        "error_validate_msg": "ป้อนได้เฉพาะอังกฤษพิมพ์ใหญ่เล็กเเละตัวเลขเท่านั้น"
+    }
+}
+

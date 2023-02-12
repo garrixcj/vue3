@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "online": "在線",
+        "yesterday_online": "昨日該時段",
+        "hour": "小時",
+        "unit": "單位",
+        "yestoday_member": "昨日人數",
+        "today_member": "今日人數"
+    },
+    "zh-cn": {
+        "online": "在线",
+        "yesterday_online": "昨日该时段",
+        "hour": "小时",
+        "unit": "单位",
+        "yestoday_member": "昨日人数",
+        "today_member": "今日人数"
+    },
+    "en": {
+        "online": "Online",
+        "yesterday_online": "This time of yesterday",
+        "hour": "Hour",
+        "unit": "Unit",
+        "yestoday_member": "Yestoday member",
+        "today_member": "Today member"
+    },
+    "ja": {
+        "online": "Online",
+        "yesterday_online": "This time of yesterday",
+        "hour": "Hour",
+        "unit": "Unit",
+        "yestoday_member": "Yestoday member",
+        "today_member": "Today member"
+    },
+    "ko": {
+        "online": "Online",
+        "yesterday_online": "This time of yesterday",
+        "hour": "Hour",
+        "unit": "Unit",
+        "yestoday_member": "Yestoday member",
+        "today_member": "Today member"
+    },
+    "vi": {
+        "online": "Online",
+        "yesterday_online": "This time of yesterday",
+        "hour": "Hour",
+        "unit": "Unit",
+        "yestoday_member": "Yestoday member",
+        "today_member": "Today member"
+    },
+    "th": {
+        "online": "Online",
+        "yesterday_online": "This time of yesterday",
+        "hour": "Hour",
+        "unit": "Unit",
+        "yestoday_member": "Yestoday member",
+        "today_member": "Today member"
+    }
+}
+

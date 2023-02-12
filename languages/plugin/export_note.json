@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "remark": "備註",
+        "export": "匯出",
+        "confirm": "確定",
+        "error": "錯誤",
+        "memo_limit": "非必填、字數上限為{num}字",
+        "667077006": "目前進行維護中，如有不便之處，敬請見諒！預計於 北京時間 {time} 完成！",
+        "667098002": "請稍等15分鐘後再試一次",
+        "downloads": "下載專區",
+        "export_memo": "(可為檔案命名: 日期\/範圍區間...等)",
+        "cancel_export": "取消匯出",
+        "confirm_export": "確定匯出"
+    },
+    "zh-cn": {
+        "remark": "备注",
+        "export": "汇出",
+        "confirm": "确定",
+        "error": "错误",
+        "memo_limit": "非必填、字数上限为{num}字",
+        "667077006": "目前进行维护中，如有不便之处，敬请见谅！预计于 北京时间 {time} 完成！",
+        "667098002": "请稍等15分钟后再试一次",
+        "downloads": "下载专区",
+        "export_memo": "(可为档案命名: 日期\/范围区间...等)",
+        "cancel_export": "取消汇出",
+        "confirm_export": "确定汇出"
+    },
+    "en": {
+        "remark": "Remarks",
+        "export": "Export to",
+        "confirm": "Confirm",
+        "error": "Error",
+        "memo_limit": "Non-required field. Maximum is {num} characters.",
+        "667077006": "Currently this is during the maintenance. We express sincere apologies for the inconvenience. The maintenance will be completed at {time} (UTC+8).",
+        "667098002": "Please try again after \b15 minutes.",
+        "downloads": "Downloads",
+        "export_memo": "(File can be named: Date\/Period and so on.)",
+        "cancel_export": "Cancel",
+        "confirm_export": "Export"
+    },
+    "ja": {
+        "remark": "備考",
+        "export": "にエクスポート",
+        "confirm": "確定",
+        "error": "エラー",
+        "memo_limit": "必須項目ではない、文字数制限{num}文字",
+        "667077006": "ただいまメンテナンス中です。ご迷惑をおかけし、申し訳ございません。メンテナンスは{time} (UTC+8)に完成する予定です。",
+        "667098002": "Please try again after \b15 minutes.",
+        "downloads": "Downloads",
+        "export_memo": "(File can be named: Date\/Period and so on.)",
+        "cancel_export": "Cancel",
+        "confirm_export": "Export"
+    },
+    "ko": {
+        "remark": "비고",
+        "export": "로 다운로드",
+        "confirm": "확인",
+        "error": "에러",
+        "memo_limit": "필수 항목이 아니며 최대 {num}자까지 가능함.",
+        "667077006": "현재 시스템 점검이 진행되고 있습니다. 이용에 불편을 드려 죄송합니다! 점검 예정 시간：{time} (UTC+8) 까지",
+        "667098002": "Please try again after \b15 minutes.",
+        "downloads": "Downloads",
+        "export_memo": "(파일이름을 날짜\/범위구간….등으로 할 수 있음)",
+        "cancel_export": "출력 취소",
+        "confirm_export": "출력 확인"
+    },
+    "vi": {
+        "remark": "Ghi chú",
+        "export": "Xuất ra ",
+        "confirm": "Xác nhận",
+        "error": "Lỗi",
+        "memo_limit": "Không bắt buộc điền, giới hạn không quá {num} kí tự",
+        "667077006": "Đang trong thời gian bảo trì, nếu có bất tiện, vui lòng thông cảm! Thời gian dự kiến hoàn thành {time} (UTC+8)",
+        "667098002": "Please try again after \b15 minutes.",
+        "downloads": "Downloads",
+        "export_memo": "(Có thể tạo tên tệp: ngày\/phạm vi vùng...etc)",
+        "cancel_export": "Hủy xuất ra",
+        "confirm_export": "Xác nhận xuất ra"
+    },
+    "th": {
+        "remark": "หมายเหตุ",
+        "export": "โอนเข้า",
+        "confirm": "ยืนยัน",
+        "error": "ผิด",
+        "memo_limit": "ไม่จำเป็นต้องกรอก จำกัดสูงสุด{num}ตัวอักษร",
+        "667077006": "ตอนนี้ยังอยู่ในช่วงปิดปรับปรุง เราขอโทษสำหรับความไม่สะดวกที่เกิดขึ้น การปิดปรับปรุงจะเสร็จสิ้น ณ เวลา {time} (UTC+8).",
+        "667098002": "Please try again after \b15 minutes.",
+        "downloads": "Downloads",
+        "export_memo": "(File can be named: Date\/Period and so on.)",
+        "cancel_export": "Cancel",
+        "confirm_export": "Export"
+    }
+}
+

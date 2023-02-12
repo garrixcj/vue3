@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "no_result": "查無資料",
+        "search": "搜尋",
+        "finite": "限定",
+        "permission": "權限",
+        "finite_note": "若權限後方顯示【限定】標記，表示該權限會依照有開放的廳主，顯示該廳的資料；若無開放的廳主資料則不顯示",
+        "special_permission_note": "【代理資料權限】、【會員資料權限】僅限企服開放，其他申請者須楊總同意。",
+        "show_specail_perm": "若將此權限設為關閉，將一併影響「{name}」其他權限",
+        "perm_factor_note": "黃色勾選項目為上層功能附加的選單權限，若上層未開啟則無法針對該項目異動",
+        "perm_affect_alert_special": "將滑鼠移至特殊權限上，可於【？】圖示，查看影響的功能"
+    },
+    "zh-cn": {
+        "no_result": "查无资料",
+        "search": "搜寻",
+        "finite": "限定",
+        "permission": "权限",
+        "finite_note": "若权限后方显示【限定】标记，表示该权限会依照有开放的厅主，显示该厅的资料；若无开放的厅主资料则不显示",
+        "special_permission_note": "【代理资料权限】、【会员资料权限】仅限企服开放，其他申请者须杨总同意。",
+        "show_specail_perm": "若将此权限设为关闭，将一并影响「{name}」其他权限",
+        "perm_factor_note": "黄色勾选项目为上层功能附加的选单权限，若上层未开启则无法针对该项目异动",
+        "perm_affect_alert_special": "将滑鼠移至特殊权限上，可于【？】图示，查看影响的功能"
+    },
+    "en": {
+        "no_result": "Data no found",
+        "search": "search",
+        "finite": "Limited",
+        "permission": "Authority",
+        "finite_note": "If the “Limited” sign is displayed after the authority, it means that the information of the hall will be displayed according to the owner who is opened. If the owner is not opened, the information won’t be displayed.",
+        "special_permission_note": "Only GM are authorized to access 【 user information 】 and 【 agent information 】, other user applications need to be approved by Mr. Yang.",
+        "show_specail_perm": "If close this authority, “{name}” will also be affected.",
+        "perm_factor_note": "The yellow checked item is the upper layer function added to the menu authority. If the upper layer is not opened, this item cannot be changed.",
+        "perm_affect_alert_special": "将滑鼠移至特殊权限上，可于【？】图示，查看影响的功能"
+    },
+    "ja": {
+        "no_result": "資料がありません",
+        "search": "検索",
+        "finite": "限定",
+        "permission": "権限",
+        "finite_note": "権限の後に【限定】がついているのは、開放されたウェブマスターのみが使える機能です",
+        "special_permission_note": "Only GM are authorized to access 【 user information 】 and 【 agent information 】, other user applications need to be approved by Mr. Yang.",
+        "show_specail_perm": "この権限を無効にしたら、「{name}」の他の権限に影響します",
+        "perm_factor_note": "黄色い項目は上層レベルの設定によって追加されるオプションです。上層が関連機能をオンにしないと編集できません",
+        "perm_affect_alert_special": "将滑鼠移至特殊权限上，可于【？】图示，查看影响的功能"
+    },
+    "ko": {
+        "no_result": "해당 자료가 없습니다.",
+        "search": "검색하기",
+        "finite": "한정",
+        "permission": "권한",
+        "finite_note": "관리자 권한뒤에【한정】표식이 있으면 페이지정보를 볼 수 있습니다. 없으면 페이지정보를 볼 수 없습니다",
+        "special_permission_note": "Only GM are authorized to access 【 user information 】 and 【 agent information 】, other user applications need to be approved by Mr. Yang.",
+        "show_specail_perm": "이 권한을 폐쇄로 설정하면 {name}의 다른 권한에 영향을 미칩니다",
+        "perm_factor_note": "노란색 체크 항목은 관리자의 추가 관한입니다.관리자가 기능을 키지 않으면 변경 불가능합니다.",
+        "perm_affect_alert_special": "将滑鼠移至特殊权限上，可于【？】图示，查看影响的功能"
+    },
+    "vi": {
+        "no_result": "Không tìm thấy thông tin",
+        "search": "Tìm kiếm",
+        "finite": "hạn định",
+        "permission": "Quyền hạn",
+        "finite_note": "Nếu có kí hiệu 【hạn định】ở phía sau mục quyền hạn, biểu thị quyền hạn này sẽ được mở theo quyền hạn của trang quản lý, hiển thị ra thông tin của trang này; nếu thông tin trang quản lý không có quyền hạn thì sẽ không hiển thị",
+        "special_permission_note": "Only GM are authorized to access 【 user information 】 and 【 agent information 】, other user applications need to be approved by Mr. Yang.",
+        "show_specail_perm": "Nếu quền này bị tắt, sẽ ảnh hưởng đến [tên] quyền hạn khác",
+        "perm_factor_note": "Mục tích màu vàng là chức năng tầng trên được thêm vào mục quyền hạn Menu, Nếu tầng trên chưa được mở thì không thể sử dựng chức năng này.",
+        "perm_affect_alert_special": "将滑鼠移至特殊权限上，可于【？】图示，查看影响的功能"
+    },
+    "th": {
+        "no_result": "ไม่พบข้อมูล",
+        "search": "ค้นหา",
+        "finite": "จำกัด",
+        "permission": "สิทธิ์",
+        "finite_note": "หากด้านหลังขอบข่ายอำนาจมีสัญลักษณ์【จำกัด】เเสดงว่าขอบข่ายอำนาจนั้นจะเเสดงข้อมูลตามการเปิดของเจ้าของห้องโถง เพื่อเเสดงข้อมูลของโถงนั้น เเละไม่เเสดงข้อมูลที่เจ้าของห้องโถงปิดไว้",
+        "special_permission_note": "Only GM are authorized to access 【 user information 】 and 【 agent information 】, other user applications need to be approved by Mr. Yang.",
+        "show_specail_perm": "หากตั้งค่าตรงนี้ไว้ที่ปิดก็จะส่งผลต่อการใช้งานอื่นๆของ「{name}」ด้วย",
+        "perm_factor_note": "รายการสีเหลืองเป็นสิทธิ์การเข้าถึงรายการตัวเลือกของฟังก์ชั่นขั้นก่อน หากไม่ได้เปิดจะไม่สามารถเปลี่ยนเเปลงใดๆได้",
+        "perm_affect_alert_special": "将滑鼠移至特殊权限上，可于【？】图示，查看影响的功能"
+    }
+}
+

@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "lobby19_jptype_0": "金幣活動",
+        "lobby19_jptype_1": "捕魚活動",
+        "lobby19_jptype_4": "红包",
+        "lobby19_jptype_5": "賭神賽",
+        "lobby19_jptype_6": "AG活動",
+        "lobby19_jptype_99": "優惠中心"
+    },
+    "zh-cn": {
+        "lobby19_jptype_0": "金币活动",
+        "lobby19_jptype_1": "捕鱼活动",
+        "lobby19_jptype_4": "红包",
+        "lobby19_jptype_5": "赌神赛",
+        "lobby19_jptype_6": "AG活动",
+        "lobby19_jptype_99": "优惠中心"
+    },
+    "en": {
+        "lobby19_jptype_0": "Gold Event",
+        "lobby19_jptype_1": "Fish Event",
+        "lobby19_jptype_4": "red envelope",
+        "lobby19_jptype_5": "Master Tournament",
+        "lobby19_jptype_6": "AG Event",
+        "lobby19_jptype_99": "Promotion Centre"
+    },
+    "ja": {
+        "lobby19_jptype_0": "Gold Event",
+        "lobby19_jptype_1": "Fish Event",
+        "lobby19_jptype_4": "red envelope",
+        "lobby19_jptype_5": "Master Tournament",
+        "lobby19_jptype_6": "AG Event",
+        "lobby19_jptype_99": "Promotion Centre"
+    },
+    "ko": {
+        "lobby19_jptype_0": "Gold Event",
+        "lobby19_jptype_1": "Fish Event",
+        "lobby19_jptype_4": "red envelope",
+        "lobby19_jptype_5": "Master Tournament",
+        "lobby19_jptype_6": "AG Event",
+        "lobby19_jptype_99": "Promotion Centre"
+    },
+    "vi": {
+        "lobby19_jptype_0": "Gold Event",
+        "lobby19_jptype_1": "Fish Event",
+        "lobby19_jptype_4": "red envelope",
+        "lobby19_jptype_5": "Master Tournament",
+        "lobby19_jptype_6": "AG Event",
+        "lobby19_jptype_99": "Promotion Centre"
+    },
+    "th": {
+        "lobby19_jptype_0": "Gold Event",
+        "lobby19_jptype_1": "Fish Event",
+        "lobby19_jptype_4": "red envelope",
+        "lobby19_jptype_5": "Master Tournament",
+        "lobby19_jptype_6": "AG Event",
+        "lobby19_jptype_99": "Promotion Centre"
+    }
+}
+

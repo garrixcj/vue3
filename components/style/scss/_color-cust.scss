@@ -1,0 +1,22 @@
+@use './variables' as RdVar;
+
+$colors: (
+  'success': (
+    'base': RdVar.$success,
+  ),
+  'danger': (
+    'base': RdVar.$danger,
+  ),
+  'error': (
+    'base': RdVar.$danger,
+  ),
+  'warning': (
+    'base': RdVar.$warning,
+  ),
+  'primary': (
+    'base': RdVar.$primary,
+  ),
+  'info': (
+    'base': RdVar.$info,
+  ),
+);

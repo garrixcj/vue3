@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "lobby99": "BB小費",
+        "lobby10000": "BB產品",
+        "lobby93_1": "NBB區塊鏈小費"
+    },
+    "zh-cn": {
+        "lobby99": "BB小费",
+        "lobby10000": "BB产品",
+        "lobby93_1": "NBB区块链小费"
+    },
+    "en": {
+        "lobby99": "BB Tip",
+        "lobby10000": "BB Products",
+        "lobby93_1": "NBB区块链小费"
+    },
+    "ja": {
+        "lobby99": "BB Tip",
+        "lobby10000": "BB Products",
+        "lobby93_1": "NBB区块链小费"
+    },
+    "ko": {
+        "lobby99": "BB 팁",
+        "lobby10000": "BB상품",
+        "lobby93_1": "NBB区块链小费"
+    },
+    "vi": {
+        "lobby99": "Tiền tip BB",
+        "lobby10000": "Trò chơi BB",
+        "lobby93_1": "NBB区块链小费"
+    },
+    "th": {
+        "lobby99": "BB Tip",
+        "lobby10000": "BB Products",
+        "lobby93_1": "NBB区块链小费"
+    }
+}
+

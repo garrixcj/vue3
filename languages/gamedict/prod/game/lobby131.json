@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "lobby131_131001": "百家樂",
+        "lobby131_131002": "龍虎",
+        "lobby131_131999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby131_131001": "百家乐",
+        "lobby131_131002": "龙虎",
+        "lobby131_131999": "未开放游戏"
+    },
+    "en": {
+        "lobby131_131001": "Baccarat",
+        "lobby131_131002": "Dragon Tiger",
+        "lobby131_131999": "Game is not open"
+    },
+    "ja": {
+        "lobby131_131001": "Baccarat",
+        "lobby131_131002": "Dragon Tiger",
+        "lobby131_131999": "Game is not open"
+    },
+    "ko": {
+        "lobby131_131001": "Baccarat",
+        "lobby131_131002": "Dragon Tiger",
+        "lobby131_131999": "Game is not open"
+    },
+    "vi": {
+        "lobby131_131001": "Baccarat",
+        "lobby131_131002": "Dragon Tiger",
+        "lobby131_131999": "Game is not open"
+    },
+    "th": {
+        "lobby131_131001": "Baccarat",
+        "lobby131_131002": "Dragon Tiger",
+        "lobby131_131999": "Game is not open"
+    }
+}
+

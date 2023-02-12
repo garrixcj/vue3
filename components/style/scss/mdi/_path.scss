@@ -1,0 +1,7 @@
+@font-face {
+  font-family: '#{$mdi-font-name}';
+  font-style: normal;
+  font-weight: normal;
+  src: url('@mdi/font/fonts/#{$mdi-filename}-webfont.woff2?v=#{$mdi-version}')
+    format('woff2');
+}

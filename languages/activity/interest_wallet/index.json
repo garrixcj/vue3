@@ -1,0 +1,66 @@
+{
+    "zh-tw": {
+        "operate_record": "操作紀錄",
+        "interest_wallet": "利息寶",
+        "transfer_log": "利息派發紀錄",
+        "activity_management": "活動管理",
+        "667077006": "目前進行維護中，如有不便之處，敬請見諒！預計於 北京時間 {time} 完成！",
+        "transfer_log_by_advanced": "派發紀錄(進階)",
+        "transfer_log_by_lite": "派發紀錄(簡易)"
+    },
+    "zh-cn": {
+        "operate_record": "操作纪录",
+        "interest_wallet": "利息宝",
+        "transfer_log": "利息派发纪录",
+        "activity_management": "活动管理",
+        "667077006": "目前进行维护中，如有不便之处，敬请见谅！预计于 北京时间 {time} 完成！",
+        "transfer_log_by_advanced": "派发纪录(进阶)",
+        "transfer_log_by_lite": "派发纪录(简易)"
+    },
+    "en": {
+        "operate_record": "Operating Record",
+        "interest_wallet": "Interest Wallet",
+        "transfer_log": "Payment Record",
+        "activity_management": "Management",
+        "667077006": "Currently this is during the maintenance. We express sincere apologies for the inconvenience. The maintenance will be completed at {time} (UTC+8).",
+        "transfer_log_by_advanced": "Payment Record (advanced)",
+        "transfer_log_by_lite": "Payment Record (simple)"
+    },
+    "ja": {
+        "operate_record": "操作履歴",
+        "interest_wallet": "金利財布",
+        "transfer_log": "金利発送履歴",
+        "activity_management": "プロモー管理",
+        "667077006": "ただいまメンテナンス中です。ご迷惑をおかけし、申し訳ございません。メンテナンスは{time} (UTC+8)に完成する予定です。",
+        "transfer_log_by_advanced": "配布履歴（詳細）",
+        "transfer_log_by_lite": "配布履歴（一般）"
+    },
+    "ko": {
+        "operate_record": "조작 기록",
+        "interest_wallet": "이자 지갑",
+        "transfer_log": "이자발급기록",
+        "activity_management": "이벤트 관리",
+        "667077006": "현재 시스템 점검이 진행되고 있습니다. 이용에 불편을 드려 죄송합니다! 점검 예정 시간：{time} (UTC+8) 까지",
+        "transfer_log_by_advanced": "발급 기록 (업그레이드)",
+        "transfer_log_by_lite": "발급 기록 (기초)"
+    },
+    "vi": {
+        "operate_record": "Ghi chép thao tác",
+        "interest_wallet": "Ví tiền lãi",
+        "transfer_log": "Ghi chép phát tiền lãi",
+        "activity_management": "Quản lý khuyến mãi",
+        "667077006": "Đang trong thời gian bảo trì, nếu có bất tiện, vui lòng thông cảm! Thời gian dự kiến hoàn thành {time} (UTC+8)",
+        "transfer_log_by_advanced": "Lịch sử phát thưởng ( nâng cấp)",
+        "transfer_log_by_lite": "Lịch sử phát thưởng (đơn giản)"
+    },
+    "th": {
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "interest_wallet": "กระเป๋าดอกเบี้ย",
+        "transfer_log": "ประวัติการแจกดอกเบี้ย",
+        "activity_management": "บริหารกิจกรรม",
+        "667077006": "ตอนนี้ยังอยู่ในช่วงปิดปรับปรุง เราขอโทษสำหรับความไม่สะดวกที่เกิดขึ้น การปิดปรับปรุงจะเสร็จสิ้น ณ เวลา {time} (UTC+8).",
+        "transfer_log_by_advanced": "ประวัติการเเจก(ขั้นสูง)",
+        "transfer_log_by_lite": "ประวัติการเเจก(ขั้นปกติ)"
+    }
+}
+

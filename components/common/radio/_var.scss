@@ -1,0 +1,28 @@
+@use '../../style/scss/variables' as RdVar;
+
+$radio: (
+  'text-color': RdVar.$text-3,
+  'font-weight': 400,
+  'input-height': 16px,
+  'input-width': 16px,
+);
+
+$radio-height: (
+  'default': 20px,
+  'small': 20px,
+);
+
+$radio-disabled: (
+  'input-border-color': RdVar.$background-3,
+  'input-fill': RdVar.$background-3,
+  'icon-color': RdVar.$background-3,
+  'checked-input-border-color': RdVar.$background-3,
+  'checked-input-fill': RdVar.$white,
+  'checked-icon-color': RdVar.$background-3,
+);
+
+$radio-checked: (
+  'text-color': RdVar.$text-1,
+  'input-border-color': RdVar.$success,
+  'icon-color': RdVar.$white,
+);

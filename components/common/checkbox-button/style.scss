@@ -1,0 +1,39 @@
+@import '../../common/button-group/theme';
+
+.el-checkbox-button {
+  @include group-main-theme('checkbox', 'checked');
+  &:first-child {
+    .el-checkbox-button__inner {
+      border-radius: 2px 0 0 2px;
+    }
+  }
+  &:last-child {
+    .el-checkbox-button__inner {
+      border-radius: 0 2px 2px 0;
+    }
+  }
+  &.is-focus {
+    .el-checkbox-button__inner {
+      border-color: #caced6;
+    }
+  }
+  // badge出現在checkbox-button裡時特別調整樣式
+  .el-checkbox-button__inner {
+    display: flex;
+    justify-content: center;
+    .el-badge {
+      display: flex;
+      align-items: center;
+      margin-left: 5px;
+      line-height: 16px;
+      .el-badge__content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 14px;
+        padding: 3px 4px;
+        line-height: 10px;
+      }
+    }
+  }
+}

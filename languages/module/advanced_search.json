@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "enable": "啟用",
+        "disable": "停用",
+        "advanced_conditions": "進階搜尋條件",
+        "advanced_search": "進階搜尋",
+        "clear_advanced_search": "清除進階條件",
+        "yes": "是",
+        "no": "否",
+        "top_management": "最高管理者"
+    },
+    "zh-cn": {
+        "enable": "启用",
+        "disable": "停用",
+        "advanced_conditions": "进阶搜寻条件",
+        "advanced_search": "进阶搜寻",
+        "clear_advanced_search": "清除进阶条件",
+        "yes": "是",
+        "no": "否",
+        "top_management": "最高管理者"
+    },
+    "en": {
+        "enable": "Enable",
+        "disable": "Disable",
+        "advanced_conditions": "Advanced conditions",
+        "advanced_search": "Advanced search",
+        "clear_advanced_search": "Delete advanced conditions",
+        "yes": "YES",
+        "no": "NO",
+        "top_management": "Highest administrator"
+    },
+    "ja": {
+        "enable": "有効",
+        "disable": "無効",
+        "advanced_conditions": "Advanced conditions",
+        "advanced_search": "詳細検索",
+        "clear_advanced_search": "アドバンスド条件クリア",
+        "yes": "はい",
+        "no": "いいえ",
+        "top_management": "トップマネジメント"
+    },
+    "ko": {
+        "enable": "사용",
+        "disable": "정지",
+        "advanced_conditions": "Advanced conditions",
+        "advanced_search": "추가조회",
+        "clear_advanced_search": "상세 조건 제거",
+        "yes": "네",
+        "no": "아니오",
+        "top_management": "최고 관리자"
+    },
+    "vi": {
+        "enable": "Sử dụng",
+        "disable": "Ngừng sử dụng",
+        "advanced_conditions": "Advanced conditions",
+        "advanced_search": "Tìm kiếm nâng cao",
+        "clear_advanced_search": "Xóa",
+        "yes": "Là",
+        "no": "Không",
+        "top_management": "Quản lý cao nhất"
+    },
+    "th": {
+        "enable": "เปิดใช้งาน",
+        "disable": "ปิดใช้งาน",
+        "advanced_conditions": "Advanced conditions",
+        "advanced_search": "ค้นหาเพิ่มขึ้น",
+        "clear_advanced_search": "ยกเลิกเงื่อนไขขั้นสูง",
+        "yes": "ใช่",
+        "no": "ไม่",
+        "top_management": "ผู้บริหารสูงสุด"
+    }
+}
+

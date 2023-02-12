@@ -1,0 +1,35 @@
+// tooltip 與 popover 都是使用 .el-popper 來處理彈出框樣式
+.el-popper {
+  padding: 6px 10px;
+  &.is-light {
+    border: none;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 25%);
+    .el-popper__arrow::before {
+      border: none;
+      border-radius: 0;
+    }
+  }
+  &.is-dark {
+    background-color: rgba(31, 39, 51, 0.8);
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 25%);
+    @each $arrow in (top, bottom, left, right) {
+      &[data-popper-placement^='#{$arrow}'],
+      &[data-popper-placement^='#{$arrow}-start'],
+      &[data-popper-placement^='#{$arrow}-end'] {
+        .el-popper__arrow::before {
+          #{$arrow}: 5px;
+          width: 0;
+          height: 0;
+          background: transparent;
+          border-color: transparent;
+          border-#{$arrow}-color: rgba(31, 39, 51, 0.8) !important;
+          border-style: solid;
+          border-width: 7px;
+          transform: unset;
+        }
+      }
+    }
+  }
+}

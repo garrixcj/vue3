@@ -1,0 +1,24 @@
+{
+    "zh-tw": {
+        "notice": "您要求的頁面已崩潰，目前無法使用！"
+    },
+    "zh-cn": {
+        "notice": "您要求的页面已崩溃，目前无法使用！"
+    },
+    "en": {
+        "notice": "The page you requested has crashed and is currently unavailable!"
+    },
+    "ja": {
+        "notice": "The page you requested has crashed and is currently unavailable!"
+    },
+    "ko": {
+        "notice": "The page you requested has crashed and is currently unavailable!"
+    },
+    "vi": {
+        "notice": "The page you requested has crashed and is currently unavailable!"
+    },
+    "th": {
+        "notice": "The page you requested has crashed and is currently unavailable!"
+    }
+}
+

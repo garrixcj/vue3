@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "operate_record": "操作紀錄",
+        "negative_cash": "負數現金",
+        "operate_area": "操作區"
+    },
+    "zh-cn": {
+        "operate_record": "操作纪录",
+        "negative_cash": "负数现金",
+        "operate_area": "操作区"
+    },
+    "en": {
+        "operate_record": "Operating Record",
+        "negative_cash": "Negative Balance",
+        "operate_area": "Operation"
+    },
+    "ja": {
+        "operate_record": "操作履歴",
+        "negative_cash": "マイナス残高",
+        "operate_area": "操作エリア"
+    },
+    "ko": {
+        "operate_record": "조작 기록",
+        "negative_cash": "마이너스 금액",
+        "operate_area": "처리 설정"
+    },
+    "vi": {
+        "operate_record": "Ghi chép thao tác",
+        "negative_cash": "Số dư âm",
+        "operate_area": "Khu vực thao tác"
+    },
+    "th": {
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "negative_cash": "ยอดเงินติดลบ",
+        "operate_area": "โซนดำเนินการ"
+    }
+}
+

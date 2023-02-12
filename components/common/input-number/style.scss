@@ -1,0 +1,31 @@
+.el-input-number {
+  @each $type, $size in $input-font {
+    &--#{$type} {
+      .el-input__inner {
+        font-size: $size;
+      }
+    }
+  }
+  &__increase {
+    color: $white;
+    background-color: $primary;
+    border-color: $primary;
+    border-radius: 0 2px 2px 0;
+    &:hover {
+      color: $white;
+    }
+  }
+  &__decrease {
+    color: $white;
+    background-color: $primary;
+    border-color: $primary;
+    border-radius: 2px 0 0 2px;
+    &:hover {
+      color: $white;
+    }
+  }
+  // 「預設」按鈕顏色
+  &.default-theme {
+    @include color-theme($primary-4, $primary);
+  }
+}

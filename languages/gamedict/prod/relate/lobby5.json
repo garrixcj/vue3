@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "lobby5_jptype_1": "GRAND",
+        "lobby5_jptype_10": "祿運大獎",
+        "lobby5_jptype_11": "壽桃中獎",
+        "lobby5_jptype_12": "喜氣小獎",
+        "lobby5_jptype_2": "MAJOR",
+        "lobby5_jptype_3": "MINOR",
+        "lobby5_jptype_4": "MINI",
+        "lobby5_jptype_9": "福星巨獎"
+    },
+    "zh-cn": {
+        "lobby5_jptype_1": "GRAND",
+        "lobby5_jptype_10": "禄运大奖",
+        "lobby5_jptype_11": "寿桃中奖",
+        "lobby5_jptype_12": "喜气小奖",
+        "lobby5_jptype_2": "MAJOR",
+        "lobby5_jptype_3": "MINOR",
+        "lobby5_jptype_4": "MINI",
+        "lobby5_jptype_9": "福星巨奖"
+    },
+    "en": {
+        "lobby5_jptype_1": "GRAND",
+        "lobby5_jptype_10": "Lu Major",
+        "lobby5_jptype_11": "Shou Minor",
+        "lobby5_jptype_12": "Xi Mini",
+        "lobby5_jptype_2": "MAJOR",
+        "lobby5_jptype_3": "MINOR",
+        "lobby5_jptype_4": "MINI",
+        "lobby5_jptype_9": "Fu Grand"
+    },
+    "ja": {
+        "lobby5_jptype_1": "GRAND",
+        "lobby5_jptype_10": "Lu Major",
+        "lobby5_jptype_11": "Shou Minor",
+        "lobby5_jptype_12": "Xi Mini",
+        "lobby5_jptype_2": "MAJOR",
+        "lobby5_jptype_3": "MINOR",
+        "lobby5_jptype_4": "MINI",
+        "lobby5_jptype_9": "Fu Grand"
+    },
+    "ko": {
+        "lobby5_jptype_1": "GRAND",
+        "lobby5_jptype_10": "Lu Major",
+        "lobby5_jptype_11": "Shou Minor",
+        "lobby5_jptype_12": "Xi Mini",
+        "lobby5_jptype_2": "MAJOR",
+        "lobby5_jptype_3": "MINOR",
+        "lobby5_jptype_4": "MINI",
+        "lobby5_jptype_9": "Fu Grand"
+    },
+    "vi": {
+        "lobby5_jptype_1": "GRAND",
+        "lobby5_jptype_10": "Lu Major",
+        "lobby5_jptype_11": "Shou Minor",
+        "lobby5_jptype_12": "Xi Mini",
+        "lobby5_jptype_2": "MAJOR",
+        "lobby5_jptype_3": "MINOR",
+        "lobby5_jptype_4": "MINI",
+        "lobby5_jptype_9": "Fu Grand"
+    },
+    "th": {
+        "lobby5_jptype_1": "GRAND",
+        "lobby5_jptype_10": "Lu Major",
+        "lobby5_jptype_11": "Shou Minor",
+        "lobby5_jptype_12": "Xi Mini",
+        "lobby5_jptype_2": "MAJOR",
+        "lobby5_jptype_3": "MINOR",
+        "lobby5_jptype_4": "MINI",
+        "lobby5_jptype_9": "Fu Grand"
+    }
+}
+

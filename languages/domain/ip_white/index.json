@@ -1,0 +1,45 @@
+{
+    "zh-tw": {
+        "all": "全部",
+        "operate_record": "操作紀錄",
+        "ip_allow_list": "IP白名單管理",
+        "ip_allow_list_management": "IP管理"
+    },
+    "zh-cn": {
+        "all": "全部",
+        "operate_record": "操作纪录",
+        "ip_allow_list": "IP白名单管理",
+        "ip_allow_list_management": "IP管理"
+    },
+    "en": {
+        "all": "All",
+        "operate_record": "Operating Record",
+        "ip_allow_list": "IP Whitelist Management",
+        "ip_allow_list_management": "IP Management"
+    },
+    "ja": {
+        "all": "全部",
+        "operate_record": "操作履歴",
+        "ip_allow_list": "IPホワイトリストの管理",
+        "ip_allow_list_management": "IP管理"
+    },
+    "ko": {
+        "all": "전체",
+        "operate_record": "조작 기록",
+        "ip_allow_list": "IP 화이트리스트 관리",
+        "ip_allow_list_management": "IP관리"
+    },
+    "vi": {
+        "all": "Toàn bộ",
+        "operate_record": "Ghi chép thao tác",
+        "ip_allow_list": "Quản lí danh sách trắng IP",
+        "ip_allow_list_management": "Quản lý IP"
+    },
+    "th": {
+        "all": "ทั้งหมด",
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "ip_allow_list": "บริหารIPบัญชีขาว",
+        "ip_allow_list_management": "การจัดการ IP"
+    }
+}
+

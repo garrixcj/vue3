@@ -1,0 +1,27 @@
+$notify-types: (
+  'success': 'F05E0',
+  'warning': 'F0028',
+  'error': 'F0159',
+);
+.el-notification {
+  &__content {
+    text-align: left;
+  }
+  &__group {
+    width: 100%;
+  }
+  @each $type, $content in $notify-types {
+    .el-icon.el-notification--#{$type} {
+      font-size: 24px;
+      @include svg-to-mdi($content, true);
+    }
+  }
+  .el-icon.el-notification__closeBtn {
+    font-size: 16px;
+    color: $text-3;
+    @include svg-to-mdi('F0156', true);
+    &:hover {
+      color: $text-2;
+    }
+  }
+}

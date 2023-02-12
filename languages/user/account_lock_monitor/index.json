@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "two_verification_list": "雙重驗證錯誤列表",
+        "account_monitor": "帳號安全監控",
+        "account_lock_list": "帳號鎖定列表"
+    },
+    "zh-cn": {
+        "two_verification_list": "双重验证错误列表",
+        "account_monitor": "帐号安全监控",
+        "account_lock_list": "帐号锁定列表"
+    },
+    "en": {
+        "two_verification_list": "2-Step Verification Error List",
+        "account_monitor": "Account Monitoring",
+        "account_lock_list": "Locked Accounts List"
+    },
+    "ja": {
+        "two_verification_list": "2段階認証エラーリスト",
+        "account_monitor": "アカウントモニタリング",
+        "account_lock_list": "ロックされたアカウントリスト"
+    },
+    "ko": {
+        "two_verification_list": "이중 인증 오류 목록",
+        "account_monitor": "계정 안전제어",
+        "account_lock_list": "계정 잠금 목록"
+    },
+    "vi": {
+        "two_verification_list": "Danh sách lỗi mã xác thực kép",
+        "account_monitor": "Giám sát bảo mật tài khoản",
+        "account_lock_list": "Danh sách tài khoản bị khóa"
+    },
+    "th": {
+        "two_verification_list": "ตารางรายการยืนยันบัญชีสองชั้นผิดพลาด",
+        "account_monitor": "สังเกตความปลอดภัยของบัญชี",
+        "account_lock_list": "ตารางรายการผูกบัญชี"
+    }
+}
+

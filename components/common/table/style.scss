@@ -1,0 +1,65 @@
+.el-table {
+  th.el-table__cell {
+    padding: 0;
+    font-weight: 400;
+    &.is-leaf {
+      border-bottom-width: 2px;
+    }
+  }
+  .el-table__header-wrapper th.el-table__cell {
+    padding: 10px 0;
+  }
+  .cell {
+    line-height: 20px;
+  }
+  &__header {
+    margin-bottom: 3px;
+    box-shadow: 0 1px 3px mix($white, $text-1, 90%);
+    thead.is-group th.el-table__cell {
+      background: $white;
+    }
+  }
+  .el-table__footer-wrapper td.el-table__cell {
+    font-weight: 500;
+    background-color: $background-6;
+    border-right: 1px solid #d0d7e7;
+  }
+  .el-table__footer {
+    tbody {
+      td:first-child {
+        color: $primary-1;
+        text-align: center;
+      }
+    }
+  }
+  // table 無資料文字顏色
+  &__empty-text {
+    color: $text-4;
+  }
+  // select 選中狀態 hover 顏色調整 (單選)
+  &__body tr.current-row {
+    &.hover-row,
+    &:hover {
+      & > td.el-table__cell {
+        background-color: darken($focus-2, 3%);
+      }
+    }
+  }
+  // 縮合下拉 icon
+  &__expand-icon {
+    i {
+      &.el-icon {
+        height: 20px;
+      }
+      @include svg-to-mdi('F0143', true) {
+        font-size: 20px;
+        color: $primary;
+      }
+    }
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(180deg);
+    &.el-table__expand-icon--expanded {
+      transform: rotate(0deg);
+    }
+  }
+}

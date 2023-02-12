@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "report_lobby1_BK": "籃球",
+        "report_lobby1_BS": "棒球",
+        "report_lobby1_CB": "混合過關",
+        "report_lobby1_F1": "其他",
+        "report_lobby1_FB": "美式足球",
+        "report_lobby1_FT": "足球",
+        "report_lobby1_IH": "冰球",
+        "report_lobby1_SP": "冠軍賽",
+        "report_lobby1_TN": "網球"
+    },
+    "zh-cn": {
+        "report_lobby1_BK": "篮球",
+        "report_lobby1_BS": "棒球",
+        "report_lobby1_CB": "混合过关",
+        "report_lobby1_F1": "其他",
+        "report_lobby1_FB": "美式足球",
+        "report_lobby1_FT": "足球",
+        "report_lobby1_IH": "冰球",
+        "report_lobby1_SP": "冠军赛",
+        "report_lobby1_TN": "网球"
+    },
+    "en": {
+        "report_lobby1_BK": "Basketball",
+        "report_lobby1_BS": "Baseball",
+        "report_lobby1_CB": "Combo Parlay",
+        "report_lobby1_F1": "Other",
+        "report_lobby1_FB": "Football",
+        "report_lobby1_FT": "Soccer",
+        "report_lobby1_IH": "Ice Hockey",
+        "report_lobby1_SP": "Outright",
+        "report_lobby1_TN": "Tennis"
+    },
+    "ja": {
+        "report_lobby1_BK": "バスケットボール",
+        "report_lobby1_BS": "野球",
+        "report_lobby1_CB": "コンボ・パーレイ",
+        "report_lobby1_F1": "その他",
+        "report_lobby1_FB": "フットボール",
+        "report_lobby1_FT": "サッカー",
+        "report_lobby1_IH": "アイスホッケー",
+        "report_lobby1_SP": "チャンピオン",
+        "report_lobby1_TN": "テニス"
+    },
+    "ko": {
+        "report_lobby1_BK": "농구",
+        "report_lobby1_BS": "야구",
+        "report_lobby1_CB": "믹스 팔레이",
+        "report_lobby1_F1": "기타",
+        "report_lobby1_FB": "미식축구",
+        "report_lobby1_FT": "축구",
+        "report_lobby1_IH": "아이스 하키",
+        "report_lobby1_SP": "챔피언",
+        "report_lobby1_TN": "테니스"
+    },
+    "vi": {
+        "report_lobby1_BK": "Bóng rổ",
+        "report_lobby1_BS": "Bóng chày",
+        "report_lobby1_CB": "Cược xiên hỗn hợp",
+        "report_lobby1_F1": "Khác",
+        "report_lobby1_FB": "Bóng đá Mỹ",
+        "report_lobby1_FT": "Bóng đá",
+        "report_lobby1_IH": "Khúc côn cầu trên băng",
+        "report_lobby1_SP": "Quán quân",
+        "report_lobby1_TN": "Tennis"
+    },
+    "th": {
+        "report_lobby1_BK": "บาสเกตบอลล์",
+        "report_lobby1_BS": "เบสบอลล์",
+        "report_lobby1_CB": "พาร์เลย์",
+        "report_lobby1_F1": "เกมส์อื่นๆ",
+        "report_lobby1_FB": "อเมริกันฟุตบอลล์",
+        "report_lobby1_FT": "ฟุตบอลล์",
+        "report_lobby1_IH": "ฮอกกี้น้ำแข็ง",
+        "report_lobby1_SP": "ผู้ชนะเลิศ",
+        "report_lobby1_TN": "เทนนิส"
+    }
+}
+

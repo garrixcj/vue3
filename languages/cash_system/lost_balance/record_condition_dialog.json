@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "search": "搜尋",
+        "operational_content": "操作內容",
+        "input_keyword": "請輸入關鍵字",
+        "search_iw": "搜尋",
+        "no_monitor": "不監控",
+        "external_game_wallet": "外接遊戲錢包",
+        "change_count": "異動 {num} 家",
+        "monitor_num": "監控筆數"
+    },
+    "zh-cn": {
+        "search": "搜寻",
+        "operational_content": "操作内容",
+        "input_keyword": "请输入关键字",
+        "search_iw": "搜寻",
+        "no_monitor": "不监控",
+        "external_game_wallet": "外接游戏钱包",
+        "change_count": "异动 {num} 家",
+        "monitor_num": "监控笔数"
+    },
+    "en": {
+        "search": "search",
+        "operational_content": "Content of operation",
+        "input_keyword": "Please enter keyword.",
+        "search_iw": "Search",
+        "no_monitor": "Not Monitor",
+        "external_game_wallet": "External Game Wallet",
+        "change_count": "异动 {num} 家",
+        "monitor_num": "监控笔数"
+    },
+    "ja": {
+        "search": "検索",
+        "operational_content": "操作内容",
+        "input_keyword": "検索単語を入力してください",
+        "search_iw": "検索",
+        "no_monitor": "Not Monitor",
+        "external_game_wallet": "External Game Wallet",
+        "change_count": "异动 {num} 家",
+        "monitor_num": "监控笔数"
+    },
+    "ko": {
+        "search": "검색하기",
+        "operational_content": "변경내용",
+        "input_keyword": "검색어 입력",
+        "search_iw": "조회",
+        "no_monitor": "모니터링 안함",
+        "external_game_wallet": "외부게임의 지갑",
+        "change_count": "异动 {num} 家",
+        "monitor_num": "监控笔数"
+    },
+    "vi": {
+        "search": "Tìm kiếm",
+        "operational_content": "Nội dung thao tác",
+        "input_keyword": "Vui lòng nhập từ khóa",
+        "search_iw": "Tìm kiếm",
+        "no_monitor": "Không giám sát",
+        "external_game_wallet": "Ví từ trò chơi ngoài",
+        "change_count": "异动 {num} 家",
+        "monitor_num": "监控笔数"
+    },
+    "th": {
+        "search": "ค้นหา",
+        "operational_content": "แก้ไขเนื้อหา",
+        "input_keyword": "กรุณาป้อนคำหลัก",
+        "search_iw": "ค้นหา",
+        "no_monitor": "Not Monitor",
+        "external_game_wallet": "External Game Wallet",
+        "change_count": "异动 {num} 家",
+        "monitor_num": "监控笔数"
+    }
+}
+

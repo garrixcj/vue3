@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "member_two_factor_auth": "會員雙重驗證",
+        "binding_data_summary": "綁定資料匯總"
+    },
+    "zh-cn": {
+        "member_two_factor_auth": "会员双重验证",
+        "binding_data_summary": "绑定资料汇总"
+    },
+    "en": {
+        "member_two_factor_auth": "Member 2-Step Verification",
+        "binding_data_summary": "Summary of Binding Information"
+    },
+    "ja": {
+        "member_two_factor_auth": "Member two factor auth",
+        "binding_data_summary": "Summary of Binding Information"
+    },
+    "ko": {
+        "member_two_factor_auth": "회원 이중인증",
+        "binding_data_summary": "자료 총정리 연동하기"
+    },
+    "vi": {
+        "member_two_factor_auth": "Xác thực kép hội viên",
+        "binding_data_summary": "Tóm tắt thiết lập dữ liệu"
+    },
+    "th": {
+        "member_two_factor_auth": "Member two factor auth",
+        "binding_data_summary": "Summary of Binding Information"
+    }
+}
+

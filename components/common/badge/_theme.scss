@@ -1,0 +1,19 @@
+// badge客製化顏色
+@mixin badge-theme($color) {
+  :deep(.el-badge__content) {
+    background-color: $color;
+  }
+}
+// badge客製化顏色 反轉樣式
+@mixin badge-theme-convert($color, $root: true) {
+  @if $root {
+    :deep(.el-badge__content) {
+      color: $color;
+      background-color: $white;
+    }
+  } @else {
+    // 自行寫 deep
+    color: $color;
+    background-color: $white;
+  }
+}

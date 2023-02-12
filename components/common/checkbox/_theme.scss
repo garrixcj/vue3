@@ -1,0 +1,22 @@
+@mixin checkbox-theme($bg-color, $symbol-color: #fff) {
+  :deep() .el-checkbox__input:not(.is-disabled) {
+    &.is-checked {
+      .el-checkbox__inner {
+        background-color: $bg-color;
+        border-color: $bg-color;
+        &::after {
+          border-color: $symbol-color;
+        }
+      }
+    }
+    &.is-indeterminate {
+      .el-checkbox__inner {
+        background-color: $bg-color;
+        border-color: $bg-color;
+        &::before {
+          background-color: $symbol-color;
+        }
+      }
+    }
+  }
+}

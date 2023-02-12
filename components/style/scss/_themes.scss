@@ -1,0 +1,166 @@
+/**
+ * scss common theme
+ *
+ * 偏向共用樣式類的 scss mixin theme
+ * 目的是為了生成某些常見的樣式
+ */
+
+// Element+ 客製化 theme
+@import '../../common/tag/theme';
+@import '../../common/button/theme';
+@import '../../common/badge/theme';
+@import '../../common/dialog/theme';
+@import '../../common/form/theme';
+@import '../../common/checkbox/theme';
+@import '../../common/tab/theme';
+@import '../../common/radio/theme';
+@import '../../common/switch/theme';
+@import '../../common/notification/theme';
+@import '../../common/button-group/theme';
+@import '../../common/table/theme';
+@import '../../common/divider/theme';
+@import '../../common/alert/theme';
+@import '../../common/input-number/theme';
+
+// 常用 layout
+@mixin mainframe($layout: '.mainframe-default', $header: true) {
+  @at-root #{$layout} {
+    padding: 10px 20px;
+    @if $header {
+      @include mainframe-header();
+    }
+    @content;
+  }
+}
+
+// 常用 layout 的 header
+@mixin mainframe-header($header-target: 'h2') {
+  #{$header-target} {
+    margin: 0px 0px 10px 0px;
+    font-size: 26px;
+    font-weight: normal;
+    color: $text-1;
+    @content;
+  }
+}
+
+// 搜尋列結構間距調整
+@mixin search-bar-margin($class: 'search-bar') {
+  .#{$class} {
+    @include flex-basic();
+    margin-bottom: 10px;
+    &__label,
+    &__btn {
+      margin-right: 10px;
+    }
+    &__input {
+      margin-right: 15px;
+    }
+    @content;
+  }
+}
+
+// 網格比例
+@mixin col-span($class: 'rd-col', $max: 24) {
+  .#{$class} {
+    @for $i from 1 through $max {
+      &-#{$i} {
+        width: calc(100% / $max * $i);
+      }
+    }
+  }
+}
+
+// 表單狀態嵌套
+@mixin form-item-status($status) {
+  .el-form-item.is-#{$status} {
+    @content;
+  }
+}
+
+// svg 改 content
+/* stylelint-disable-next-line prettier/prettier */
+@mixin mdi-char($icon) {
+  content: #{'"\\'}#{$icon + '"'};
+}
+@mixin svg-to-mdi-content($icon: '') {
+  svg {
+    display: none;
+  }
+  &::before {
+    display: inline-block;
+    font-family: 'Material Design Icons';
+    font-size: inherit;
+    font-style: normal;
+    font-weight: normal;
+    font-stretch: 24px/1;
+    line-height: inherit;
+    text-rendering: auto;
+    @if $icon != '' {
+      @include mdi-char($icon);
+    }
+    @content;
+  }
+}
+@mixin svg-to-mdi($icon: '', $root: false) {
+  @if $root {
+    &.el-icon {
+      @include svg-to-mdi-content($icon) {
+        @content;
+      }
+    }
+  } @else {
+    .el-icon {
+      @include svg-to-mdi-content($icon) {
+        @content;
+      }
+    }
+  }
+}
+
+// 階層標題樣式
+@mixin header-title-1($class: 'title') {
+  // 綠色標題
+  .#{$class} {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+    color: $mark-3;
+  }
+}
+@mixin header-title-2($class: 'subtitle') {
+  // 黑色副標題
+  .#{$class} {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    color: $text-1;
+  }
+}
+@mixin header-title-3($class: 'title-suffix') {
+  // 灰色標題後綴
+  .#{$class} {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: $text-3;
+  }
+}
+@mixin header-normal-title-1($class: 'title') {
+  // 灰色一般標題
+  .#{$class} {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    color: $text-3;
+  }
+}
+@mixin header-normal-title-2($class: 'title-suffix') {
+  // 黑色一般標題後綴
+  .#{$class} {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: $text-1;
+  }
+}

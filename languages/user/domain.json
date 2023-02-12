@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "error": "錯誤",
+        "permission_management": "權限管理",
+        "667064003": "沒有開放此功能修改權限",
+        "domain_management": "廳主管理",
+        "domain_list": "廳主列表",
+        "default_param": "預設參數",
+        "balance_statistics": "會員餘額統計",
+        "api_interface_search": "API接口設定查詢"
+    },
+    "zh-cn": {
+        "error": "错误",
+        "permission_management": "权限管理",
+        "667064003": "没有开放此功能修改权限",
+        "domain_management": "厅主管理",
+        "domain_list": "厅主列表",
+        "default_param": "预设参数",
+        "balance_statistics": "会员余额统计",
+        "api_interface_search": "API接口设定查询"
+    },
+    "en": {
+        "error": "Error",
+        "permission_management": "Authority Management",
+        "667064003": "User do not have permission to modify",
+        "domain_management": "Domain Management",
+        "domain_list": "Domain list",
+        "default_param": "Default parameter",
+        "balance_statistics": "Member Balance Statistics",
+        "api_interface_search": "API Interface Setting Search"
+    },
+    "ja": {
+        "error": "エラー",
+        "permission_management": "権限管理",
+        "667064003": "User do not have permission to modify",
+        "domain_management": "Domain Management",
+        "domain_list": "Domain list",
+        "default_param": "Default parameter",
+        "balance_statistics": "メンバー残高合計額",
+        "api_interface_search": "API接口设定查询"
+    },
+    "ko": {
+        "error": "에러",
+        "permission_management": "권한 관리",
+        "667064003": "User do not have permission to modify",
+        "domain_management": "Domain Management",
+        "domain_list": "Domain list",
+        "default_param": "Default parameter",
+        "balance_statistics": "회원 잔액 통계",
+        "api_interface_search": "API接口设定查询"
+    },
+    "vi": {
+        "error": "Lỗi",
+        "permission_management": "Quyền hạn quản lí",
+        "667064003": "User do not have permission to modify",
+        "domain_management": "Domain Management",
+        "domain_list": "Domain list",
+        "default_param": "Default parameter",
+        "balance_statistics": "Thống kê số dư của hội viên",
+        "api_interface_search": "API接口设定查询"
+    },
+    "th": {
+        "error": "ผิด",
+        "permission_management": "จัดการขอบข่ายอำนาจ",
+        "667064003": "User do not have permission to modify",
+        "domain_management": "Domain Management",
+        "domain_list": "Domain list",
+        "default_param": "Default parameter",
+        "balance_statistics": "คำนวณยอดเงินสมาชิก",
+        "api_interface_search": "API接口设定查询"
+    }
+}
+

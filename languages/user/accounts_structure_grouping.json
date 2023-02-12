@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "accounts_structure_grouping": "帳號結構分群",
+        "not_logged_in_list": "未登入會員名單"
+    },
+    "zh-cn": {
+        "accounts_structure_grouping": "帐号结构分群",
+        "not_logged_in_list": "未登入会员名单"
+    },
+    "en": {
+        "accounts_structure_grouping": "Account Structure Classification",
+        "not_logged_in_list": "Offline Member List"
+    },
+    "ja": {
+        "accounts_structure_grouping": "Account Structure Classification",
+        "not_logged_in_list": "Offline Member List"
+    },
+    "ko": {
+        "accounts_structure_grouping": "계정 구성 분류",
+        "not_logged_in_list": "미로그인 회원 명단"
+    },
+    "vi": {
+        "accounts_structure_grouping": "Nhóm cấu trúc tài khoản",
+        "not_logged_in_list": "Danh sách hội viên chưa đăng nhập"
+    },
+    "th": {
+        "accounts_structure_grouping": "Account Structure Classification",
+        "not_logged_in_list": "Offline Member List"
+    }
+}
+

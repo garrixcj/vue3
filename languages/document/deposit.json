@@ -1,0 +1,66 @@
+{
+    "zh-tw": {
+        "deposit_ARD1": "人工存入",
+        "deposit_ARD2": "存款優惠",
+        "deposit_ARD3": "負數額度歸零",
+        "deposit_ARD4": "取消出款",
+        "deposit_ARD5": "其它",
+        "deposit_ARD7": "返點優惠",
+        "deposit_ARD8": "活動優惠"
+    },
+    "zh-cn": {
+        "deposit_ARD1": "人工存入",
+        "deposit_ARD2": "存款优惠",
+        "deposit_ARD3": "负数额度归零",
+        "deposit_ARD4": "取消出款",
+        "deposit_ARD5": "其它",
+        "deposit_ARD7": "返点优惠",
+        "deposit_ARD8": "活动优惠"
+    },
+    "en": {
+        "deposit_ARD1": "Manually deposit",
+        "deposit_ARD2": "deposit bonus",
+        "deposit_ARD3": "negative amount to zero",
+        "deposit_ARD4": "cancel cash out",
+        "deposit_ARD5": "Others",
+        "deposit_ARD7": "Rebate promotions",
+        "deposit_ARD8": "Events Offers"
+    },
+    "ja": {
+        "deposit_ARD1": "手動預金",
+        "deposit_ARD2": "預金優待",
+        "deposit_ARD3": "マイナス残高リセット",
+        "deposit_ARD4": "出金キャンセル",
+        "deposit_ARD5": "その他",
+        "deposit_ARD7": "ボーナス",
+        "deposit_ARD8": "キャンペーン"
+    },
+    "ko": {
+        "deposit_ARD1": "수동 입금",
+        "deposit_ARD2": "예금 특혜",
+        "deposit_ARD3": "마이너스 한도가 0으로 됩니다.",
+        "deposit_ARD4": "인출 취소",
+        "deposit_ARD5": "기타",
+        "deposit_ARD7": "롤링 보너스",
+        "deposit_ARD8": "이벤트"
+    },
+    "vi": {
+        "deposit_ARD1": "Nạp tiền thủ công",
+        "deposit_ARD2": "Thưởng nạp tiền",
+        "deposit_ARD3": "Số dư âm trả về 0",
+        "deposit_ARD4": "Hủy bỏ rút tiền",
+        "deposit_ARD5": "Khác",
+        "deposit_ARD7": "Thưởng hoàn trả",
+        "deposit_ARD8": "Thưởng hoạt động"
+    },
+    "th": {
+        "deposit_ARD1": "เติมเงินโดยพนักงาน",
+        "deposit_ARD2": "โปรโมชั่นฝากเงิน",
+        "deposit_ARD3": "ติดลบเป็น0",
+        "deposit_ARD4": "ยกเลิกการถอนเงิน",
+        "deposit_ARD5": "เกมส์อื่นๆ",
+        "deposit_ARD7": "โปรโมชั่นคืนค่าน้ำ",
+        "deposit_ARD8": "โปรโมชั่นกิจกรรม"
+    }
+}
+

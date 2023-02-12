@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "select_all": "全選",
+        "operate_record": "操作紀錄",
+        "platform_game_switch_setting": "平台遊戲設定",
+        "game_switch": "遊戲開關",
+        "game_list": "遊戲列表",
+        "game_thumbnail": "遊戲入口圖"
+    },
+    "zh-cn": {
+        "select_all": "全选",
+        "operate_record": "操作纪录",
+        "platform_game_switch_setting": "平台游戏设定",
+        "game_switch": "游戏开关",
+        "game_list": "游戏列表",
+        "game_thumbnail": "游戏入口图"
+    },
+    "en": {
+        "select_all": "Select All",
+        "operate_record": "Operating Record",
+        "platform_game_switch_setting": "Platform Game Settings",
+        "game_switch": "Game Switch",
+        "game_list": "Game List",
+        "game_thumbnail": "游戏入口图"
+    },
+    "ja": {
+        "select_all": "一括選択",
+        "operate_record": "操作履歴",
+        "platform_game_switch_setting": "Platform Game Settings",
+        "game_switch": "Game Switch",
+        "game_list": "Game List",
+        "game_thumbnail": "游戏入口图"
+    },
+    "ko": {
+        "select_all": "전체선택",
+        "operate_record": "조작 기록",
+        "platform_game_switch_setting": "플랫폼 게임 설정",
+        "game_switch": "게임 온\/오프",
+        "game_list": "게임 목록",
+        "game_thumbnail": "游戏入口图"
+    },
+    "vi": {
+        "select_all": "Lựa chọn tất cả",
+        "operate_record": "Ghi chép thao tác",
+        "platform_game_switch_setting": "Cài đặt sảnh trò chơi",
+        "game_switch": "Tắt bật trò chơi",
+        "game_list": "Danh sách trò chơi",
+        "game_thumbnail": "游戏入口图"
+    },
+    "th": {
+        "select_all": "เลือกทั้งหมด",
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "platform_game_switch_setting": "เกินจำนวนตัวอักษรที่กำหนด",
+        "game_switch": "เปิดปิดเกมส์",
+        "game_list": "รายการเกมส์",
+        "game_thumbnail": "游戏入口图"
+    }
+}
+

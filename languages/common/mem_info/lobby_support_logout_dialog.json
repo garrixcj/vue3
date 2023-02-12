@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "lobby": "遊戲平台",
+        "live_category": "視訊類",
+        "prob_category": "電子類",
+        "sport_category": "體育類",
+        "lottery_category": "彩票類",
+        "card_category": "棋牌類"
+    },
+    "zh-cn": {
+        "lobby": "游戏平台",
+        "live_category": "视讯类",
+        "prob_category": "电子类",
+        "sport_category": "体育类",
+        "lottery_category": "彩票类",
+        "card_category": "棋牌类"
+    },
+    "en": {
+        "lobby": "Game Hall",
+        "live_category": "Live Casino Games",
+        "prob_category": "Casino Games",
+        "sport_category": "Sports Games",
+        "lottery_category": "Lottery Games",
+        "card_category": "Battle Games"
+    },
+    "ja": {
+        "lobby": "ゲームロビー",
+        "live_category": "ライブディーラー系",
+        "prob_category": "スロット系",
+        "sport_category": "スポーツブック系",
+        "lottery_category": "お宝くじ系",
+        "card_category": "Battle Games"
+    },
+    "ko": {
+        "lobby": "게임홀",
+        "live_category": "라이브 카지노",
+        "prob_category": "전자게임",
+        "sport_category": "스포츠 배팅",
+        "lottery_category": "복권게임",
+        "card_category": "카드보드게임"
+    },
+    "vi": {
+        "lobby": "Sảnh game",
+        "live_category": "Casino trực tuyến",
+        "prob_category": "Casino điện tử",
+        "sport_category": "Thể thao",
+        "lottery_category": "Xổ số",
+        "card_category": "Các loại Bài"
+    },
+    "th": {
+        "lobby": "ห้องเกมส์",
+        "live_category": "เกมส์คาสิโน",
+        "prob_category": "เกมส์สล็อต",
+        "sport_category": "เกมส์กีฬา",
+        "lottery_category": "เกมส์ล็อตเตอรี่",
+        "card_category": "ประเภทไพ่"
+    }
+}
+

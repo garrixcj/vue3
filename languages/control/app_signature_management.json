@@ -1,0 +1,52 @@
+{
+    "zh-tw": {
+        "login_ingress_ub": "寰宇瀏覽器",
+        "operate_record": "操作紀錄",
+        "app_signature_management": "APP管理",
+        "common_signature_group": "iOS共用版分群",
+        "customized_overview": "iOS客製化總覽"
+    },
+    "zh-cn": {
+        "login_ingress_ub": "寰宇浏览器",
+        "operate_record": "操作纪录",
+        "app_signature_management": "APP管理",
+        "common_signature_group": "iOS共用版分群",
+        "customized_overview": "iOS客制化总览"
+    },
+    "en": {
+        "login_ingress_ub": "Universe Browser",
+        "operate_record": "Operating Record",
+        "app_signature_management": "APP Management",
+        "common_signature_group": "iOS Grouping Common Version",
+        "customized_overview": "iOS Customization Overview"
+    },
+    "ja": {
+        "login_ingress_ub": "UBブラウザ",
+        "operate_record": "操作履歴",
+        "app_signature_management": "APP Management",
+        "common_signature_group": "iOS Grouping Common Version",
+        "customized_overview": "iOS Customization Overview"
+    },
+    "ko": {
+        "login_ingress_ub": "유니버셜 브라우저",
+        "operate_record": "조작 기록",
+        "app_signature_management": "APP관리",
+        "common_signature_group": "iOS 공유버전 그룹구분",
+        "customized_overview": "iOS커스텀 일람"
+    },
+    "vi": {
+        "login_ingress_ub": "Trình duyệt UB",
+        "operate_record": "Ghi chép thao tác",
+        "app_signature_management": "Quản lý APP",
+        "common_signature_group": "Phân nhóm phiên bản dùng chung IOS",
+        "customized_overview": "Tổng quan tùy chỉnh IOS"
+    },
+    "th": {
+        "login_ingress_ub": "เบราว์เซอร์",
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "app_signature_management": "APP Management",
+        "common_signature_group": "iOS Grouping Common Version",
+        "customized_overview": "iOS Customization Overview"
+    }
+}
+

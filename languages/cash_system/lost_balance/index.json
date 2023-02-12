@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "operate_record": "操作紀錄",
+        "lost_balance_check": "額度遺失檢查",
+        "abnormal_list": "異常列表",
+        "lost_overview": "遺失總覽",
+        "monitor_management": "監控管理",
+        "7days_event": "近７天事件"
+    },
+    "zh-cn": {
+        "operate_record": "操作纪录",
+        "lost_balance_check": "额度遗失检查",
+        "abnormal_list": "异常列表",
+        "lost_overview": "遗失总览",
+        "monitor_management": "监控管理",
+        "7days_event": "近７天事件"
+    },
+    "en": {
+        "operate_record": "Operating Record",
+        "lost_balance_check": "Check Missing Credit",
+        "abnormal_list": "Abnormal List",
+        "lost_overview": "Overview",
+        "monitor_management": "Monitoring Management",
+        "7days_event": "Last 7 Days Cases"
+    },
+    "ja": {
+        "operate_record": "操作履歴",
+        "lost_balance_check": "Check Missing Credit",
+        "abnormal_list": "Abnormal List",
+        "lost_overview": "Overview",
+        "monitor_management": "Monitoring Management",
+        "7days_event": "Last 7 Days Cases"
+    },
+    "ko": {
+        "operate_record": "조작 기록",
+        "lost_balance_check": "액수분실 확인",
+        "abnormal_list": "이상 목록",
+        "lost_overview": "분실 일람",
+        "monitor_management": "모니터링 관리",
+        "7days_event": "최근 7일 간 사건"
+    },
+    "vi": {
+        "operate_record": "Ghi chép thao tác",
+        "lost_balance_check": "Kiểm tra chuyển số dư thất bại",
+        "abnormal_list": "Danh sách lỗi",
+        "lost_overview": "Tổng quan thua",
+        "monitor_management": "Giám sát quản lý",
+        "7days_event": "Lịch sử 7 mục gần đây"
+    },
+    "th": {
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "lost_balance_check": "Check Missing Credit",
+        "abnormal_list": "Abnormal List",
+        "lost_overview": "Overview",
+        "monitor_management": "Monitoring Management",
+        "7days_event": "Last 7 Days Cases"
+    }
+}
+

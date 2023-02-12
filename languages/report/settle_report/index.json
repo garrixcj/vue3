@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "master_payable_report": "大股東交收報表",
+        "financial_report": "報表"
+    },
+    "zh-cn": {
+        "master_payable_report": "大股东交收报表",
+        "financial_report": "报表"
+    },
+    "en": {
+        "master_payable_report": "Master Payable Report",
+        "financial_report": "Financial Report"
+    },
+    "ja": {
+        "master_payable_report": "Master Payable Report",
+        "financial_report": "レポート"
+    },
+    "ko": {
+        "master_payable_report": "대주주 정산 보고서",
+        "financial_report": "차트"
+    },
+    "vi": {
+        "master_payable_report": "Báo cáo giao dịch của đại cổ đông",
+        "financial_report": "Báo biểu"
+    },
+    "th": {
+        "master_payable_report": "Master Payable Report",
+        "financial_report": "รายงาน"
+    }
+}
+

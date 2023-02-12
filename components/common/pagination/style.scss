@@ -1,0 +1,69 @@
+.el-pagination {
+  display: inline-flex;
+  padding-right: 0;
+  padding-left: 0;
+  // 一般無背景樣式
+  .btn-prev {
+    @include svg-to-mdi('F0141');
+  }
+  .btn-next {
+    margin-right: 0;
+    @include svg-to-mdi('F0142');
+  }
+  .btn-quickprev,
+  .btn-quicknext {
+    @include svg-to-mdi('F01D8', true);
+  }
+  .btn-prev,
+  .btn-next,
+  .el-pager li,
+  button:disabled {
+    background-color: transparent;
+  }
+  .el-pager li.more {
+    border: none;
+  }
+  .el-pager li.is-active {
+    color: $white;
+    background-color: $primary;
+    border-radius: 2px;
+  }
+  // 小型樣式
+  &--small {
+    .btn-prev,
+    .btn-next,
+    .el-pager li {
+      font-size: 14px;
+    }
+  }
+  &.is-background {
+    &:not(.el-pagination--small) {
+      .btn-prev,
+      .btn-next,
+      .el-pager li {
+        min-width: 30px;
+        margin: 0 5px;
+        font-weight: 500;
+      }
+      .btn-next {
+        margin-right: 0;
+      }
+    }
+    .btn-prev,
+    .btn-next,
+    .el-pager li {
+      color: $text-1;
+      background-color: $white;
+      border: solid 1px $background-3;
+      &:hover {
+        border-color: $primary;
+      }
+    }
+    .btn-prev:disabled,
+    .btn-next:disabled {
+      color: mix($white, $background-3, 40%);
+      background-color: $white;
+      border-color: mix($white, $background-3, 40%);
+    }
+  }
+}

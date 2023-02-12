@@ -1,0 +1,108 @@
+.el-input {
+  .el-input__wrapper {
+    padding: 0 10px;
+  }
+  &__suffix {
+    height: map-get($input-height, 'default') - 2px;
+  }
+  &__inner {
+    height: map-get($input-height, 'default');
+    font-size: map-get($input-font, 'default');
+  }
+  @each $type, $size in $input-font {
+    &--#{$type} {
+      height: map-get($input-height, $type);
+      font-size: $size;
+      .el-input__icon {
+        font-size: 14px;
+      }
+      .el-input-group__append {
+        height: map-get($input-height, $type);
+      }
+      .el-input-group__prepend {
+        height: map-get($input-height, $type);
+      }
+      &.el-textarea {
+        height: auto;
+      }
+      .el-input__suffix {
+        height: map-get($input-height, $type) - 2px;
+      }
+      .el-input__inner {
+        height: map-get($input-height, $type);
+        font-size: $size;
+      }
+    }
+  }
+  &-group__prepend {
+    height: 30px;
+    color: $text-1;
+  }
+  &-group__append {
+    height: 30px;
+    color: $text-1;
+    button.el-button {
+      border-radius: 0 2px 2px 0;
+      &--default {
+        @include solid-button($primary-4, $primary);
+      }
+      &--primary {
+        @include solid-button($primary);
+      }
+      &--secondary {
+        @include solid-button($background-4, $text-1);
+      }
+      &--danger {
+        @include solid-button($danger);
+      }
+      &--success {
+        @include solid-button($success);
+      }
+      &--search {
+        @include solid-button($search);
+      }
+      &--small {
+        // append small button 特例
+        padding: 5px 13px;
+      }
+    }
+  }
+
+  // mdi-eye-off
+  .el-input__inner[type='text'] + .el-input__suffix {
+    i.el-icon.el-input__password {
+      @include svg-to-mdi('F0209', true);
+    }
+  }
+
+  $icon-map: (
+    'password': 'F0208',
+    'clear': 'F015A',
+  );
+  // mdi-eye, mdi-close-circle-outline
+  @each $type, $content in $icon-map {
+    .el-input__inner + .el-input__suffix {
+      i.el-icon.el-input__#{$type} {
+        @include svg-to-mdi($content, true);
+      }
+    }
+  }
+  &__suffix,
+  &__prefix {
+    &-inner {
+      align-items: center;
+    }
+  }
+  // 包裝在 input 下的單選特殊樣式
+  .rd-select .rd-selected .single {
+    min-height: unset;
+    margin: 0px -20px;
+    font-weight: 400;
+    line-height: unset;
+    background-color: inherit;
+    border: none;
+  }
+}
+.el-textarea__inner {
+  padding: 5px 6px;
+}

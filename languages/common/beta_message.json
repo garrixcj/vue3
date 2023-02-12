@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "msg_suggest": "問題與建議",
+        "beta_version_msg": "此功能目前為【公測Beta版】，如有任何建議與回饋可與客服專員聯繫，或反應至 {function}"
+    },
+    "zh-cn": {
+        "msg_suggest": "问题与建议",
+        "beta_version_msg": "此功能目前为【公测Beta版】，如有任何建议与回馈可与客服专员联系，或反应至 {function}"
+    },
+    "en": {
+        "msg_suggest": "Problems and Suggestions",
+        "beta_version_msg": "此功能目前为【公测Beta版】，如有任何建议与回馈可与客服专员联系，或反应至 {function}"
+    },
+    "ja": {
+        "msg_suggest": "Problems and Suggestions",
+        "beta_version_msg": "此功能目前为【公测Beta版】，如有任何建议与回馈可与客服专员联系，或反应至 {function}"
+    },
+    "ko": {
+        "msg_suggest": "Problems and Suggestions",
+        "beta_version_msg": "此功能目前为【公测Beta版】，如有任何建议与回馈可与客服专员联系，或反应至 {function}"
+    },
+    "vi": {
+        "msg_suggest": "Problems and Suggestions",
+        "beta_version_msg": "此功能目前为【公测Beta版】，如有任何建议与回馈可与客服专员联系，或反应至 {function}"
+    },
+    "th": {
+        "msg_suggest": "Problems and Suggestions",
+        "beta_version_msg": "此功能目前为【公测Beta版】，如有任何建议与回馈可与客服专员联系，或反应至 {function}"
+    }
+}
+

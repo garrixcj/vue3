@@ -1,0 +1,270 @@
+// group按鈕常用的類別/色碼
+$types: (
+  'danger': $danger,
+  'warning': $warning,
+  'success': $success,
+  'primary': $primary,
+);
+
+// 每個 size 對應的 padding
+$size-paddings: (
+  'large': 9px 17px,
+  'default': 7px 17px,
+  'small': 4px 11px,
+);
+
+// 集合按鈕的通用樣式
+@mixin group-regular($button-type, $selected-type) {
+  .el-#{$button-type}-button__inner {
+    z-index: 2;
+    padding: map-get($size-paddings, 'default');
+    font-weight: 400;
+    color: $text-1;
+    border-color: mix($white, $no-data, 40%);
+    border-left: 1px solid mix($white, $no-data, 40%);
+    @include space(5px);
+  }
+}
+
+// 集合按鈕各尺寸樣式
+@mixin group-size($button-type) {
+  @each $size, $padding in $size-paddings {
+    &.el-#{$button-type}-button--#{$size} {
+      .el-#{$button-type}-button__inner {
+        padding: $padding;
+        @if $size == 'small' {
+          line-height: 14px;
+        }
+      }
+    }
+  }
+}
+
+// 集合按鈕類別的顏色
+@mixin group-type-convert($button-type, $selected-type) {
+  @each $type, $color in $types {
+    &.#{$type}-convert {
+      .el-#{$button-type}-button__inner {
+        @if $type == 'primary' {
+          color: $text-1;
+          background-color: $white;
+          border-color: mix($white, $no-data, 40%);
+        } @else {
+          color: $color;
+          background-color: mix($white, $color, 95%);
+          border-color: mix($white, $color, 40%);
+        }
+      }
+    }
+  }
+}
+
+// 集合按鈕選取樣式
+@mixin group-selected($button-type, $selected-type) {
+  @each $type, $color in $types {
+    &.#{$type} {
+      .el-#{$button-type}-button__inner {
+        color: $color;
+        background-color: $white;
+        border-color: $color;
+        box-shadow: 0 0 0 0;
+        &:hover {
+          color: $text-1;
+          background-color: mix($white, $color, 90%);
+        }
+        &:active {
+          background-color: mix($white, $color, 85%);
+        }
+      }
+      &.is-#{$selected-type} .el-#{$button-type}-button__inner {
+        color: $color;
+      }
+    }
+  }
+  @content;
+}
+
+// 集合按鈕選取反轉色樣式
+@mixin group-selected-convert($button-type, $selected-type) {
+  @each $type, $color in $types {
+    &.#{$type}-convert {
+      .el-#{$button-type}-button__inner {
+        color: $white;
+        background-color: $color;
+        border-color: $color;
+        box-shadow: 0 0 0 0;
+        @include badge-in-convert();
+      }
+      @include group-selected-shadow-convert($button-type, $selected-type);
+    }
+  }
+  @content;
+}
+
+// 集合按鈕動作樣式 (:hover、:active)
+@mixin group-action($button-type, $selected-type) {
+  @each $type, $color in $types {
+    &.#{$type} {
+      .el-#{$button-type}-button__inner {
+        &:hover {
+          color: $text-1;
+          background-color: mix($white, $color, 90%);
+        }
+        &:active {
+          background-color: mix($white, $color, 85%);
+        }
+      }
+      &.is-#{$selected-type} .el-#{$button-type}-button__inner {
+        color: $color;
+      }
+    }
+  }
+  @content;
+}
+
+// 集合按鈕動作反轉色樣式 (:hover、:active)
+@mixin group-action-convert($button-type, $selected-type) {
+  @each $type, $color in $types {
+    &.#{$type}-convert {
+      &.is-#{$selected-type} .el-#{$button-type}-button__inner {
+        &:hover {
+          color: $white;
+          background-color: darken($color, 3%);
+          border-color: darken($color, 3%);
+        }
+        &:active {
+          color: $white;
+          background-color: darken($color, 6%);
+          border-color: darken($color, 6%);
+        }
+      }
+      .el-#{$button-type}-button__inner {
+        &:hover {
+          color: if($type == 'primary', $text-1, $color);
+          background-color: mix($white, $color, 90%);
+        }
+        &:active {
+          color: if($type == 'primary', $text-1, $color);
+          background-color: mix($white, $color, 85%);
+        }
+      }
+    }
+  }
+  @content;
+}
+
+// 集合按鈕禁用樣式
+@mixin group-disabled($button-type, $selected-type) {
+  @each $type, $color in $types {
+    &.is-#{$selected-type} {
+      &.#{$type} {
+        .el-#{$button-type}-button__inner {
+          color: mix($white, $color, 40%);
+          background-color: $white;
+          border-color: mix($white, $color, 40%);
+        }
+      }
+    }
+  }
+  @content;
+}
+
+// 集合按鈕禁用反轉色樣式
+@mixin group-disabled-convert($button-type, $selected-type) {
+  @each $type, $color in $types {
+    &.#{$type}-convert {
+      .el-#{$button-type}-button__inner {
+        @if $type == 'primary' {
+          color: mix($white, $text-1, 40%);
+          border-color: mix($white, $no-data, 80%);
+        } @else {
+          color: mix($white, $color, 40%);
+          background-color: mix($white, $color, 95%);
+          border-color: mix($white, $color, 80%);
+        }
+      }
+      &.is-#{$selected-type} {
+        .el-#{$button-type}-button__inner {
+          color: $white;
+          background-color: mix($white, $color, 40%);
+          border-color: mix($white, $color, 40%);
+        }
+        @include group-selected-shadow-convert($button-type, $selected-type);
+      }
+    }
+  }
+  @content;
+}
+
+// 集合按鈕選取時，反轉色的陰影樣式
+@mixin group-selected-shadow-convert($button-type, $selected-type) {
+  & + .is-#{$selected-type} {
+    .el-#{$button-type}-button__inner {
+      box-shadow: -1px 0 0 0 $white;
+    }
+  }
+}
+
+// group 按鈕的通用樣式
+@mixin group-main-theme($button-type, $selected-type, $mode: 'default') {
+  &:nth-child(n) {
+    margin-right: 1px;
+    margin-left: -1px;
+  }
+  // 各尺寸樣式
+  @include group-size($button-type);
+  // 通用樣式
+  @include group-regular($button-type, $selected-type);
+  // 正常狀態
+  &:not(.is-disabled) {
+    // 按鈕 hover、active
+    @include group-action($button-type, $selected-type);
+    // 反轉色特例
+    @include group-action-convert($button-type, $selected-type);
+    @include group-type-convert($button-type, $selected-type);
+
+    // 按鈕啟動狀態
+    &.is-#{$selected-type} {
+      @include group-selected($button-type, $selected-type);
+      // convert 狀態時的陰影特例
+      @include group-selected-convert($button-type, $selected-type);
+    }
+  }
+  // 禁用狀態
+  &.is-disabled {
+    @include group-disabled($button-type, $selected-type);
+    // 反轉色的 disabled 樣式
+    @include group-disabled-convert($button-type, $selected-type);
+  }
+}
+
+// 設定 checkbox-button 寬度
+@mixin button-group-width($width, $label-class) {
+  &.el-checkbox-button {
+    width: $width;
+  }
+  :deep(.el-checkbox-button__inner) {
+    width: $width;
+  }
+  .#{$label-class} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+@mixin button-group-min-width($min-width) {
+  &.el-checkbox-button {
+    min-width: $min-width;
+  }
+  :deep(.el-checkbox-button__inner) {
+    min-width: $min-width;
+  }
+}
+
+// badge 在 button group 反轉色的時候的特殊樣式
+@mixin badge-in-convert() {
+  @each $type, $color in $types {
+    .el-badge .el-badge__content--#{$type} {
+      @include badge-theme-convert($color, false);
+    }
+  }
+}

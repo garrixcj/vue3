@@ -1,0 +1,129 @@
+// 原本通知的黃，對比不夠明顯
+$alert-warning: #e6a23c;
+
+$icons: (
+  'success': 'F05E0',
+  'warning': 'F0028',
+  'error': 'F0159',
+  'info': 'F02FC',
+);
+
+@mixin icon-square($size) {
+  width: $size;
+  height: $size;
+}
+
+.el-alert {
+  align-items: flex-start;
+  // 調整 x icon
+  &__content {
+    padding: 0;
+    .el-alert__close-btn {
+      top: 15px;
+      height: 18px;
+      color: $text-3;
+      @include svg-to-mdi('F0156', true);
+      &.el-icon::before {
+        font-size: 14px;
+      }
+      &:hover {
+        color: $text-2;
+      }
+    }
+  }
+  &__title {
+    // 標題
+    line-height: 20px;
+    &.is-bold {
+      // 同時存在描述時會有粗體樣式 此時對齊 is-big icon
+      line-height: 28px;
+    }
+  }
+  &__description {
+    // 描述
+    margin-top: 6px;
+    line-height: 20px;
+    ul {
+      line-height: 20px;
+      li {
+        white-space: normal;
+      }
+      &.spacing,
+      ul.spacing {
+        > li:not(:nth-of-type(1)) {
+          margin-top: 10px;
+        }
+      }
+      > ul.sub-list {
+        padding-inline-start: 0;
+        padding-left: 6px;
+        list-style-type: '-';
+        li {
+          padding-left: 10px;
+        }
+      }
+      > ul.none-node {
+        padding-inline-start: 0;
+        list-style-type: none;
+      }
+      > ol,
+      ul {
+        padding-left: 16px;
+        margin: 0;
+      }
+    }
+    ul,
+    ol {
+      padding-left: 16px;
+      margin: 0;
+    }
+  }
+  &__icon {
+    @include icon-square(20px);
+    margin-right: 6px;
+    &.is-big {
+      @include icon-square(28px);
+    }
+  }
+  @each $type, $icon in $icons {
+    &--#{$type} {
+      @include svg-to-mdi($icon, false);
+    }
+  }
+  // info 樣式調整
+  &--info.is-light {
+    @include alert-theme($text-1, alert-background($primary));
+  }
+  // warning 樣式調整
+  &--warning.is-light {
+    @include alert-theme($alert-warning);
+  }
+  // 小尺寸
+  &.size-small {
+    padding: 6px 16px;
+    .el-alert {
+      &__title {
+        // 標題
+        font-size: 14px;
+        line-height: 16px;
+        &.is-bold {
+          // 同時存在描述時會有粗體樣式 此時對齊 is-big icon
+          line-height: 22px;
+        }
+      }
+      &__description {
+        // 描述
+        font-size: 12px;
+        line-height: 16px;
+      }
+      &__icon {
+        @include icon-square(20px);
+        font-size: 12px;
+        &.is-big {
+          @include icon-square(22px);
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

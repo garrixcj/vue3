@@ -1,0 +1,45 @@
+{
+    "zh-tw": {
+        "success": "成功",
+        "save": "儲存",
+        "clear": "清除",
+        "reset_2": "重置"
+    },
+    "zh-cn": {
+        "success": "成功",
+        "save": "储存",
+        "clear": "清除",
+        "reset_2": "重置"
+    },
+    "en": {
+        "success": "Success",
+        "save": "Save",
+        "clear": "Reset",
+        "reset_2": "Reset"
+    },
+    "ja": {
+        "success": "成功",
+        "save": "保存",
+        "clear": "リセット",
+        "reset_2": "Reset"
+    },
+    "ko": {
+        "success": "성공",
+        "save": "저장",
+        "clear": "제거하기",
+        "reset_2": "초기화"
+    },
+    "vi": {
+        "success": "Thành công",
+        "save": "Lưu",
+        "clear": "Thiết lập lại",
+        "reset_2": "Thiết lập lại"
+    },
+    "th": {
+        "success": "สำเร็จ",
+        "save": "จัดเก็บ",
+        "clear": "ล้างออก",
+        "reset_2": "Reset"
+    }
+}
+

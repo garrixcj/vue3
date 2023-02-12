@@ -1,0 +1,6 @@
+@mixin dialogInputHeightChanged($class: 'popover-class', $size) {
+  :global(.#{$class} .el-dialog__body .el-input__inner) {
+    height: get-input-height($size);
+    line-height: get-input-height($size);
+  }
+}

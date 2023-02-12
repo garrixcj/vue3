@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "account": "帳號",
+        "all": "全部",
+        "no_result": "查無資料",
+        "modify": "修改",
+        "edit_success": "修改成功",
+        "search": "搜尋",
+        "save": "儲存",
+        "cancel": "取消",
+        "department": "單位",
+        "position": "職務",
+        "view": "檢視"
+    },
+    "zh-cn": {
+        "account": "帐号",
+        "all": "全部",
+        "no_result": "查无资料",
+        "modify": "修改",
+        "edit_success": "修改成功",
+        "search": "搜寻",
+        "save": "储存",
+        "cancel": "取消",
+        "department": "单位",
+        "position": "职务",
+        "view": "检视"
+    },
+    "en": {
+        "account": "Account",
+        "all": "All",
+        "no_result": "Data no found",
+        "modify": "Edit",
+        "edit_success": "Successfully modified",
+        "search": "search",
+        "save": "Save",
+        "cancel": "Cancel",
+        "department": "Department",
+        "position": "Position",
+        "view": "View"
+    },
+    "ja": {
+        "account": "アカウント",
+        "all": "全部",
+        "no_result": "資料がありません",
+        "modify": "修正",
+        "edit_success": "変更成功",
+        "search": "検索",
+        "save": "保存",
+        "cancel": "キャンセル",
+        "department": "所属",
+        "position": "職種",
+        "view": "閲覧"
+    },
+    "ko": {
+        "account": "아이디",
+        "all": "전체",
+        "no_result": "해당 자료가 없습니다.",
+        "modify": "수정하기",
+        "edit_success": "수정 성공",
+        "search": "검색하기",
+        "save": "저장",
+        "cancel": "취소",
+        "department": "부서",
+        "position": "직무",
+        "view": "조회"
+    },
+    "vi": {
+        "account": "Tài khoản",
+        "all": "Toàn bộ",
+        "no_result": "Không tìm thấy thông tin",
+        "modify": "sửa",
+        "edit_success": "Sửa đổi thành công",
+        "search": "Tìm kiếm",
+        "save": "Lưu",
+        "cancel": "Hủy",
+        "department": "Đơn vị",
+        "position": "Chức vụ",
+        "view": "Xem"
+    },
+    "th": {
+        "account": "ยูสเซอร์เนม",
+        "all": "ทั้งหมด",
+        "no_result": "ไม่พบข้อมูล",
+        "modify": "แก้ไข",
+        "edit_success": "แก้ไขสำเร็จ",
+        "search": "ค้นหา",
+        "save": "จัดเก็บ",
+        "cancel": "ยกเลิก",
+        "department": "หน่วยงาน",
+        "position": "ตำเเหน่ง",
+        "view": "ดู"
+    }
+}
+

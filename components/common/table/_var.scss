@@ -1,0 +1,16 @@
+@use '../../style/scss/variables' as RdVar;
+
+$table: (
+  'text-color': RdVar.$text-1,
+  'header-text-color': RdVar.$primary-1,
+  'row-hover-bg-color': #fafbff,
+  'current-row-bg-color': RdVar.$focus-2,
+);
+
+$table-padding: (
+  'default': 5px 0,
+);
+
+$table-cell-padding: (
+  'default': 0 10px,
+);

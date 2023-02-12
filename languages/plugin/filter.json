@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "no_result": "查無資料",
+        "select_all": "全選",
+        "cancel": "取消",
+        "input_keyword": "請輸入關鍵字",
+        "filter_option": "依選項篩選",
+        "filter": "篩選"
+    },
+    "zh-cn": {
+        "no_result": "查无资料",
+        "select_all": "全选",
+        "cancel": "取消",
+        "input_keyword": "请输入关键字",
+        "filter_option": "依选项筛选",
+        "filter": "筛选"
+    },
+    "en": {
+        "no_result": "Data no found",
+        "select_all": "Select All",
+        "cancel": "Cancel",
+        "input_keyword": "Please enter keyword.",
+        "filter_option": "Filter by option",
+        "filter": "filter"
+    },
+    "ja": {
+        "no_result": "資料がありません",
+        "select_all": "一括選択",
+        "cancel": "キャンセル",
+        "input_keyword": "検索単語を入力してください",
+        "filter_option": "Filter by option",
+        "filter": "filter"
+    },
+    "ko": {
+        "no_result": "해당 자료가 없습니다.",
+        "select_all": "전체선택",
+        "cancel": "취소",
+        "input_keyword": "검색어 입력",
+        "filter_option": "Filter by option",
+        "filter": "filter"
+    },
+    "vi": {
+        "no_result": "Không tìm thấy thông tin",
+        "select_all": "Lựa chọn tất cả",
+        "cancel": "Hủy",
+        "input_keyword": "Vui lòng nhập từ khóa",
+        "filter_option": "Filter by option",
+        "filter": "filter"
+    },
+    "th": {
+        "no_result": "ไม่พบข้อมูล",
+        "select_all": "เลือกทั้งหมด",
+        "cancel": "ยกเลิก",
+        "input_keyword": "กรุณาป้อนคำหลัก",
+        "filter_option": "Filter by option",
+        "filter": "filter"
+    }
+}
+

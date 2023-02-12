@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "lobby24_24011": "百家樂",
+        "lobby24_24012": "龍虎",
+        "lobby24_24013": "輪盤",
+        "lobby24_24014": "骰寶",
+        "lobby24_24016": "番攤",
+        "lobby24_24999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby24_24011": "百家乐",
+        "lobby24_24012": "龙虎",
+        "lobby24_24013": "轮盘",
+        "lobby24_24014": "骰宝",
+        "lobby24_24016": "番攤",
+        "lobby24_24999": "未開放游戏"
+    },
+    "en": {
+        "lobby24_24011": "Baccarat",
+        "lobby24_24012": "Dragon Tiger",
+        "lobby24_24013": "Roulette",
+        "lobby24_24014": "Sic bo",
+        "lobby24_24016": "Fan Tan",
+        "lobby24_24999": "Game is not open"
+    },
+    "ja": {
+        "lobby24_24011": "Baccarat",
+        "lobby24_24012": "Dragon Tiger",
+        "lobby24_24013": "Roulette",
+        "lobby24_24014": "Sic bo",
+        "lobby24_24016": "Fan Tan",
+        "lobby24_24999": "Game is not open"
+    },
+    "ko": {
+        "lobby24_24011": "Baccarat",
+        "lobby24_24012": "Dragon Tiger",
+        "lobby24_24013": "Roulette",
+        "lobby24_24014": "Sic bo",
+        "lobby24_24016": "Fan Tan",
+        "lobby24_24999": "Game is not open"
+    },
+    "vi": {
+        "lobby24_24011": "Baccarat",
+        "lobby24_24012": "Dragon Tiger",
+        "lobby24_24013": "Roulette",
+        "lobby24_24014": "Sic bo",
+        "lobby24_24016": "Fan Tan",
+        "lobby24_24999": "Game is not open"
+    },
+    "th": {
+        "lobby24_24011": "Baccarat",
+        "lobby24_24012": "Dragon Tiger",
+        "lobby24_24013": "Roulette",
+        "lobby24_24014": "Sic bo",
+        "lobby24_24016": "Fan Tan",
+        "lobby24_24999": "Game is not open"
+    }
+}
+

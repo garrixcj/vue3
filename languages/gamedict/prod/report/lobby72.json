@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "report_lobby72_72001": "百家樂 花花公子",
+        "report_lobby72_72002": "免佣金百家樂-花花公子",
+        "report_lobby72_72003": "免佣金百家樂",
+        "report_lobby72_72004": "龍虎百家樂",
+        "report_lobby72_72005": "百家樂",
+        "report_lobby72_72006": "多人百家樂 - 花花公子",
+        "report_lobby72_72007": "輪盤",
+        "report_lobby72_72008": "骰寶",
+        "report_lobby72_72999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby72_72001": "百家乐 花花公子",
+        "report_lobby72_72002": "免佣金百家乐-花花公子",
+        "report_lobby72_72003": "免佣金百家乐",
+        "report_lobby72_72004": "龙虎百家乐",
+        "report_lobby72_72005": "百家乐",
+        "report_lobby72_72006": "多人百家乐 - 花花公子",
+        "report_lobby72_72007": "轮盘",
+        "report_lobby72_72008": "骰宝",
+        "report_lobby72_72999": "未开放游戏"
+    },
+    "en": {
+        "report_lobby72_72001": "Baccarat - Playboy",
+        "report_lobby72_72002": "Baccarat - Playboy (NC)",
+        "report_lobby72_72003": "Baccarat (NC)",
+        "report_lobby72_72004": "Baccarat Live",
+        "report_lobby72_72005": "MP Baccarat",
+        "report_lobby72_72006": "MP Baccarat - Playboy",
+        "report_lobby72_72007": "Roulette",
+        "report_lobby72_72008": "Sicbo",
+        "report_lobby72_72999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby72_72001": "Baccarat - Playboy",
+        "report_lobby72_72002": "Baccarat - Playboy (NC)",
+        "report_lobby72_72003": "Baccarat (NC)",
+        "report_lobby72_72004": "Baccarat Live",
+        "report_lobby72_72005": "MP Baccarat",
+        "report_lobby72_72006": "MP Baccarat - Playboy",
+        "report_lobby72_72007": "Roulette",
+        "report_lobby72_72008": "Sicbo",
+        "report_lobby72_72999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby72_72001": "Baccarat - Playboy",
+        "report_lobby72_72002": "Baccarat - Playboy (NC)",
+        "report_lobby72_72003": "Baccarat (NC)",
+        "report_lobby72_72004": "Baccarat Live",
+        "report_lobby72_72005": "MP Baccarat",
+        "report_lobby72_72006": "MP Baccarat - Playboy",
+        "report_lobby72_72007": "Roulette",
+        "report_lobby72_72008": "Sicbo",
+        "report_lobby72_72999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby72_72001": "Baccarat - Playboy",
+        "report_lobby72_72002": "Baccarat - Playboy (NC)",
+        "report_lobby72_72003": "Baccarat (NC)",
+        "report_lobby72_72004": "Baccarat Live",
+        "report_lobby72_72005": "MP Baccarat",
+        "report_lobby72_72006": "MP Baccarat - Playboy",
+        "report_lobby72_72007": "Roulette",
+        "report_lobby72_72008": "Sicbo",
+        "report_lobby72_72999": "Game is not open"
+    },
+    "th": {
+        "report_lobby72_72001": "Baccarat - Playboy",
+        "report_lobby72_72002": "Baccarat - Playboy (NC)",
+        "report_lobby72_72003": "Baccarat (NC)",
+        "report_lobby72_72004": "Baccarat Live",
+        "report_lobby72_72005": "MP Baccarat",
+        "report_lobby72_72006": "MP Baccarat - Playboy",
+        "report_lobby72_72007": "Roulette",
+        "report_lobby72_72008": "Sicbo",
+        "report_lobby72_72999": "Game is not open"
+    }
+}
+

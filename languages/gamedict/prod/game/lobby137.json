@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "lobby137_137001": "賓果",
+        "lobby137_137002": "百家樂",
+        "lobby137_137003": "骰寶",
+        "lobby137_137004": "輪盤",
+        "lobby137_137005": "單挑",
+        "lobby137_137006": "妞妞",
+        "lobby137_137007": "推筒子",
+        "lobby137_137999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby137_137001": "宾果",
+        "lobby137_137002": "百家乐",
+        "lobby137_137003": "骰宝",
+        "lobby137_137004": "轮盘",
+        "lobby137_137005": "单挑",
+        "lobby137_137006": "妞妞",
+        "lobby137_137007": "推筒子",
+        "lobby137_137999": "未开放游戏"
+    },
+    "en": {
+        "lobby137_137001": "Bingo",
+        "lobby137_137002": "Baccarat",
+        "lobby137_137003": "Sic Bo",
+        "lobby137_137004": "Roulette",
+        "lobby137_137005": "PK",
+        "lobby137_137006": "NU",
+        "lobby137_137007": "UT",
+        "lobby137_137999": "Game is not open"
+    },
+    "ja": {
+        "lobby137_137001": "Bingo",
+        "lobby137_137002": "Baccarat",
+        "lobby137_137003": "Sic Bo",
+        "lobby137_137004": "Roulette",
+        "lobby137_137005": "PK",
+        "lobby137_137006": "NU",
+        "lobby137_137007": "UT",
+        "lobby137_137999": "Game is not open"
+    },
+    "ko": {
+        "lobby137_137001": "Bingo",
+        "lobby137_137002": "Baccarat",
+        "lobby137_137003": "Sic Bo",
+        "lobby137_137004": "Roulette",
+        "lobby137_137005": "PK",
+        "lobby137_137006": "NU",
+        "lobby137_137007": "UT",
+        "lobby137_137999": "Game is not open"
+    },
+    "vi": {
+        "lobby137_137001": "Bingo",
+        "lobby137_137002": "Baccarat",
+        "lobby137_137003": "Sic Bo",
+        "lobby137_137004": "Roulette",
+        "lobby137_137005": "PK",
+        "lobby137_137006": "NU",
+        "lobby137_137007": "UT",
+        "lobby137_137999": "Game is not open"
+    },
+    "th": {
+        "lobby137_137001": "Bingo",
+        "lobby137_137002": "Baccarat",
+        "lobby137_137003": "Sic Bo",
+        "lobby137_137004": "Roulette",
+        "lobby137_137005": "PK",
+        "lobby137_137006": "NU",
+        "lobby137_137007": "UT",
+        "lobby137_137999": "Game is not open"
+    }
+}
+

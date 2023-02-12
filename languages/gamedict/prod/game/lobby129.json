@@ -1,0 +1,66 @@
+{
+    "zh-tw": {
+        "lobby129_129001": "百家樂",
+        "lobby129_129002": "龍虎",
+        "lobby129_129003": "輪盤",
+        "lobby129_129004": "色碟",
+        "lobby129_129005": "骰寶",
+        "lobby129_129006": "極速骰寶",
+        "lobby129_129999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby129_129001": "百家乐",
+        "lobby129_129002": "龙虎",
+        "lobby129_129003": "轮盘",
+        "lobby129_129004": "色碟",
+        "lobby129_129005": "骰宝",
+        "lobby129_129006": "极速骰宝",
+        "lobby129_129999": "未开放游戏"
+    },
+    "en": {
+        "lobby129_129001": "Baccart",
+        "lobby129_129002": "Dragon Tiger",
+        "lobby129_129003": "Roulette",
+        "lobby129_129004": "Sedie",
+        "lobby129_129005": "Sicbo",
+        "lobby129_129006": "Speed Sicbo",
+        "lobby129_129999": "Game is not open"
+    },
+    "ja": {
+        "lobby129_129001": "Baccart",
+        "lobby129_129002": "Dragon Tiger",
+        "lobby129_129003": "Roulette",
+        "lobby129_129004": "Sedie",
+        "lobby129_129005": "Sicbo",
+        "lobby129_129006": "Speed Sicbo",
+        "lobby129_129999": "Game is not open"
+    },
+    "ko": {
+        "lobby129_129001": "Baccart",
+        "lobby129_129002": "Dragon Tiger",
+        "lobby129_129003": "Roulette",
+        "lobby129_129004": "Sedie",
+        "lobby129_129005": "Sicbo",
+        "lobby129_129006": "Speed Sicbo",
+        "lobby129_129999": "Game is not open"
+    },
+    "vi": {
+        "lobby129_129001": "Baccart",
+        "lobby129_129002": "Dragon Tiger",
+        "lobby129_129003": "Roulette",
+        "lobby129_129004": "Sedie",
+        "lobby129_129005": "Sicbo",
+        "lobby129_129006": "Speed Sicbo",
+        "lobby129_129999": "Game is not open"
+    },
+    "th": {
+        "lobby129_129001": "Baccart",
+        "lobby129_129002": "Dragon Tiger",
+        "lobby129_129003": "Roulette",
+        "lobby129_129004": "Sedie",
+        "lobby129_129005": "Sicbo",
+        "lobby129_129006": "Speed Sicbo",
+        "lobby129_129999": "Game is not open"
+    }
+}
+

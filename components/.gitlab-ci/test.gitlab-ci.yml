@@ -1,0 +1,67 @@
+# Test components before merge to main branch
+# 測試前置動作
+.test:
+  image:
+    name: gcr.io/rd6-project/platform/front/node:v16
+  stage: test
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  tags:
+    - gce-gitlab-runner-ssd
+  only:
+    - merge_requests
+  cache:
+    key:
+      files:
+        - .gitlab-ci/env/yarn.lock
+    paths:
+      - .yarn-cache/
+      - node_modules/
+  before_script:
+    - sh .gitlab-ci/env/init.sh
+    # check node_modules exist
+    - echo 'yarn-offline-mirror ".yarn-cache/"' >> .yarnrc
+    - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
+    - yarn install --frozen-lockfile --no-progress
+    - |
+      if [[ `test -d node_modules && echo "" || echo "error"` ]]
+      then
+          echo "node_modules not found"
+          exit 1
+      fi
+    - pwd
+    - ls -al
+
+# 測試 Lint 工具
+test:lint:
+  extends: .test
+  script:
+    - ls -al
+    - yarn lint 2>&1 | tee lint_result.tmp
+    - |
+      if [[ `grep -w -E "ERROR|Errors|error" lint_result.tmp` ]]
+      then
+        echo "Lint tool detected ERROR !"
+        exit 1
+      fi
+    - |
+      if [[ `grep -w -E "WARNING|warning" lint_result.tmp` ]]
+      then
+        echo "Lint tool detected WARNING !"
+        exit 1
+      fi
+  artifacts:
+    paths:
+      - lint_result.tmp
+  allow_failure: true
+
+# 測試 console.log 語法是否無刪除
+test:console:
+  stage: test
+  tags:
+    - gce-gitlab-runner-ssd
+  script:
+    - pwd
+    - ls -Al
+    - if grep -rn --include \*.vue --include \*.js console.log src; then echo "src contains console.log"; exit 1; fi;
+  allow_failure: true

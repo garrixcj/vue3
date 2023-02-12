@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "batch_selection_count": "已選擇 {num} 筆",
+        "batch_mode": "批次模式"
+    },
+    "zh-cn": {
+        "batch_selection_count": "已选择 {num} 笔",
+        "batch_mode": "批次模式"
+    },
+    "en": {
+        "batch_selection_count": "Selected {num}",
+        "batch_mode": "batch mode"
+    },
+    "ja": {
+        "batch_selection_count": "Selected {num}",
+        "batch_mode": "batch mode"
+    },
+    "ko": {
+        "batch_selection_count": "{num}건을 선택했습니다.",
+        "batch_mode": "batch mode"
+    },
+    "vi": {
+        "batch_selection_count": "Đã chọn {num} món",
+        "batch_mode": "batch mode"
+    },
+    "th": {
+        "batch_selection_count": "Selected {num}",
+        "batch_mode": "batch mode"
+    }
+}
+

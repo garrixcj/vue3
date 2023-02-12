@@ -1,0 +1,5 @@
+@mixin form-label-color($color: $text-1) {
+  :deep(.el-form-item__label) {
+    color: $color;
+  }
+}

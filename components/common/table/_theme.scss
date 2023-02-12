@@ -1,0 +1,9 @@
+// table selection row 樣式
+@mixin table-selected-row($class: 'selected-row') {
+  :deep() .#{$class} {
+    background-color: $focus-2;
+    &:hover > td.el-table__cell {
+      background-color: darken($focus-2, 3%);
+    }
+  }
+}

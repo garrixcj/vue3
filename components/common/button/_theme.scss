@@ -1,0 +1,176 @@
+// hover 顏色變化
+@function get-btn-hover-color($color) {
+  @return darken($color, 5%);
+}
+// active 顏色變化
+@function get-btn-active-color($color) {
+  @return darken($color, 10%);
+}
+// 邊框按鈕底色
+@function get-outline-btn-color($color) {
+  @return mix($white, $color, 95%);
+}
+// 邊框按鈕 hover 顏色變化
+@function get-outline-btn-hover-color($color) {
+  @return mix($white, $color, 90%);
+}
+// 邊框按鈕 active 顏色變化
+@function get-outline-btn-active-color($color) {
+  @return mix($white, $color, 85%);
+}
+
+// 禁用按鈕打淡40%顏色
+@mixin disabled-button($bg, $text: $white) {
+  &:disabled,
+  &.is-disabled {
+    color: get-color-disabled($text);
+    cursor: not-allowed;
+    background-color: get-color-disabled($bg);
+    border-color: get-color-disabled($bg);
+    @content;
+  }
+}
+
+// 實心按鈕生成器
+@mixin solid-button($color, $text: $white) {
+  // 預設
+  color: $text;
+  background-color: $color;
+  border-color: $color;
+  // hover 狀態
+  &:hover:not(:disabled):not(:active) {
+    color: $text;
+    background-color: get-btn-hover-color($color);
+    border-color: get-btn-hover-color($color);
+  }
+  // active 狀態
+  &:active {
+    color: $text;
+    background-color: get-btn-active-color($color);
+    border-color: get-btn-active-color($color);
+  }
+  // disabled 狀態
+  @include disabled-button($color, $text);
+  @content;
+}
+
+// 邊框按鈕生成器 (文字與邊框不變化)
+@mixin outline-button($color) {
+  // 預設
+  color: $color;
+  background-color: get-outline-btn-color($color);
+  border-color: $color;
+  // hover 狀態
+  &:hover:not(:disabled):not(:active) {
+    color: $color;
+    background-color: get-outline-btn-hover-color($color);
+    border-color: $color;
+  }
+  // active 狀態
+  &:active {
+    color: $color;
+    background-color: get-outline-btn-active-color($color);
+    border-color: $color;
+  }
+  // disabled 狀態
+  @include disabled-button(get-outline-btn-color($color), $color) {
+    border-color: get-color-disabled($color);
+  }
+  @content;
+}
+
+// 實心漸層按鈕生成器
+@mixin solid-gradient-button(
+  $left-color: $gradient-left,
+  $right-color: $gradient-right,
+  $text: $white
+) {
+  // 預設
+  color: $text;
+  background-image: linear-gradient(to right, $left-color, $right-color);
+  // 漸層無法製作邊框
+  border: none;
+  // hover 狀態
+  &:hover:not(:disabled):not(:active) {
+    color: $text;
+    background-image: linear-gradient(
+      to right,
+      get-btn-hover-color($left-color),
+      get-btn-hover-color($right-color)
+    );
+  }
+  // active 狀態
+  &:active {
+    color: $text;
+    background-image: linear-gradient(
+      to right,
+      get-btn-active-color($left-color),
+      get-btn-active-color($right-color)
+    );
+  }
+  // disabled 狀態
+  &:disabled,
+  &.is-disabled {
+    color: $white;
+    background-image: linear-gradient(
+      to right,
+      get-color-disabled($left-color),
+      get-color-disabled($right-color)
+    );
+  }
+  @content;
+}
+
+// 文字按鈕生成器 (背景與邊框全透明)
+@mixin text-button($color) {
+  // 預設
+  color: $color;
+  background-color: transparent;
+  border-color: transparent;
+  // hover 狀態
+  &:hover:not(:disabled):not(:active) {
+    color: get-btn-hover-color($color);
+    background-color: transparent;
+    border-color: transparent;
+  }
+  // active 狀態
+  &:not(.is-disabled):active {
+    color: get-btn-active-color($color);
+    background-color: transparent;
+    border-color: transparent;
+  }
+  // focus 狀態
+  &:not(.is-disabled):focus {
+    color: get-btn-active-color($color);
+    background-color: transparent;
+    border-color: transparent;
+  }
+  // disabled 狀態
+  @include disabled-button(#fff, $color) {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  @content;
+}
+
+// 文字按鈕下底線
+@mixin btn-underline($color: $primary) {
+  padding: 1px;
+  border-bottom: 1px solid $color;
+  border-radius: 0;
+  &:hover:not(:disabled):not(:active) {
+    border-bottom: 1px solid get-btn-hover-color($color);
+  }
+  &:not(.is-disabled):active {
+    border-bottom: 1px solid get-btn-active-color($color);
+  }
+  &:not(.is-disabled):focus {
+    border-bottom: 1px solid get-btn-active-color($color);
+  }
+  // disabled 狀態
+  @include disabled-button(#fff, $color) {
+    background-color: transparent;
+    border-color: transparent;
+    border-bottom: 1px solid get-color-disabled($color);
+  }
+}

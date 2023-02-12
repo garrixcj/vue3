@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "lobby84_84001": "混合過關",
+        "lobby84_84002": "英國聯賽",
+        "lobby84_84003": "足球世界杯",
+        "lobby84_84004": "足球亞洲盃",
+        "lobby84_84005": "足球冠軍杯",
+        "lobby84_84006": "網球",
+        "lobby84_84007": "賽狗",
+        "lobby84_84008": "賽馬",
+        "lobby84_84009": "籃球",
+        "lobby84_84010": "複式過關",
+        "lobby84_84999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby84_84001": "混合过关",
+        "lobby84_84002": "英国联赛",
+        "lobby84_84003": "足球世界杯",
+        "lobby84_84004": "足球亚洲杯",
+        "lobby84_84005": "足球冠军杯",
+        "lobby84_84006": "网球",
+        "lobby84_84007": "赛狗",
+        "lobby84_84008": "赛马",
+        "lobby84_84009": "篮球",
+        "lobby84_84010": "复式过关",
+        "lobby84_84999": "未开放游戏"
+    },
+    "en": {
+        "lobby84_84001": "Combo",
+        "lobby84_84002": "Virtual Football English League",
+        "lobby84_84003": "Football World Cup",
+        "lobby84_84004": "Football Asian Cup",
+        "lobby84_84005": "Football Champions Cup",
+        "lobby84_84006": "Tennis In-Play",
+        "lobby84_84007": "Dog Racing",
+        "lobby84_84008": "Horse Racing",
+        "lobby84_84009": "Basketball League",
+        "lobby84_84010": "System",
+        "lobby84_84999": "Game is not open"
+    },
+    "ja": {
+        "lobby84_84001": "Combo",
+        "lobby84_84002": "Virtual Football English League",
+        "lobby84_84003": "Football World Cup",
+        "lobby84_84004": "Football Asian Cup",
+        "lobby84_84005": "Football Champions Cup",
+        "lobby84_84006": "Tennis In-Play",
+        "lobby84_84007": "Dog Racing",
+        "lobby84_84008": "Horse Racing",
+        "lobby84_84009": "Basketball League",
+        "lobby84_84010": "System",
+        "lobby84_84999": "Game is not open"
+    },
+    "ko": {
+        "lobby84_84001": "Combo",
+        "lobby84_84002": "Virtual Football English League",
+        "lobby84_84003": "Football World Cup",
+        "lobby84_84004": "Football Asian Cup",
+        "lobby84_84005": "Football Champions Cup",
+        "lobby84_84006": "Tennis In-Play",
+        "lobby84_84007": "Dog Racing",
+        "lobby84_84008": "Horse Racing",
+        "lobby84_84009": "Basketball League",
+        "lobby84_84010": "System",
+        "lobby84_84999": "Game is not open"
+    },
+    "vi": {
+        "lobby84_84001": "Combo",
+        "lobby84_84002": "Virtual Football English League",
+        "lobby84_84003": "Football World Cup",
+        "lobby84_84004": "Football Asian Cup",
+        "lobby84_84005": "Football Champions Cup",
+        "lobby84_84006": "Tennis In-Play",
+        "lobby84_84007": "Dog Racing",
+        "lobby84_84008": "Horse Racing",
+        "lobby84_84009": "Basketball League",
+        "lobby84_84010": "System",
+        "lobby84_84999": "Game is not open"
+    },
+    "th": {
+        "lobby84_84001": "Combo",
+        "lobby84_84002": "Virtual Football English League",
+        "lobby84_84003": "Football World Cup",
+        "lobby84_84004": "Football Asian Cup",
+        "lobby84_84005": "Football Champions Cup",
+        "lobby84_84006": "Tennis In-Play",
+        "lobby84_84007": "Dog Racing",
+        "lobby84_84008": "Horse Racing",
+        "lobby84_84009": "Basketball League",
+        "lobby84_84010": "System",
+        "lobby84_84999": "Game is not open"
+    }
+}
+

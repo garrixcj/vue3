@@ -1,0 +1,52 @@
+{
+    "zh-tw": {
+        "api_document_search": "平台API接口設定查詢",
+        "api_document": "API文件",
+        "id_contrast_search": "代碼對照查詢",
+        "error_code_search": "錯誤代碼查詢",
+        "api_example": "API使用範例"
+    },
+    "zh-cn": {
+        "api_document_search": "平台API接口设定查询",
+        "api_document": "API文件",
+        "id_contrast_search": "代码对照查询",
+        "error_code_search": "错误代码查询",
+        "api_example": "API使用范例"
+    },
+    "en": {
+        "api_document_search": "Platform API Interface Setting Query",
+        "api_document": "API Documentation",
+        "id_contrast_search": "Code Comparison Query",
+        "error_code_search": "Error Code Query",
+        "api_example": "API Examples"
+    },
+    "ja": {
+        "api_document_search": "Platform API Interface Setting Query",
+        "api_document": "API Documentation",
+        "id_contrast_search": "Code Comparison Query",
+        "error_code_search": "Error Code Query",
+        "api_example": "API Examples"
+    },
+    "ko": {
+        "api_document_search": "플랫폼 API 인터페이스 설정 조회",
+        "api_document": "API 파일",
+        "id_contrast_search": "코드 대조 조회",
+        "error_code_search": "오류 코드 조회",
+        "api_example": "API 사용 범례"
+    },
+    "vi": {
+        "api_document_search": "Truy vấn cài đặt giao diện nền tảng API",
+        "api_document": "Tệp API",
+        "id_contrast_search": "Đối chiếu mã đại lí",
+        "error_code_search": "Tìm khiếm mã đại lí không hợp lệ",
+        "api_example": "API phạm vi sử dụng"
+    },
+    "th": {
+        "api_document_search": "ตรวจสอบการตั้งค่าจุดเชื่อมต่อเเพลตฟอร์ม API",
+        "api_document": "เอกสาร API",
+        "id_contrast_search": "ตรวจสอบรหัสเเทน",
+        "error_code_search": "ตรวจสอบรหัสผ่านที่ผิดพลาด",
+        "api_example": "ตัวอย่างการใช้ API"
+    }
+}
+

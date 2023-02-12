@@ -1,0 +1,52 @@
+{
+    "zh-tw": {
+        "result": "筆",
+        "no_monitor": "不監控",
+        "level1": "弱",
+        "level2": "中",
+        "level3": "強"
+    },
+    "zh-cn": {
+        "result": "笔",
+        "no_monitor": "不监控",
+        "level1": "弱",
+        "level2": "中",
+        "level3": "强"
+    },
+    "en": {
+        "result": "results",
+        "no_monitor": "Not Monitor",
+        "level1": "Weak",
+        "level2": "Medium",
+        "level3": "Strong"
+    },
+    "ja": {
+        "result": "results",
+        "no_monitor": "Not Monitor",
+        "level1": "Weak",
+        "level2": "Medium",
+        "level3": "Strong"
+    },
+    "ko": {
+        "result": "results",
+        "no_monitor": "모니터링 안함",
+        "level1": "약",
+        "level2": "중",
+        "level3": "강"
+    },
+    "vi": {
+        "result": "results",
+        "no_monitor": "Không giám sát",
+        "level1": "Yếu",
+        "level2": "Trung",
+        "level3": "Mạnh"
+    },
+    "th": {
+        "result": "results",
+        "no_monitor": "Not Monitor",
+        "level1": "Weak",
+        "level2": "Medium",
+        "level3": "Strong"
+    }
+}
+

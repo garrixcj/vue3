@@ -1,0 +1,66 @@
+{
+    "zh-tw": {
+        "report_lobby129_129001": "百家樂",
+        "report_lobby129_129002": "龍虎",
+        "report_lobby129_129003": "輪盤",
+        "report_lobby129_129004": "色碟",
+        "report_lobby129_129005": "骰寶",
+        "report_lobby129_129006": "極速骰寶",
+        "report_lobby129_129999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby129_129001": "百家乐",
+        "report_lobby129_129002": "龙虎",
+        "report_lobby129_129003": "轮盘",
+        "report_lobby129_129004": "色碟",
+        "report_lobby129_129005": "骰宝",
+        "report_lobby129_129006": "极速骰宝",
+        "report_lobby129_129999": "未开放游戏"
+    },
+    "en": {
+        "report_lobby129_129001": "Baccart",
+        "report_lobby129_129002": "Dragon Tiger",
+        "report_lobby129_129003": "Roulette",
+        "report_lobby129_129004": "Sedie",
+        "report_lobby129_129005": "Sicbo",
+        "report_lobby129_129006": "Speed Sicbo",
+        "report_lobby129_129999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby129_129001": "Baccart",
+        "report_lobby129_129002": "Dragon Tiger",
+        "report_lobby129_129003": "Roulette",
+        "report_lobby129_129004": "Sedie",
+        "report_lobby129_129005": "Sicbo",
+        "report_lobby129_129006": "Speed Sicbo",
+        "report_lobby129_129999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby129_129001": "Baccart",
+        "report_lobby129_129002": "Dragon Tiger",
+        "report_lobby129_129003": "Roulette",
+        "report_lobby129_129004": "Sedie",
+        "report_lobby129_129005": "Sicbo",
+        "report_lobby129_129006": "Speed Sicbo",
+        "report_lobby129_129999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby129_129001": "Baccart",
+        "report_lobby129_129002": "Dragon Tiger",
+        "report_lobby129_129003": "Roulette",
+        "report_lobby129_129004": "Sedie",
+        "report_lobby129_129005": "Sicbo",
+        "report_lobby129_129006": "Speed Sicbo",
+        "report_lobby129_129999": "Game is not open"
+    },
+    "th": {
+        "report_lobby129_129001": "Baccart",
+        "report_lobby129_129002": "Dragon Tiger",
+        "report_lobby129_129003": "Roulette",
+        "report_lobby129_129004": "Sedie",
+        "report_lobby129_129005": "Sicbo",
+        "report_lobby129_129006": "Speed Sicbo",
+        "report_lobby129_129999": "Game is not open"
+    }
+}
+

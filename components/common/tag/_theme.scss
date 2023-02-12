@@ -1,0 +1,54 @@
+// tag 顏色生成器
+@mixin tag-color($color, $bg-color: null, $deep: true) {
+  color: $color;
+  @if $bg-color != null {
+    background-color: $bg-color;
+  } @else {
+    background-color: mix($white, $color, 95%);
+  }
+  border-color: mix($white, $color, 40%);
+  @if $deep {
+    :deep(.el-tag__close) {
+      right: 0;
+      margin-left: 3px;
+      color: $color;
+      &:hover {
+        color: #fff;
+        background-color: mix($white, $color, 40%);
+      }
+    }
+  } @else {
+    .el-tag__close {
+      right: 0;
+      margin-left: 3px;
+      color: $color;
+      &:hover {
+        color: #fff;
+        background-color: mix($white, $color, 40%);
+      }
+    }
+  }
+}
+// 遊戲標籤
+@mixin game-color($prefix: 'rd-tag') {
+  @each $game, $color in $game-colors {
+    .#{$prefix}--#{$game} {
+      @include tag-color($color);
+    }
+  }
+}
+@mixin tag-border($pill: false, $border: false) {
+  &.el-tag {
+    height: auto;
+    @if ($border == false) {
+      border-color: transparent;
+    }
+    border-radius: if($pill, 30px, 2px);
+    &--small {
+      padding: if($pill, 0 5px, 0 4px);
+    }
+    &--mini {
+      padding: if($pill, 0 5px, 0 4px);
+    }
+  }
+}

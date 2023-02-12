@@ -1,0 +1,87 @@
+{
+    "zh-tw": {
+        "edit_success": "修改成功",
+        "success": "成功",
+        "live": "視訊",
+        "prob": "電子",
+        "sport": "體育",
+        "lottery": "彩票",
+        "card": "棋牌",
+        "lobby": "遊戲平台",
+        "no_parent_lobby": "上層未開放任何遊戲平台",
+        "open_lobby_showmsg": "遊戲開放：需會員下次登入方可生效"
+    },
+    "zh-cn": {
+        "edit_success": "修改成功",
+        "success": "成功",
+        "live": "视讯",
+        "prob": "电子",
+        "sport": "体育",
+        "lottery": "彩票",
+        "card": "棋牌",
+        "lobby": "游戏平台",
+        "no_parent_lobby": "上层未开放任何游戏平台",
+        "open_lobby_showmsg": "游戏开放：需会员下次登入方可生效"
+    },
+    "en": {
+        "edit_success": "Successfully modified",
+        "success": "Success",
+        "live": "Live Casino",
+        "prob": "Casino",
+        "sport": "Sports",
+        "lottery": "Lottery",
+        "card": "Card Game",
+        "lobby": "Game Hall",
+        "no_parent_lobby": "The upper level doesn't open any game lobby.",
+        "open_lobby_showmsg": "Game open：Members need to login next time to take effect"
+    },
+    "ja": {
+        "edit_success": "変更成功",
+        "success": "成功",
+        "live": "ライブ",
+        "prob": "スロットゲーム",
+        "sport": "スポーツ",
+        "lottery": "宝くじ",
+        "card": "Card Game",
+        "lobby": "ゲームロビー",
+        "no_parent_lobby": "The upper level doesn't open any game lobby.",
+        "open_lobby_showmsg": "Game open：Members need to login next time to take effect"
+    },
+    "ko": {
+        "edit_success": "수정 성공",
+        "success": "성공",
+        "live": "라이브",
+        "prob": "전자게임",
+        "sport": "스포츠",
+        "lottery": "복권",
+        "card": "Card Game",
+        "lobby": "게임홀",
+        "no_parent_lobby": "The upper level doesn't open any game lobby.",
+        "open_lobby_showmsg": "Game open：Members need to login next time to take effect"
+    },
+    "vi": {
+        "edit_success": "Sửa đổi thành công",
+        "success": "Thành công",
+        "live": "Casino trực tuyến",
+        "prob": "Xác suất",
+        "sport": "THỂ THAO IBET",
+        "lottery": "lottery",
+        "card": "Card Game",
+        "lobby": "Sảnh game",
+        "no_parent_lobby": "The upper level doesn't open any game lobby.",
+        "open_lobby_showmsg": "Game open：Members need to login next time to take effect"
+    },
+    "th": {
+        "edit_success": "แก้ไขสำเร็จ",
+        "success": "สำเร็จ",
+        "live": "เกมส์คาสิโนสด",
+        "prob": "เกมส์สล็อต",
+        "sport": "กีฬา",
+        "lottery": "ล็อคเตอรี่",
+        "card": "Card Game",
+        "lobby": "ห้องเกมส์",
+        "no_parent_lobby": "The upper level doesn't open any game lobby.",
+        "open_lobby_showmsg": "Game open：Members need to login next time to take effect"
+    }
+}
+

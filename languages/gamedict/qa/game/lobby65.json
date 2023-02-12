@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "lobby65_65001": "混合過關",
+        "lobby65_65002": "足球",
+        "lobby65_65003": "籃球\/美足",
+        "lobby65_65004": "網球",
+        "lobby65_65005": "棒球",
+        "lobby65_65006": "其他",
+        "lobby65_65007": "虛擬足球",
+        "lobby65_65008": "斯諾克 \/ 台球",
+        "lobby65_65009": "跨球類",
+        "lobby65_65010": "冠軍",
+        "lobby65_65999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby65_65001": "混合过关",
+        "lobby65_65002": "足球",
+        "lobby65_65003": "篮球\/美足",
+        "lobby65_65004": "网球",
+        "lobby65_65005": "棒球",
+        "lobby65_65006": "其他",
+        "lobby65_65007": "虚拟足球",
+        "lobby65_65008": "斯诺克 \/ 台球",
+        "lobby65_65009": "跨球类",
+        "lobby65_65010": "冠军",
+        "lobby65_65999": "未开放游戏"
+    },
+    "en": {
+        "lobby65_65001": "Combo",
+        "lobby65_65002": "Soccer",
+        "lobby65_65003": "Basketball\/Football",
+        "lobby65_65004": "Tennis",
+        "lobby65_65005": "Baseball",
+        "lobby65_65006": "Other",
+        "lobby65_65007": "Virtual Football",
+        "lobby65_65008": "Snooker",
+        "lobby65_65009": "Mix Parlay",
+        "lobby65_65010": "Outrights",
+        "lobby65_65999": "Game is not open"
+    },
+    "ja": {
+        "lobby65_65001": "Combo",
+        "lobby65_65002": "Soccer",
+        "lobby65_65003": "Basketball\/Football",
+        "lobby65_65004": "Tennis",
+        "lobby65_65005": "Baseball",
+        "lobby65_65006": "Other",
+        "lobby65_65007": "Virtual Football",
+        "lobby65_65008": "Snooker",
+        "lobby65_65009": "Mix Parlay",
+        "lobby65_65010": "Outrights",
+        "lobby65_65999": "Game is not open"
+    },
+    "ko": {
+        "lobby65_65001": "Combo",
+        "lobby65_65002": "Soccer",
+        "lobby65_65003": "Basketball\/Football",
+        "lobby65_65004": "Tennis",
+        "lobby65_65005": "Baseball",
+        "lobby65_65006": "Other",
+        "lobby65_65007": "Virtual Football",
+        "lobby65_65008": "스누커\/ 포켓볼",
+        "lobby65_65009": "Mix Parlay",
+        "lobby65_65010": "Outrights",
+        "lobby65_65999": "Game is not open"
+    },
+    "vi": {
+        "lobby65_65001": "Combo",
+        "lobby65_65002": "Soccer",
+        "lobby65_65003": "Basketball\/Football",
+        "lobby65_65004": "Tennis",
+        "lobby65_65005": "Baseball",
+        "lobby65_65006": "Other",
+        "lobby65_65007": "Virtual Football",
+        "lobby65_65008": "Bi-Da",
+        "lobby65_65009": "Mix Parlay",
+        "lobby65_65010": "Outrights",
+        "lobby65_65999": "Game is not open"
+    },
+    "th": {
+        "lobby65_65001": "Combo",
+        "lobby65_65002": "Soccer",
+        "lobby65_65003": "Basketball\/Football",
+        "lobby65_65004": "Tennis",
+        "lobby65_65005": "Baseball",
+        "lobby65_65006": "Other",
+        "lobby65_65007": "Virtual Football",
+        "lobby65_65008": "Snooker",
+        "lobby65_65009": "Mix Parlay",
+        "lobby65_65010": "Outrights",
+        "lobby65_65999": "Game is not open"
+    }
+}
+

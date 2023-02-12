@@ -1,0 +1,36 @@
+$hover-border: #ccd5db; // tab
+.el-tabs {
+  &__header {
+    // tab 與 pane 的間距
+    margin-bottom: 10px;
+  }
+  &__active-bar {
+    // 移除原 active tab 標示
+    background-color: transparent;
+  }
+  &__item {
+    // tab item
+    line-height: 1;
+    color: $text-4;
+    border-bottom: solid 2px rgba(0, 0, 0, 0);
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    &.is-active {
+      color: $text-1;
+      // 改用 border 做 active tab 標示
+      border-bottom: 2px solid $focus-1;
+    }
+    &:not(.is-active):hover {
+      color: $text-4;
+      border-bottom: 2px solid $hover-border;
+    }
+  }
+  &--top &__item.is-top:nth-child(n) {
+    // 改變所有 tab 的 padding 包含前後
+    padding: 12px 15px;
+  }
+  &__nav-wrap::after {
+    // 底線
+    height: 1px;
+    background-color: $background-3;
+  }
+}

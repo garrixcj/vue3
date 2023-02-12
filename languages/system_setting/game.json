@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "gamelobby_platform_management": "遊戲平台管理",
+        "gamelobby_maintenance_management": "遊戲維護資訊"
+    },
+    "zh-cn": {
+        "gamelobby_platform_management": "游戏平台管理",
+        "gamelobby_maintenance_management": "游戏维护资讯"
+    },
+    "en": {
+        "gamelobby_platform_management": "Game lobby platform management",
+        "gamelobby_maintenance_management": "Game lobby maintenance information"
+    },
+    "ja": {
+        "gamelobby_platform_management": "Game lobby platform management",
+        "gamelobby_maintenance_management": "Game lobby maintenance information"
+    },
+    "ko": {
+        "gamelobby_platform_management": "Game lobby platform management",
+        "gamelobby_maintenance_management": "Game lobby maintenance information"
+    },
+    "vi": {
+        "gamelobby_platform_management": "Game lobby platform management",
+        "gamelobby_maintenance_management": "Game lobby maintenance information"
+    },
+    "th": {
+        "gamelobby_platform_management": "Game lobby platform management",
+        "gamelobby_maintenance_management": "Game lobby maintenance information"
+    }
+}
+

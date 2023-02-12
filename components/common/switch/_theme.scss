@@ -1,0 +1,51 @@
+// 客製化 switch
+@mixin custom-switch($core, $bg, $icon) {
+  // 核心顏色
+  .el-switch__core .el-switch__action {
+    background-color: $core;
+  }
+  .el-switch__label--right {
+    color: $core;
+  }
+  // 底色
+  .el-switch__core {
+    background-color: $bg;
+    border-color: $bg;
+  }
+  // Icon
+  .el-switch__core .el-switch__action::after {
+    content: $icon;
+  }
+}
+
+// 開啟狀態
+@mixin switch-active($core: $success, $bg: #d9f5e9, $icon: '\F012C') {
+  &.rd-switch.el-switch[aria-checked='true'] :deep() {
+    @include custom-switch($core, $bg, $icon);
+    @content;
+  }
+}
+// 關閉狀態
+@mixin switch-inactive($core: $success, $bg: #d9f5e9, $icon: '\F012C') {
+  &.rd-switch.el-switch[aria-checked='false'] :deep() {
+    @include custom-switch($core, $bg, $icon);
+    @content;
+  }
+}
+
+// -- Confirm Switch 特化 --
+// 因再包裝 scoped 位置不同 故移動 deep 位置
+// 開啟狀態
+@mixin confirm-switch-active($core: $success, $bg: #d9f5e9, $icon: '\F012C') {
+  :deep() .rd-switch.el-switch[aria-checked='true'] {
+    @include custom-switch($core, $bg, $icon);
+    @content;
+  }
+}
+// 關閉狀態
+@mixin confirm-switch-inactive($core: $success, $bg: #d9f5e9, $icon: '\F012C') {
+  :deep() .rd-switch.el-switch[aria-checked='false'] {
+    @include custom-switch($core, $bg, $icon);
+    @content;
+  }
+}

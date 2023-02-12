@@ -1,0 +1,9 @@
+stages:
+  # 測試
+  - test
+  # 更新
+  - update
+
+include:
+  - '/.gitlab-ci/test.gitlab-ci.yml'
+  - '/.gitlab-ci/update.gitlab-ci.yml'

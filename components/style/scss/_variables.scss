@@ -1,0 +1,108 @@
+@import './game-color';
+
+// 基礎色系
+$primary-colors: (
+  '1': #2665aa,
+  '2': #4890f7,
+  '3': #b8ddff,
+  '4': #e3eeff,
+  '5': #f6f9ff,
+);
+// 文字色系
+$text-colors: (
+  '1': #404e67,
+  '2': #606266,
+  '3': #818b9d,
+  '4': #a7aebb,
+);
+// 背景色系
+$background-colors: (
+  '1': #818b9d,
+  '2': #a7aebb,
+  '3': #dae1e8,
+  '4': #e3ebf3,
+  '5': #f5f7fa,
+  '6': #e2e4e8,
+  '7': #d0d7e7,
+);
+// 標示色系(強調被選取的選項)
+$focus-colors: (
+  '1': #22c2dc,
+  '2': #f4fcfd,
+);
+// 標示色系(標題或標示重要元件)
+$mark-colors: (
+  '1': #007c79,
+  '2': #00a5a8,
+  '3': #00c4c4,
+);
+
+// 基本色
+$white: #fff !default;
+
+// 狀態色
+$primary: map-get($primary-colors, '2') !default; // 主色
+$danger: #ff6275 !default; // 停用、警示
+$warning: #febf05 !default; // 注意
+$success: #06b76c !default; // 啟用、成功、勾選
+$freeze: #22c2dc !default; // 凍結
+$online: #86b251 !default; // 上線中
+$suspended: #b176c4 !default; // 停權
+$locked: #fa8652 !default; // 鎖定
+$offline: map-get($background-colors, '3') !default; // 離線中
+$no-data: map-get($text-colors, '4') !default; // 暫無資料
+$search: map-get($mark-colors, '2') !default; // 搜尋
+$info: map-get($background-colors, '1') !default;
+
+// 主色
+$primary-1: map-get($primary-colors, '1');
+$primary-2: map-get($primary-colors, '2');
+$primary-3: map-get($primary-colors, '3');
+$primary-4: map-get($primary-colors, '4');
+$primary-5: map-get($primary-colors, '5');
+// 文字色
+$text-1: map-get($text-colors, '1');
+$text-2: map-get($text-colors, '2');
+$text-3: map-get($text-colors, '3');
+$text-4: map-get($text-colors, '4');
+// 背景色
+$background-1: map-get($background-colors, '1');
+$background-2: map-get($background-colors, '2');
+$background-3: map-get($background-colors, '3');
+$background-4: map-get($background-colors, '4');
+$background-5: map-get($background-colors, '5');
+$background-6: map-get($background-colors, '6');
+// 標示色
+$focus-1: map-get($focus-colors, '1');
+$focus-2: map-get($focus-colors, '2');
+$mark-1: map-get($mark-colors, '1');
+$mark-2: map-get($mark-colors, '2');
+$mark-3: map-get($mark-colors, '3');
+
+// 輸入框(非rd-input之表單元件客製化時統一樣式)
+$input-text: $text-1; // 輸入框字色
+$input-placeholder: $text-4;
+$input-border-color: $background-3;
+$input-border-color-focus: $primary; // 輸入框 focus 效果邊框
+$input-border-color-hover: $background-2; // 輸入框 hover 效果邊框字色
+$input-border-color-error: $danger; // 輸入框驗證失敗邊框字色
+// 輸入框各尺寸整體高度
+$input-height: (
+  'small': 24px,
+  'default': 30px,
+  'large': 34px,
+);
+// 輸入框各尺寸文字大小
+$input-font: (
+  'small': 12px,
+  'default': 14px,
+  'large': 14px,
+);
+
+$font-family-base: 'Helvetica Neue', Helvetica, 'Microsoft Jhenghei' !default;
+
+$font-size-base: 14px !default;
+
+$gradient-left: #5fc4dc;
+$gradient-right: #6078ea;
+$gradient: linear-gradient(to right, $gradient-left 0%, $gradient-right 100%);

@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "report_lobby54_54001": "百家樂",
+        "report_lobby54_54002": "龍虎",
+        "report_lobby54_54003": "骰寶",
+        "report_lobby54_54004": "輪盤",
+        "report_lobby54_54005": "牛牛",
+        "report_lobby54_54006": "21點",
+        "report_lobby54_54007": "財富大轉盤",
+        "report_lobby54_54008": "博丁",
+        "report_lobby54_54999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby54_54001": "百家乐",
+        "report_lobby54_54002": "龙虎",
+        "report_lobby54_54003": "骰宝",
+        "report_lobby54_54004": "轮盘",
+        "report_lobby54_54005": "牛牛",
+        "report_lobby54_54006": "21点",
+        "report_lobby54_54007": "财富大转盤",
+        "report_lobby54_54008": "博丁",
+        "report_lobby54_54999": "未开放游戏"
+    },
+    "en": {
+        "report_lobby54_54001": "Baccarat",
+        "report_lobby54_54002": "Dragon Tiger",
+        "report_lobby54_54003": "Sic bo",
+        "report_lobby54_54004": "Roulette",
+        "report_lobby54_54005": "Niu Niu",
+        "report_lobby54_54006": "BlackJack",
+        "report_lobby54_54007": "FortuneWheel",
+        "report_lobby54_54008": "Pok Deng",
+        "report_lobby54_54999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby54_54001": "Baccarat",
+        "report_lobby54_54002": "Dragon Tiger",
+        "report_lobby54_54003": "Sic bo",
+        "report_lobby54_54004": "Roulette",
+        "report_lobby54_54005": "Niu Niu",
+        "report_lobby54_54006": "BlackJack",
+        "report_lobby54_54007": "FortuneWheel",
+        "report_lobby54_54008": "Pok Deng",
+        "report_lobby54_54999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby54_54001": "Baccarat",
+        "report_lobby54_54002": "Dragon Tiger",
+        "report_lobby54_54003": "Sic bo",
+        "report_lobby54_54004": "Roulette",
+        "report_lobby54_54005": "Niu Niu",
+        "report_lobby54_54006": "BlackJack",
+        "report_lobby54_54007": "FortuneWheel",
+        "report_lobby54_54008": "Pok Deng",
+        "report_lobby54_54999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby54_54001": "Baccarat",
+        "report_lobby54_54002": "Dragon Tiger",
+        "report_lobby54_54003": "Sic bo",
+        "report_lobby54_54004": "Roulette",
+        "report_lobby54_54005": "Niu Niu",
+        "report_lobby54_54006": "BlackJack",
+        "report_lobby54_54007": "FortuneWheel",
+        "report_lobby54_54008": "Pok Deng",
+        "report_lobby54_54999": "Game is not open"
+    },
+    "th": {
+        "report_lobby54_54001": "Baccarat",
+        "report_lobby54_54002": "Dragon Tiger",
+        "report_lobby54_54003": "Sic bo",
+        "report_lobby54_54004": "Roulette",
+        "report_lobby54_54005": "Niu Niu",
+        "report_lobby54_54006": "BlackJack",
+        "report_lobby54_54007": "FortuneWheel",
+        "report_lobby54_54008": "Pok Deng",
+        "report_lobby54_54999": "Game is not open"
+    }
+}
+

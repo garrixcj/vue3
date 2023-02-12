@@ -1,0 +1,35 @@
+.el-form {
+  &-item {
+    &.is-error,
+    &.is-success {
+      .el-form-item__content {
+        display: block;
+      }
+    }
+    margin-bottom: 15px;
+    &:last-child {
+      margin-bottom: 0px;
+    }
+    &__error {
+      position: initial;
+    }
+    &__label {
+      padding-right: 10px;
+      font-size: 14px;
+      color: $text-1;
+      @include space(5px);
+      // form 裡的 information icon 預設 #818b9d
+      i.mdi.mdi-information {
+        color: $text-3;
+      }
+    }
+    &__content {
+      font-size: 14px;
+    }
+  }
+  &--inline &-item {
+    margin-right: 15px;
+    margin-bottom: 10px;
+    vertical-align: baseline;
+  }
+}

@@ -1,0 +1,8 @@
+@use '../../style/scss/variables' as RdVar;
+
+$pagination: (
+  'text-color': RdVar.$text-1,
+  'border-radius': 2px,
+  'button-width': 30px,
+  'button-height': 30px,
+);

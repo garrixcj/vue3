@@ -1,0 +1,122 @@
+$button-border: 1px;
+// 垂直 padding (vertical padding 計算方式)
+@function vertical-padding($size, $border: true) {
+  $total-height: get-input-height($size);
+  $font-height: get-input-font($size);
+  @if ($border) {
+    // (總高度 - 文字高度 - 邊框) / 2 = 上下各padding
+    @return calc(($total-height - $font-height) / 2 - $button-border);
+  } @else {
+    // 無邊框計算方式
+    @return calc(($total-height - $font-height) / 2);
+  }
+}
+// 橫向 padding (horizontal padding 計算方式)
+$horizontal-paddings: (
+  'small': 12px,
+  'default': 18px,
+  'large': 18px,
+);
+@function horizontal-padding($size, $border: true) {
+  @if ($border) {
+    // 基礎內距 - 邊框 = 左右各padding
+    @return map-get($horizontal-paddings, $size) - $button-border;
+  } @else {
+    // 無邊框計算方式
+    @return map-get($horizontal-paddings, $size);
+  }
+}
+$button-sizes: 'default', 'small', 'large';
+
+// 無邊框的寬度修改
+@mixin no-border-button-size-fix() {
+  border: none;
+  @each $size in $button-sizes {
+    &.el-button--#{$size} {
+      padding: vertical-padding($size, false) horizontal-padding($size, false);
+    }
+    &.el-button--icon-#{$size} {
+      padding: vertical-padding($size, false);
+    }
+  }
+}
+
+.el-button {
+  // 調整原組件以符合原架構樣式
+  min-height: unset;
+  font-weight: 400;
+  border-radius: 2px;
+  > span {
+    @include space(5px);
+    i.mdi {
+      @include flex-basic(center);
+      display: inline-flex;
+    }
+  }
+  &.el-button {
+    @each $size in $button-sizes {
+      &--#{$size} {
+        padding: vertical-padding($size) horizontal-padding($size);
+        font-size: get-input-font($size);
+      }
+    }
+    height: unset;
+    // 主色按鈕
+    &--default {
+      @include solid-button($primary-4, $primary);
+    }
+    &--primary {
+      @include solid-button($primary);
+    }
+    &--secondary {
+      @include solid-button($background-4, $text-1);
+    }
+    &--danger {
+      @include solid-button($danger);
+    }
+    &--success {
+      @include solid-button($success);
+    }
+    &--search {
+      @include solid-button($search);
+    }
+    &--gradient {
+      @include solid-gradient-button;
+      @include no-border-button-size-fix;
+    }
+    &--transparent {
+      color: $primary;
+      background-color: transparent;
+      @include no-border-button-size-fix;
+      &:hover:not(:disabled):not(:active) {
+        background-color: $primary-4;
+      }
+      &:active {
+        background-color: get-btn-active-color($primary-4);
+      }
+      &:disabled {
+        color: get-color-disabled($primary);
+      }
+    }
+    // 圖形按鈕大小
+    &--icon {
+      padding: 3px;
+      font-size: 14px;
+      @each $size in $button-sizes {
+        &-#{$size} {
+          // icon 類型按鈕為正方形
+          padding: vertical-padding($size);
+        }
+      }
+    }
+  }
+  &.is-text {
+    @include text-button($primary);
+    padding: 0;
+    font-size: 14px;
+    font-weight: inherit;
+    line-height: 20px;
+    text-decoration: none;
+    border: none;
+  }
+}

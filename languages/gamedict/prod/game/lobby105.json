@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "lobby105_105001": "輪盤",
+        "lobby105_105002": "骰寶",
+        "lobby105_105003": "龍虎",
+        "lobby105_105004": "百家樂",
+        "lobby105_105005": "保險百家樂",
+        "lobby105_105006": "紅藍對決",
+        "lobby105_105007": "泰國骰寶",
+        "lobby105_105008": "泰國魚蝦蟹",
+        "lobby105_105009": "Extra Andar Bahar",
+        "lobby105_105010": "Extra骰寶",
+        "lobby105_105999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby105_105001": "轮盘",
+        "lobby105_105002": "骰宝",
+        "lobby105_105003": "龙虎",
+        "lobby105_105004": "百家乐",
+        "lobby105_105005": "保险百家乐",
+        "lobby105_105006": "红蓝对决",
+        "lobby105_105007": "泰国骰宝",
+        "lobby105_105008": "泰国鱼虾蟹",
+        "lobby105_105009": "Extra Andar Bahar",
+        "lobby105_105010": "Extra骰宝",
+        "lobby105_105999": "未開放游戏"
+    },
+    "en": {
+        "lobby105_105001": "Roulette",
+        "lobby105_105002": "Sic Bo",
+        "lobby105_105003": "Dragon Tiger",
+        "lobby105_105004": "Baccarat",
+        "lobby105_105005": "Baccarat Insurance",
+        "lobby105_105006": "Red Blue Duel",
+        "lobby105_105007": "Thai Hi Lo",
+        "lobby105_105008": "Thai Fish Prawn Crab",
+        "lobby105_105009": "Extra Andar Bahar",
+        "lobby105_105010": "Extra Sicbo",
+        "lobby105_105999": "Game is not open"
+    },
+    "ja": {
+        "lobby105_105001": "Roulette",
+        "lobby105_105002": "Sic Bo",
+        "lobby105_105003": "Dragon Tiger",
+        "lobby105_105004": "Baccarat",
+        "lobby105_105005": "Baccarat Insurance",
+        "lobby105_105006": "Red Blue Duel",
+        "lobby105_105007": "Thai Hi Lo",
+        "lobby105_105008": "Thai Fish Prawn Crab",
+        "lobby105_105009": "Extra Andar Bahar",
+        "lobby105_105010": "シックボー追加",
+        "lobby105_105999": "Game is not open"
+    },
+    "ko": {
+        "lobby105_105001": "Roulette",
+        "lobby105_105002": "Sic Bo",
+        "lobby105_105003": "Dragon Tiger",
+        "lobby105_105004": "Baccarat",
+        "lobby105_105005": "Baccarat Insurance",
+        "lobby105_105006": "Red Blue Duel",
+        "lobby105_105007": "Thai Hi Lo",
+        "lobby105_105008": "Thai Fish Prawn Crab",
+        "lobby105_105009": "Extra Andar Bahar",
+        "lobby105_105010": "엑스트라 식보",
+        "lobby105_105999": "Game is not open"
+    },
+    "vi": {
+        "lobby105_105001": "Roulette",
+        "lobby105_105002": "Sic Bo",
+        "lobby105_105003": "Dragon Tiger",
+        "lobby105_105004": "Baccarat",
+        "lobby105_105005": "Baccarat Insurance",
+        "lobby105_105006": "Red Blue Duel",
+        "lobby105_105007": "Thai Hi Lo",
+        "lobby105_105008": "Bầu Cua Thái",
+        "lobby105_105009": "Extra Andar Bahar",
+        "lobby105_105010": "Extra Tài xỉu",
+        "lobby105_105999": "Game is not open"
+    },
+    "th": {
+        "lobby105_105001": "Roulette",
+        "lobby105_105002": "Sic Bo",
+        "lobby105_105003": "Dragon Tiger",
+        "lobby105_105004": "Baccarat",
+        "lobby105_105005": "Baccarat Insurance",
+        "lobby105_105006": "Red Blue Duel",
+        "lobby105_105007": "Thai Hi Lo",
+        "lobby105_105008": "Thai Fish Prawn Crab",
+        "lobby105_105009": "Extra Andar Bahar",
+        "lobby105_105010": "Extra Sicbo",
+        "lobby105_105999": "Game is not open"
+    }
+}
+

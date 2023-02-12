@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "cancel": "取消",
+        "confirm": "確定"
+    },
+    "zh-cn": {
+        "cancel": "取消",
+        "confirm": "确定"
+    },
+    "en": {
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+    },
+    "ja": {
+        "cancel": "キャンセル",
+        "confirm": "確定"
+    },
+    "ko": {
+        "cancel": "취소",
+        "confirm": "확인"
+    },
+    "vi": {
+        "cancel": "Hủy",
+        "confirm": "Xác nhận"
+    },
+    "th": {
+        "cancel": "ยกเลิก",
+        "confirm": "ยืนยัน"
+    }
+}
+

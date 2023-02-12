@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "example_info_1": "API網址規則：https:\/\/廳主端網址\/external\/路由，以呼叫Token API為例：https:\/\/{domain_name}\/external\/user\/token",
+        "example_info_2": "API認證方式：呼叫平台API時Header需帶入Token參數，Token參數時效為24hrs，超時請重新取得",
+        "post_example": "Post範例",
+        "get_token_for_example": "以取得Token舉例",
+        "response_is_json": "回傳格式為JSON",
+        "get_example": "Get範例",
+        "get_gametype_for_example": "以取得gametype舉例",
+        "use_token": "代入取得的Token",
+        "request_query_string_help": "以Query string方式附加在URL結尾",
+        "get_commission_for_example": "以遊戲返水群組舉例(\/game\/{lobby}\/commission\/group)",
+        "url_parameter_help": "在路由上以花括號包住的為變數，以取代方式帶入網址"
+    },
+    "zh-cn": {
+        "example_info_1": "API网址规则：https:\/\/厅主端网址\/external\/路由，以呼叫Token API为例：https:\/\/{domain_name}\/external\/user\/token",
+        "example_info_2": "API认证方式：呼叫平台API时Header需带入Token参数，Token参数时效为24hrs，超时请重新取得",
+        "post_example": "Post范例",
+        "get_token_for_example": "以取得Token举例",
+        "response_is_json": "回传格式为JSON",
+        "get_example": "Get范例",
+        "get_gametype_for_example": "以取得gametype举例",
+        "use_token": "代入取得的Token",
+        "request_query_string_help": "以Query string方式附加在URL结尾",
+        "get_commission_for_example": "以遊戏返水群组举例(\/game\/{lobby}\/commission\/group)",
+        "url_parameter_help": "在路由上以花括号包住的为变数，以取代方式带入网址"
+    },
+    "en": {
+        "example_info_1": "API URL rule: https:\/\/Back office URL\/external\/routing. Call Token API as an example: https:\/\/{domain_name}\/external\/user\/token",
+        "example_info_2": "API认证方式：呼叫平台API时Header需带入Token参数，Token参数时效为24hrs，超时请重新取得",
+        "post_example": "Post Example",
+        "get_token_for_example": "How to get Token",
+        "response_is_json": "Response format is JSON",
+        "get_example": "Get Example",
+        "get_gametype_for_example": "How to get gametype",
+        "use_token": "Enter the Token",
+        "request_query_string_help": "Append query string to the end of URL",
+        "get_commission_for_example": "Take the game rebate group as an example (\/game\/{lobby}\/commission\/group)",
+        "url_parameter_help": "Variables are in the curly braces on the route. Bring in the URL by substitution."
+    },
+    "ja": {
+        "example_info_1": "API URL rule: https:\/\/Back office URL\/external\/routing. Call Token API as an example: https:\/\/{domain_name}\/external\/user\/token",
+        "example_info_2": "API认证方式：呼叫平台API时Header需带入Token参数，Token参数时效为24hrs，超时请重新取得",
+        "post_example": "Post Example",
+        "get_token_for_example": "How to get Token",
+        "response_is_json": "Response format is JSON",
+        "get_example": "Get Example",
+        "get_gametype_for_example": "How to get gametype",
+        "use_token": "Enter the Token",
+        "request_query_string_help": "Append query string to the end of URL",
+        "get_commission_for_example": "Take the game rebate group as an example (\/game\/{lobby}\/commission\/group)",
+        "url_parameter_help": "Variables are in the curly braces on the route. Bring in the URL by substitution."
+    },
+    "ko": {
+        "example_info_1": "API 사이트 주소 규칙：https:\/\/ 홀 오너 페이지 사이트 주소 \/ external \/ 라우팅，Token API를 호출하는 범례：https:\/\/{domain_name}\/external\/user\/token",
+        "example_info_2": "API认证方式：呼叫平台API时Header需带入Token参数，Token参数时效为24hrs，超时请重新取得",
+        "post_example": "Post 범례",
+        "get_token_for_example": "Token 취득을 예로 들자면",
+        "response_is_json": "리턴 형식은 JSON",
+        "get_example": "Get 범례",
+        "get_gametype_for_example": "gametype 취득을 예로 들자면",
+        "use_token": "취득된 Token을 대입하기",
+        "request_query_string_help": "Query string 방식으로 URL 끝에 첨부하기",
+        "get_commission_for_example": "게임 백롤링 그룹으로 예를 들면 (\/game\/{lobby}\/commission\/group)",
+        "url_parameter_help": "라우팅에 중괄호로 표시한 것은 변수이며 대치 방식으로<\/br>로 사이트 주소를 대입합니다."
+    },
+    "vi": {
+        "example_info_1": "API quy tắc link: https:\/\/ trang web chính của chủ nhà \/ external \/ định tuyến<\/br>Dùng gọi Token API ví dụ: https:\/\/{domain_name}\/external\/user\/token",
+        "example_info_2": "API认证方式：呼叫平台API时Header需带入Token参数，Token参数时效为24hrs，超时请重新取得",
+        "post_example": "Post ví dụ",
+        "get_token_for_example": "Nhận được Token ví dụ",
+        "response_is_json": "Định dạng trả về là JSON",
+        "get_example": "Get ví dụ",
+        "get_gametype_for_example": "Nhận được gametype ví dụ",
+        "use_token": "Nhập vào nhận được Token",
+        "request_query_string_help": "Dùng phương thức Query string thêm vào đuôi URL",
+        "get_commission_for_example": "Ví dụ hoàn trả của trò chơi (\/game\/{lobby}\/commission\/group)",
+        "url_parameter_help": "Biến số trong dấu { }, link được đưa vào bằng cách thay thế"
+    },
+    "th": {
+        "example_info_1": "กติกาการตั้ง API：https:\/\/ เว็บห้องโถง \/ external \/ ยูอาร์เเอล ใช้ตัวอย่างการเปิด Token API：https:\/\/{domain_name}\/external\/user\/token",
+        "example_info_2": "API认证方式：呼叫平台API时Header需带入Token参数，Token参数时效为24hrs，超时请重新取得",
+        "post_example": "ตัวอย่างPost",
+        "get_token_for_example": "ยกตัวอย่างการรับ Token",
+        "response_is_json": "รูปเเบบส่งกลับเป็นJSON",
+        "get_example": "ตัวอย่าง Get",
+        "get_gametype_for_example": "ยกตัวอย่างการรับ gametype",
+        "use_token": "ป้อนTokenที่ได้รับ",
+        "request_query_string_help": "ใช้วิธีQuery stringเพิ่มเข้าไปที่ท้ายURL",
+        "get_commission_for_example": "ยกตัวอย่างจากกลุ่มค่าคอมในเกม(\/game\/{lobby}\/commission\/group)",
+        "url_parameter_help": "ใช้เครื่องหมายวงเล็กในการตั้งค่าตัวเเปรในรูทติ้ง เพื่อเเทนที่ด้วยลิ้งค์เว็บ"
+    }
+}
+

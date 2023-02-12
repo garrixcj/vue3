@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "username_search": "帳號查詢",
+        "domain_push_center": "廳主端推播中心"
+    },
+    "zh-cn": {
+        "username_search": "帐号查询",
+        "domain_push_center": "厅主端推播中心"
+    },
+    "en": {
+        "username_search": "Account search",
+        "domain_push_center": "Owner Site Push Notification Center"
+    },
+    "ja": {
+        "username_search": "アカウント検索",
+        "domain_push_center": "Owner Site Push Notification Center"
+    },
+    "ko": {
+        "username_search": "아이디 조회",
+        "domain_push_center": "홀 관리자의 알림 센터"
+    },
+    "vi": {
+        "username_search": "Tìm kiếm tài khoản",
+        "domain_push_center": "Trung tâm thông báo đẩy trang quản lý"
+    },
+    "th": {
+        "username_search": "ค้าหายูสเซอร์",
+        "domain_push_center": "Owner Site Push Notification Center"
+    }
+}
+

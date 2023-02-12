@@ -1,0 +1,24 @@
+{
+    "zh-tw": {
+        "input_locked_reason_10": "輸入錯誤「短信驗證碼」，達20次"
+    },
+    "zh-cn": {
+        "input_locked_reason_10": "输入错误「短信验证码」，达20次"
+    },
+    "en": {
+        "input_locked_reason_10": "输入错误「短信验证码」，达20次"
+    },
+    "ja": {
+        "input_locked_reason_10": "输入错误「短信验证码」，达20次"
+    },
+    "ko": {
+        "input_locked_reason_10": "输入错误「短信验证码」，达20次"
+    },
+    "vi": {
+        "input_locked_reason_10": "输入错误「短信验证码」，达20次"
+    },
+    "th": {
+        "input_locked_reason_10": "输入错误「短信验证码」，达20次"
+    }
+}
+

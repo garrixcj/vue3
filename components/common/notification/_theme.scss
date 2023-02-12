@@ -1,0 +1,14 @@
+// 客制icon
+@mixin custom-notification($icon-code: '', $customClass: 'custom-icon') {
+  :global(.#{$customClass} .el-icon:not(.el-notification__closeBtn)::before) {
+    font-family: 'Material Design Icons';
+    font-style: normal;
+    font-weight: normal;
+    font-stretch: 24px/1;
+    content: $icon-code;
+    @content;
+  }
+  :global(.#{$customClass} .el-icon default-icon) {
+    display: none;
+  }
+}

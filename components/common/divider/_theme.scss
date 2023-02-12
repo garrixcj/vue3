@@ -1,0 +1,47 @@
+// 對水平線調整上下間距
+@mixin divider-margin($top: 15px, $bottom: 15px) {
+  .el-divider--horizontal {
+    margin-top: $top;
+    margin-bottom: $bottom;
+  }
+}
+// 對垂直線調整左右間距
+@mixin divider-margin-vertical($left: 10px, $right: 10px) {
+  .el-divider--vertical {
+    margin-right: $right;
+    margin-left: $left;
+  }
+}
+// 對文字內容提供背景客製
+@mixin divider-text($bg: $background-5, $text: $text-1) {
+  .el-divider__text {
+    color: $text;
+    background-color: $bg;
+    @content;
+  }
+}
+// 對垂直線高度調整(根據文字)
+@mixin divider-height($size: inherit, $root: false) {
+  @if $root {
+    &.el-divider--vertical {
+      font-size: $size;
+    }
+  } @else {
+    .el-divider--vertical {
+      font-size: $size;
+    }
+  }
+}
+
+// 對垂直線高度調整(根據文字)
+@mixin divider-width($width: 2px, $root: false) {
+  @if $root {
+    &.el-divider--vertical {
+      border-width: $width;
+    }
+  } @else {
+    .el-divider--vertical {
+      border-width: $width;
+    }
+  }
+}

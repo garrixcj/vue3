@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "no_result": "查無資料",
+        "success": "成功",
+        "stop_bet": "停押",
+        "all_stop_bet": "全部停押",
+        "upper_stop_bet": "上層停押",
+        "maintenance": "維護中",
+        "stop_bet_set": "停押設定",
+        "nolobby_to_set": "當前無遊戲平台可進行設定"
+    },
+    "zh-cn": {
+        "no_result": "查无资料",
+        "success": "成功",
+        "stop_bet": "停押",
+        "all_stop_bet": "全部停押",
+        "upper_stop_bet": "上层停押",
+        "maintenance": "维护中",
+        "stop_bet_set": "停押设定",
+        "nolobby_to_set": "当前无游戏平台可进行设定"
+    },
+    "en": {
+        "no_result": "Data no found",
+        "success": "Success",
+        "stop_bet": "Stop Bet",
+        "all_stop_bet": "All Stop bet",
+        "upper_stop_bet": "Upper Level Stop Bet",
+        "maintenance": "The system is under maintenance",
+        "stop_bet_set": "Stop Bet",
+        "nolobby_to_set": "No game lobby can be set"
+    },
+    "ja": {
+        "no_result": "資料がありません",
+        "success": "成功",
+        "stop_bet": "ベット中止",
+        "all_stop_bet": "All Stop bet",
+        "upper_stop_bet": "Upper Level Stop Bet",
+        "maintenance": "The system is under maintenance",
+        "stop_bet_set": "ベット中止設定",
+        "nolobby_to_set": "No game lobby can be set"
+    },
+    "ko": {
+        "no_result": "해당 자료가 없습니다.",
+        "success": "성공",
+        "stop_bet": "停押",
+        "all_stop_bet": "All Stop bet",
+        "upper_stop_bet": "Upper Level Stop Bet",
+        "maintenance": "The system is under maintenance",
+        "stop_bet_set": "停押設定",
+        "nolobby_to_set": "No game lobby can be set"
+    },
+    "vi": {
+        "no_result": "Không tìm thấy thông tin",
+        "success": "Thành công",
+        "stop_bet": "Stop Bet",
+        "all_stop_bet": "All Stop bet",
+        "upper_stop_bet": "Upper Level Stop Bet",
+        "maintenance": "The system is under maintenance",
+        "stop_bet_set": "Cài đặt dừng đặt cược",
+        "nolobby_to_set": "No game lobby can be set"
+    },
+    "th": {
+        "no_result": "ไม่พบข้อมูล",
+        "success": "สำเร็จ",
+        "stop_bet": "Stop Bet",
+        "all_stop_bet": "All Stop bet",
+        "upper_stop_bet": "Upper Level Stop Bet",
+        "maintenance": "The system is under maintenance",
+        "stop_bet_set": "ตั้งค่าการหยุดเดิมพัน",
+        "nolobby_to_set": "No game lobby can be set"
+    }
+}
+

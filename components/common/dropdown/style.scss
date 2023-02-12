@@ -1,0 +1,37 @@
+@mixin divided-line {
+  &--divided {
+    margin: 5px 0;
+  }
+}
+
+.el-dropdown {
+  &__popper {
+    border-radius: 4px;
+  }
+  &-menu {
+    padding: 6px 0;
+    border-color: $background-4;
+    &__item {
+      padding: 0 15px;
+      font-size: 14px;
+      line-height: 30px;
+      color: $text-1;
+      @include divided-line;
+    }
+    &--default &__item {
+      padding: 0 15px;
+      line-height: 30px;
+    }
+    &--large &__item {
+      padding: 0 17px;
+      line-height: 30px;
+      @include divided-line;
+    }
+    &--small &__item {
+      padding: 0 10px;
+      font-size: 12px;
+      line-height: 28px;
+      @include divided-line;
+    }
+  }
+}

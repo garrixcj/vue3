@@ -1,0 +1,6 @@
+// 去掉 tab 的底線
+@mixin tab-no-line {
+  :deep(.el-tabs__nav-wrap::after) {
+    height: 0;
+  }
+}

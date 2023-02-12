@@ -1,0 +1,29 @@
+.el-dialog {
+  &__title {
+    font-size: 16px;
+    color: $text-3;
+  }
+  &__header {
+    padding: 20px 15px 10px;
+    // 綠色大標題預設為 18px，常用搭配 divider 需要配置
+    @include divider-height(18px);
+    @include divider-width(2px);
+  }
+  &__body {
+    padding: 10px 15px;
+    .el-input__inner {
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+  &__footer {
+    padding: 10px 15px 20px;
+  }
+  &__headerbtn &__close {
+    @include svg-to-mdi('F0156', true);
+    color: $text-3;
+  }
+  &__headerbtn:hover &__close {
+    color: $text-2;
+  }
+}

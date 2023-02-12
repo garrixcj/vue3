@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "select_all": "全選",
+        "modify": "修改",
+        "view": "檢視"
+    },
+    "zh-cn": {
+        "select_all": "全选",
+        "modify": "修改",
+        "view": "检视"
+    },
+    "en": {
+        "select_all": "Select All",
+        "modify": "Edit",
+        "view": "View"
+    },
+    "ja": {
+        "select_all": "一括選択",
+        "modify": "修正",
+        "view": "閲覧"
+    },
+    "ko": {
+        "select_all": "전체선택",
+        "modify": "수정하기",
+        "view": "조회"
+    },
+    "vi": {
+        "select_all": "Lựa chọn tất cả",
+        "modify": "sửa",
+        "view": "Xem"
+    },
+    "th": {
+        "select_all": "เลือกทั้งหมด",
+        "modify": "แก้ไข",
+        "view": "ดู"
+    }
+}
+

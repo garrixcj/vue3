@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "account": "帳號",
+        "all": "全部",
+        "status": "狀態",
+        "alias": "名稱",
+        "enable": "啟用",
+        "disable": "停用",
+        "search": "搜尋",
+        "start_search": "開始搜尋吧"
+    },
+    "zh-cn": {
+        "account": "帐号",
+        "all": "全部",
+        "status": "状态",
+        "alias": "名称",
+        "enable": "启用",
+        "disable": "停用",
+        "search": "搜寻",
+        "start_search": "开始搜寻吧"
+    },
+    "en": {
+        "account": "Account",
+        "all": "All",
+        "status": "Status",
+        "alias": "Name",
+        "enable": "Enable",
+        "disable": "Disable",
+        "search": "search",
+        "start_search": "Start to search."
+    },
+    "ja": {
+        "account": "アカウント",
+        "all": "全部",
+        "status": "状態",
+        "alias": "名称",
+        "enable": "有効",
+        "disable": "無効",
+        "search": "検索",
+        "start_search": "今すぐ検索"
+    },
+    "ko": {
+        "account": "아이디",
+        "all": "전체",
+        "status": "상태",
+        "alias": "명칭",
+        "enable": "사용",
+        "disable": "정지",
+        "search": "검색하기",
+        "start_search": "검색 시작"
+    },
+    "vi": {
+        "account": "Tài khoản",
+        "all": "Toàn bộ",
+        "status": "Trạng thái",
+        "alias": "Tên gọi",
+        "enable": "Sử dụng",
+        "disable": "Ngừng sử dụng",
+        "search": "Tìm kiếm",
+        "start_search": "Bắt đầu tìm kiếm"
+    },
+    "th": {
+        "account": "ยูสเซอร์เนม",
+        "all": "ทั้งหมด",
+        "status": "สถานะ",
+        "alias": "ชื่อ",
+        "enable": "เปิดใช้งาน",
+        "disable": "ปิดใช้งาน",
+        "search": "ค้นหา",
+        "start_search": "เริ่มค้นหากันเถอะ"
+    }
+}
+

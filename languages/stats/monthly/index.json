@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "change_password": "修改密碼",
+        "operate_record": "操作紀錄",
+        "period_management": "期數管理",
+        "accounting_search": "帳務查詢",
+        "accounts_statistics": "帳務統計",
+        "conditions_set": "條件設定",
+        "domain_condition_set": "廳主條件設定",
+        "new_monthly_reconciliation_system": "新月結對帳系統"
+    },
+    "zh-cn": {
+        "change_password": "修改密码",
+        "operate_record": "操作纪录",
+        "period_management": "期数管理",
+        "accounting_search": "帐务查询",
+        "accounts_statistics": "帐务统计",
+        "conditions_set": "条件设定",
+        "domain_condition_set": "厅主条件设定",
+        "new_monthly_reconciliation_system": "新月结对帐系统"
+    },
+    "en": {
+        "change_password": "Change Password",
+        "operate_record": "Operating Record",
+        "period_management": "Session management",
+        "accounting_search": "Account Inquiry",
+        "accounts_statistics": "Accounting Statistics",
+        "conditions_set": "Condition Settings",
+        "domain_condition_set": "Owner Condition Settings",
+        "new_monthly_reconciliation_system": "Monthly Reconciliation System"
+    },
+    "ja": {
+        "change_password": "パスワードの変更",
+        "operate_record": "操作履歴",
+        "period_management": "回数を管理します",
+        "accounting_search": "会計検索",
+        "accounts_statistics": "Accounting Statistics",
+        "conditions_set": "条件設定",
+        "domain_condition_set": "Owner Condition Settings",
+        "new_monthly_reconciliation_system": "Monthly Reconciliation System"
+    },
+    "ko": {
+        "change_password": "비밀번호 수정하기",
+        "operate_record": "조작 기록",
+        "period_management": "기수 관리",
+        "accounting_search": "계정 조회",
+        "accounts_statistics": "거래 통계",
+        "conditions_set": "조건 설정",
+        "domain_condition_set": "시스템 관리자의 조건 설정",
+        "new_monthly_reconciliation_system": "(새)매월 정산 시스템"
+    },
+    "vi": {
+        "change_password": "Sửa mật khẩu",
+        "operate_record": "Ghi chép thao tác",
+        "period_management": "Quản lý số kỳ",
+        "accounting_search": "Yêu cầu tài khoản",
+        "accounts_statistics": "Thống kê kế toán",
+        "conditions_set": "Điều kiện thiết lập",
+        "domain_condition_set": "Thiết lập điều kiện trang quản lý",
+        "new_monthly_reconciliation_system": "Hệ thống đối chiếu sổ sách tháng mới"
+    },
+    "th": {
+        "change_password": "แก้ไขรหัสผ่าน",
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "period_management": "เลือกงวดที่",
+        "accounting_search": "ตรวจสอบบัญชี",
+        "accounts_statistics": "Accounting Statistics",
+        "conditions_set": "Condition Settings",
+        "domain_condition_set": "Owner Condition Settings",
+        "new_monthly_reconciliation_system": "Monthly Reconciliation System"
+    }
+}
+

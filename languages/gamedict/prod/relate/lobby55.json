@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "lobby55_market_Live": "滾球",
+        "lobby55_period_1H": "上半場",
+        "lobby55_period_2H": "下半場"
+    },
+    "zh-cn": {
+        "lobby55_market_Live": "滚球",
+        "lobby55_period_1H": "上半场",
+        "lobby55_period_2H": "下半场"
+    },
+    "en": {
+        "lobby55_market_Live": "Live",
+        "lobby55_period_1H": "1H",
+        "lobby55_period_2H": "2H"
+    },
+    "ja": {
+        "lobby55_market_Live": "Live",
+        "lobby55_period_1H": "前半戦",
+        "lobby55_period_2H": "後半戦"
+    },
+    "ko": {
+        "lobby55_market_Live": "Live",
+        "lobby55_period_1H": "전반전",
+        "lobby55_period_2H": "후반전"
+    },
+    "vi": {
+        "lobby55_market_Live": "Live",
+        "lobby55_period_1H": "1H",
+        "lobby55_period_2H": "2H"
+    },
+    "th": {
+        "lobby55_market_Live": "Live",
+        "lobby55_period_1H": "ครึ่งแรก",
+        "lobby55_period_2H": "ครึ่งหลัง"
+    }
+}
+

@@ -1,0 +1,13 @@
+@mixin radio-theme($color, $bg-color: #fff) {
+  :deep() .el-radio__input:not(.is-disabled) {
+    &.is-checked {
+      .el-radio__inner {
+        background-color: $bg-color;
+        border-color: $color;
+        &::after {
+          background-color: $color;
+        }
+      }
+    }
+  }
+}

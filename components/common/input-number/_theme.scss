@@ -1,0 +1,13 @@
+@mixin color-theme($bg, $color: $white) {
+  .el-input-number {
+    &__increase,
+    &__decrease {
+      color: $color;
+      background-color: $bg;
+      border-color: $bg;
+      &:hover {
+        color: $color;
+      }
+    }
+  }
+}

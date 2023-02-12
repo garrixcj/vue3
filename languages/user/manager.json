@@ -1,0 +1,45 @@
+{
+    "zh-tw": {
+        "account_management": "帳號管理",
+        "permission_management": "權限管理",
+        "manager_subaccount": "子帳號\/管理者帳號",
+        "login_verification_management": "登入驗證管理"
+    },
+    "zh-cn": {
+        "account_management": "帐号管理",
+        "permission_management": "权限管理",
+        "manager_subaccount": "子帐号\/管理者帐号",
+        "login_verification_management": "登入验证管理"
+    },
+    "en": {
+        "account_management": "Account Management",
+        "permission_management": "Authority Management",
+        "manager_subaccount": "Sub-Account\/Manager Account",
+        "login_verification_management": "Login Verification Management"
+    },
+    "ja": {
+        "account_management": "アカウント管理",
+        "permission_management": "権限管理",
+        "manager_subaccount": "サブアカ\/管理アカ",
+        "login_verification_management": "Login Verification Management"
+    },
+    "ko": {
+        "account_management": "계정관리",
+        "permission_management": "권한 관리",
+        "manager_subaccount": "서브 아이디 \/ 관리자 아이디",
+        "login_verification_management": "로그인 인증 관리"
+    },
+    "vi": {
+        "account_management": "Tài khoản Quản lý",
+        "permission_management": "Quyền hạn quản lí",
+        "manager_subaccount": "Tài khoản con\/ Tài khoản quản trị viên",
+        "login_verification_management": "Quản lý xác thực đăng nhập"
+    },
+    "th": {
+        "account_management": "ควบคุมบัญชี",
+        "permission_management": "จัดการขอบข่ายอำนาจ",
+        "manager_subaccount": "ข้อมูลลูกทีม \/ บัญชีผู้จัดการ",
+        "login_verification_management": "ล็อกอินเพื่อจัดการยืนยัน"
+    }
+}
+

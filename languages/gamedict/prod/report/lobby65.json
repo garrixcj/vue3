@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "report_lobby65_65001": "混合過關",
+        "report_lobby65_65002": "足球",
+        "report_lobby65_65003": "籃球\/美足",
+        "report_lobby65_65004": "網球",
+        "report_lobby65_65005": "棒球",
+        "report_lobby65_65006": "其他",
+        "report_lobby65_65007": "虛擬足球",
+        "report_lobby65_65008": "斯諾克 \/ 台球",
+        "report_lobby65_65009": "跨球類",
+        "report_lobby65_65010": "冠軍",
+        "report_lobby65_65999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby65_65001": "混合过关",
+        "report_lobby65_65002": "足球",
+        "report_lobby65_65003": "篮球\/美足",
+        "report_lobby65_65004": "网球",
+        "report_lobby65_65005": "棒球",
+        "report_lobby65_65006": "其他",
+        "report_lobby65_65007": "虚拟足球",
+        "report_lobby65_65008": "斯诺克 \/ 台球",
+        "report_lobby65_65009": "跨球类",
+        "report_lobby65_65010": "冠军",
+        "report_lobby65_65999": "未开放游戏"
+    },
+    "en": {
+        "report_lobby65_65001": "Combo",
+        "report_lobby65_65002": "Soccer",
+        "report_lobby65_65003": "Basketball\/Football",
+        "report_lobby65_65004": "Tennis",
+        "report_lobby65_65005": "Baseball",
+        "report_lobby65_65006": "Other",
+        "report_lobby65_65007": "Virtual Football",
+        "report_lobby65_65008": "Snooker",
+        "report_lobby65_65009": "Mix Parlay",
+        "report_lobby65_65010": "Outrights",
+        "report_lobby65_65999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby65_65001": "Combo",
+        "report_lobby65_65002": "Soccer",
+        "report_lobby65_65003": "Basketball\/Football",
+        "report_lobby65_65004": "Tennis",
+        "report_lobby65_65005": "Baseball",
+        "report_lobby65_65006": "Other",
+        "report_lobby65_65007": "Virtual Football",
+        "report_lobby65_65008": "Snooker",
+        "report_lobby65_65009": "Mix Parlay",
+        "report_lobby65_65010": "Outrights",
+        "report_lobby65_65999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby65_65001": "Combo",
+        "report_lobby65_65002": "Soccer",
+        "report_lobby65_65003": "Basketball\/Football",
+        "report_lobby65_65004": "Tennis",
+        "report_lobby65_65005": "Baseball",
+        "report_lobby65_65006": "Other",
+        "report_lobby65_65007": "Virtual Football",
+        "report_lobby65_65008": "스누커\/ 포켓볼",
+        "report_lobby65_65009": "Mix Parlay",
+        "report_lobby65_65010": "Outrights",
+        "report_lobby65_65999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby65_65001": "Combo",
+        "report_lobby65_65002": "Soccer",
+        "report_lobby65_65003": "Basketball\/Football",
+        "report_lobby65_65004": "Tennis",
+        "report_lobby65_65005": "Baseball",
+        "report_lobby65_65006": "Other",
+        "report_lobby65_65007": "Virtual Football",
+        "report_lobby65_65008": "Bi-Da",
+        "report_lobby65_65009": "Mix Parlay",
+        "report_lobby65_65010": "Outrights",
+        "report_lobby65_65999": "Game is not open"
+    },
+    "th": {
+        "report_lobby65_65001": "Combo",
+        "report_lobby65_65002": "Soccer",
+        "report_lobby65_65003": "Basketball\/Football",
+        "report_lobby65_65004": "Tennis",
+        "report_lobby65_65005": "Baseball",
+        "report_lobby65_65006": "Other",
+        "report_lobby65_65007": "Virtual Football",
+        "report_lobby65_65008": "Snooker",
+        "report_lobby65_65009": "Mix Parlay",
+        "report_lobby65_65010": "Outrights",
+        "report_lobby65_65999": "Game is not open"
+    }
+}
+

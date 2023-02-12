@@ -1,0 +1,15 @@
+@use '../../style/scss/variables' as RdVar;
+
+$checkbox: (
+  'font-weight': 400,
+  'text-color': RdVar.$text-3,
+  'disabled-border-color': RdVar.$background-3,
+  'disabled-input-fill': RdVar.$background-3,
+  'disabled-checked-input-fill': RdVar.$background-3,
+  'disabled-checked-input-border-color': RdVar.$background-3,
+  'disabled-checked-icon-color': #a3afb7,
+  'checked-text-color': RdVar.$text-1,
+  'checked-input-border-color': RdVar.$success,
+  'checked-bg-color': RdVar.$success,
+  'input-border-color-hover': RdVar.$success,
+);

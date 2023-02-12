@@ -1,0 +1,87 @@
+{
+    "zh-tw": {
+        "bet_amount": "投注額",
+        "last_week": "上週",
+        "this_month": "本月",
+        "payoff": "損益",
+        "total_wagers": "總投注",
+        "report_link": "前往報表",
+        "7days": "近7天",
+        "last_month": "上月",
+        "single_amount": "單量",
+        "commissionable_2": "實際投注"
+    },
+    "zh-cn": {
+        "bet_amount": "投注额",
+        "last_week": "上周",
+        "this_month": "本月",
+        "payoff": "损益",
+        "total_wagers": "总投注",
+        "report_link": "前往报表",
+        "7days": "近7天",
+        "last_month": "上月",
+        "single_amount": "单量",
+        "commissionable_2": "实际投注"
+    },
+    "en": {
+        "bet_amount": "Betting Amount",
+        "last_week": "Last week",
+        "this_month": "This Month",
+        "payoff": "Win and loss",
+        "total_wagers": "Total Wagers",
+        "report_link": "To view the report",
+        "7days": "7days ago",
+        "last_month": "Last Month",
+        "single_amount": "Order Quantity",
+        "commissionable_2": "Actual Turnover"
+    },
+    "ja": {
+        "bet_amount": "ベット額",
+        "last_week": "先週",
+        "this_month": "本月",
+        "payoff": "Win and loss",
+        "total_wagers": "Total Wagers",
+        "report_link": "To view the report",
+        "7days": "7days ago",
+        "last_month": "Last Month",
+        "single_amount": "ベット数",
+        "commissionable_2": "実際ベット"
+    },
+    "ko": {
+        "bet_amount": "배팅금액",
+        "last_week": "지난 주",
+        "this_month": "이번 달",
+        "payoff": "손익매출",
+        "total_wagers": "Total Wagers",
+        "report_link": "To view the report",
+        "7days": "7days ago",
+        "last_month": "Last Month",
+        "single_amount": "배팅수량",
+        "commissionable_2": "실제 배팅금액"
+    },
+    "vi": {
+        "bet_amount": "Mức cược",
+        "last_week": "Tuần trước",
+        "this_month": "Tháng này",
+        "payoff": "Lãi lỗ",
+        "total_wagers": "Total Wagers",
+        "report_link": "To view the report",
+        "7days": "7days ago",
+        "last_month": "Last Month",
+        "single_amount": "Lượng đơn",
+        "commissionable_2": "Đặt cược thực tế"
+    },
+    "th": {
+        "bet_amount": "ยอดเดิมพัน",
+        "last_week": "อาทิตย์ที่แล้ว",
+        "this_month": "เดือนนี้",
+        "payoff": "ยอดได้เสีย",
+        "total_wagers": "Total Wagers",
+        "report_link": "To view the report",
+        "7days": "7days ago",
+        "last_month": "Last Month",
+        "single_amount": "จำนวนบิล",
+        "commissionable_2": "ยอดเดิมพันสะสม"
+    }
+}
+

@@ -1,0 +1,23 @@
+.el-badge__content {
+  border: 0;
+}
+sup.el-badge__content {
+  top: unset;
+}
+
+$types: (
+  'danger': $danger,
+  'warning': $warning,
+  'success': $success,
+  'primary': $primary,
+  'info': $info,
+);
+
+// 使用 .convert 將變成白底 badge
+.el-badge.convert {
+  @each $type, $color in $types {
+    .el-badge__content--#{$type} {
+      @include badge-theme-convert($color, false);
+    }
+  }
+}

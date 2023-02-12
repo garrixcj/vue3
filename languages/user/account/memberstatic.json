@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "enable": "啟用",
+        "disable": "停用",
+        "freeze": "凍結",
+        "bankrupt": "停權",
+        "online": "在線",
+        "member_total": "會員總數",
+        "not_login_three": "3天未上線",
+        "not_login_week": "一週未上線",
+        "not_login_month": "一個月未上線",
+        "not_login_over_month": "超過一個月未上線",
+        "last_update": "最後更新時間"
+    },
+    "zh-cn": {
+        "enable": "启用",
+        "disable": "停用",
+        "freeze": "冻结",
+        "bankrupt": "停权",
+        "online": "在线",
+        "member_total": "会员总数",
+        "not_login_three": "3天未上线",
+        "not_login_week": "一周未上线",
+        "not_login_month": "一个月未上线",
+        "not_login_over_month": "超过一个月未上线",
+        "last_update": "最后更新时间"
+    },
+    "en": {
+        "enable": "Enable",
+        "disable": "Disable",
+        "freeze": "Suspend",
+        "bankrupt": "Suspension",
+        "online": "Online",
+        "member_total": "Total number of members",
+        "not_login_three": "No login for 3 days",
+        "not_login_week": "Not logged in for a week",
+        "not_login_month": "No login in a month",
+        "not_login_over_month": "No login for more than one month",
+        "last_update": "last update time"
+    },
+    "ja": {
+        "enable": "有効",
+        "disable": "無効",
+        "freeze": "凍結",
+        "bankrupt": "権利停止",
+        "online": "Online",
+        "member_total": "Total number of members",
+        "not_login_three": "No login for 3 days",
+        "not_login_week": "Not logged in for a week",
+        "not_login_month": "No login in a month",
+        "not_login_over_month": "No login for more than one month",
+        "last_update": "最後の更新時間"
+    },
+    "ko": {
+        "enable": "사용",
+        "disable": "정지",
+        "freeze": "동결",
+        "bankrupt": "일시정지",
+        "online": "Online",
+        "member_total": "Total number of members",
+        "not_login_three": "No login for 3 days",
+        "not_login_week": "Not logged in for a week",
+        "not_login_month": "No login in a month",
+        "not_login_over_month": "No login for more than one month",
+        "last_update": "최종 업데이트 시간"
+    },
+    "vi": {
+        "enable": "Sử dụng",
+        "disable": "Ngừng sử dụng",
+        "freeze": "Đóng băng",
+        "bankrupt": "Giới hạn quyền",
+        "online": "Online",
+        "member_total": "Total number of members",
+        "not_login_three": "No login for 3 days",
+        "not_login_week": "Not logged in for a week",
+        "not_login_month": "No login in a month",
+        "not_login_over_month": "No login for more than one month",
+        "last_update": "Thời gian cập nhật cuối cùng"
+    },
+    "th": {
+        "enable": "เปิดใช้งาน",
+        "disable": "ปิดใช้งาน",
+        "freeze": "บล็อก",
+        "bankrupt": "ระงับ",
+        "online": "Online",
+        "member_total": "Total number of members",
+        "not_login_three": "No login for 3 days",
+        "not_login_week": "Not logged in for a week",
+        "not_login_month": "No login in a month",
+        "not_login_over_month": "No login for more than one month",
+        "last_update": "เวลาอัปเดทล่าสุด"
+    }
+}
+

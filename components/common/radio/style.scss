@@ -1,0 +1,21 @@
+.el-radio {
+  &__label {
+    padding-left: 5px;
+  }
+  &__inner::after {
+    width: 9px;
+    height: 9px;
+    background-color: $success;
+  }
+  &.el-radio--large,
+  &.el-radio--small {
+    .el-radio__inner {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  &.el-radio--default,
+  &.el-radio--small {
+    line-height: 20px;
+  }
+}

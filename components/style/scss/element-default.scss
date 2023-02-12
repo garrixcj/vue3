@@ -1,0 +1,52 @@
+@use '../../style/scss/color-cust' as Color;
+@use '../../common/tag/var' as Tag;
+@use '../../common/alert/var' as Alert;
+@use '../../common/button/var' as Button;
+@use '../../common/input/var' as Input;
+@use '../../common/popover/var' as Popover;
+@use '../../common/pagination/var' as Pagination;
+@use '../../common/checkbox/var' as Checkbox;
+@use '../../common/radio/var' as Radio;
+@use '../../common/table/var' as Table;
+@use '../../common/dropdown/var' as Dropdown;
+@use '../../common/form/var' as Form;
+
+@forward 'element-plus/theme-chalk/src/common/var' with (
+  $main: (
+    'padding': 0,
+  ),
+  $header: (
+    'padding': 0,
+    'height': 56px,
+  ),
+  $common-component-size: (
+    'large': 34px,
+    'default': 30px,
+    'small': 24px,
+  ),
+  $colors: Color.$colors,
+  $tag: Tag.$tag,
+  $alert: Alert.$alert,
+  $button: Button.$button,
+  $input: Input.$input,
+  $input-font-size: Input.$input-font-size,
+  $input-height: Input.$input-height,
+  $popover: Popover.$popover,
+  $pagination: Pagination.$pagination,
+  $checkbox: Checkbox.$checkbox,
+  $radio: Radio.$radio,
+  $radio-height: Radio.$radio-height,
+  $radio-checked: Radio.$radio-checked,
+  $radio-disabled: Radio.$radio-disabled,
+  $table: Table.$table,
+  $table-padding: Table.$table-padding,
+  $table-cell-padding: Table.$table-cell-padding,
+  $dropdown: Dropdown.$dropdown
+);
+
+@forward 'element-plus/theme-chalk/src/form' with (
+  $form-item-line-height: Form.$form-item-line-height,
+  $form-item-error-padding-top: Form.$form-item-error-padding-top
+);
+
+@use 'element-plus/theme-chalk/src/index.scss' as *;

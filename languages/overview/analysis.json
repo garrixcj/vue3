@@ -1,0 +1,87 @@
+{
+    "zh-tw": {
+        "all": "全部",
+        "hall": "廳主",
+        "overview": "營運總覽",
+        "data_dashboard": "數據儀錶板",
+        "member_status": "會員概況",
+        "game_report": "遊戲報表",
+        "game_chart": "遊戲圖表",
+        "members_structure": "會員結構",
+        "member_detail": "會員詳細資料",
+        "new_operations_analysis": "新營運分析圖"
+    },
+    "zh-cn": {
+        "all": "全部",
+        "hall": "厅主",
+        "overview": "营运总览",
+        "data_dashboard": "数据仪表板",
+        "member_status": "会员概况",
+        "game_report": "游戏报表",
+        "game_chart": "游戏图表",
+        "members_structure": "会员结构",
+        "member_detail": "会员详细资料",
+        "new_operations_analysis": "新营运分析图"
+    },
+    "en": {
+        "all": "All",
+        "hall": "Hall Owner",
+        "overview": "Operation Overview",
+        "data_dashboard": "Data Dashboard",
+        "member_status": "Members Status",
+        "game_report": "Games Report",
+        "game_chart": "Games Charts",
+        "members_structure": "Members Structure",
+        "member_detail": "Members Details",
+        "new_operations_analysis": "New operations analysis chart"
+    },
+    "ja": {
+        "all": "全部",
+        "hall": "オーナー",
+        "overview": "Operation Overview",
+        "data_dashboard": "Data Dashboard",
+        "member_status": "Members Status",
+        "game_report": "Games Report",
+        "game_chart": "Games Charts",
+        "members_structure": "Members Structure",
+        "member_detail": "Members Details",
+        "new_operations_analysis": "New operations analysis chart"
+    },
+    "ko": {
+        "all": "전체",
+        "hall": "홀 관리자",
+        "overview": "Operation Overview",
+        "data_dashboard": "Data Dashboard",
+        "member_status": "Members Status",
+        "game_report": "Games Report",
+        "game_chart": "Games Charts",
+        "members_structure": "Members Structure",
+        "member_detail": "Members Details",
+        "new_operations_analysis": "New operations analysis chart"
+    },
+    "vi": {
+        "all": "Toàn bộ",
+        "hall": "Công ty",
+        "overview": "Operation Overview",
+        "data_dashboard": "Data Dashboard",
+        "member_status": "Members Status",
+        "game_report": "Games Report",
+        "game_chart": "Games Charts",
+        "members_structure": "Members Structure",
+        "member_detail": "Members Details",
+        "new_operations_analysis": "New operations analysis chart"
+    },
+    "th": {
+        "all": "ทั้งหมด",
+        "hall": "ห้องผู้ควบคุม",
+        "overview": "Operation Overview",
+        "data_dashboard": "Data Dashboard",
+        "member_status": "Members Status",
+        "game_report": "Games Report",
+        "game_chart": "Games Charts",
+        "members_structure": "Members Structure",
+        "member_detail": "Members Details",
+        "new_operations_analysis": "New operations analysis chart"
+    }
+}
+

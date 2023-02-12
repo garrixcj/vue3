@@ -1,0 +1,65 @@
+# Update Project
+# 更新依賴專案
+.update_references:
+  stage: update
+  needs: []
+  only:
+    - master
+  variables:
+    UPDATE_PROJECT: '$CI_PROJECT_NAME'
+
+# titan
+update:references:titan:
+  extends: .update_references
+  trigger:
+    project: web/titan/titan-front-end
+    strategy: depend
+    branch: master
+
+# blueprint+
+update:references:blueprint-plus:
+  extends: .update_references
+  trigger:
+    project: web/services/blueprint-plus
+    strategy: depend
+    branch: master
+
+# bin-admin
+update:references:bin-admin:
+  extends: .update_references
+  trigger:
+    project: web/bin/ve_admin
+    strategy: depend
+    branch: master_pending
+
+# bin-agent
+update:references:bin-agent:
+  extends: .update_references
+  trigger:
+    project: web/bin/ve_agent
+    strategy: depend
+    branch: master_pending
+
+# bgp-admin
+update:references:bgp-admin:
+  extends: .update_references
+  trigger:
+    project: web/bgp/ve_admin
+    strategy: depend
+    branch: master_pending
+
+# bgp-agent
+update:references:bgp-agent:
+  extends: .update_references
+  trigger:
+    project: web/bgp/ve_agent
+    strategy: depend
+    branch: master_pending
+
+# sfc-playground
+update:references:sfc-playground:
+  extends: .update_references
+  trigger:
+    project: web/services/sfc-playground
+    strategy: depend
+    branch: master

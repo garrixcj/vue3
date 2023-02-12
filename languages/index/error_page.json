@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "667010029": "沒有開放此功能權限",
+        "unable_show_page": "無法顯示網頁",
+        "150010029": "帳號不存在",
+        "no_permission": "無此功能權限",
+        "page_not_found": "找不到網頁",
+        "maintenance_subtitle": "目前進行維護中，如有不便之處敬請見諒",
+        "maintenance_sec_subtitle": "預計於北京時間 {time} 完成",
+        "function_under_maintenance": "功能維護中",
+        "maintenance_new_sec_subtitle": "維護時間(北京時間)"
+    },
+    "zh-cn": {
+        "667010029": "没有开放此功能权限",
+        "unable_show_page": "无法显示网页",
+        "150010029": "帐号不存在",
+        "no_permission": "无此功能权限",
+        "page_not_found": "找不到网页",
+        "maintenance_subtitle": "目前进行维护中，如有不便之处敬请见谅",
+        "maintenance_sec_subtitle": "预计于北京时间 {time} 完成",
+        "function_under_maintenance": "功能维护中",
+        "maintenance_new_sec_subtitle": "维护时间(北京时间)"
+    },
+    "en": {
+        "667010029": "User permission not found",
+        "unable_show_page": "Unable to display the page",
+        "150010029": "The account ID does not exist.",
+        "no_permission": "Don’t have this function’s authority.",
+        "page_not_found": "Page not found",
+        "maintenance_subtitle": "Currently this is during the maintenance. We express sincere apologies for the inconvenience.",
+        "maintenance_sec_subtitle": "The maintenance will be completed at {time} (UTC+8).",
+        "function_under_maintenance": "Function Under Maintenance",
+        "maintenance_new_sec_subtitle": "Maintenance time(GMT+8)"
+    },
+    "ja": {
+        "667010029": "この機能の権限を開放していません。",
+        "unable_show_page": "Unable to display the page",
+        "150010029": "The account ID does not exist.",
+        "no_permission": "この機能に対する権限がありません",
+        "page_not_found": "Page not found",
+        "maintenance_subtitle": "Currently this is during the maintenance. We express sincere apologies for the inconvenience.",
+        "maintenance_sec_subtitle": "The maintenance will be completed at {time} (UTC+8).",
+        "function_under_maintenance": "Function Under Maintenance",
+        "maintenance_new_sec_subtitle": "Maintenance time(GMT+8)"
+    },
+    "ko": {
+        "667010029": "이 기능에 대한 권한이 없습니다",
+        "unable_show_page": "Unable to display the page",
+        "150010029": "존제하지 않은 아이디 입니다.",
+        "no_permission": "해당 기능에 대한 권한이 없음",
+        "page_not_found": "Page not found",
+        "maintenance_subtitle": "Currently this is during the maintenance. We express sincere apologies for the inconvenience.",
+        "maintenance_sec_subtitle": "The maintenance will be completed at {time} (UTC+8).",
+        "function_under_maintenance": "Function Under Maintenance",
+        "maintenance_new_sec_subtitle": "Maintenance time(GMT+8)"
+    },
+    "vi": {
+        "667010029": "Không thiết lập quyền sử dụng chức năng này",
+        "unable_show_page": "Unable to display the page",
+        "150010029": "Tài khoản không tồn tại",
+        "no_permission": "Không có quyền hạn này",
+        "page_not_found": "Page not found",
+        "maintenance_subtitle": "Currently this is during the maintenance. We express sincere apologies for the inconvenience.",
+        "maintenance_sec_subtitle": "The maintenance will be completed at {time} (UTC+8).",
+        "function_under_maintenance": "Function Under Maintenance",
+        "maintenance_new_sec_subtitle": "Maintenance time(GMT+8)"
+    },
+    "th": {
+        "667010029": "ไม่เปิดให้ใช้สิทธิ์ของฟังก์ชั่นนี้",
+        "unable_show_page": "Unable to display the page",
+        "150010029": "ไม่มีบัญชีนี้ในระบบ",
+        "no_permission": "ไม่มีฟังก์ชั่นนี้",
+        "page_not_found": "Page not found",
+        "maintenance_subtitle": "Currently this is during the maintenance. We express sincere apologies for the inconvenience.",
+        "maintenance_sec_subtitle": "The maintenance will be completed at {time} (UTC+8).",
+        "function_under_maintenance": "Function Under Maintenance",
+        "maintenance_new_sec_subtitle": "Maintenance time(GMT+8)"
+    }
+}
+

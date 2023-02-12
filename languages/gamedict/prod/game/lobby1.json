@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "lobby1_BK": "籃球",
+        "lobby1_BS": "棒球",
+        "lobby1_CB": "混合過關",
+        "lobby1_F1": "其他",
+        "lobby1_FB": "美式足球",
+        "lobby1_FT": "足球",
+        "lobby1_IH": "冰球",
+        "lobby1_SP": "冠軍賽",
+        "lobby1_TN": "網球"
+    },
+    "zh-cn": {
+        "lobby1_BK": "篮球",
+        "lobby1_BS": "棒球",
+        "lobby1_CB": "混合过关",
+        "lobby1_F1": "其他",
+        "lobby1_FB": "美式足球",
+        "lobby1_FT": "足球",
+        "lobby1_IH": "冰球",
+        "lobby1_SP": "冠军赛",
+        "lobby1_TN": "网球"
+    },
+    "en": {
+        "lobby1_BK": "Basketball",
+        "lobby1_BS": "Baseball",
+        "lobby1_CB": "Combo Parlay",
+        "lobby1_F1": "Other",
+        "lobby1_FB": "Football",
+        "lobby1_FT": "Soccer",
+        "lobby1_IH": "Ice Hockey",
+        "lobby1_SP": "Outright",
+        "lobby1_TN": "Tennis"
+    },
+    "ja": {
+        "lobby1_BK": "バスケットボール",
+        "lobby1_BS": "野球",
+        "lobby1_CB": "コンボ・パーレイ",
+        "lobby1_F1": "その他",
+        "lobby1_FB": "フットボール",
+        "lobby1_FT": "サッカー",
+        "lobby1_IH": "アイスホッケー",
+        "lobby1_SP": "チャンピオン",
+        "lobby1_TN": "テニス"
+    },
+    "ko": {
+        "lobby1_BK": "농구",
+        "lobby1_BS": "야구",
+        "lobby1_CB": "믹스 팔레이",
+        "lobby1_F1": "기타",
+        "lobby1_FB": "미식축구",
+        "lobby1_FT": "축구",
+        "lobby1_IH": "아이스 하키",
+        "lobby1_SP": "챔피언",
+        "lobby1_TN": "테니스"
+    },
+    "vi": {
+        "lobby1_BK": "Bóng rổ",
+        "lobby1_BS": "Bóng chày",
+        "lobby1_CB": "Cược xiên hỗn hợp",
+        "lobby1_F1": "Khác",
+        "lobby1_FB": "Bóng đá Mỹ",
+        "lobby1_FT": "Bóng đá",
+        "lobby1_IH": "Khúc côn cầu trên băng",
+        "lobby1_SP": "Quán quân",
+        "lobby1_TN": "Tennis"
+    },
+    "th": {
+        "lobby1_BK": "บาสเกตบอลล์",
+        "lobby1_BS": "เบสบอลล์",
+        "lobby1_CB": "พาร์เลย์",
+        "lobby1_F1": "เกมส์อื่นๆ",
+        "lobby1_FB": "อเมริกันฟุตบอลล์",
+        "lobby1_FT": "ฟุตบอลล์",
+        "lobby1_IH": "ฮอกกี้น้ำแข็ง",
+        "lobby1_SP": "ผู้ชนะเลิศ",
+        "lobby1_TN": "เทนนิส"
+    }
+}
+

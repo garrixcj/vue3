@@ -1,0 +1,52 @@
+{
+    "zh-tw": {
+        "success": "成功",
+        "cancel": "取消",
+        "confirm": "確定",
+        "edit_remark": "編輯備註",
+        "please_enter_remarks": "請輸入備註"
+    },
+    "zh-cn": {
+        "success": "成功",
+        "cancel": "取消",
+        "confirm": "确定",
+        "edit_remark": "编辑备注",
+        "please_enter_remarks": "请输入备注"
+    },
+    "en": {
+        "success": "Success",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "edit_remark": "Edit Reminder",
+        "please_enter_remarks": "Please enter the reminder."
+    },
+    "ja": {
+        "success": "成功",
+        "cancel": "キャンセル",
+        "confirm": "確定",
+        "edit_remark": "Edit Reminder",
+        "please_enter_remarks": "Please enter the reminder."
+    },
+    "ko": {
+        "success": "성공",
+        "cancel": "취소",
+        "confirm": "확인",
+        "edit_remark": "비고 수정",
+        "please_enter_remarks": "비고를 입력해 주세요."
+    },
+    "vi": {
+        "success": "Thành công",
+        "cancel": "Hủy",
+        "confirm": "Xác nhận",
+        "edit_remark": "Biên tập ghi chú",
+        "please_enter_remarks": "Vui lòng nhập một ghi chú"
+    },
+    "th": {
+        "success": "สำเร็จ",
+        "cancel": "ยกเลิก",
+        "confirm": "ยืนยัน",
+        "edit_remark": "เเก้ไขหมายเหตุ",
+        "please_enter_remarks": "กรุณาป้อนหมายเหตุ"
+    }
+}
+

@@ -1,0 +1,94 @@
+{
+    "zh-tw": {
+        "advance_active_time": "預改生效時間",
+        "advance_buy": "預改買進",
+        "advance_exchange": "預改匯率",
+        "advance_sold": "預改賣出",
+        "currency_name": "幣別名稱",
+        "currently_buy": "目前買進",
+        "currently_exchange": "目前匯率",
+        "currently_sold": "目前賣出",
+        "edit": "編輯",
+        "america_east": "美東",
+        "function": "功能"
+    },
+    "zh-cn": {
+        "advance_active_time": "预改生效时间",
+        "advance_buy": "预改买进",
+        "advance_exchange": "预改汇率",
+        "advance_sold": "预改卖出",
+        "currency_name": "币别名称",
+        "currently_buy": "目前买进",
+        "currently_exchange": "目前汇率",
+        "currently_sold": "目前卖出",
+        "edit": "编辑",
+        "america_east": "美东",
+        "function": "功能"
+    },
+    "en": {
+        "advance_active_time": "Advance active time",
+        "advance_buy": "Advance buying",
+        "advance_exchange": "Advance exchange",
+        "advance_sold": "Advance sold",
+        "currency_name": "Currency type",
+        "currently_buy": "Currently buying",
+        "currently_exchange": "Current exchange",
+        "currently_sold": "Currently sold",
+        "edit": "Edit",
+        "america_east": "EST",
+        "function": "Function"
+    },
+    "ja": {
+        "advance_active_time": "Advance active time",
+        "advance_buy": "Advance buying",
+        "advance_exchange": "Advance exchange",
+        "advance_sold": "Advance sold",
+        "currency_name": "通貨タイプ",
+        "currently_buy": "Currently buying",
+        "currently_exchange": "Current exchange",
+        "currently_sold": "Currently sold",
+        "edit": "編集",
+        "america_east": "東アメリカ",
+        "function": "機能"
+    },
+    "ko": {
+        "advance_active_time": "Advance active time",
+        "advance_buy": "Advance buying",
+        "advance_exchange": "Advance exchange",
+        "advance_sold": "Advance sold",
+        "currency_name": "화폐별 명칭",
+        "currently_buy": "Currently buying",
+        "currently_exchange": "Current exchange",
+        "currently_sold": "Currently sold",
+        "edit": "편집",
+        "america_east": "미국 동부",
+        "function": "기능"
+    },
+    "vi": {
+        "advance_active_time": "Advance active time",
+        "advance_buy": "Advance buying",
+        "advance_exchange": "Advance exchange",
+        "advance_sold": "Advance sold",
+        "currency_name": "Tên loại tiền",
+        "currently_buy": "Currently buying",
+        "currently_exchange": "Current exchange",
+        "currently_sold": "Currently sold",
+        "edit": "Biên soạn",
+        "america_east": "E.S.T",
+        "function": "Chức năng"
+    },
+    "th": {
+        "advance_active_time": "Advance active time",
+        "advance_buy": "Advance buying",
+        "advance_exchange": "Advance exchange",
+        "advance_sold": "Advance sold",
+        "currency_name": "ชนิดสกุลเงิน",
+        "currently_buy": "Currently buying",
+        "currently_exchange": "Current exchange",
+        "currently_sold": "Currently sold",
+        "edit": "แก้ไข",
+        "america_east": "เวลาอเมริกาตะวันออก",
+        "function": "ฟังก์ชั่น"
+    }
+}
+

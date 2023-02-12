@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "account": "帳號",
+        "date": "日期",
+        "date_limit_7": "搜尋日期不能大於7天",
+        "date_not_null": "日期不能為空",
+        "group": "集團",
+        "login_record_auto_notice": "僅能查詢代理帳號或會員帳號",
+        "search": "查詢",
+        "select_hall": "請選擇廳主",
+        "select_the_period": "請選擇要查詢的日期區間"
+    },
+    "zh-cn": {
+        "account": "帐号",
+        "date": "日期",
+        "date_limit_7": "搜寻日期不能大于7天",
+        "date_not_null": "日期不能为空",
+        "group": "集团",
+        "login_record_auto_notice": "仅能查询代理帐号或会员帐号",
+        "search": "查询",
+        "select_hall": "请选择厅主",
+        "select_the_period": "请选择要查询的日期区间"
+    },
+    "en": {
+        "account": "Account",
+        "date": "Date",
+        "date_limit_7": "The search date can not be greater than 7 days.",
+        "date_not_null": "Date is required.",
+        "group": "Group",
+        "login_record_auto_notice": "Only can search agent \/ member account",
+        "search": "Search",
+        "select_hall": "Please choose an owner",
+        "select_the_period": "Please select the period"
+    },
+    "ja": {
+        "account": "アカウント",
+        "date": "日付",
+        "date_limit_7": "The search date can not be greater than 7 days.",
+        "date_not_null": "日時は必須項目です",
+        "group": "Group",
+        "login_record_auto_notice": "Only can search agent \/ member account",
+        "search": "検索",
+        "select_hall": "ホールを選んで下さい",
+        "select_the_period": "検索したい日付の期間を選択して下さい"
+    },
+    "ko": {
+        "account": "아이디",
+        "date": "날짜",
+        "date_limit_7": "The search date can not be greater than 7 days.",
+        "date_not_null": "날짜를 선택하세요.",
+        "group": "Group",
+        "login_record_auto_notice": "Only can search agent \/ member account",
+        "search": "조회",
+        "select_hall": "홀을 선택하십시오",
+        "select_the_period": "검색을 원하시는 날짜 구간을 입력하십시오."
+    },
+    "vi": {
+        "account": "Tài khoản",
+        "date": "Ngày tháng",
+        "date_limit_7": "The search date can not be greater than 7 days.",
+        "date_not_null": "Không được để trống ngày tháng",
+        "group": "Group",
+        "login_record_auto_notice": "Only can search agent \/ member account",
+        "search": "Tìm kiếm",
+        "select_hall": "Hãy chọn sảnh đại",
+        "select_the_period": "Hãy chọn khoảng thời gian cần tra"
+    },
+    "th": {
+        "account": "ยูสเซอร์เนม",
+        "date": "วันที่",
+        "date_limit_7": "The search date can not be greater than 7 days.",
+        "date_not_null": "ห้ามเว้นว่างช่องวันที่",
+        "group": "Group",
+        "login_record_auto_notice": "Only can search agent \/ member account",
+        "search": "ค้นหา",
+        "select_hall": "โปรดเลือกระดับผู้ควบคุม",
+        "select_the_period": "กรุณาเลือกช่วงวันที่ที่ต้องการค้นหา"
+    }
+}
+

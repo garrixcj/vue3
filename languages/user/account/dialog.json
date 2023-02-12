@@ -1,0 +1,59 @@
+{
+    "zh-tw": {
+        "regexp_of_password": "密碼規則：須為6~12碼小寫英數字夾雜且符合0~9及a~z字元",
+        "change_password": "修改密碼",
+        "alias": "名稱",
+        "cancel": "取消",
+        "confirm": "確定",
+        "prompt": "提示"
+    },
+    "zh-cn": {
+        "regexp_of_password": "密码规则：须为6~12码小写英数字夹杂且符合0~9及a~z字元",
+        "change_password": "修改密码",
+        "alias": "名称",
+        "cancel": "取消",
+        "confirm": "确定",
+        "prompt": "提示"
+    },
+    "en": {
+        "regexp_of_password": "password Guidelines: (1) must be 6 to 12 characters (2) should mix with letters a~z and numbers 0~9",
+        "change_password": "Change Password",
+        "alias": "Name",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "prompt": "prompt"
+    },
+    "ja": {
+        "regexp_of_password": "パスワードルール：6~12文字のミックスされた半角英数字(0~9, a~z)",
+        "change_password": "パスワードの変更",
+        "alias": "名称",
+        "cancel": "キャンセル",
+        "confirm": "確定",
+        "prompt": "ヒント"
+    },
+    "ko": {
+        "regexp_of_password": "비밀번호 규칙: 반드시6~12자리로 구성된 영문 및 숫자로 조합하야하며0~9및a~z 자리 수에 부합하여야 합니다.",
+        "change_password": "비밀번호 수정하기",
+        "alias": "명칭",
+        "cancel": "취소",
+        "confirm": "확인",
+        "prompt": "제시"
+    },
+    "vi": {
+        "regexp_of_password": "Quy tắc mật khẩu：Cần 6-12 ký tự và chữ số và phù hợp 0~9, a~z",
+        "change_password": "Sửa mật khẩu",
+        "alias": "Tên gọi",
+        "cancel": "Hủy",
+        "confirm": "Xác nhận",
+        "prompt": "Gợi ý"
+    },
+    "th": {
+        "regexp_of_password": "กฎรหัสผ่าน: ต้องเป็น6~12 ตามด้วยภาษาอัฤษและตัวเลข 0~9 และ a~z",
+        "change_password": "แก้ไขรหัสผ่าน",
+        "alias": "ชื่อ",
+        "cancel": "ยกเลิก",
+        "confirm": "ยืนยัน",
+        "prompt": "prompt"
+    }
+}
+

@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "ip_search": "IP查詢",
+        "login_ingress_ub": "寰宇瀏覽器",
+        "username_search": "帳號查詢",
+        "auto_mation": "自動稽核",
+        "last_login_record": "最後登入紀錄",
+        "login_ingress_mobile": "手機登入",
+        "registration_source_search": "註冊來源查詢",
+        "login_and_registration_search": "登入\/註冊查詢"
+    },
+    "zh-cn": {
+        "ip_search": "IP查询",
+        "login_ingress_ub": "寰宇浏览器",
+        "username_search": "帐号查询",
+        "auto_mation": "自动稽核",
+        "last_login_record": "最后登入纪录",
+        "login_ingress_mobile": "手机登入",
+        "registration_source_search": "注册来源查询",
+        "login_and_registration_search": "登入\/注册查询"
+    },
+    "en": {
+        "ip_search": "IP Search",
+        "login_ingress_ub": "Universe Browser",
+        "username_search": "Account search",
+        "auto_mation": "Automatic Audit",
+        "last_login_record": "Last login record",
+        "login_ingress_mobile": "Login by mobile",
+        "registration_source_search": "Search Registration Source",
+        "login_and_registration_search": "Search Login\/Registration"
+    },
+    "ja": {
+        "ip_search": "IP検索",
+        "login_ingress_ub": "UBブラウザ",
+        "username_search": "アカウント検索",
+        "auto_mation": "賭け条件の審査",
+        "last_login_record": "最終ログイン記録",
+        "login_ingress_mobile": "携帯でログイン",
+        "registration_source_search": "登録側の検索",
+        "login_and_registration_search": "ログイン\/登録検索"
+    },
+    "ko": {
+        "ip_search": "IP 검색",
+        "login_ingress_ub": "유니버셜 브라우저",
+        "username_search": "아이디 조회",
+        "auto_mation": "자동 감사",
+        "last_login_record": "마지막 로그인 기록",
+        "login_ingress_mobile": "모바일 로그인",
+        "registration_source_search": "가입 출처 조회",
+        "login_and_registration_search": "로그인\/등록 조회"
+    },
+    "vi": {
+        "ip_search": "Tra IP",
+        "login_ingress_ub": "Trình duyệt UB",
+        "username_search": "Tìm kiếm tài khoản",
+        "auto_mation": "Tự động thẩm duyệt",
+        "last_login_record": "Bản ghi đăng nhập lần cuối",
+        "login_ingress_mobile": "Đăng nhập bằng điện thoại",
+        "registration_source_search": "Kiểm tra nguồn đăng ký",
+        "login_and_registration_search": "Kiểm tra đăng ký\/ đăng nhập"
+    },
+    "th": {
+        "ip_search": "ค้นหาตาม IP",
+        "login_ingress_ub": "เบราว์เซอร์",
+        "username_search": "ค้าหายูสเซอร์",
+        "auto_mation": "ตรวจสอบอัตโนมัติ",
+        "last_login_record": "Last login record",
+        "login_ingress_mobile": "Login by mobile",
+        "registration_source_search": "Search Registration Source",
+        "login_and_registration_search": "Search Login\/Registration"
+    }
+}
+

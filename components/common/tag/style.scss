@@ -1,0 +1,44 @@
+// 顏色組合
+$tag-colors: (
+  // theme color
+  'info': $background-1,
+  'success': $success,
+  'warning': $warning,
+  'danger': $danger
+);
+
+.el-tag {
+  height: auto;
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 22px;
+  border-radius: 2px;
+  & &__close {
+    font-size: 12px;
+    line-height: 1;
+    @include svg-to-mdi('F0156', true);
+  }
+  &.el-tag {
+    &--small {
+      padding: 0 4px;
+      line-height: 18px;
+      border-radius: 2px;
+    }
+    &--default {
+      padding: 0 4px;
+      line-height: 22px;
+      border-radius: 2px;
+    }
+    &--large {
+      padding: 0 10px;
+      line-height: 26px;
+      border-radius: 2px;
+    }
+    @each $name, $color in $tag-colors {
+      &--#{$name} {
+        @include tag-color($color, null, false);
+      }
+    }
+  }
+}

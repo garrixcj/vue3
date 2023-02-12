@@ -1,0 +1,17 @@
+@function alert-background($color) {
+  // 背景顏色為文字色的 90%
+  @return mix($white, $color, 90%);
+}
+
+// badge客製化顏色
+@mixin alert-theme($color, $background: false) {
+  color: $color;
+  .el-alert__description {
+    color: $color;
+  }
+  @if ($background) {
+    background-color: $background;
+  } @else {
+    background-color: alert-background($color);
+  }
+}

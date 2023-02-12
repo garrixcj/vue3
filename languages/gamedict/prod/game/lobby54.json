@@ -1,0 +1,80 @@
+{
+    "zh-tw": {
+        "lobby54_54001": "百家樂",
+        "lobby54_54002": "龍虎",
+        "lobby54_54003": "骰寶",
+        "lobby54_54004": "輪盤",
+        "lobby54_54005": "牛牛",
+        "lobby54_54006": "21點",
+        "lobby54_54007": "財富大轉盤",
+        "lobby54_54008": "博丁",
+        "lobby54_54999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby54_54001": "百家乐",
+        "lobby54_54002": "龙虎",
+        "lobby54_54003": "骰宝",
+        "lobby54_54004": "轮盘",
+        "lobby54_54005": "牛牛",
+        "lobby54_54006": "21点",
+        "lobby54_54007": "财富大转盤",
+        "lobby54_54008": "博丁",
+        "lobby54_54999": "未开放游戏"
+    },
+    "en": {
+        "lobby54_54001": "Baccarat",
+        "lobby54_54002": "Dragon Tiger",
+        "lobby54_54003": "Sic bo",
+        "lobby54_54004": "Roulette",
+        "lobby54_54005": "Niu Niu",
+        "lobby54_54006": "BlackJack",
+        "lobby54_54007": "FortuneWheel",
+        "lobby54_54008": "Pok Deng",
+        "lobby54_54999": "Game is not open"
+    },
+    "ja": {
+        "lobby54_54001": "Baccarat",
+        "lobby54_54002": "Dragon Tiger",
+        "lobby54_54003": "Sic bo",
+        "lobby54_54004": "Roulette",
+        "lobby54_54005": "Niu Niu",
+        "lobby54_54006": "BlackJack",
+        "lobby54_54007": "FortuneWheel",
+        "lobby54_54008": "Pok Deng",
+        "lobby54_54999": "Game is not open"
+    },
+    "ko": {
+        "lobby54_54001": "Baccarat",
+        "lobby54_54002": "Dragon Tiger",
+        "lobby54_54003": "Sic bo",
+        "lobby54_54004": "Roulette",
+        "lobby54_54005": "Niu Niu",
+        "lobby54_54006": "BlackJack",
+        "lobby54_54007": "FortuneWheel",
+        "lobby54_54008": "Pok Deng",
+        "lobby54_54999": "Game is not open"
+    },
+    "vi": {
+        "lobby54_54001": "Baccarat",
+        "lobby54_54002": "Dragon Tiger",
+        "lobby54_54003": "Sic bo",
+        "lobby54_54004": "Roulette",
+        "lobby54_54005": "Niu Niu",
+        "lobby54_54006": "BlackJack",
+        "lobby54_54007": "FortuneWheel",
+        "lobby54_54008": "Pok Deng",
+        "lobby54_54999": "Game is not open"
+    },
+    "th": {
+        "lobby54_54001": "Baccarat",
+        "lobby54_54002": "Dragon Tiger",
+        "lobby54_54003": "Sic bo",
+        "lobby54_54004": "Roulette",
+        "lobby54_54005": "Niu Niu",
+        "lobby54_54006": "BlackJack",
+        "lobby54_54007": "FortuneWheel",
+        "lobby54_54008": "Pok Deng",
+        "lobby54_54999": "Game is not open"
+    }
+}
+

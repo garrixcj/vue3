@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "lobby134_134001": "BTC\/USDT",
+        "lobby134_134002": "ETH\/USDT",
+        "lobby134_134999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "lobby134_134001": "BTC\/USDT",
+        "lobby134_134002": "ETH\/USDT",
+        "lobby134_134999": "未开放游戏"
+    },
+    "en": {
+        "lobby134_134001": "BTC\/USDT",
+        "lobby134_134002": "ETH\/USDT",
+        "lobby134_134999": "Game is not open"
+    },
+    "ja": {
+        "lobby134_134001": "BTC\/USDT",
+        "lobby134_134002": "ETH\/USDT",
+        "lobby134_134999": "Game is not open"
+    },
+    "ko": {
+        "lobby134_134001": "BTC\/USDT",
+        "lobby134_134002": "ETH\/USDT",
+        "lobby134_134999": "Game is not open"
+    },
+    "vi": {
+        "lobby134_134001": "BTC\/USDT",
+        "lobby134_134002": "ETH\/USDT",
+        "lobby134_134999": "Game is not open"
+    },
+    "th": {
+        "lobby134_134001": "BTC\/USDT",
+        "lobby134_134002": "ETH\/USDT",
+        "lobby134_134999": "Game is not open"
+    }
+}
+

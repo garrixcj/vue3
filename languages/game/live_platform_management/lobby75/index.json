@@ -1,0 +1,73 @@
+{
+    "zh-tw": {
+        "all": "全部",
+        "operate_record": "操作紀錄",
+        "lobby75_platform_management": "XBB視訊平台管理",
+        "limit_setting": "限額設定",
+        "member_management": "會員管理",
+        "table_switch_setting": "桌次開關設定",
+        "table_management": "桌次管理",
+        "add_account_plan": "新增帳號計畫"
+    },
+    "zh-cn": {
+        "all": "全部",
+        "operate_record": "操作纪录",
+        "lobby75_platform_management": "XBB视讯平台管理",
+        "limit_setting": "限额设定",
+        "member_management": "会员管理",
+        "table_switch_setting": "桌次开关设定",
+        "table_management": "桌次管理",
+        "add_account_plan": "新增帐号计画"
+    },
+    "en": {
+        "all": "All",
+        "operate_record": "Operating Record",
+        "lobby75_platform_management": "XBB Live Platform Management",
+        "limit_setting": "Limit Settings",
+        "member_management": "Member Management",
+        "table_switch_setting": "Table Switch Setting",
+        "table_management": "Table Management",
+        "add_account_plan": "Add Account Plan"
+    },
+    "ja": {
+        "all": "全部",
+        "operate_record": "操作履歴",
+        "lobby75_platform_management": "XBB Live Platform Management",
+        "limit_setting": "Limit Settings",
+        "member_management": "Member Management",
+        "table_switch_setting": "Table Switch Setting",
+        "table_management": "Table Management",
+        "add_account_plan": "Add Account Plan"
+    },
+    "ko": {
+        "all": "전체",
+        "operate_record": "조작 기록",
+        "lobby75_platform_management": "XBB 라이브 플랫폼 관리",
+        "limit_setting": "한도설정",
+        "member_management": "회원관리",
+        "table_switch_setting": "테이블 스위치 설정",
+        "table_management": "테이블 관리",
+        "add_account_plan": "계정 추가 플렌"
+    },
+    "vi": {
+        "all": "Toàn bộ",
+        "operate_record": "Ghi chép thao tác",
+        "lobby75_platform_management": "Quản lý sảnh XBB Live",
+        "limit_setting": "Thiết lập hạn mức",
+        "member_management": "Quản lý hội viên",
+        "table_switch_setting": "Thiết lập tắt mở bàn cược",
+        "table_management": "Quản lý bàn cược",
+        "add_account_plan": "Kế hoạch thiết lập tài khoản"
+    },
+    "th": {
+        "all": "ทั้งหมด",
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "lobby75_platform_management": "XBB Live Platform Management",
+        "limit_setting": "Limit Settings",
+        "member_management": "Member Management",
+        "table_switch_setting": "Table Switch Setting",
+        "table_management": "Table Management",
+        "add_account_plan": "Add Account Plan"
+    }
+}
+

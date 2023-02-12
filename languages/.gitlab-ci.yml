@@ -1,0 +1,38 @@
+stages:
+  - update
+
+.update_references:
+  stage: update
+  needs: []
+  only:
+    - master
+  variables:
+    UPDATE_PROJECT: '$CI_PROJECT_NAME'
+
+update:references:bin:
+  extends: .update_references
+  trigger:
+    project: web/bin/fe_admin
+    strategy: depend
+    branch: master_pending
+
+update:references:bgp:
+  extends: .update_references
+  trigger:
+    project: web/bgp/fe_admin
+    strategy: depend
+    branch: master_pending
+
+update:references:bin-v3:
+  extends: .update_references
+  trigger:
+    project: web/bin/ve_admin
+    strategy: depend
+    branch: master_pending
+
+update:references:bgp-v3:
+  extends: .update_references
+  trigger:
+    project: web/bgp/ve_admin
+    strategy: depend
+    branch: master_pending

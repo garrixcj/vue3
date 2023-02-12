@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "operate_record": "操作紀錄",
+        "maintain_info": "維護資訊",
+        "domain_maintain_info": "廳主維護資訊"
+    },
+    "zh-cn": {
+        "operate_record": "操作纪录",
+        "maintain_info": "维护资讯",
+        "domain_maintain_info": "厅主维护资讯"
+    },
+    "en": {
+        "operate_record": "Operating Record",
+        "maintain_info": "Maintenance Information",
+        "domain_maintain_info": "Owner Maintenance Information"
+    },
+    "ja": {
+        "operate_record": "操作履歴",
+        "maintain_info": "Maintenance Information",
+        "domain_maintain_info": "Owner Maintenance Information"
+    },
+    "ko": {
+        "operate_record": "조작 기록",
+        "maintain_info": "점검 정보",
+        "domain_maintain_info": "Owner Maintenance Information"
+    },
+    "vi": {
+        "operate_record": "Ghi chép thao tác",
+        "maintain_info": "Thông tin bảo trì",
+        "domain_maintain_info": "Owner Maintenance Information"
+    },
+    "th": {
+        "operate_record": "บันทึกการปฏิบัติงาน",
+        "maintain_info": "Maintenance Information",
+        "domain_maintain_info": "Owner Maintenance Information"
+    }
+}
+

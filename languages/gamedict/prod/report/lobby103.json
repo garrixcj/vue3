@@ -1,0 +1,87 @@
+{
+    "zh-tw": {
+        "report_lobby103_103001": "混合過關",
+        "report_lobby103_103002": "賽狗",
+        "report_lobby103_103003": "賽馬",
+        "report_lobby103_103004": "沙地摩托車",
+        "report_lobby103_103005": "摩托車",
+        "report_lobby103_103006": "聯賽",
+        "report_lobby103_103007": "杯賽",
+        "report_lobby103_103008": "3x3 籃球",
+        "report_lobby103_103009": "格鬥",
+        "report_lobby103_103999": "未開放遊戲"
+    },
+    "zh-cn": {
+        "report_lobby103_103001": "混合过关",
+        "report_lobby103_103002": "赛狗",
+        "report_lobby103_103003": "赛马",
+        "report_lobby103_103004": "沙地摩托车",
+        "report_lobby103_103005": "摩托车",
+        "report_lobby103_103006": "联赛",
+        "report_lobby103_103007": "杯赛",
+        "report_lobby103_103008": "3x3 篮球",
+        "report_lobby103_103009": "格斗",
+        "report_lobby103_103999": "未开放游戏"
+    },
+    "en": {
+        "report_lobby103_103001": "Mix Parlay",
+        "report_lobby103_103002": "Greyhound Racing",
+        "report_lobby103_103003": "Horse Racing",
+        "report_lobby103_103004": "Speedway Racing",
+        "report_lobby103_103005": "Motorbike Racing",
+        "report_lobby103_103006": "Football League",
+        "report_lobby103_103007": "Tournament",
+        "report_lobby103_103008": "3x3 Basketball",
+        "report_lobby103_103009": "Fighting",
+        "report_lobby103_103999": "Game is not open"
+    },
+    "ja": {
+        "report_lobby103_103001": "Mix Parlay",
+        "report_lobby103_103002": "Greyhound Racing",
+        "report_lobby103_103003": "Horse Racing",
+        "report_lobby103_103004": "Speedway Racing",
+        "report_lobby103_103005": "Motorbike Racing",
+        "report_lobby103_103006": "Football League",
+        "report_lobby103_103007": "Tournament",
+        "report_lobby103_103008": "3x3 Basketball",
+        "report_lobby103_103009": "Fighting",
+        "report_lobby103_103999": "Game is not open"
+    },
+    "ko": {
+        "report_lobby103_103001": "Mix Parlay",
+        "report_lobby103_103002": "Greyhound Racing",
+        "report_lobby103_103003": "Horse Racing",
+        "report_lobby103_103004": "Speedway Racing",
+        "report_lobby103_103005": "Motorbike Racing",
+        "report_lobby103_103006": "Football League",
+        "report_lobby103_103007": "Tournament",
+        "report_lobby103_103008": "3x3 Basketball",
+        "report_lobby103_103009": "Fighting",
+        "report_lobby103_103999": "Game is not open"
+    },
+    "vi": {
+        "report_lobby103_103001": "Mix Parlay",
+        "report_lobby103_103002": "Greyhound Racing",
+        "report_lobby103_103003": "Horse Racing",
+        "report_lobby103_103004": "Speedway Racing",
+        "report_lobby103_103005": "Motorbike Racing",
+        "report_lobby103_103006": "Football League",
+        "report_lobby103_103007": "Tournament",
+        "report_lobby103_103008": "3x3 Basketball",
+        "report_lobby103_103009": "Fighting",
+        "report_lobby103_103999": "Game is not open"
+    },
+    "th": {
+        "report_lobby103_103001": "Mix Parlay",
+        "report_lobby103_103002": "Greyhound Racing",
+        "report_lobby103_103003": "Horse Racing",
+        "report_lobby103_103004": "Speedway Racing",
+        "report_lobby103_103005": "Motorbike Racing",
+        "report_lobby103_103006": "Football League",
+        "report_lobby103_103007": "Tournament",
+        "report_lobby103_103008": "3x3 Basketball",
+        "report_lobby103_103009": "Fighting",
+        "report_lobby103_103999": "Game is not open"
+    }
+}
+

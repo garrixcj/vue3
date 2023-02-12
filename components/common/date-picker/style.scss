@@ -1,0 +1,96 @@
+.el-date-editor {
+  &.el-input__inner {
+    background: $white;
+  }
+  .el-range-separator {
+    height: inherit;
+    line-height: inherit;
+  }
+  &--time,
+  &--timerange,
+  &--datetime,
+  &--datetimerange {
+    // mdi-clock-time-three-outline
+    i.el-range__icon {
+      @include svg-to-mdi('F144D', true);
+    }
+    .el-input__prefix {
+      i.el-icon {
+        @include svg-to-mdi('F144D', true);
+      }
+    }
+    // mdi-close-circle-outline
+    i.el-range__close-icon {
+      @include svg-to-mdi('F015A', true);
+    }
+    .el-input__suffix {
+      i.el-icon.clear-icon {
+        @include svg-to-mdi('F015A', true);
+      }
+    }
+  }
+  &--date,
+  &--daterange {
+    // mdi-calender-month-outline
+    .el-input__prefix {
+      i.el-icon {
+        @include svg-to-mdi('F0E18', true);
+      }
+    }
+    i.el-icon.el-range__icon {
+      @include svg-to-mdi('F0E18', true);
+    }
+    // mdi-close-circle-outline
+    .el-input__suffix {
+      i.el-icon.clear-icon {
+        @include svg-to-mdi('F015A', true);
+      }
+    }
+    i.el-icon.el-range__close-icon {
+      @include svg-to-mdi('F015A', true);
+    }
+  }
+}
+
+// 移除「現在」按鈕
+.el-date-picker.has-time {
+  .el-picker-panel__footer {
+    .el-picker-panel__link-btn.is-text {
+      display: none;
+    }
+  }
+}
+// 改動「確認」與「清空」按鈕規格
+.el-picker-panel__footer {
+  .el-picker-panel__link-btn {
+    font-size: 12px;
+    &:not(.is-text) {
+      @include solid-button($primary-4, $primary);
+    }
+  }
+}
+
+// 移除 當前時間 樣式
+.el-picker-panel__body-wrapper {
+  .el-date-table {
+    td .el-date-table-cell__text {
+      font-weight: normal;
+      color: inherit;
+    }
+  }
+}
+
+// 時間選擇 time-select 的 icon
+.el-select {
+  .el-input {
+    &__prefix-icon {
+      @include svg-to-mdi('F144D', true);
+    }
+  }
+}
+
+.el-form-item.is-error {
+  .el-input__wrapper:hover {
+    box-shadow: 0 0 0 1px var(--el-color-danger) inset;
+  }
+}

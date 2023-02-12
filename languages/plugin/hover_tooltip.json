@@ -1,0 +1,31 @@
+{
+    "zh-tw": {
+        "enter_example": "輸入範例",
+        "ipv6_hint": "IPv6前4組相同會視為相同IP"
+    },
+    "zh-cn": {
+        "enter_example": "输入范例",
+        "ipv6_hint": "IPv6前4组相同会视为相同IP"
+    },
+    "en": {
+        "enter_example": "Example",
+        "ipv6_hint": "When the 64-bit network prefix of IPs are the same, they are regarded as the same IP."
+    },
+    "ja": {
+        "enter_example": "Example",
+        "ipv6_hint": "When the 64-bit network prefix of IPs are the same, they are regarded as the same IP."
+    },
+    "ko": {
+        "enter_example": "입력 범례",
+        "ipv6_hint": "IPv6의 처음 4개의 코드 조합이 같을 시, 동일한 IP로 간주합니다."
+    },
+    "vi": {
+        "enter_example": "Ví dụ về cách nhập",
+        "ipv6_hint": "Cùng một IP trong 4 nhóm IPv6 đầu tiên"
+    },
+    "th": {
+        "enter_example": "ป้อนตัวอย่าง",
+        "ipv6_hint": "ระบบจะถือว่าIPv6ที่เหมือนกัน4ชุดเป็นIPเดียวกัน"
+    }
+}
+

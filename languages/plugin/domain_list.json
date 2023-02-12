@@ -1,0 +1,38 @@
+{
+    "zh-tw": {
+        "all": "全部",
+        "please_select": "請選擇",
+        "select_hall": "請選擇廳主"
+    },
+    "zh-cn": {
+        "all": "全部",
+        "please_select": "请选择",
+        "select_hall": "请选择厅主"
+    },
+    "en": {
+        "all": "All",
+        "please_select": "Please select",
+        "select_hall": "Please choose an owner"
+    },
+    "ja": {
+        "all": "全部",
+        "please_select": "選択してください",
+        "select_hall": "ホールを選んで下さい"
+    },
+    "ko": {
+        "all": "전체",
+        "please_select": "선택하십시오.",
+        "select_hall": "홀을 선택하십시오"
+    },
+    "vi": {
+        "all": "Toàn bộ",
+        "please_select": "Hãy chọn",
+        "select_hall": "Hãy chọn sảnh đại"
+    },
+    "th": {
+        "all": "ทั้งหมด",
+        "please_select": "โปรดเลือก",
+        "select_hall": "โปรดเลือกระดับผู้ควบคุม"
+    }
+}
+
